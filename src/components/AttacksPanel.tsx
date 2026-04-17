@@ -57,6 +57,65 @@ const AttacksList = styled.div`
   gap: 1rem;
 `;
 
+const AttackRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1rem 1.25rem;
+  width: 100%;
+`;
+
+const AttackMain = styled.div`
+  flex: 1 1 auto;
+  min-width: 0;
+`;
+
+/** TAC / DEF / HP outside the bordered card so they stay easy to scan. */
+const AttackStatsRail = styled.aside`
+  flex: 0 0 auto;
+  text-align: right;
+  padding: 0.5rem 0.15rem 0 0;
+  min-width: 2rem;
+`;
+
+const AttackStatBlock = styled.div`
+  margin-bottom: 0.45rem;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+`;
+
+const AttackStatCaption = styled.span`
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 0.08rem;
+`;
+
+const AttackStatMono = styled(Mono)`
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+`;
+
+const AttackHpRailBlock = styled.div`
+  margin-top: 0.55rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--border);
+`;
+
+const AttackHpValue = styled(Mono)`
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text);
+  letter-spacing: -0.02em;
+`;
+
 type AttackBlockVariant = 'charge' | 'berserker' | 'base';
 
 const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
@@ -271,21 +330,37 @@ const WrapSlotBlock = styled.div<{ $first: boolean }>`
   overflow-x: auto;
 `;
 
-const WrapExpandTrigger = styled.button`
-  width: 100%;
+/** Base playbook row: grid + narrow vertical wrap toggle on the right. */
+const PlaybookRowWithVerticalWrap = styled.div`
   display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin-top: 0.55rem;
-  padding: 0.55rem 0.75rem;
-  font: inherit;
-  font-size: 0.88rem;
-  color: var(--text);
-  background: transparent;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0.45rem;
+`;
+
+const PlaybookGridCell = styled.div`
+  flex: 0 1 auto;
+  min-width: 0;
+`;
+
+const VerticalWrapToggle = styled.button`
+  align-self: stretch;
+  flex-shrink: 0;
+  width: 3rem;
+  min-height: 4.5rem;
+  margin: 0;
+  padding: 0.4rem 0.15rem 0.35rem;
   border: 1px solid var(--border);
   border-radius: 8px;
+  background: transparent;
+  color: var(--text);
   cursor: pointer;
-  text-align: left;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.25rem;
   transition:
     background 0.12s ease,
     border-color 0.12s ease;
@@ -301,9 +376,25 @@ const WrapExpandTrigger = styled.button`
   }
 `;
 
-const WrapExpandTitle = styled.span`
+/** Fills space above the chevron so the label stays visually centered in the upper band. */
+const VerticalWrapLabelWrap = styled.span`
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  width: 100%;
+`;
+
+/** True vertical typesetting (upright glyphs, top-to-bottom). */
+const VerticalWrapLabel = styled.span`
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  white-space: nowrap;
+  font-size: 0.8rem;
   font-weight: 600;
-  flex-shrink: 0;
+  line-height: 1.4;
+  letter-spacing: 0.06em;
 `;
 
 const ChevronCaret = styled.span<{ $open: boolean }>`
@@ -317,6 +408,10 @@ const ChevronCaret = styled.span<{ $open: boolean }>`
   &::before {
     content: '▼';
   }
+`;
+
+const VerticalWrapChevron = styled(ChevronCaret)`
+  margin-top: auto;
 `;
 
 type GbSlotRef = { pid: PlaybookChoiceId; pickIndex: number };
@@ -526,127 +621,145 @@ export function AttacksPanel({
               : 'base';
 
           return (
-            <AttackBlock key={i} $variant={attackVariant}>
-              <AttackMeta>
-                <AttackKindLabel>
-                  {attackRowIsBerserker(i)
-                    ? 'Berserker attack'
-                    : i === chargeAttackIndex
-                      ? 'Charge attack'
-                      : 'Base attack'}
-                </AttackKindLabel>
-                <MetaItem>
-                  TAC <Mono>{a.tac}</Mono>
-                </MetaItem>
-                <MetaItem>
-                  DEF <Mono>{a.defMinRoll}+</Mono>
-                </MetaItem>
-                <MetaItem>
-                  Remaining HP <Mono>{remainingHpAfterSwing[displayIdx]}</Mono>
-                </MetaItem>
-                {i < BASE_ATTACK_COUNT ? (
-                  <ChargeMetaSlot>
-                    <ChargeWrap>
-                      <input
-                        type="radio"
-                        name="charge-attack"
-                        checked={chargeAttackIndex === i}
-                        onChange={() => onChargeAttackIndexChange(i)}
-                      />
-                      <span>+4 TAC charge</span>
-                    </ChargeWrap>
-                  </ChargeMetaSlot>
-                ) : null}
-              </AttackMeta>
+            <AttackRow key={i}>
+              <AttackMain>
+                <AttackBlock $variant={attackVariant}>
+                  <AttackMeta>
+                    <AttackKindLabel>
+                      {attackRowIsBerserker(i)
+                        ? 'Berserker attack'
+                        : i === chargeAttackIndex
+                          ? 'Charge attack'
+                          : 'Base attack'}
+                    </AttackKindLabel>
+                    {i < BASE_ATTACK_COUNT ? (
+                      <ChargeMetaSlot>
+                        <ChargeWrap>
+                          <input
+                            type="radio"
+                            name="charge-attack"
+                            checked={chargeAttackIndex === i}
+                            onChange={() => onChargeAttackIndexChange(i)}
+                          />
+                          <span>+4 TAC charge</span>
+                        </ChargeWrap>
+                      </ChargeMetaSlot>
+                    ) : null}
+                  </AttackMeta>
 
-              {maxNet < 1 ? (
-                <UnreachableNote>
-                  No playbook column reachable: TAC − ARM is {maxNet}. Raise TAC
-                  (charge, Singled Out) or lower ARM.
-                </UnreachableNote>
-              ) : (
-                <>
-                  <WrapSlotPickGrid
-                    key={`${i}-pick-0`}
-                    attackIndex={i}
-                    pickIndex={0}
-                    tac={a.tac}
-                    pHit={a.pHit}
-                    armor={armor}
-                    maxNet={maxNet}
-                    wrapPicks={wrapPicks}
-                    firstSlotInSection
-                    onChoiceChange={onChoiceChange}
-                  />
-                  <GbSlotsSection
-                    slots={gbSlotsBase}
-                    wrapPicks={wrapPicks}
-                    gbFollowUps={gbFollowUps}
-                    attackIndex={i}
-                    displayIdx={displayIdx}
-                    onGbFollowUpChange={onGbFollowUpChange}
-                  />
-                  {hasWrapContinuation ? (
+                  {maxNet < 1 ? (
+                    <UnreachableNote>
+                      No playbook column reachable: TAC − ARM is {maxNet}. Raise
+                      TAC (charge, Singled Out) or lower ARM.
+                    </UnreachableNote>
+                  ) : (
                     <>
-                      <WrapExpandTrigger
+                      <PlaybookRowWithVerticalWrap>
+                    <PlaybookGridCell>
+                      <WrapSlotPickGrid
+                        key={`${i}-pick-0`}
+                        attackIndex={i}
+                        pickIndex={0}
+                        tac={a.tac}
+                        pHit={a.pHit}
+                        armor={armor}
+                        maxNet={maxNet}
+                        wrapPicks={wrapPicks}
+                        firstSlotInSection
+                        onChoiceChange={onChoiceChange}
+                      />
+                    </PlaybookGridCell>
+                    {hasWrapContinuation ? (
+                      <VerticalWrapToggle
                         type="button"
                         id={`attack-wrap-trigger-${i}`}
                         aria-expanded={wrapOpen}
                         aria-controls={`attack-wrap-${i}`}
+                        title={
+                          wrapOpen
+                            ? 'Close additional wrap and clear extra picks'
+                            : 'Open additional wrap'
+                        }
                         onClick={() => {
                           if (wrapOpen) onWrapContinuationCleared(i);
                           toggleWrapExpanded(i);
                         }}
                       >
-                        <WrapExpandTitle>
-                          {wrapOpen ? 'Remove wrap result' : 'Add wrap result'}
-                        </WrapExpandTitle>
-                        <span style={{ flex: 1, minWidth: 0 }} aria-hidden />
-                        <ChevronCaret $open={wrapOpen} aria-hidden />
-                      </WrapExpandTrigger>
-                      <div
-                        id={`attack-wrap-${i}`}
-                        role="region"
-                        aria-labelledby={`attack-wrap-trigger-${i}`}
-                        hidden={!wrapOpen}
-                      >
-                        {wrapPicks[i].slice(1).map((_, slot) => {
-                          const pickIndex = slot + 1;
-                          return (
-                            <WrapSlotPickGrid
-                              key={`${i}-pick-${pickIndex}`}
-                              attackIndex={i}
-                              pickIndex={pickIndex}
-                              tac={a.tac}
-                              pHit={a.pHit}
-                              armor={armor}
-                              maxNet={maxNet}
-                              wrapPicks={wrapPicks}
-                              firstSlotInSection={pickIndex === 1}
-                              onChoiceChange={onChoiceChange}
-                            />
-                          );
-                        })}
-                        <GbSlotsSection
-                          slots={gbSlotsWrap}
-                          wrapPicks={wrapPicks}
-                          gbFollowUps={gbFollowUps}
-                          attackIndex={i}
-                          displayIdx={displayIdx}
-                          onGbFollowUpChange={onGbFollowUpChange}
-                        />
-                      </div>
+                        <VerticalWrapLabelWrap>
+                          <VerticalWrapLabel>
+                            {wrapOpen ? 'Close' : 'Wrap'}
+                          </VerticalWrapLabel>
+                        </VerticalWrapLabelWrap>
+                        <VerticalWrapChevron $open={wrapOpen} aria-hidden />
+                      </VerticalWrapToggle>
+                    ) : null}
+                  </PlaybookRowWithVerticalWrap>
+                  <GbSlotsSection
+                        slots={gbSlotsBase}
+                        wrapPicks={wrapPicks}
+                        gbFollowUps={gbFollowUps}
+                        attackIndex={i}
+                        displayIdx={displayIdx}
+                        onGbFollowUpChange={onGbFollowUpChange}
+                      />
+                      {hasWrapContinuation ? (
+                        <div
+                          id={`attack-wrap-${i}`}
+                          role="region"
+                          aria-labelledby={`attack-wrap-trigger-${i}`}
+                          hidden={!wrapOpen}
+                        >
+                          {wrapPicks[i].slice(1).map((_, slot) => {
+                            const pickIndex = slot + 1;
+                            return (
+                              <WrapSlotPickGrid
+                                key={`${i}-pick-${pickIndex}`}
+                                attackIndex={i}
+                                pickIndex={pickIndex}
+                                tac={a.tac}
+                                pHit={a.pHit}
+                                armor={armor}
+                                maxNet={maxNet}
+                                wrapPicks={wrapPicks}
+                                firstSlotInSection={pickIndex === 1}
+                                onChoiceChange={onChoiceChange}
+                              />
+                            );
+                          })}
+                          <GbSlotsSection
+                            slots={gbSlotsWrap}
+                            wrapPicks={wrapPicks}
+                            gbFollowUps={gbFollowUps}
+                            attackIndex={i}
+                            displayIdx={displayIdx}
+                            onGbFollowUpChange={onGbFollowUpChange}
+                          />
+                        </div>
+                      ) : null}
                     </>
-                  ) : null}
-                </>
-              )}
-            </AttackBlock>
+                  )}
+                </AttackBlock>
+              </AttackMain>
+              <AttackStatsRail aria-label="Attack roll stats">
+                <AttackStatBlock>
+                  <AttackStatCaption>TAC</AttackStatCaption>
+                  <AttackStatMono>{a.tac}</AttackStatMono>
+                </AttackStatBlock>
+                <AttackStatBlock>
+                  <AttackStatCaption>DEF</AttackStatCaption>
+                  <AttackStatMono>{a.defMinRoll}+</AttackStatMono>
+                </AttackStatBlock>
+                <AttackHpRailBlock>
+                  <AttackStatCaption>HP</AttackStatCaption>
+                  <AttackHpValue>
+                    {remainingHpAfterSwing[displayIdx]}
+                  </AttackHpValue>
+                </AttackHpRailBlock>
+              </AttackStatsRail>
+            </AttackRow>
           );
         })}
       </AttacksList>
-      {/*
-        Previously: P(all 6) + wrap / GB explanation in <Summary>.
-      */}
     </Panel>
   );
 }
