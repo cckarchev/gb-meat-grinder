@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react'
-import { clampAttackPlan, computeAttackSequence } from './attackSequence'
-import { AppChrome } from './components/AppChrome'
-import { AttacksPanel } from './components/AttacksPanel'
-import { TargetPanel } from './components/TargetPanel'
-import { HP_DEFAULT } from './constants'
+import { useMemo, useState } from 'react';
+import { clampAttackPlan, computeAttackSequence } from './attackSequence';
+import { AppChrome } from './components/AppChrome';
+import { AttacksPanel } from './components/AttacksPanel';
+import { TargetPanel } from './components/TargetPanel';
+import { HP_DEFAULT } from './constants';
 import {
   choiceUsesGbFollowUp,
   defaultGbFollowUpsWrap,
@@ -13,26 +13,26 @@ import {
   type PlaybookChoiceId,
   sanitizeGbFollowUpsWrap,
   type WrapPick,
-} from './playbook'
+} from './playbook';
 
 type AttackPlan = {
-  wrapPicks: WrapPick[][]
-  gbFollowUps: GbFollowUpSlot[][]
-}
+  wrapPicks: WrapPick[][];
+  gbFollowUps: GbFollowUpSlot[][];
+};
 
 function App() {
-  const [def, setDef] = useState(4)
-  const [armor, setArmor] = useState(1)
-  const [hp, setHp] = useState(HP_DEFAULT)
-  const [chargeAttackIndex, setChargeAttackIndex] = useState(0)
+  const [def, setDef] = useState(4);
+  const [armor, setArmor] = useState(1);
+  const [hp, setHp] = useState(HP_DEFAULT);
+  const [chargeAttackIndex, setChargeAttackIndex] = useState(0);
   const [attackPlan, setAttackPlan] = useState<AttackPlan>(() => {
-    const wp = defaultWrapPicks()
-    const gb = defaultGbFollowUpsWrap()
-    const r = clampAttackPlan(wp, gb, 0, 1)
-    return { wrapPicks: r.wrapPicks, gbFollowUps: r.gbFollowUps }
-  })
+    const wp = defaultWrapPicks();
+    const gb = defaultGbFollowUpsWrap();
+    const r = clampAttackPlan(wp, gb, 0, 1);
+    return { wrapPicks: r.wrapPicks, gbFollowUps: r.gbFollowUps };
+  });
 
-  const { wrapPicks, gbFollowUps } = attackPlan
+  const { wrapPicks, gbFollowUps } = attackPlan;
 
   const { attacks } = useMemo(
     () =>
@@ -44,19 +44,19 @@ function App() {
         chargeAttackIndex,
       ),
     [def, armor, wrapPicks, gbFollowUps, chargeAttackIndex],
-  )
+  );
 
   const applyClamp = (
     prev: AttackPlan,
     charge: number,
     arm: number,
   ): AttackPlan => {
-    const r = clampAttackPlan(prev.wrapPicks, prev.gbFollowUps, charge, arm)
+    const r = clampAttackPlan(prev.wrapPicks, prev.gbFollowUps, charge, arm);
     if (r.wrapPicks === prev.wrapPicks && r.gbFollowUps === prev.gbFollowUps) {
-      return prev
+      return prev;
     }
-    return { wrapPicks: r.wrapPicks, gbFollowUps: r.gbFollowUps }
-  }
+    return { wrapPicks: r.wrapPicks, gbFollowUps: r.gbFollowUps };
+  };
 
   const setChoice = (
     attackIndex: number,
@@ -64,28 +64,28 @@ function App() {
     id: PlaybookChoiceId | null,
   ) => {
     setAttackPlan((prev) => {
-      if (pickIndex === 0 && id === null) return prev
-      if (prev.wrapPicks[attackIndex][pickIndex] === id) return prev
+      if (pickIndex === 0 && id === null) return prev;
+      if (prev.wrapPicks[attackIndex][pickIndex] === id) return prev;
       const nextPicks = prev.wrapPicks.map((row, idx) =>
         idx === attackIndex
           ? row.map((cur, j) => (j === pickIndex ? id : cur))
           : [...row],
-      )
+      );
       const nextGb = prev.gbFollowUps.map((row, idx) => {
-        if (idx !== attackIndex) return [...row]
-        const nr = [...row]
-        while (nr.length < nextPicks[idx].length) nr.push(null)
-        if (id === null || !choiceUsesGbFollowUp(id)) nr[pickIndex] = null
-        else if (nr[pickIndex] == null) nr[pickIndex] = 'so'
-        return nr.slice(0, nextPicks[idx].length)
-      })
+        if (idx !== attackIndex) return [...row];
+        const nr = [...row];
+        while (nr.length < nextPicks[idx].length) nr.push(null);
+        if (id === null || !choiceUsesGbFollowUp(id)) nr[pickIndex] = null;
+        else if (nr[pickIndex] == null) nr[pickIndex] = 'so';
+        return nr.slice(0, nextPicks[idx].length);
+      });
       return applyClamp(
         { wrapPicks: nextPicks, gbFollowUps: nextGb },
         chargeAttackIndex,
         armor,
-      )
-    })
-  }
+      );
+    });
+  };
 
   const setGbFollowUp = (
     attackIndex: number,
@@ -93,31 +93,31 @@ function App() {
     follow: GbFollowUp,
   ) => {
     setAttackPlan((prev) => {
-      if (prev.gbFollowUps[attackIndex]?.[pickIndex] === follow) return prev
+      if (prev.gbFollowUps[attackIndex]?.[pickIndex] === follow) return prev;
       const nextGb = prev.gbFollowUps.map((row, idx) => {
-        if (idx !== attackIndex) return [...row]
-        const nr = [...row]
-        nr[pickIndex] = follow
-        return nr
-      })
-      const { gb } = sanitizeGbFollowUpsWrap(prev.wrapPicks, nextGb)
+        if (idx !== attackIndex) return [...row];
+        const nr = [...row];
+        nr[pickIndex] = follow;
+        return nr;
+      });
+      const { gb } = sanitizeGbFollowUpsWrap(prev.wrapPicks, nextGb);
       return applyClamp(
         { wrapPicks: prev.wrapPicks, gbFollowUps: gb },
         chargeAttackIndex,
         armor,
-      )
-    })
-  }
+      );
+    });
+  };
 
   const handleArmorChange = (nextArmor: number) => {
-    setArmor(nextArmor)
-    setAttackPlan((prev) => applyClamp(prev, chargeAttackIndex, nextArmor))
-  }
+    setArmor(nextArmor);
+    setAttackPlan((prev) => applyClamp(prev, chargeAttackIndex, nextArmor));
+  };
 
   const handleChargeAttackIndexChange = (index: number) => {
-    setChargeAttackIndex(index)
-    setAttackPlan((prev) => applyClamp(prev, index, armor))
-  }
+    setChargeAttackIndex(index);
+    setAttackPlan((prev) => applyClamp(prev, index, armor));
+  };
 
   return (
     <AppChrome>
@@ -140,7 +140,7 @@ function App() {
         attacks={attacks}
       />
     </AppChrome>
-  )
+  );
 }
 
-export default App
+export default App;

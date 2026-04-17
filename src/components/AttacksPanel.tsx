@@ -1,4 +1,4 @@
-import type { AttackRollContext } from "../attackSequence";
+import type { AttackRollContext } from '../attackSequence';
 import {
   PLAYBOOK,
   choiceUsesGbFollowUp,
@@ -10,11 +10,19 @@ import {
   type WrapPick,
   wrapExtendedNetNeeded,
   wrapSlotBudget,
-} from "../playbook";
-import { probHeatBackground, probHeatBorder, probHeatTextColor } from "../probStyle";
-import { formatPercent, maxNetSuccessesForRoll, probAttackSucceeds } from "../probability";
-import { Mono, Panel } from "./ui";
-import styled from "styled-components";
+} from '../playbook';
+import {
+  probHeatBackground,
+  probHeatBorder,
+  probHeatTextColor,
+} from '../probStyle';
+import {
+  formatPercent,
+  maxNetSuccessesForRoll,
+  probAttackSucceeds,
+} from '../probability';
+import { Mono, Panel } from './ui';
+import styled from 'styled-components';
 
 export type AttacksPanelProps = {
   armor: number;
@@ -22,8 +30,16 @@ export type AttacksPanelProps = {
   onChargeAttackIndexChange: (index: number) => void;
   wrapPicks: WrapPick[][];
   gbFollowUps: GbFollowUpSlot[][];
-  onChoiceChange: (attackIndex: number, pickIndex: number, id: PlaybookChoiceId | null) => void;
-  onGbFollowUpChange: (attackIndex: number, pickIndex: number, follow: GbFollowUp) => void;
+  onChoiceChange: (
+    attackIndex: number,
+    pickIndex: number,
+    id: PlaybookChoiceId | null,
+  ) => void;
+  onGbFollowUpChange: (
+    attackIndex: number,
+    pickIndex: number,
+    follow: GbFollowUp,
+  ) => void;
   attacks: AttackRollContext[];
 };
 
@@ -127,9 +143,9 @@ const LineButton = styled.button<{ $momentous: boolean; $selected: boolean }>`
   align-items: center;
   justify-content: center;
 
-  background: ${(p) => (p.$momentous ? "#b71c1c" : "var(--input-bg)")};
-  color: ${(p) => (p.$momentous ? "#ffffff" : "var(--text)")};
-  border: 1px solid ${(p) => (p.$momentous ? "#7f1515" : "var(--border)")};
+  background: ${(p) => (p.$momentous ? '#b71c1c' : 'var(--input-bg)')};
+  color: ${(p) => (p.$momentous ? '#ffffff' : 'var(--text)')};
+  border: 1px solid ${(p) => (p.$momentous ? '#7f1515' : 'var(--border)')};
 
   &:hover {
     filter: brightness(1.06);
@@ -140,7 +156,7 @@ const LineButton = styled.button<{ $momentous: boolean; $selected: boolean }>`
       ? `
     box-shadow: inset 0 0 0 2px var(--text);
   `
-      : ""}
+      : ''}
 
   &:disabled {
     opacity: 0.38;
@@ -189,8 +205,8 @@ const CpBtn = styled.button<{ $active: boolean }>`
   border: 1px solid var(--border);
   cursor: pointer;
   white-space: nowrap;
-  background: ${(p) => (p.$active ? "var(--text)" : "var(--input-bg)")};
-  color: ${(p) => (p.$active ? "var(--bg)" : "var(--text)")};
+  background: ${(p) => (p.$active ? 'var(--text)' : 'var(--input-bg)')};
+  color: ${(p) => (p.$active ? 'var(--bg)' : 'var(--text)')};
 
   &:hover {
     filter: brightness(1.05);
@@ -204,9 +220,9 @@ const UnreachableNote = styled.p`
 `;
 
 const WrapSlotBlock = styled.div<{ $first: boolean }>`
-  margin-top: ${(p) => (p.$first ? 0 : "0.85rem")};
-  padding-top: ${(p) => (p.$first ? 0 : "0.65rem")};
-  border-top: ${(p) => (p.$first ? "none" : "1px solid var(--border)")};
+  margin-top: ${(p) => (p.$first ? 0 : '0.85rem')};
+  padding-top: ${(p) => (p.$first ? 0 : '0.65rem')};
+  border-top: ${(p) => (p.$first ? 'none' : '1px solid var(--border)')};
 `;
 
 export function AttacksPanel({
@@ -227,14 +243,15 @@ export function AttacksPanel({
           const gbSlots = wrapPicks[i]
             .map((pid, pickIndex) => ({ pid, pickIndex }))
             .filter(
-              (x): x is { pid: PlaybookChoiceId; pickIndex: number } => x.pid != null && choiceUsesGbFollowUp(x.pid),
+              (x): x is { pid: PlaybookChoiceId; pickIndex: number } =>
+                x.pid != null && choiceUsesGbFollowUp(x.pid),
             );
 
           return (
             <AttackBlock key={i}>
               <AttackMeta>
                 <MetaItem>
-                  <Mono style={{ color: "var(--text)" }}>#{i + 1}</Mono>
+                  <Mono style={{ color: 'var(--text)' }}>#{i + 1}</Mono>
                 </MetaItem>
                 <ChargeWrap>
                   <input
@@ -255,29 +272,48 @@ export function AttacksPanel({
 
               {maxNet < 1 ? (
                 <UnreachableNote>
-                  No playbook column reachable: TAC − ARM is {maxNet}. Raise TAC (charge, Singled Out) or lower ARM.
+                  No playbook column reachable: TAC − ARM is {maxNet}. Raise TAC
+                  (charge, Singled Out) or lower ARM.
                 </UnreachableNote>
               ) : (
                 <>
                   {wrapPicks[i].map((_, pickIndex) => {
                     const budget = wrapSlotBudget(maxNet, pickIndex);
-                    const visibleColumns = PLAYBOOK.filter((c) => c.netSuccesses <= budget);
+                    const visibleColumns = PLAYBOOK.filter(
+                      (c) => c.netSuccesses <= budget,
+                    );
 
                     return (
                       <WrapSlotBlock key={pickIndex} $first={pickIndex === 0}>
                         <ColumnGrid>
                           {visibleColumns.map((col) => {
-                            const netForHeat = wrapExtendedNetNeeded(pickIndex, col.netSuccesses);
-                            const pCol = probAttackSucceeds(a.tac, a.pHit, armor, netForHeat);
+                            const netForHeat = wrapExtendedNetNeeded(
+                              pickIndex,
+                              col.netSuccesses,
+                            );
+                            const pCol = probAttackSucceeds(
+                              a.tac,
+                              a.pHit,
+                              armor,
+                              netForHeat,
+                            );
                             return (
                               <ColumnBlock key={col.netSuccesses}>
                                 <ColumnHead $p={pCol}>
-                                  Col {col.netSuccesses} · {formatPercent(pCol, 1)}
+                                  Col {col.netSuccesses} ·{' '}
+                                  {formatPercent(pCol, 1)}
                                 </ColumnHead>
                                 <ColumnResults>
                                   {col.results.map((e) => {
-                                    const selected = wrapPicks[i][pickIndex] === e.id;
-                                    const kdLocked = e.id === "kd" && kdAlreadyTakenBeforePick(wrapPicks, i, pickIndex);
+                                    const selected =
+                                      wrapPicks[i][pickIndex] === e.id;
+                                    const kdLocked =
+                                      e.id === 'kd' &&
+                                      kdAlreadyTakenBeforePick(
+                                        wrapPicks,
+                                        i,
+                                        pickIndex,
+                                      );
                                     return (
                                       <LineButton
                                         key={e.id}
@@ -288,7 +324,7 @@ export function AttacksPanel({
                                         aria-pressed={selected}
                                         title={
                                           kdLocked
-                                            ? "Knock Down already used this activation (target is KD)"
+                                            ? 'Knock Down already used this activation (target is KD)'
                                             : undefined
                                         }
                                         onClick={() => {
@@ -313,9 +349,16 @@ export function AttacksPanel({
                   })}
                   {gbSlots.length > 0 ? (
                     <CharacterPlaySection>
-                      <CharacterPlayHeading>Character Play selected</CharacterPlayHeading>
+                      <CharacterPlayHeading>
+                        Character Play selected
+                      </CharacterPlayHeading>
                       {gbSlots.map(({ pickIndex }) => {
-                        const gbAvail = gbFollowUpAvailabilityForPick(wrapPicks, gbFollowUps, i, pickIndex);
+                        const gbAvail = gbFollowUpAvailabilityForPick(
+                          wrapPicks,
+                          gbFollowUps,
+                          i,
+                          pickIndex,
+                        );
                         const follow = gbFollowUps[i]?.[pickIndex];
                         const pickOrdinal = pickIndex + 1;
                         const attackOrdinal = i + 1;
@@ -324,14 +367,17 @@ export function AttacksPanel({
 
                         return (
                           <CharacterPlayRow key={pickIndex}>
-                            {!gbAvail.depleted && (gbAvail.canPickSo || gbAvail.canPickStagger) ? (
+                            {!gbAvail.depleted &&
+                            (gbAvail.canPickSo || gbAvail.canPickStagger) ? (
                               <>
                                 {gbAvail.canPickSo ? (
                                   <CpBtn
                                     type="button"
-                                    $active={follow === "so"}
+                                    $active={follow === 'so'}
                                     aria-label={soLabel}
-                                    onClick={() => onGbFollowUpChange(i, pickIndex, "so")}
+                                    onClick={() =>
+                                      onGbFollowUpChange(i, pickIndex, 'so')
+                                    }
                                   >
                                     Singled Out
                                   </CpBtn>
@@ -339,9 +385,15 @@ export function AttacksPanel({
                                 {gbAvail.canPickStagger ? (
                                   <CpBtn
                                     type="button"
-                                    $active={follow === "stagger"}
+                                    $active={follow === 'stagger'}
                                     aria-label={stLabel}
-                                    onClick={() => onGbFollowUpChange(i, pickIndex, "stagger")}
+                                    onClick={() =>
+                                      onGbFollowUpChange(
+                                        i,
+                                        pickIndex,
+                                        'stagger',
+                                      )
+                                    }
                                   >
                                     Stagger
                                   </CpBtn>
@@ -350,8 +402,8 @@ export function AttacksPanel({
                             ) : (
                               <span
                                 style={{
-                                  color: "var(--muted)",
-                                  fontSize: "0.85rem",
+                                  color: 'var(--muted)',
+                                  fontSize: '0.85rem',
                                 }}
                                 role="status"
                                 aria-label={`No Character Play for attack ${attackOrdinal}, result ${pickOrdinal} — both plays used this activation`}

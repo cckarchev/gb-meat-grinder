@@ -1,23 +1,23 @@
-import { useId } from 'react'
-import styled from 'styled-components'
+import { useId } from 'react';
+import styled from 'styled-components';
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   min-width: 10rem;
-`
+`;
 
 const LabelText = styled.span`
   font-size: 0.8rem;
   color: var(--muted);
-`
+`;
 
 const ControlRow = styled.div`
   display: flex;
   align-items: center;
   gap: 0.35rem;
-`
+`;
 
 const StepButton = styled.button`
   font: inherit;
@@ -46,7 +46,7 @@ const StepButton = styled.button`
     outline: 2px solid var(--text);
     outline-offset: 2px;
   }
-`
+`;
 
 const ValueDisplay = styled.span`
   flex: 1;
@@ -60,25 +60,25 @@ const ValueDisplay = styled.span`
   border: 1px solid var(--border);
   background: var(--input-bg);
   color: var(--text);
-`
+`;
 
 const Hint = styled.span`
   font-size: 0.72rem;
   color: var(--muted);
-`
+`;
 
 export type StepControlProps = {
-  label: string
-  value: number
-  min: number
-  max: number
-  onChange: (next: number) => void
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  onChange: (next: number) => void;
   /** Shown inside the value box, e.g. `4+` or `2` */
-  valueLabel: string
-  hint?: string
-  decrementAriaLabel: string
-  incrementAriaLabel: string
-}
+  valueLabel: string;
+  hint?: string;
+  decrementAriaLabel: string;
+  incrementAriaLabel: string;
+};
 
 export function StepControl({
   label,
@@ -91,11 +91,11 @@ export function StepControl({
   decrementAriaLabel,
   incrementAriaLabel,
 }: StepControlProps) {
-  const uid = useId()
-  const labelId = `${uid}-label`
-  const hintId = `${uid}-hint`
-  const canDec = value > min
-  const canInc = value < max
+  const uid = useId();
+  const labelId = `${uid}-label`;
+  const hintId = `${uid}-hint`;
+  const canDec = value > min;
+  const canInc = value < max;
 
   return (
     <Wrap>
@@ -125,5 +125,5 @@ export function StepControl({
       </ControlRow>
       {hint ? <Hint id={hintId}>{hint}</Hint> : null}
     </Wrap>
-  )
+  );
 }

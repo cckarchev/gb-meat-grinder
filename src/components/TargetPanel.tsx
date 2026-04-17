@@ -5,9 +5,9 @@ import {
   DEF_MIN,
   HP_MAX,
   HP_MIN,
-} from '../constants'
-import { Panel, PanelTitle, Row } from './ui'
-import { StepControl } from './StepControl'
+} from '../constants';
+import { Panel, PanelTitle, Row } from './ui';
+import { StepControl } from './StepControl';
 
 /*
   Previously: footnote with planned damage if all attacks hit and HP remaining
@@ -15,13 +15,13 @@ import { StepControl } from './StepControl'
 */
 
 export type TargetPanelProps = {
-  def: number
-  armor: number
-  hp: number
-  onDefChange: (def: number) => void
-  onArmorChange: (armor: number) => void
-  onHpChange: (hp: number) => void
-}
+  def: number;
+  armor: number;
+  hp: number;
+  onDefChange: (def: number) => void;
+  onArmorChange: (armor: number) => void;
+  onHpChange: (hp: number) => void;
+};
 
 export function TargetPanel({
   def,
@@ -67,5 +67,5 @@ export function TargetPanel({
         />
       </Row>
     </Panel>
-  )
+  );
 }

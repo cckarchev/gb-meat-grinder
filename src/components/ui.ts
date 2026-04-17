@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Panel = styled.section`
   border: 1px solid var(--border);
@@ -6,7 +6,7 @@ export const Panel = styled.section`
   padding: 1rem 1.1rem;
   margin-bottom: 1rem;
   background: var(--panel);
-`
+`;
 
 export const PanelTitle = styled.h2`
   font-size: 0.75rem;
@@ -15,14 +15,14 @@ export const PanelTitle = styled.h2`
   letter-spacing: 0.06em;
   color: var(--muted);
   margin: 0 0 0.75rem;
-`
+`;
 
 export const Row = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   align-items: flex-start;
-`
+`;
 
 export const Select = styled.select`
   font: inherit;
@@ -31,7 +31,7 @@ export const Select = styled.select`
   border: 1px solid var(--border);
   background: var(--input-bg);
   color: var(--text);
-`
+`;
 
 export const Table = styled.table`
   width: 100%;
@@ -56,12 +56,12 @@ export const Table = styled.table`
   tr:last-child td {
     border-bottom: none;
   }
-`
+`;
 
 export const Mono = styled.span`
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
-`
+`;
 
 export const Summary = styled.div`
   margin-top: 1rem;
@@ -71,4 +71,4 @@ export const Summary = styled.div`
   flex-direction: column;
   gap: 0.35rem;
   font-size: 0.95rem;
-`
+`;
