@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
-import { clampAttackPlan, computeAttackSequence } from './attackSequence';
+import { clampAttackPlan, computeAttackSequence } from './core/attackSequence';
 import { AppChrome } from './components/AppChrome';
 import { AttacksPanel } from './components/AttacksPanel';
 import { TargetPanel } from './components/TargetPanel';
-import { BASE_ATTACK_COUNT, HP_DEFAULT } from './constants';
+import { BASE_ATTACK_COUNT, HP_DEFAULT } from './core/constants';
 import {
   choiceUsesGbFollowUp,
   defaultGbFollowUpsWrap,
@@ -13,7 +13,7 @@ import {
   type PlaybookChoiceId,
   sanitizeGbFollowUpsWrap,
   type WrapPick,
-} from './playbook';
+} from './core/playbook';
 
 type AttackPlan = {
   wrapPicks: WrapPick[][];

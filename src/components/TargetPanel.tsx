@@ -5,7 +5,7 @@ import {
   DEF_MIN,
   HP_MAX,
   HP_MIN,
-} from '../constants';
+} from '../core/constants';
 import { Panel, PanelTitle, Row } from './ui';
 import { StepControl } from './StepControl';
 
