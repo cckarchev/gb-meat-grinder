@@ -25,10 +25,11 @@ function App() {
   const [armor, setArmor] = useState(1);
   const [hp, setHp] = useState(HP_DEFAULT);
   const [chargeAttackIndex, setChargeAttackIndex] = useState(0);
+  const [enemyHasCover, setEnemyHasCover] = useState(false);
   const [attackPlan, setAttackPlan] = useState<AttackPlan>(() => {
     const wp = defaultWrapPicks();
     const gb = defaultGbFollowUpsWrap();
-    const r = clampAttackPlan(wp, gb, 0, 1);
+    const r = clampAttackPlan(wp, gb, 0, 1, false);
     return { wrapPicks: r.wrapPicks, gbFollowUps: r.gbFollowUps };
   });
 
@@ -42,16 +43,18 @@ function App() {
         wrapPicks,
         gbFollowUps,
         chargeAttackIndex,
+        enemyHasCover,
       ),
-    [def, armor, wrapPicks, gbFollowUps, chargeAttackIndex],
+    [def, armor, wrapPicks, gbFollowUps, chargeAttackIndex, enemyHasCover],
   );
 
   const applyClamp = (
     prev: AttackPlan,
     charge: number,
     arm: number,
+    cover: boolean,
   ): AttackPlan => {
-    const r = clampAttackPlan(prev.wrapPicks, prev.gbFollowUps, charge, arm);
+    const r = clampAttackPlan(prev.wrapPicks, prev.gbFollowUps, charge, arm, cover);
     if (r.wrapPicks === prev.wrapPicks && r.gbFollowUps === prev.gbFollowUps) {
       return prev;
     }
@@ -83,6 +86,7 @@ function App() {
         { wrapPicks: nextPicks, gbFollowUps: nextGb },
         chargeAttackIndex,
         armor,
+        enemyHasCover,
       );
     });
   };
@@ -104,6 +108,7 @@ function App() {
         { wrapPicks: nextPicks, gbFollowUps: nextGb },
         chargeAttackIndex,
         armor,
+        enemyHasCover,
       );
     });
   };
@@ -126,19 +131,29 @@ function App() {
         { wrapPicks: prev.wrapPicks, gbFollowUps: gb },
         chargeAttackIndex,
         armor,
+        enemyHasCover,
       );
     });
   };
 
   const handleArmorChange = (nextArmor: number) => {
     setArmor(nextArmor);
-    setAttackPlan((prev) => applyClamp(prev, chargeAttackIndex, nextArmor));
+    setAttackPlan((prev) =>
+      applyClamp(prev, chargeAttackIndex, nextArmor, enemyHasCover),
+    );
   };
 
   const handleChargeAttackIndexChange = (index: number) => {
     const clamped = Math.max(0, Math.min(BASE_ATTACK_COUNT - 1, index));
     setChargeAttackIndex(clamped);
-    setAttackPlan((prev) => applyClamp(prev, clamped, armor));
+    setAttackPlan((prev) => applyClamp(prev, clamped, armor, enemyHasCover));
+  };
+
+  const handleEnemyHasCoverChange = (cover: boolean) => {
+    setEnemyHasCover(cover);
+    setAttackPlan((prev) =>
+      applyClamp(prev, chargeAttackIndex, armor, cover),
+    );
   };
 
   return (
@@ -147,6 +162,8 @@ function App() {
         def={def}
         armor={armor}
         hp={hp}
+        enemyHasCover={enemyHasCover}
+        onEnemyHasCoverChange={handleEnemyHasCoverChange}
         onDefChange={setDef}
         onArmorChange={handleArmorChange}
         onHpChange={setHp}
