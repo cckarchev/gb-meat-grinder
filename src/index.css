@@ -5,6 +5,10 @@
   --panel: #fff;
   --border: #d8dee4;
   --input-bg: #fff;
+  /** Playbook lines without momentum: slightly darker neutral chip. */
+  --playbook-line-nm-bg: #e2e6ed;
+  --playbook-line-nm-fg: #0b0f14;
+  --playbook-line-nm-border: #c1c9d4;
   --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
 
   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -24,6 +28,9 @@
     --panel: #161b22;
     --border: #30363d;
     --input-bg: #0d1117;
+    --playbook-line-nm-bg: #d5dce6;
+    --playbook-line-nm-fg: #070a0f;
+    --playbook-line-nm-border: #a8b3c2;
   }
 }
 

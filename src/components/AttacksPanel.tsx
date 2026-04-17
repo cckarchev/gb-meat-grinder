@@ -1,18 +1,20 @@
 import { useMemo, useState } from 'react';
+import styled from 'styled-components';
 import type { AttackRollContext } from '../attackSequence';
 import { BASE_ATTACK_COUNT } from '../constants';
 import {
   PLAYBOOK,
+  attackRowIsBerserker,
   choiceUsesGbFollowUp,
   damageIfAllHitsWrap,
   gbFollowUpAvailabilityForPick,
   kdAlreadyTakenBeforePick,
+  wrapExtendedNetNeeded,
+  wrapSlotBudget,
   type GbFollowUp,
   type GbFollowUpSlot,
   type PlaybookChoiceId,
   type WrapPick,
-  wrapExtendedNetNeeded,
-  wrapSlotBudget,
 } from '../playbook';
 import {
   probHeatBackground,
@@ -25,7 +27,6 @@ import {
   probAttackSucceeds,
 } from '../probability';
 import { Mono, Panel } from './ui';
-import styled from 'styled-components';
 
 export type AttacksPanelProps = {
   /** Target HP before the activation; remaining HP is shown after each swing if it hits with the current wrap. */
@@ -56,11 +57,28 @@ const AttacksList = styled.div`
   gap: 1rem;
 `;
 
-const AttackBlock = styled.div`
-  border: 1px solid var(--border);
+type AttackBlockVariant = 'charge' | 'berserker' | 'base';
+
+const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
   border-radius: 10px;
   padding: 0.65rem 0.75rem 0.85rem;
+  border: 1px solid var(--border);
   background: var(--panel);
+
+  ${(p) =>
+    p.$variant === 'charge'
+      ? `
+    border-color: #1565c0;
+    background: color-mix(in srgb, #1565c0 10%, var(--panel));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, #1565c0 22%, transparent);
+  `
+      : p.$variant === 'berserker'
+        ? `
+    border-color: #c62828;
+    background: color-mix(in srgb, #c62828 11%, var(--panel));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, #c62828 24%, transparent);
+  `
+        : ''}
 `;
 
 const AttackMeta = styled.div`
@@ -79,6 +97,12 @@ const MetaItem = styled.span`
   color: var(--muted);
 `;
 
+const AttackKindLabel = styled.span`
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+`;
+
 const ChargeWrap = styled.label`
   display: inline-flex;
   align-items: center;
@@ -88,13 +112,15 @@ const ChargeWrap = styled.label`
   font-size: 0.85rem;
 `;
 
-/** Fixed-width tracks so columns do not stretch with the panel; width matches column count. */
+/** Charge radio sits after stats, aligned to the end of the row when space allows. */
+const ChargeMetaSlot = styled(MetaItem)`
+  margin-left: auto;
+`;
+
+/** Fixed-width tracks; sized for column heads + circular line buttons. */
 const ColumnGrid = styled.div<{ $columnCount: number }>`
   display: grid;
-  grid-template-columns: repeat(
-    ${(p) => Math.max(1, p.$columnCount)},
-    5.35rem
-  );
+  grid-template-columns: repeat(${(p) => Math.max(1, p.$columnCount)}, 3.65rem);
   gap: 0.4rem;
   align-items: stretch;
   width: max-content;
@@ -137,40 +163,52 @@ const ColumnHead = styled.div<{ $p: number }>`
   border-bottom: 1px solid ${(p) => probHeatBorder(p.$p)};
 `;
 
-/** Non-momentous: neutral. Momentous: red (momentum). Narrow, ~square hit target. */
+/** Small circles: non-momentous neutral, momentous momentum (red). */
 const LineButton = styled.button<{ $momentous: boolean; $selected: boolean }>`
   font: inherit;
-  font-size: 0.78rem;
-  font-weight: 500;
-  line-height: 1.15;
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
   text-align: center;
   box-sizing: border-box;
-  width: 4.55rem;
+  width: 2.45rem;
+  height: 2.45rem;
   max-width: 100%;
-  aspect-ratio: 1;
   margin: 0 auto 0.25rem;
-  padding: 0.2rem 0.25rem;
-  border-radius: 3px;
+  padding: 0;
+  border-radius: 50%;
   cursor: pointer;
-  transition: box-shadow 0.12s ease;
+  transition:
+    box-shadow 0.12s ease,
+    outline 0.12s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 
-  background: ${(p) => (p.$momentous ? '#b71c1c' : 'var(--input-bg)')};
-  color: ${(p) => (p.$momentous ? '#ffffff' : 'var(--text)')};
-  border: 1px solid ${(p) => (p.$momentous ? '#7f1515' : 'var(--border)')};
+  background: ${(p) =>
+    p.$momentous ? '#b71c1c' : 'var(--playbook-line-nm-bg)'};
+  color: ${(p) => (p.$momentous ? '#ffffff' : 'var(--playbook-line-nm-fg)')};
+  border: 1px solid
+    ${(p) => (p.$momentous ? '#7f1515' : 'var(--playbook-line-nm-border)')};
 
   &:hover {
     filter: brightness(1.06);
   }
 
   ${(p) =>
-    p.$selected
+    p.$selected && p.$momentous
       ? `
-    box-shadow: inset 0 0 0 2px var(--text);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.92);
   `
-      : ''}
+      : p.$selected
+        ? `
+    box-shadow: inset 0 0 0 3px var(--playbook-line-nm-fg);
+    outline: 2px solid var(--playbook-line-nm-fg);
+    outline-offset: 2px;
+  `
+        : ''}
 
   &:disabled {
     opacity: 0.38;
@@ -316,9 +354,7 @@ function WrapSlotPickGrid({
           const pCol = probAttackSucceeds(tac, pHit, armor, netForHeat);
           return (
             <ColumnBlock key={col.netSuccesses}>
-              <ColumnHead $p={pCol}>
-                Col {col.netSuccesses} · {formatPercent(pCol, 1)}
-              </ColumnHead>
+              <ColumnHead $p={pCol}>{formatPercent(pCol, 1)}</ColumnHead>
               <ColumnResults>
                 {col.results.map((e) => {
                   const selected = wrapPicks[i][pickIndex] === e.id;
@@ -483,21 +519,22 @@ export function AttacksPanel({
           const gbSlotsWrap = gbSlots.filter((s) => s.pickIndex > 0);
           const hasWrapContinuation = wrapPicks[i].length > 1;
           const wrapOpen = wrapExpanded.has(i);
+          const attackVariant: AttackBlockVariant = attackRowIsBerserker(i)
+            ? 'berserker'
+            : i < BASE_ATTACK_COUNT && i === chargeAttackIndex
+              ? 'charge'
+              : 'base';
 
           return (
-            <AttackBlock key={i}>
+            <AttackBlock key={i} $variant={attackVariant}>
               <AttackMeta>
-                {i < BASE_ATTACK_COUNT ? (
-                  <ChargeWrap>
-                    <input
-                      type="radio"
-                      name="charge-attack"
-                      checked={chargeAttackIndex === i}
-                      onChange={() => onChargeAttackIndexChange(i)}
-                    />
-                    <span>Charge (+4 TAC)</span>
-                  </ChargeWrap>
-                ) : null}
+                <AttackKindLabel>
+                  {attackRowIsBerserker(i)
+                    ? 'Berserker attack'
+                    : i === chargeAttackIndex
+                      ? 'Charge attack'
+                      : 'Base attack'}
+                </AttackKindLabel>
                 <MetaItem>
                   TAC <Mono>{a.tac}</Mono>
                 </MetaItem>
@@ -507,6 +544,19 @@ export function AttacksPanel({
                 <MetaItem>
                   Remaining HP <Mono>{remainingHpAfterSwing[displayIdx]}</Mono>
                 </MetaItem>
+                {i < BASE_ATTACK_COUNT ? (
+                  <ChargeMetaSlot>
+                    <ChargeWrap>
+                      <input
+                        type="radio"
+                        name="charge-attack"
+                        checked={chargeAttackIndex === i}
+                        onChange={() => onChargeAttackIndexChange(i)}
+                      />
+                      <span>+4 TAC charge</span>
+                    </ChargeWrap>
+                  </ChargeMetaSlot>
+                ) : null}
               </AttackMeta>
 
               {maxNet < 1 ? (
