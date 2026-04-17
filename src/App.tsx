@@ -87,6 +87,27 @@ function App() {
     });
   };
 
+  const clearWrapContinuation = (attackIndex: number) => {
+    setAttackPlan((prev) => {
+      const row = prev.wrapPicks[attackIndex];
+      if (row.length <= 1) return prev;
+      const pick0 = row[0];
+      let gb0: GbFollowUpSlot = prev.gbFollowUps[attackIndex]?.[0] ?? null;
+      if (pick0 == null || !choiceUsesGbFollowUp(pick0)) gb0 = null;
+      const nextPicks = prev.wrapPicks.map((r, idx) =>
+        idx === attackIndex ? [pick0] : [...r],
+      );
+      const nextGb = prev.gbFollowUps.map((r, idx) =>
+        idx === attackIndex ? [gb0] : [...r],
+      );
+      return applyClamp(
+        { wrapPicks: nextPicks, gbFollowUps: nextGb },
+        chargeAttackIndex,
+        armor,
+      );
+    });
+  };
+
   const setGbFollowUp = (
     attackIndex: number,
     pickIndex: number,
@@ -139,6 +160,7 @@ function App() {
         gbFollowUps={gbFollowUps}
         onChoiceChange={setChoice}
         onGbFollowUpChange={setGbFollowUp}
+        onWrapContinuationCleared={clearWrapContinuation}
         attacks={attacks}
       />
     </AppChrome>

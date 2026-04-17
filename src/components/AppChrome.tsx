@@ -27,7 +27,7 @@ type AppChromeProps = {
 export function AppChrome({ children }: AppChromeProps) {
   return (
     <Shell>
-      <Title>vBoar take-out planner</Title>
+      <Title>Can vBoar kill it?</Title>
       {children}
     </Shell>
   );
