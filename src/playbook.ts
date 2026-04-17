@@ -3,6 +3,8 @@
  * after ARM; `results` has 1–2 lines (a `|` on the card = two entries here).
  */
 
+import { BASE_ATTACK_COUNT, MAX_ATTACK_COUNT } from './constants';
+
 export type PlaybookChoiceId =
   | 'push'
   | 'dmg1'
@@ -187,6 +189,46 @@ export function getPlaybookResult(id: PlaybookChoiceId): PlaybookResult {
   return r;
 }
 
+/** Rows 0–2: charge + two bought attacks. Rows 3–5: berserkers for bases 0–2. */
+export function attackRowIsBerserker(attackIndex: number): boolean {
+  return attackIndex >= BASE_ATTACK_COUNT;
+}
+
+export function berserkerSourceBaseIndex(attackIndex: number): number {
+  return attackIndex - BASE_ATTACK_COUNT;
+}
+
+/** True if this base attack includes any non-null wrap line with damage > 0. */
+export function baseAttackDealtDamage(picks: WrapPick[]): boolean {
+  return picks.some(
+    (id) => id != null && getPlaybookResult(id).damage > 0,
+  );
+}
+
+/** Berserker rows are active only when their source base dealt damage; bases always active. */
+export function attackRowIsActive(
+  wrapPicks: WrapPick[][],
+  attackIndex: number,
+): boolean {
+  if (attackIndex < BASE_ATTACK_COUNT) return true;
+  const b = berserkerSourceBaseIndex(attackIndex);
+  return baseAttackDealtDamage(wrapPicks[b] ?? []);
+}
+
+/**
+ * Swing order: each base, then its berserker (if any) before the next base.
+ * Berserkers cannot be banked — they always resolve immediately after the base that earned them.
+ */
+export function activationAttackIndices(wrapPicks: WrapPick[][]): number[] {
+  const out: number[] = [];
+  for (let b = 0; b < BASE_ATTACK_COUNT; b++) {
+    out.push(b);
+    const ber = BASE_ATTACK_COUNT + b;
+    if (attackRowIsActive(wrapPicks, ber)) out.push(ber);
+  }
+  return out;
+}
+
 export function choiceUsesGbFollowUp(id: WrapPick): id is PlaybookChoiceId {
   if (id == null) return false;
   return getPlaybookResult(id).picksGbFollowUp === true;
@@ -205,7 +247,7 @@ export type GbFollowUpSlot = GbFollowUp | null;
 
 /**
  * SO / Stagger already taken on picks strictly before `(attackIndex, pickIndex)`
- * (lexicographic over attacks, then wrap slots).
+ * in activation order (base then its berserker, then next base, …).
  */
 export function gbFollowUpUsageBeforePick(
   wrapPicks: WrapPick[][],
@@ -215,10 +257,14 @@ export function gbFollowUpUsageBeforePick(
 ): GbUsage {
   let so = false;
   let stagger = false;
-  for (let j = 0; j < wrapPicks.length; j++) {
-    for (let k = 0; k < wrapPicks[j].length; k++) {
-      if (j > attackIndex) return { so, stagger };
-      if (j === attackIndex && k >= pickIndex) return { so, stagger };
+  const order = activationAttackIndices(wrapPicks);
+  const targetPos = order.indexOf(attackIndex);
+  if (targetPos < 0) return { so, stagger };
+
+  for (let oi = 0; oi <= targetPos; oi++) {
+    const j = order[oi];
+    const kLimit = j === attackIndex ? pickIndex : wrapPicks[j].length;
+    for (let k = 0; k < kLimit; k++) {
       const id = wrapPicks[j][k];
       if (id == null || !choiceUsesGbFollowUp(id)) continue;
       const f = gbFollowUps[j]?.[k] ?? 'so';
@@ -229,16 +275,20 @@ export function gbFollowUpUsageBeforePick(
   return { so, stagger };
 }
 
-/** True if Knock Down was already taken on a strictly earlier wrap pick. */
+/** True if Knock Down was already taken on a strictly earlier wrap pick (activation order). */
 export function kdAlreadyTakenBeforePick(
   wrapPicks: WrapPick[][],
   attackIndex: number,
   pickIndex: number,
 ): boolean {
-  for (let j = 0; j < wrapPicks.length; j++) {
-    if (j > attackIndex) return false;
-    for (let k = 0; k < wrapPicks[j].length; k++) {
-      if (j === attackIndex && k >= pickIndex) return false;
+  const order = activationAttackIndices(wrapPicks);
+  const targetPos = order.indexOf(attackIndex);
+  if (targetPos < 0) return false;
+
+  for (let oi = 0; oi <= targetPos; oi++) {
+    const j = order[oi];
+    const kLimit = j === attackIndex ? pickIndex : wrapPicks[j].length;
+    for (let k = 0; k < kLimit; k++) {
       if (wrapPicks[j][k] === 'kd') return true;
     }
   }
@@ -391,20 +441,24 @@ export function wrapExtendedNetNeeded(
 }
 
 export function defaultGbFollowUpsWrap(): GbFollowUpSlot[][] {
-  return Array.from({ length: 6 }, () => [null]);
+  return Array.from({ length: MAX_ATTACK_COUNT }, () => [null]);
 }
 
 export function defaultWrapPicks(): WrapPick[][] {
-  return Array.from({ length: 6 }, () => [PLAYBOOK[0].results[0].id]);
+  return Array.from({ length: MAX_ATTACK_COUNT }, () => [
+    PLAYBOOK[0].results[0].id,
+  ]);
 }
 
 /** Damage per attack if every pick on that attack hits. */
 export function damageIfAllHitsWrap(wrapPicks: WrapPick[][]): number[] {
-  return wrapPicks.map((picks) =>
-    picks.reduce(
-      (s, id) => s + (id == null ? 0 : getPlaybookResult(id).damage),
-      0,
-    ),
+  return wrapPicks.map((picks, i) =>
+    attackRowIsActive(wrapPicks, i)
+      ? picks.reduce(
+          (s, id) => s + (id == null ? 0 : getPlaybookResult(id).damage),
+          0,
+        )
+      : 0,
   );
 }
 

@@ -1,7 +1,9 @@
-import { DEF_MAX, DEF_MIN, VBOAR_TAC } from './constants';
+import { BASE_ATTACK_COUNT, DEF_MAX, DEF_MIN, VBOAR_TAC } from './constants';
 import {
   MAX_PLAYBOOK_NET,
   PLAYBOOK,
+  activationAttackIndices,
+  attackRowIsActive,
   choiceUsesGbFollowUp,
   type GbFollowUpSlot,
   type PlaybookChoiceId,
@@ -25,15 +27,23 @@ function clone2d<T>(rows: T[][]): T[][] {
   return rows.map((r) => [...r]);
 }
 
-/** Modifiers from all picks on attacks `0 .. attackIndex-1` (assuming each prior pick hit). */
+/**
+ * Modifiers from all picks on attacks strictly before `attackIndex` in activation order
+ * (base → its berserker → next base → …).
+ */
 export function modifiersBeforeAttack(
   wrapPicks: WrapPick[][],
   gbFollowUps: GbFollowUpSlot[][],
   attackIndex: number,
 ): { tacBonus: number; defReduction: number } {
+  const order = activationAttackIndices(wrapPicks);
+  const targetPos = order.indexOf(attackIndex);
+  if (targetPos < 0) return { tacBonus: 0, defReduction: 0 };
+
   let tacBonus = 0;
   let defReduction = 0;
-  for (let j = 0; j < attackIndex; j++) {
+  for (let oi = 0; oi < targetPos; oi++) {
+    const j = order[oi];
     for (let k = 0; k < wrapPicks[j].length; k++) {
       if (wrapPicks[j][k] == null) continue;
       const m = rowEffectsForPick(wrapPicks, gbFollowUps, j, k);
@@ -56,7 +66,10 @@ export function tacForAttack(
   chargeAttackIndex: number,
   tacBonusFromSingledOut: number,
 ): number {
-  const charge = attackIndex === chargeAttackIndex ? CHARGE_TAC_BONUS : 0;
+  const charge =
+    attackIndex < BASE_ATTACK_COUNT && attackIndex === chargeAttackIndex
+      ? CHARGE_TAC_BONUS
+      : 0;
   return VBOAR_TAC + charge + tacBonusFromSingledOut;
 }
 
@@ -128,7 +141,7 @@ function stripDuplicateKd(
 ): boolean {
   let changed = false;
   let kdSeen = false;
-  for (let i = 0; i < next.length; i++) {
+  for (const i of activationAttackIndices(next)) {
     const maxNet = maxPlaybookColumnForRow(
       next,
       nextGb,
@@ -245,6 +258,26 @@ export function clampAttackPlan(
         nextGb[i].push(null);
         passChanged = true;
       }
+      if (!attackRowIsActive(next, i)) {
+        if (
+          i >= BASE_ATTACK_COUNT &&
+          (next[i].length > 0 || nextGb[i].length > 0)
+        ) {
+          next[i] = [];
+          nextGb[i] = [];
+          passChanged = true;
+        }
+        continue;
+      }
+      if (
+        i >= BASE_ATTACK_COUNT &&
+        attackRowIsActive(next, i) &&
+        next[i].length === 0
+      ) {
+        next[i] = [PLAYBOOK[0].results[0].id];
+        nextGb[i] = [null];
+        passChanged = true;
+      }
       const maxNet = maxPlaybookColumnForRow(
         next,
         nextGb,
@@ -303,7 +336,7 @@ export function computeAttackSequence(
   const attacks: AttackRollContext[] = [];
   let probAll = 1;
 
-  for (let i = 0; i < wrapPicks.length; i++) {
+  for (const i of activationAttackIndices(wrapPicks)) {
     const { tacBonus, defReduction } = modifiersBeforeAttack(
       wrapPicks,
       gbFollowUps,

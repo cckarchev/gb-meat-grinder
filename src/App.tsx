@@ -3,7 +3,7 @@ import { clampAttackPlan, computeAttackSequence } from './attackSequence';
 import { AppChrome } from './components/AppChrome';
 import { AttacksPanel } from './components/AttacksPanel';
 import { TargetPanel } from './components/TargetPanel';
-import { HP_DEFAULT } from './constants';
+import { BASE_ATTACK_COUNT, HP_DEFAULT } from './constants';
 import {
   choiceUsesGbFollowUp,
   defaultGbFollowUpsWrap,
@@ -115,8 +115,9 @@ function App() {
   };
 
   const handleChargeAttackIndexChange = (index: number) => {
-    setChargeAttackIndex(index);
-    setAttackPlan((prev) => applyClamp(prev, index, armor));
+    const clamped = Math.max(0, Math.min(BASE_ATTACK_COUNT - 1, index));
+    setChargeAttackIndex(clamped);
+    setAttackPlan((prev) => applyClamp(prev, clamped, armor));
   };
 
   return (
@@ -130,6 +131,7 @@ function App() {
         onHpChange={setHp}
       />
       <AttacksPanel
+        targetHp={hp}
         armor={armor}
         chargeAttackIndex={chargeAttackIndex}
         onChargeAttackIndexChange={handleChargeAttackIndexChange}

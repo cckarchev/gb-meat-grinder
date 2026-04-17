@@ -1,7 +1,10 @@
+import { useMemo } from 'react';
 import type { AttackRollContext } from '../attackSequence';
+import { BASE_ATTACK_COUNT } from '../constants';
 import {
   PLAYBOOK,
   choiceUsesGbFollowUp,
+  damageIfAllHitsWrap,
   gbFollowUpAvailabilityForPick,
   kdAlreadyTakenBeforePick,
   type GbFollowUp,
@@ -25,6 +28,8 @@ import { Mono, Panel } from './ui';
 import styled from 'styled-components';
 
 export type AttacksPanelProps = {
+  /** Target HP before the activation; remaining HP is shown after each swing if it hits with the current wrap. */
+  targetHp: number;
   armor: number;
   chargeAttackIndex: number;
   onChargeAttackIndexChange: (index: number) => void;
@@ -226,6 +231,7 @@ const WrapSlotBlock = styled.div<{ $first: boolean }>`
 `;
 
 export function AttacksPanel({
+  targetHp,
   armor,
   chargeAttackIndex,
   onChargeAttackIndexChange,
@@ -235,10 +241,25 @@ export function AttacksPanel({
   onGbFollowUpChange,
   attacks,
 }: AttacksPanelProps) {
+  const rowDamageIfHit = useMemo(
+    () => damageIfAllHitsWrap(wrapPicks),
+    [wrapPicks],
+  );
+  const remainingHpAfterSwing = useMemo(() => {
+    const out: number[] = [];
+    let dealt = 0;
+    for (const ctx of attacks) {
+      dealt += rowDamageIfHit[ctx.attackIndex];
+      out.push(Math.max(0, targetHp - dealt));
+    }
+    return out;
+  }, [attacks, rowDamageIfHit, targetHp]);
+
   return (
     <Panel>
       <AttacksList>
-        {attacks.map((a, i) => {
+        {attacks.map((a, displayIdx) => {
+          const i = a.attackIndex;
           const maxNet = maxNetSuccessesForRoll(a.tac, armor);
           const gbSlots = wrapPicks[i]
             .map((pid, pickIndex) => ({ pid, pickIndex }))
@@ -251,22 +272,29 @@ export function AttacksPanel({
             <AttackBlock key={i}>
               <AttackMeta>
                 <MetaItem>
-                  <Mono style={{ color: 'var(--text)' }}>#{i + 1}</Mono>
+                  <Mono style={{ color: 'var(--text)' }}>
+                    #{displayIdx + 1}
+                  </Mono>
                 </MetaItem>
-                <ChargeWrap>
-                  <input
-                    type="radio"
-                    name="charge-attack"
-                    checked={chargeAttackIndex === i}
-                    onChange={() => onChargeAttackIndexChange(i)}
-                  />
-                  <span>Charge (+4 TAC)</span>
-                </ChargeWrap>
+                {i < BASE_ATTACK_COUNT ? (
+                  <ChargeWrap>
+                    <input
+                      type="radio"
+                      name="charge-attack"
+                      checked={chargeAttackIndex === i}
+                      onChange={() => onChargeAttackIndexChange(i)}
+                    />
+                    <span>Charge (+4 TAC)</span>
+                  </ChargeWrap>
+                ) : null}
                 <MetaItem>
                   TAC <Mono>{a.tac}</Mono>
                 </MetaItem>
                 <MetaItem>
                   DEF <Mono>{a.defMinRoll}+</Mono>
+                </MetaItem>
+                <MetaItem>
+                  Remaining HP <Mono>{remainingHpAfterSwing[displayIdx]}</Mono>
                 </MetaItem>
               </AttackMeta>
 
@@ -361,7 +389,7 @@ export function AttacksPanel({
                         );
                         const follow = gbFollowUps[i]?.[pickIndex];
                         const pickOrdinal = pickIndex + 1;
-                        const attackOrdinal = i + 1;
+                        const attackOrdinal = displayIdx + 1;
                         const soLabel = `Singled Out for attack ${attackOrdinal}, GB result ${pickOrdinal}`;
                         const stLabel = `Stagger for attack ${attackOrdinal}, GB result ${pickOrdinal}`;
 
