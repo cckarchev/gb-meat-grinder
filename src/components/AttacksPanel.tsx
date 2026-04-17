@@ -327,7 +327,9 @@ const WrapSlotBlock = styled.div<{ $first: boolean }>`
   margin-top: ${(p) => (p.$first ? 0 : '0.85rem')};
   padding-top: ${(p) => (p.$first ? 0 : '0.65rem')};
   border-top: ${(p) => (p.$first ? 'none' : '1px solid var(--border)')};
+  /* Horizontal scroll only when needed; overflow-x:auto alone makes overflow-y compute to auto and can show a vertical scrollbar. */
   overflow-x: auto;
+  overflow-y: hidden;
 `;
 
 /** Base playbook row: grid + narrow vertical wrap toggle on the right. */
