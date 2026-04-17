@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   --text: #0f1419;
   --muted: #5c6c7a;
@@ -34,10 +40,16 @@
   }
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
+  overflow-x: hidden;
 }
 
 #root {
   min-height: 100dvh;
+  max-width: 100%;
 }

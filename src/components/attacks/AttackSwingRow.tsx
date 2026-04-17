@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { narrowViewport } from '../../styles/breakpoints';
 import type { AttackRollContext } from '../../core/attackSequence';
 import { BASE_ATTACK_COUNT } from '../../core/constants';
 import { choiceUsesGbFollowUp } from '../../core/playbook';
@@ -20,6 +21,10 @@ const AttackRow = styled.div`
   align-items: flex-start;
   gap: 1rem 1.25rem;
   width: 100%;
+
+  ${narrowViewport} {
+    gap: 0.5rem 0.45rem;
+  }
 `;
 
 const AttackMain = styled.div`
@@ -47,6 +52,11 @@ const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
     box-shadow: inset 0 0 0 1px color-mix(in srgb, #c62828 24%, transparent);
   `
         : ''}
+
+  ${narrowViewport} {
+    padding: 0.5rem 0.55rem 0.65rem;
+    border-radius: 8px;
+  }
 `;
 
 const AttackMeta = styled.div`
@@ -56,6 +66,12 @@ const AttackMeta = styled.div`
   gap: 0.65rem 1rem;
   margin-bottom: 0.65rem;
   font-size: 0.88rem;
+
+  ${narrowViewport} {
+    gap: 0.4rem 0.55rem;
+    margin-bottom: 0.45rem;
+    font-size: 0.82rem;
+  }
 `;
 
 const MetaItem = styled.span`
@@ -89,6 +105,10 @@ const PlaybookRowWithVerticalWrap = styled.div`
   flex-direction: row;
   align-items: stretch;
   gap: 0.45rem;
+
+  ${narrowViewport} {
+    gap: 0.28rem;
+  }
 `;
 
 const PlaybookGridCell = styled.div`

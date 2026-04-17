@@ -1,11 +1,16 @@
 import { useId } from 'react';
 import styled from 'styled-components';
+import { narrowViewport } from '../styles/breakpoints';
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   min-width: 10rem;
+
+  ${narrowViewport} {
+    min-width: 7.25rem;
+  }
 `;
 
 const LabelText = styled.span`
@@ -46,6 +51,12 @@ const StepButton = styled.button`
     outline: 2px solid var(--text);
     outline-offset: 2px;
   }
+
+  ${narrowViewport} {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
 `;
 
 const ValueDisplay = styled.span`
@@ -60,6 +71,12 @@ const ValueDisplay = styled.span`
   border: 1px solid var(--border);
   background: var(--input-bg);
   color: var(--text);
+
+  ${narrowViewport} {
+    min-width: 4.25rem;
+    font-size: 0.88rem;
+    padding: 0.28rem 0.18rem;
+  }
 `;
 
 const Hint = styled.span`

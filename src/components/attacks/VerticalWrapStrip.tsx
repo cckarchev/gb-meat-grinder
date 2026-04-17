@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { narrowViewport } from '../../styles/breakpoints';
 
 const VerticalWrapToggle = styled.button`
   align-self: stretch;
@@ -31,6 +32,14 @@ const VerticalWrapToggle = styled.button`
     outline: 2px solid var(--text);
     outline-offset: 2px;
   }
+
+  ${narrowViewport} {
+    width: 2.45rem;
+    min-height: 3.85rem;
+    padding: 0.28rem 0.08rem 0.22rem;
+    gap: 0.15rem;
+    border-radius: 6px;
+  }
 `;
 
 const VerticalWrapLabelWrap = styled.span`
@@ -50,6 +59,11 @@ const VerticalWrapLabel = styled.span`
   font-weight: 600;
   line-height: 1.4;
   letter-spacing: 0.06em;
+
+  ${narrowViewport} {
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+  }
 `;
 
 const ChevronCaret = styled.span<{ $open: boolean }>`

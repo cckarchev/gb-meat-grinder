@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { narrowViewport } from '../styles/breakpoints';
 
 export const Panel = styled.section`
   border: 1px solid var(--border);
@@ -6,6 +7,12 @@ export const Panel = styled.section`
   padding: 1rem 1.1rem;
   margin-bottom: 1rem;
   background: var(--panel);
+
+  ${narrowViewport} {
+    padding: 0.65rem 0.55rem;
+    margin-bottom: 0.65rem;
+    border-radius: 8px;
+  }
 `;
 
 export const PanelTitle = styled.h2`
@@ -15,6 +22,10 @@ export const PanelTitle = styled.h2`
   letter-spacing: 0.06em;
   color: var(--muted);
   margin: 0 0 0.75rem;
+
+  ${narrowViewport} {
+    margin-bottom: 0.5rem;
+  }
 `;
 
 export const Row = styled.div`
@@ -22,6 +33,10 @@ export const Row = styled.div`
   flex-wrap: wrap;
   gap: 1rem;
   align-items: flex-start;
+
+  ${narrowViewport} {
+    gap: 0.55rem;
+  }
 `;
 
 export const Select = styled.select`

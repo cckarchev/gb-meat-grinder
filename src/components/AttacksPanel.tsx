@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { damageIfAllHitsWrap } from '../core/playbook';
 import { AttackSwingRow } from './attacks/AttackSwingRow';
 import type { AttacksPanelProps } from './attacks/types';
-import { Panel } from './ui';
 
 export type { AttacksPanelProps } from './attacks/types';
 
@@ -51,27 +50,25 @@ export function AttacksPanel({
   }, [attacks, rowDamageIfHit, targetHp]);
 
   return (
-    <Panel>
-      <AttacksList>
-        {attacks.map((a, displayIdx) => (
-          <AttackSwingRow
-            key={a.attackIndex}
-            attack={a}
-            displayIdx={displayIdx}
-            armor={armor}
-            chargeAttackIndex={chargeAttackIndex}
-            wrapPicks={wrapPicks}
-            gbFollowUps={gbFollowUps}
-            remainingHpIfHit={remainingHpAfterSwing[displayIdx]}
-            wrapOpen={wrapExpanded.has(a.attackIndex)}
-            onChargeAttackIndexChange={onChargeAttackIndexChange}
-            onChoiceChange={onChoiceChange}
-            onGbFollowUpChange={onGbFollowUpChange}
-            onToggleWrapExpansion={() => toggleWrapExpanded(a.attackIndex)}
-            onWrapContinuationCleared={onWrapContinuationCleared}
-          />
-        ))}
-      </AttacksList>
-    </Panel>
+    <AttacksList>
+      {attacks.map((a, displayIdx) => (
+        <AttackSwingRow
+          key={a.attackIndex}
+          attack={a}
+          displayIdx={displayIdx}
+          armor={armor}
+          chargeAttackIndex={chargeAttackIndex}
+          wrapPicks={wrapPicks}
+          gbFollowUps={gbFollowUps}
+          remainingHpIfHit={remainingHpAfterSwing[displayIdx]}
+          wrapOpen={wrapExpanded.has(a.attackIndex)}
+          onChargeAttackIndexChange={onChargeAttackIndexChange}
+          onChoiceChange={onChoiceChange}
+          onGbFollowUpChange={onGbFollowUpChange}
+          onToggleWrapExpansion={() => toggleWrapExpanded(a.attackIndex)}
+          onWrapContinuationCleared={onWrapContinuationCleared}
+        />
+      ))}
+    </AttacksList>
   );
 }

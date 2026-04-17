@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { narrowViewport } from '../../styles/breakpoints';
 import { gbFollowUpAvailabilityForPick } from '../../core/playbook';
 import type { AttacksPanelProps, GbSlotRef } from './types';
 
@@ -6,6 +7,11 @@ const CharacterPlaySection = styled.div`
   margin-top: 0.75rem;
   padding-top: 0.65rem;
   border-top: 1px solid var(--border);
+
+  ${narrowViewport} {
+    margin-top: 0.5rem;
+    padding-top: 0.45rem;
+  }
 `;
 
 const CharacterPlayRow = styled.div`
@@ -18,6 +24,15 @@ const CharacterPlayRow = styled.div`
 
   &:first-of-type {
     margin-top: 0.35rem;
+  }
+
+  ${narrowViewport} {
+    gap: 0.35rem 0.4rem;
+    margin-top: 0.35rem;
+
+    &:first-of-type {
+      margin-top: 0.25rem;
+    }
   }
 `;
 
@@ -36,6 +51,13 @@ const CpBtn = styled.button<{ $active: boolean }>`
 
   &:hover {
     filter: brightness(1.05);
+  }
+
+  ${narrowViewport} {
+    font-size: 0.8rem;
+    padding: 0.38rem 0.55rem;
+    min-width: 6.75rem;
+    border-radius: 5px;
   }
 `;
 

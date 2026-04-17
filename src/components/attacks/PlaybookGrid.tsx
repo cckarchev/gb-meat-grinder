@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { narrowViewport } from '../../styles/breakpoints';
 import {
   PLAYBOOK,
   kdAlreadyTakenBeforePick,
@@ -21,6 +22,11 @@ const WrapSlotBlock = styled.div<{ $first: boolean }>`
   overflow-x: auto;
   /* Keep vertical overflow clipped (no phantom scrollbar with overflow-x: auto). */
   overflow-y: hidden;
+
+  ${narrowViewport} {
+    margin-top: ${(p) => (p.$first ? 0 : '0.55rem')};
+    padding-top: ${(p) => (p.$first ? 0 : '0.45rem')};
+  }
 `;
 
 const ColumnGrid = styled.div<{ $columnCount: number }>`
@@ -31,6 +37,16 @@ const ColumnGrid = styled.div<{ $columnCount: number }>`
   width: max-content;
   max-width: 100%;
   min-width: 0;
+
+  ${narrowViewport} {
+    /* Fluid columns: fixed track widths overflow ~390px viewports (7 cols). */
+    width: 100%;
+    grid-template-columns: repeat(
+      ${(p) => Math.max(1, p.$columnCount)},
+      minmax(0, 1fr)
+    );
+    gap: 0.22rem;
+  }
 `;
 
 const ColumnBlock = styled.div`
@@ -51,6 +67,11 @@ const ColumnResults = styled.div`
   align-items: center;
   gap: 0.35rem;
   padding-bottom: 0.15rem;
+
+  ${narrowViewport} {
+    gap: 0.22rem;
+    padding-bottom: 0.08rem;
+  }
 `;
 
 const ColumnHead = styled.div<{ $p: number }>`
@@ -65,6 +86,12 @@ const ColumnHead = styled.div<{ $p: number }>`
   background: ${(p) => probHeatBackground(p.$p)};
   color: ${(p) => probHeatTextColor(p.$p)};
   border-bottom: 1px solid ${(p) => probHeatBorder(p.$p)};
+
+  ${narrowViewport} {
+    font-size: 0.62rem;
+    padding: 0.28rem 0.2rem;
+    letter-spacing: 0.02em;
+  }
 `;
 
 const LineButton = styled.button<{ $momentous: boolean; $selected: boolean }>`
@@ -82,6 +109,15 @@ const LineButton = styled.button<{ $momentous: boolean; $selected: boolean }>`
   padding: 0;
   border-radius: 50%;
   cursor: pointer;
+
+  ${narrowViewport} {
+    width: min(2.2rem, 100%);
+    height: auto;
+    aspect-ratio: 1;
+    max-width: 100%;
+    font-size: clamp(0.55rem, 2.8vw, 0.66rem);
+    margin-bottom: 0.12rem;
+  }
   transition:
     box-shadow 0.12s ease,
     outline 0.12s ease;
