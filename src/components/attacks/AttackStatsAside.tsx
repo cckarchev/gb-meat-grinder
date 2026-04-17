@@ -5,7 +5,7 @@ const AttackStatsRail = styled.aside`
   flex: 0 0 auto;
   text-align: right;
   padding: 0.5rem 0.15rem 0 0;
-  min-width: 6.5rem;
+  min-width: 2rem;
 `;
 
 const AttackStatBlock = styled.div`
