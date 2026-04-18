@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { clampAttackPlan, computeAttackSequence } from './core/attackSequence';
 import { AppChrome } from './components/AppChrome';
 import { AttacksPanel } from './components/AttacksPanel';
-import { TargetPanel } from './components/TargetPanel';
+import { EnemyPanel, VBoarPanel } from './components/TargetPanel';
 import {
   BASE_ATTACK_COUNT,
   HP_DEFAULT,
@@ -311,7 +311,7 @@ function App() {
 
   return (
     <AppChrome>
-      <TargetPanel
+      <EnemyPanel
         def={def}
         armor={armor}
         hp={hp}
@@ -322,6 +322,10 @@ function App() {
         onDefChange={handleDefChange}
         onArmorChange={handleArmorChange}
         onHpChange={setHp}
+      />
+      <VBoarPanel
+        damageMods={damageMods}
+        onDamageModsChange={handleDamageModsChange}
         startingMomentum={startingMomentum}
         onStartingMomentumChange={setStartingMomentum}
         initialTacModifier={initialTacModifier}

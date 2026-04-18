@@ -52,42 +52,17 @@ const AttackStatMono = styled(Mono)`
   color: var(--text);
 `;
 
-const AttackHpRailBlock = styled.div`
-  margin-top: 0.55rem;
-  padding-top: 0.55rem;
-  border-top: 1px solid var(--border);
-
-  ${narrowViewport} {
-    margin-top: 0.4rem;
-    padding-top: 0.4rem;
-  }
-`;
-
-const AttackHpValue = styled(Mono)`
-  font-size: 1.2em;
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--text);
-  letter-spacing: -0.02em;
-`;
-
 export function AttackStatsAside({
-  tac,
   defMinRoll,
   momentum,
   remainingHpIfHit,
 }: {
-  tac: number;
   defMinRoll: number;
   momentum: number;
   remainingHpIfHit: number;
 }) {
   return (
-    <AttackStatsRail aria-label="Attack roll stats">
-      <StatRow>
-        <AttackStatCaption>TAC</AttackStatCaption>
-        <AttackStatMono>{tac}</AttackStatMono>
-      </StatRow>
+    <AttackStatsRail aria-label="Defense, momentum, and HP after this swing">
       <StatRow>
         <AttackStatCaption>DEF</AttackStatCaption>
         <AttackStatMono>{defMinRoll}+</AttackStatMono>
@@ -96,12 +71,10 @@ export function AttackStatsAside({
         <AttackStatCaption>Mom</AttackStatCaption>
         <AttackStatMono>{momentum}</AttackStatMono>
       </StatRow>
-      <AttackHpRailBlock>
-        <StatRow>
-          <AttackStatCaption>HP</AttackStatCaption>
-          <AttackHpValue>{remainingHpIfHit}</AttackHpValue>
-        </StatRow>
-      </AttackHpRailBlock>
+      <StatRow>
+        <AttackStatCaption>HP</AttackStatCaption>
+        <AttackStatMono>{remainingHpIfHit}</AttackStatMono>
+      </StatRow>
     </AttackStatsRail>
   );
 }

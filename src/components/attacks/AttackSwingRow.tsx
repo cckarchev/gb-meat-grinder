@@ -9,6 +9,7 @@ import {
   attackBlockVariant,
   attackKindLabel,
 } from './attackVariant';
+import { Mono } from '../ui';
 import { AttackStatsAside } from './AttackStatsAside';
 import { CharacterPlaySelection } from './CharacterPlaySelection';
 import { WrapSlotPickGrid } from './PlaybookGrid';
@@ -41,15 +42,19 @@ const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
   ${(p) =>
     p.$variant === 'charge'
       ? `
-    border-color: #1565c0;
-    background: color-mix(in srgb, #1565c0 10%, var(--panel));
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, #1565c0 22%, transparent);
+    border: 2px solid #e65100;
+    background: color-mix(in srgb, #ff9800 24%, var(--panel));
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, #f57c00 38%, transparent),
+      0 0 0 1px color-mix(in srgb, #fb8c00 40%, transparent);
   `
       : p.$variant === 'berserker'
         ? `
-    border-color: #c62828;
-    background: color-mix(in srgb, #c62828 11%, var(--panel));
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, #c62828 24%, transparent);
+    border: 2px solid #b71c1c;
+    background: color-mix(in srgb, #ef5350 24%, var(--panel));
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, #c62828 38%, transparent),
+      0 0 0 1px color-mix(in srgb, #e53935 40%, transparent);
   `
         : ''}
 
@@ -59,32 +64,85 @@ const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
   }
 `;
 
-const AttackMeta = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.65rem 1rem;
-  margin-bottom: 0.65rem;
-  font-size: 0.88rem;
-
-  ${narrowViewport} {
-    gap: 0.4rem 0.55rem;
-    margin-bottom: 0.45rem;
-    font-size: 0.82rem;
-  }
-`;
-
-const MetaItem = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  color: var(--muted);
-`;
-
-const AttackKindLabel = styled.span`
+const AttackHeading = styled.div`
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--text);
+  margin-bottom: 0.45rem;
+
+  ${narrowViewport} {
+    font-size: 0.82rem;
+    margin-bottom: 0.35rem;
+  }
+`;
+
+const DicePoolStrip = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.85rem;
+  margin-bottom: 0.65rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--input-bg) 88%, var(--border));
+
+  ${narrowViewport} {
+    gap: 0.45rem 0.55rem;
+    padding: 0.42rem 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+`;
+
+const PoolCluster = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.85rem;
+  min-width: 0;
+  flex: 1 1 auto;
+`;
+
+const TacPoolBadge = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.35rem;
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding-left: 0.35rem;
+  border-left: 1px solid var(--border);
+
+  ${narrowViewport} {
+    flex: 1 1 100%;
+    margin-left: 0;
+    padding-left: 0;
+    padding-top: 0.35rem;
+    margin-top: 0.15rem;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    justify-content: flex-end;
+  }
+`;
+
+const TacPoolLabel = styled.span`
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+`;
+
+const TacPoolValue = styled(Mono)`
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+
+  ${narrowViewport} {
+    font-size: 1.15rem;
+  }
 `;
 
 const ChargeWrap = styled.label`
@@ -104,10 +162,6 @@ const BonusWrap = styled.label<{ $disabled: boolean }>`
   color: ${(p) => (p.$disabled ? 'var(--muted)' : 'var(--text)')};
   font-size: 0.85rem;
   user-select: none;
-`;
-
-const ChargeMetaSlot = styled(MetaItem)`
-  margin-left: auto;
 `;
 
 const PlaybookRowWithVerticalWrap = styled.div`
@@ -193,11 +247,20 @@ export function AttackSwingRow({
     <AttackRow>
       <AttackMain>
         <AttackBlock $variant={variant}>
-          <AttackMeta>
-            <AttackKindLabel>
-              {attackKindLabel(i, chargeAttackIndex)}
-            </AttackKindLabel>
-            <MetaItem>
+          <AttackHeading>{attackKindLabel(i, chargeAttackIndex)}</AttackHeading>
+          <DicePoolStrip aria-label="Dice pool for this attack">
+            <PoolCluster>
+              {i < BASE_ATTACK_COUNT ? (
+                <ChargeWrap>
+                  <input
+                    type="radio"
+                    name="charge-attack"
+                    checked={chargeAttackIndex === i}
+                    onChange={() => onChargeAttackIndexChange(i)}
+                  />
+                  <span>+4 TAC charge</span>
+                </ChargeWrap>
+              ) : null}
               <BonusWrap
                 $disabled={bonusTimeDisabled}
                 title={
@@ -214,21 +277,12 @@ export function AttackSwingRow({
                 />
                 <span>Bonus Time (+1 TAC)</span>
               </BonusWrap>
-            </MetaItem>
-            {i < BASE_ATTACK_COUNT ? (
-              <ChargeMetaSlot>
-                <ChargeWrap>
-                  <input
-                    type="radio"
-                    name="charge-attack"
-                    checked={chargeAttackIndex === i}
-                    onChange={() => onChargeAttackIndexChange(i)}
-                  />
-                  <span>+4 TAC charge</span>
-                </ChargeWrap>
-              </ChargeMetaSlot>
-            ) : null}
-          </AttackMeta>
+            </PoolCluster>
+            <TacPoolBadge>
+              <TacPoolLabel>TAC</TacPoolLabel>
+              <TacPoolValue>{attack.tac}</TacPoolValue>
+            </TacPoolBadge>
+          </DicePoolStrip>
 
           {maxNet < 1 ? (
             <UnreachableNote>
@@ -313,7 +367,6 @@ export function AttackSwingRow({
         </AttackBlock>
       </AttackMain>
       <AttackStatsAside
-        tac={attack.tac}
         defMinRoll={attack.defMinRoll}
         momentum={momentum}
         remainingHpIfHit={remainingHpIfHit}

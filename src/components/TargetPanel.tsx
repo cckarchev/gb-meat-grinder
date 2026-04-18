@@ -16,16 +16,11 @@ import { narrowViewport } from '../styles/breakpoints';
 import { StepControl } from './StepControl';
 import { Panel, PanelTitle, Row } from './ui';
 
-/*
-  Previously: footnote with planned damage if all attacks hit and HP remaining
-  (damagePlannedIfAllHit, attackCount). Removed from UI per request.
-*/
-
 const CoverOption = styled.label`
   display: flex;
   align-items: flex-start;
   gap: 0.45rem;
-  margin-top: 0.85rem;
+  margin-top: 0.5rem;
   cursor: pointer;
   font-size: 0.88rem;
   color: var(--text);
@@ -37,29 +32,32 @@ const CoverOption = styled.label`
   }
 
   ${narrowViewport} {
-    margin-top: 0.55rem;
+    margin-top: 0.4rem;
     font-size: 0.82rem;
   }
 `;
 
-const DamageSectionTitle = styled.h3`
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  margin: 1rem 0 0.4rem;
-`;
-
-const ToughHideOption = styled(CoverOption)`
-  margin-top: 0.5rem;
-`;
-
-const BuffOption = styled(CoverOption)`
+const BuffOption = styled.label`
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
   margin-top: 0.35rem;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.35;
+
+  input {
+    margin-top: 0.2rem;
+    flex-shrink: 0;
+  }
+
+  ${narrowViewport} {
+    font-size: 0.82rem;
+  }
 `;
 
-export type TargetPanelProps = {
+export type EnemyPanelProps = {
   def: number;
   armor: number;
   hp: number;
@@ -70,13 +68,9 @@ export type TargetPanelProps = {
   onDefChange: (def: number) => void;
   onArmorChange: (armor: number) => void;
   onHpChange: (hp: number) => void;
-  startingMomentum: number;
-  onStartingMomentumChange: (value: number) => void;
-  initialTacModifier: number;
-  onInitialTacModifierChange: (value: number) => void;
 };
 
-export function TargetPanel({
+export function EnemyPanel({
   def,
   armor,
   hp,
@@ -87,22 +81,13 @@ export function TargetPanel({
   onDefChange,
   onArmorChange,
   onHpChange,
-  startingMomentum,
-  onStartingMomentumChange,
-  initialTacModifier,
-  onInitialTacModifierChange,
-}: TargetPanelProps) {
-  const tacModLabel =
-    initialTacModifier > 0
-      ? `+${initialTacModifier}`
-      : String(initialTacModifier);
-
+}: EnemyPanelProps) {
   return (
     <Panel>
-      <PanelTitle>Target</PanelTitle>
+      <PanelTitle>Enemy</PanelTitle>
       <Row>
         <StepControl
-          label="Defense (min hit roll)"
+          label="Defense"
           value={def}
           min={DEF_MIN}
           max={DEF_MAX}
@@ -112,7 +97,7 @@ export function TargetPanel({
           incrementAriaLabel="Increase defense threshold"
         />
         <StepControl
-          label="Armor (subtract hits)"
+          label="Armor"
           value={armor}
           min={ARM_MIN}
           max={ARM_MAX}
@@ -122,7 +107,7 @@ export function TargetPanel({
           incrementAriaLabel="Increase armor"
         />
         <StepControl
-          label="HP (hit points)"
+          label="HP"
           value={hp}
           min={HP_MIN}
           max={HP_MAX}
@@ -130,29 +115,6 @@ export function TargetPanel({
           valueLabel={String(hp)}
           decrementAriaLabel="Decrease target HP"
           incrementAriaLabel="Increase target HP"
-        />
-        <StepControl
-          label="Starting momentum"
-          value={startingMomentum}
-          min={STARTING_MOMENTUM_MIN}
-          max={STARTING_MOMENTUM_MAX}
-          onChange={onStartingMomentumChange}
-          valueLabel={String(startingMomentum)}
-          decrementAriaLabel="Decrease starting momentum"
-          incrementAriaLabel="Increase starting momentum"
-        />
-      </Row>
-      <Row>
-        <StepControl
-          label="Initial TAC modifier"
-          value={initialTacModifier}
-          min={INITIAL_TAC_MODIFIER_MIN}
-          max={INITIAL_TAC_MODIFIER_MAX}
-          onChange={onInitialTacModifierChange}
-          valueLabel={tacModLabel}
-          hint="Crowd-outs and similar from other models; applies to every attack."
-          decrementAriaLabel="Decrease initial TAC modifier"
-          incrementAriaLabel="Increase initial TAC modifier"
         />
       </Row>
       <CoverOption>
@@ -163,9 +125,7 @@ export function TargetPanel({
         />
         <span>Cover</span>
       </CoverOption>
-
-      <DamageSectionTitle>Playbook damage</DamageSectionTitle>
-      <ToughHideOption>
+      <BuffOption>
         <input
           type="checkbox"
           checked={damageMods.toughHide}
@@ -174,7 +134,58 @@ export function TargetPanel({
           }
         />
         <span>Tough Hide</span>
-      </ToughHideOption>
+      </BuffOption>
+    </Panel>
+  );
+}
+
+export type VBoarPanelProps = {
+  damageMods: PlaybookDamageMods;
+  onDamageModsChange: (mods: PlaybookDamageMods) => void;
+  startingMomentum: number;
+  onStartingMomentumChange: (value: number) => void;
+  initialTacModifier: number;
+  onInitialTacModifierChange: (value: number) => void;
+};
+
+export function VBoarPanel({
+  damageMods,
+  onDamageModsChange,
+  startingMomentum,
+  onStartingMomentumChange,
+  initialTacModifier,
+  onInitialTacModifierChange,
+}: VBoarPanelProps) {
+  const tacModLabel =
+    initialTacModifier > 0
+      ? `+${initialTacModifier}`
+      : String(initialTacModifier);
+
+  return (
+    <Panel>
+      <PanelTitle>Veteran Boar</PanelTitle>
+      <Row>
+        <StepControl
+          label="Starting momentum"
+          value={startingMomentum}
+          min={STARTING_MOMENTUM_MIN}
+          max={STARTING_MOMENTUM_MAX}
+          onChange={onStartingMomentumChange}
+          valueLabel={String(startingMomentum)}
+          decrementAriaLabel="Decrease starting momentum"
+          incrementAriaLabel="Increase starting momentum"
+        />
+        <StepControl
+          label="Initial TAC modifier"
+          value={initialTacModifier}
+          min={INITIAL_TAC_MODIFIER_MIN}
+          max={INITIAL_TAC_MODIFIER_MAX}
+          onChange={onInitialTacModifierChange}
+          valueLabel={tacModLabel}
+          decrementAriaLabel="Decrease initial TAC modifier"
+          incrementAriaLabel="Increase initial TAC modifier"
+        />
+      </Row>
       <BuffOption>
         <input
           type="checkbox"

@@ -17,6 +17,7 @@ import {
 } from '../../core/probStyle';
 import { formatPercent, probAttackSucceeds } from '../../core/probability';
 import type { AttacksPanelProps } from './types';
+import { PLAYBOOK_COLUMN_TRACK, PLAYBOOK_GRID_GAP } from './playbookLayout';
 
 const WrapSlotBlock = styled.div<{ $first: boolean }>`
   margin-top: ${(p) => (p.$first ? 0 : '0.85rem')};
@@ -34,8 +35,11 @@ const WrapSlotBlock = styled.div<{ $first: boolean }>`
 
 const ColumnGrid = styled.div<{ $columnCount: number }>`
   display: grid;
-  grid-template-columns: repeat(${(p) => Math.max(1, p.$columnCount)}, 3.65rem);
-  gap: 0.4rem;
+  grid-template-columns: repeat(
+    ${(p) => Math.max(1, p.$columnCount)},
+    ${PLAYBOOK_COLUMN_TRACK}
+  );
+  gap: ${PLAYBOOK_GRID_GAP};
   align-items: stretch;
   width: max-content;
   max-width: 100%;

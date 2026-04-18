@@ -1,16 +1,18 @@
 import styled from 'styled-components';
 import { narrowViewport } from '../../styles/breakpoints';
+import { PLAYBOOK_COLUMN_TRACK } from './playbookLayout';
 
 const VerticalWrapToggle = styled.button`
   align-self: stretch;
   flex-shrink: 0;
-  width: 3rem;
+  box-sizing: border-box;
+  width: ${PLAYBOOK_COLUMN_TRACK};
   min-height: 4.5rem;
   margin: 0;
   padding: 0.4rem 0.15rem 0.35rem;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: transparent;
+  background: var(--input-bg);
   color: var(--text);
   cursor: pointer;
   overflow: hidden;
@@ -24,7 +26,7 @@ const VerticalWrapToggle = styled.button`
     border-color 0.12s ease;
 
   &:hover {
-    background: var(--input-bg);
+    background: color-mix(in srgb, var(--input-bg) 88%, var(--text));
     border-color: var(--muted);
   }
 
@@ -34,7 +36,7 @@ const VerticalWrapToggle = styled.button`
   }
 
   ${narrowViewport} {
-    width: 2.45rem;
+    width: min(${PLAYBOOK_COLUMN_TRACK}, 100%);
     min-height: 3.85rem;
     padding: 0.28rem 0.08rem 0.22rem;
     gap: 0.15rem;
