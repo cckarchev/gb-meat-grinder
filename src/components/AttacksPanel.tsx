@@ -7,6 +7,7 @@ import {
 } from '../core/playbook';
 import { useKillItSimulation } from '../killIt/useKillItSimulation';
 import { AttackSwingRow } from './attacks/AttackSwingRow';
+import { AttacksPanelSummary } from './attacks/AttacksPanelSummary';
 
 export type { AttacksPanelProps } from './attacks/types';
 
@@ -123,6 +124,7 @@ export function AttacksPanel() {
           }
         />
       ))}
+      <AttacksPanelSummary />
     </AttacksList>
   );
 }

@@ -382,6 +382,19 @@ export function playbookLineDisplayLabel(
   return r.label;
 }
 
+/** Selected playbook lines on one attack row, for summaries (e.g. `> → 2 → GB`). */
+export function formatWrapRowSelectionLabel(
+  picks: readonly WrapPick[],
+  damageMods: PlaybookDamageMods,
+): string {
+  const labels: string[] = [];
+  for (const id of picks) {
+    if (id == null) continue;
+    labels.push(playbookLineDisplayLabel(id, damageMods));
+  }
+  return labels.length > 0 ? labels.join(' → ') : '—';
+}
+
 /** Rows 0–2: charge + two bought attacks. Rows 3–5: berserkers for bases 0–2. */
 export function attackRowIsBerserker(attackIndex: number): boolean {
   return attackIndex >= BASE_ATTACK_COUNT;
