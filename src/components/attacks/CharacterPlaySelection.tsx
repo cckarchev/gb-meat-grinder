@@ -3,17 +3,6 @@ import { narrowViewport } from '../../styles/breakpoints';
 import { characterPlayAvailabilityForPick } from '../../core/playbook';
 import type { AttacksPanelProps, CharacterPlaySlotRef } from './types';
 
-const SelectionSection = styled.div`
-  margin-top: 0.75rem;
-  padding-top: 0.65rem;
-  border-top: 1px solid var(--border);
-
-  ${narrowViewport} {
-    margin-top: 0.5rem;
-    padding-top: 0.45rem;
-  }
-`;
-
 const SelectionRow = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -93,7 +82,7 @@ export function CharacterPlaySelection({
   if (actionable.length === 0) return null;
 
   return (
-    <SelectionSection>
+    <>
       {actionable.map(({ pickIndex }) => {
         const cpAvail = characterPlayAvailabilityForPick(
           wrapPicks,
@@ -135,6 +124,6 @@ export function CharacterPlaySelection({
           </SelectionRow>
         );
       })}
-    </SelectionSection>
+    </>
   );
 }

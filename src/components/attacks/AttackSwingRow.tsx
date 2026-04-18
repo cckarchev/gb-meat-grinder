@@ -233,12 +233,6 @@ export function AttackSwingRow({
       (x): x is CharacterPlaySlotRef =>
         x.pid != null && choiceUsesCharacterPlay(x.pid),
     );
-  const characterPlaySlotsBase = characterPlaySlots.filter(
-    (s) => s.pickIndex === 0,
-  );
-  const characterPlaySlotsWrap = characterPlaySlots.filter(
-    (s) => s.pickIndex > 0,
-  );
   const hasWrapContinuation = wrapPicks[i].length > 1;
   const variant = attackBlockVariant(i, chargeAttackIndex);
   const bonusTimeDisabled = !bonusTime && bonusTimeMomentumPool < 1;
@@ -317,15 +311,6 @@ export function AttackSwingRow({
                   />
                 ) : null}
               </PlaybookRowWithVerticalWrap>
-              <CharacterPlaySelection
-                slots={characterPlaySlotsBase}
-                wrapPicks={wrapPicks}
-                characterPlayPicks={characterPlayPicks}
-                damageMods={damageMods}
-                attackIndex={i}
-                displayIdx={displayIdx}
-                onCharacterPlayPickChange={onCharacterPlayPickChange}
-              />
               {hasWrapContinuation ? (
                 <div
                   id={`attack-wrap-${i}`}
@@ -351,17 +336,17 @@ export function AttackSwingRow({
                       />
                     );
                   })}
-                  <CharacterPlaySelection
-                    slots={characterPlaySlotsWrap}
-                    wrapPicks={wrapPicks}
-                    characterPlayPicks={characterPlayPicks}
-                    damageMods={damageMods}
-                    attackIndex={i}
-                    displayIdx={displayIdx}
-                    onCharacterPlayPickChange={onCharacterPlayPickChange}
-                  />
                 </div>
               ) : null}
+              <CharacterPlaySelection
+                slots={characterPlaySlots}
+                wrapPicks={wrapPicks}
+                characterPlayPicks={characterPlayPicks}
+                damageMods={damageMods}
+                attackIndex={i}
+                displayIdx={displayIdx}
+                onCharacterPlayPickChange={onCharacterPlayPickChange}
+              />
             </>
           )}
         </AttackBlock>
