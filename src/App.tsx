@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
+import styled from 'styled-components';
 import { clampAttackPlan, computeAttackSequence } from './core/attackSequence';
 import { AppChrome } from './components/AppChrome';
 import { AttacksPanel } from './components/AttacksPanel';
 import { EnemyPanel, VBoarPanel } from './components/TargetPanel';
+import { Panel } from './components/ui';
+import { narrowViewport } from './styles/breakpoints';
 import {
   BASE_ATTACK_COUNT,
   HP_DEFAULT,
@@ -29,6 +32,24 @@ type AttackPlan = {
   wrapPicks: WrapPick[][];
   characterPlayPicks: CharacterPlayPickSlot[][];
 };
+
+const TargetPanelsRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: stretch;
+  margin-bottom: 1rem;
+
+  > ${Panel} {
+    flex: 1 1 240px;
+    margin-bottom: 0;
+  }
+
+  ${narrowViewport} {
+    gap: 0.55rem;
+    margin-bottom: 0.65rem;
+  }
+`;
 
 function App() {
   const [def, setDef] = useState(4);
@@ -306,26 +327,28 @@ function App() {
 
   return (
     <AppChrome>
-      <EnemyPanel
-        def={def}
-        armor={armor}
-        hp={hp}
-        enemyHasCover={enemyHasCover}
-        onEnemyHasCoverChange={handleEnemyHasCoverChange}
-        damageMods={damageMods}
-        onDamageModsChange={handleDamageModsChange}
-        onDefChange={handleDefChange}
-        onArmorChange={handleArmorChange}
-        onHpChange={setHp}
-      />
-      <VBoarPanel
-        damageMods={damageMods}
-        onDamageModsChange={handleDamageModsChange}
-        startingMomentum={startingMomentum}
-        onStartingMomentumChange={setStartingMomentum}
-        initialTacModifier={initialTacModifier}
-        onInitialTacModifierChange={handleInitialTacModifierChange}
-      />
+      <TargetPanelsRow>
+        <EnemyPanel
+          def={def}
+          armor={armor}
+          hp={hp}
+          enemyHasCover={enemyHasCover}
+          onEnemyHasCoverChange={handleEnemyHasCoverChange}
+          damageMods={damageMods}
+          onDamageModsChange={handleDamageModsChange}
+          onDefChange={handleDefChange}
+          onArmorChange={handleArmorChange}
+          onHpChange={setHp}
+        />
+        <VBoarPanel
+          damageMods={damageMods}
+          onDamageModsChange={handleDamageModsChange}
+          startingMomentum={startingMomentum}
+          onStartingMomentumChange={setStartingMomentum}
+          initialTacModifier={initialTacModifier}
+          onInitialTacModifierChange={handleInitialTacModifierChange}
+        />
+      </TargetPanelsRow>
       <AttacksPanel
         targetHp={hp}
         armor={armor}
