@@ -207,13 +207,6 @@ function firstReachableChoiceId(maxNet: number): PlaybookChoiceId {
   return col?.results[0].id ?? PLAYBOOK[0].results[0].id;
 }
 
-/** First result in the lowest column that fits the remaining net budget. */
-export function firstValidChoiceForBudget(budget: number): PlaybookChoiceId {
-  if (budget < 1) return PLAYBOOK[0].results[0].id;
-  const col = PLAYBOOK.find((c) => c.netSuccesses <= budget);
-  return col?.results[0].id ?? PLAYBOOK[0].results[0].id;
-}
-
 /** Cheapest playbook line at or under `budget` that is not Knock Down. */
 function firstPickInBudgetExcludingKd(budget: number): PlaybookChoiceId {
   if (budget < 1) return PLAYBOOK[0].results[0].id;

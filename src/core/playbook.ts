@@ -675,17 +675,3 @@ export function damageIfAllHitsWrap(
       : 0,
   );
 }
-
-export function totalDamageIfAllHits(
-  wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
-): number {
-  return damageIfAllHitsWrap(wrapPicks, damageMods).reduce((a, b) => a + b, 0);
-}
-
-export function attackDealtDamageFlags(
-  wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
-): boolean[] {
-  return damageIfAllHitsWrap(wrapPicks, damageMods).map((d) => d > 0);
-}
