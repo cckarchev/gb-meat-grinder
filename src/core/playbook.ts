@@ -657,9 +657,7 @@ export function defaultCharacterPlayPicksWrap(): CharacterPlayPickSlot[][] {
 }
 
 export function defaultWrapPicks(): WrapPick[][] {
-  return Array.from({ length: MAX_ATTACK_COUNT }, () => [
-    PLAYBOOK[0].results[0].id,
-  ]);
+  return Array.from({ length: MAX_ATTACK_COUNT }, () => [null]);
 }
 
 /** Damage per attack if every pick on that attack hits (playbook modifiers applied). */

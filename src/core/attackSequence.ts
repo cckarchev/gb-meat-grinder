@@ -278,8 +278,7 @@ function clampRowPicks(
   maxNet: number,
 ): { picks: WrapPick[]; characterPlayRow: CharacterPlayPickSlot[] } {
   if (maxNet < 1) {
-    const id = PLAYBOOK[0].results[0].id;
-    return { picks: [id], characterPlayRow: [null] };
+    return { picks: [null], characterPlayRow: [null] };
   }
   const n = wrapSlotCount(maxNet);
   const p: WrapPick[] = picks.slice(0, n);
@@ -294,10 +293,16 @@ function clampRowPicks(
     g.pop();
   }
   const b0 = wrapSlotBudget(maxNet, 0);
-  if (p[0] == null || netSuccessesForChoice(p[0]) > b0) {
+  if (p[0] != null && netSuccessesForChoice(p[0]) > b0) {
     const id = firstReachableChoiceId(b0);
     p[0] = id;
     g[0] = choiceUsesCharacterPlay(id) ? 'so' : null;
+  }
+  if (p[0] == null) {
+    for (let s = 1; s < n; s++) {
+      p[s] = null;
+      g[s] = null;
+    }
   }
   for (let s = 1; s < n; s++) {
     const b = wrapSlotBudget(maxNet, s);
@@ -388,7 +393,7 @@ export function clampAttackPlan(
         attackRowIsActive(next, i, damageMods) &&
         next[i].length === 0
       ) {
-        next[i] = [PLAYBOOK[0].results[0].id];
+        next[i] = [null];
         nextCharacterPlay[i] = [null];
         passChanged = true;
       }
