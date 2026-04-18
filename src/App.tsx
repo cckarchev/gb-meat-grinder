@@ -328,6 +328,14 @@ function App() {
   return (
     <AppChrome>
       <TargetPanelsRow>
+        <VBoarPanel
+          damageMods={damageMods}
+          onDamageModsChange={handleDamageModsChange}
+          startingMomentum={startingMomentum}
+          onStartingMomentumChange={setStartingMomentum}
+          initialTacModifier={initialTacModifier}
+          onInitialTacModifierChange={handleInitialTacModifierChange}
+        />
         <EnemyPanel
           def={def}
           armor={armor}
@@ -339,14 +347,6 @@ function App() {
           onDefChange={handleDefChange}
           onArmorChange={handleArmorChange}
           onHpChange={setHp}
-        />
-        <VBoarPanel
-          damageMods={damageMods}
-          onDamageModsChange={handleDamageModsChange}
-          startingMomentum={startingMomentum}
-          onStartingMomentumChange={setStartingMomentum}
-          initialTacModifier={initialTacModifier}
-          onInitialTacModifierChange={handleInitialTacModifierChange}
         />
       </TargetPanelsRow>
       <AttacksPanel
