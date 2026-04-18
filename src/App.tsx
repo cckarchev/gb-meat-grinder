@@ -67,12 +67,7 @@ function App() {
   useEffect(() => {
     queueMicrotask(() => {
       setBonusTimeByAttack((prev) =>
-        sanitizeBonusTimeFlags(
-          wrapPicks,
-          damageMods,
-          startingMomentum,
-          prev,
-        ),
+        sanitizeBonusTimeFlags(wrapPicks, damageMods, startingMomentum, prev),
       );
     });
   }, [wrapPicks, damageMods, startingMomentum]);

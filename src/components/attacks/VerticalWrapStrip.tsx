@@ -108,9 +108,7 @@ export function VerticalWrapStrip({
       onClick={onClick}
     >
       <VerticalWrapLabelWrap>
-        <VerticalWrapLabel>
-          {wrapOpen ? 'Close' : 'Wrap'}
-        </VerticalWrapLabel>
+        <VerticalWrapLabel>{wrapOpen ? 'Close' : 'Wrap'}</VerticalWrapLabel>
       </VerticalWrapLabelWrap>
       <VerticalWrapChevron $open={wrapOpen} aria-hidden />
     </VerticalWrapToggle>

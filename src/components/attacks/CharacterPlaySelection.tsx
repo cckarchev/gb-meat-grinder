@@ -125,7 +125,9 @@ export function CharacterPlaySelection({
                 type="button"
                 $active={pick === 'stagger'}
                 aria-label={stLabel}
-                onClick={() => onCharacterPlayPickChange(i, pickIndex, 'stagger')}
+                onClick={() =>
+                  onCharacterPlayPickChange(i, pickIndex, 'stagger')
+                }
               >
                 Stagger
               </SelectionBtn>

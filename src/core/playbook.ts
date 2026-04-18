@@ -582,7 +582,10 @@ export function sanitizeCharacterPlayPicksWrap(
   let changed = false;
   for (let i = 0; i < wrapPicks.length; i++) {
     for (let k = 0; k < wrapPicks[i].length; k++) {
-      if (wrapPicks[i][k] == null || !choiceUsesCharacterPlay(wrapPicks[i][k])) {
+      if (
+        wrapPicks[i][k] == null ||
+        !choiceUsesCharacterPlay(wrapPicks[i][k])
+      ) {
         if (next[i]?.[k] != null) {
           next[i][k] = null;
           changed = true;

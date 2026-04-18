@@ -83,7 +83,13 @@ export function modifiersBeforeAttack(
     const j = order[oi];
     for (let k = 0; k < wrapPicks[j].length; k++) {
       if (wrapPicks[j][k] == null) continue;
-      const m = rowEffectsForPick(wrapPicks, characterPlayPicks, j, k, damageMods);
+      const m = rowEffectsForPick(
+        wrapPicks,
+        characterPlayPicks,
+        j,
+        k,
+        damageMods,
+      );
       tacBonus += m.tacBonusForLater;
       defReduction += m.defReductionForLater;
     }
@@ -150,7 +156,11 @@ export function tacForAttackRow(
     damageMods,
   );
   const tacFromDefCap = tacBonusFromDefReductionCap(baseDef, defReduction);
-  const coverPen = coverTacPenaltyForAttack(enemyHasCover, wrapPicks, attackIndex);
+  const coverPen = coverTacPenaltyForAttack(
+    enemyHasCover,
+    wrapPicks,
+    attackIndex,
+  );
   const bonusTimeTac =
     bonusTimeByAttack[attackIndex] === true ? BONUS_TIME_TAC_BONUS : 0;
   return tacForAttack(

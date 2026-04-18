@@ -143,8 +143,7 @@ const LineButton = styled.button<{
       : p.$momentousZeroEffective
         ? '#ffffff'
         : 'var(--playbook-line-nm-bg)'};
-  color: ${(p) =>
-    p.$momentous ? '#ffffff' : 'var(--playbook-line-nm-fg)'};
+  color: ${(p) => (p.$momentous ? '#ffffff' : 'var(--playbook-line-nm-fg)')};
   border: 1px solid
     ${(p) =>
       p.$momentous
