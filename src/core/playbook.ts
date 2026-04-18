@@ -190,9 +190,11 @@ export function getPlaybookResult(id: PlaybookChoiceId): PlaybookResult {
 }
 
 export type PlaybookDamageMods = {
-  /** Enemy Tough Hide: −1 to each **selected** playbook damage pip. */
+  /** Enemy Tough Hide: −1 to each **selected** playbook line that has card damage. */
   toughHide: boolean;
+  /** +1 to each **selected** damage pip only (same scope as Tough Hide). */
   tooledUp: boolean;
+  /** +1 to each **selected** damage pip only (same scope as Tough Hide). */
   theOwner: boolean;
 };
 
@@ -210,6 +212,9 @@ export function effectivePlaybookDamage(
   cardDamage: number,
   mods: PlaybookDamageMods,
 ): number {
+  if (cardDamage <= 0) {
+    return 0;
+  }
   const pen = mods.toughHide ? 1 : 0;
   return Math.max(0, cardDamage - pen + playbookDamageBonusSum(mods));
 }
@@ -251,13 +256,16 @@ export function coverSwingClockIndices(): number[] {
 
 /**
  * Playbook button text: plain numeric pips (label matches damage) show the
- * **effective** value; lines like 1GB keep the **printed** label.
+ * **effective** value; GB / 1GB show **0GB**, **1GB**, … from effective damage.
  */
 export function playbookLineDisplayLabel(
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
 ): string {
   const r = getPlaybookResult(id);
+  if (r.picksCharacterPlay === true) {
+    return `${effectiveDamageForChoice(id, mods)}GB`;
+  }
   if (r.damage > 0 && r.label === String(r.damage)) {
     return String(effectiveDamageForChoice(id, mods));
   }
