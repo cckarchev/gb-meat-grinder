@@ -6,6 +6,8 @@ import {
   DEF_MIN,
   HP_MAX,
   HP_MIN,
+  INITIAL_TAC_MODIFIER_MAX,
+  INITIAL_TAC_MODIFIER_MIN,
   STARTING_MOMENTUM_MAX,
   STARTING_MOMENTUM_MIN,
 } from '../core/constants';
@@ -70,6 +72,8 @@ export type TargetPanelProps = {
   onHpChange: (hp: number) => void;
   startingMomentum: number;
   onStartingMomentumChange: (value: number) => void;
+  initialTacModifier: number;
+  onInitialTacModifierChange: (value: number) => void;
 };
 
 export function TargetPanel({
@@ -85,7 +89,14 @@ export function TargetPanel({
   onHpChange,
   startingMomentum,
   onStartingMomentumChange,
+  initialTacModifier,
+  onInitialTacModifierChange,
 }: TargetPanelProps) {
+  const tacModLabel =
+    initialTacModifier > 0
+      ? `+${initialTacModifier}`
+      : String(initialTacModifier);
+
   return (
     <Panel>
       <PanelTitle>Target</PanelTitle>
@@ -129,6 +140,19 @@ export function TargetPanel({
           valueLabel={String(startingMomentum)}
           decrementAriaLabel="Decrease starting momentum"
           incrementAriaLabel="Increase starting momentum"
+        />
+      </Row>
+      <Row>
+        <StepControl
+          label="Initial TAC modifier"
+          value={initialTacModifier}
+          min={INITIAL_TAC_MODIFIER_MIN}
+          max={INITIAL_TAC_MODIFIER_MAX}
+          onChange={onInitialTacModifierChange}
+          valueLabel={tacModLabel}
+          hint="Crowd-outs and similar from other models; applies to every attack."
+          decrementAriaLabel="Decrease initial TAC modifier"
+          incrementAriaLabel="Increase initial TAC modifier"
         />
       </Row>
       <CoverOption>

@@ -25,3 +25,7 @@ export const HP_DEFAULT = 16;
 /** Momentum the Boar begins the activation with (earned momentum has no cap). */
 export const STARTING_MOMENTUM_MIN = 0;
 export const STARTING_MOMENTUM_MAX = 20;
+
+/** Crowd-outs and other off-card TAC applied to every swing (e.g. other models). */
+export const INITIAL_TAC_MODIFIER_MIN = -5;
+export const INITIAL_TAC_MODIFIER_MAX = 5;

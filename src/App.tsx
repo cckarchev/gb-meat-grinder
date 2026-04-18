@@ -3,7 +3,13 @@ import { clampAttackPlan, computeAttackSequence } from './core/attackSequence';
 import { AppChrome } from './components/AppChrome';
 import { AttacksPanel } from './components/AttacksPanel';
 import { TargetPanel } from './components/TargetPanel';
-import { BASE_ATTACK_COUNT, HP_DEFAULT, MAX_ATTACK_COUNT } from './core/constants';
+import {
+  BASE_ATTACK_COUNT,
+  HP_DEFAULT,
+  INITIAL_TAC_MODIFIER_MAX,
+  INITIAL_TAC_MODIFIER_MIN,
+  MAX_ATTACK_COUNT,
+} from './core/constants';
 import {
   choiceUsesCharacterPlay,
   DEFAULT_PLAYBOOK_DAMAGE_MODS,
@@ -31,6 +37,7 @@ function App() {
   const [chargeAttackIndex, setChargeAttackIndex] = useState(0);
   const [enemyHasCover, setEnemyHasCover] = useState(false);
   const [startingMomentum, setStartingMomentum] = useState(0);
+  const [initialTacModifier, setInitialTacModifier] = useState(0);
   const [bonusTimeByAttack, setBonusTimeByAttack] = useState<boolean[]>(() =>
     Array.from({ length: MAX_ATTACK_COUNT }, () => false),
   );
@@ -50,6 +57,7 @@ function App() {
       DEFAULT_PLAYBOOK_DAMAGE_MODS,
       4,
       noBonus,
+      0,
     );
     return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
   });
@@ -80,6 +88,7 @@ function App() {
         enemyHasCover,
         damageMods,
         bonusTimeByAttack,
+        initialTacModifier,
       ),
     [
       def,
@@ -90,6 +99,7 @@ function App() {
       enemyHasCover,
       damageMods,
       bonusTimeByAttack,
+      initialTacModifier,
     ],
   );
 
@@ -110,6 +120,7 @@ function App() {
       mods,
       baseDef,
       bonusTimeByAttack,
+      initialTacModifier,
     );
     if (
       r.wrapPicks === prev.wrapPicks &&
@@ -257,6 +268,24 @@ function App() {
     );
   };
 
+  const handleInitialTacModifierChange = (value: number) => {
+    const clamped = Math.max(
+      INITIAL_TAC_MODIFIER_MIN,
+      Math.min(INITIAL_TAC_MODIFIER_MAX, value),
+    );
+    setInitialTacModifier(clamped);
+    setAttackPlan((prev) =>
+      applyClamp(
+        prev,
+        chargeAttackIndex,
+        armor,
+        enemyHasCover,
+        damageMods,
+        def,
+      ),
+    );
+  };
+
   const handleBonusTimeChange = (attackIndex: number, value: boolean) => {
     setBonusTimeByAttack((prev) => {
       if (value) {
@@ -295,6 +324,8 @@ function App() {
         onHpChange={setHp}
         startingMomentum={startingMomentum}
         onStartingMomentumChange={setStartingMomentum}
+        initialTacModifier={initialTacModifier}
+        onInitialTacModifierChange={handleInitialTacModifierChange}
       />
       <AttacksPanel
         targetHp={hp}

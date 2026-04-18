@@ -116,6 +116,7 @@ export function tacForAttack(
   tacBonusFromSingledOut: number,
   coverTacPenalty = 0,
   bonusTimeTacBonus = 0,
+  initialTacModifier = 0,
 ): number {
   const charge =
     attackIndex < BASE_ATTACK_COUNT && attackIndex === chargeAttackIndex
@@ -126,7 +127,8 @@ export function tacForAttack(
     charge +
     tacBonusFromSingledOut -
     coverTacPenalty +
-    bonusTimeTacBonus
+    bonusTimeTacBonus +
+    initialTacModifier
   );
 }
 
@@ -139,6 +141,7 @@ export function tacForAttackRow(
   damageMods: PlaybookDamageMods,
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
+  initialTacModifier: number,
 ): number {
   const { tacBonus, defReduction } = modifiersBeforeAttack(
     wrapPicks,
@@ -156,6 +159,7 @@ export function tacForAttackRow(
     tacBonus + tacFromDefCap,
     coverPen,
     bonusTimeTac,
+    initialTacModifier,
   );
 }
 
@@ -170,6 +174,7 @@ export function maxPlaybookColumnForRow(
   damageMods: PlaybookDamageMods,
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
+  initialTacModifier: number,
 ): number {
   const tac = tacForAttackRow(
     wrapPicks,
@@ -180,6 +185,7 @@ export function maxPlaybookColumnForRow(
     damageMods,
     baseDef,
     bonusTimeByAttack,
+    initialTacModifier,
   );
   return maxNetSuccessesForRoll(tac, armor);
 }
@@ -222,6 +228,7 @@ function stripDuplicateKd(
   damageMods: PlaybookDamageMods,
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
+  initialTacModifier: number,
 ): boolean {
   let changed = false;
   let kdSeen = false;
@@ -236,6 +243,7 @@ function stripDuplicateKd(
       damageMods,
       baseDef,
       bonusTimeByAttack,
+      initialTacModifier,
     );
     for (let k = 0; k < next[i].length; k++) {
       const id = next[i][k];
@@ -338,6 +346,7 @@ export function clampAttackPlan(
   damageMods: PlaybookDamageMods,
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
+  initialTacModifier: number,
 ): { wrapPicks: WrapPick[][]; characterPlayPicks: CharacterPlayPickSlot[][] } {
   const next = clone2d(wrapPicks);
   let nextCharacterPlay = clone2d(characterPlayPicks);
@@ -383,6 +392,7 @@ export function clampAttackPlan(
         damageMods,
         baseDef,
         bonusTimeByAttack,
+        initialTacModifier,
       );
       const r = clampRowPicks(next[i], nextCharacterPlay[i], maxNet);
       const rowSame =
@@ -406,6 +416,7 @@ export function clampAttackPlan(
         damageMods,
         baseDef,
         bonusTimeByAttack,
+        initialTacModifier,
       )
     ) {
       passChanged = true;
@@ -446,6 +457,7 @@ export function computeAttackSequence(
   enemyHasCover: boolean,
   damageMods: PlaybookDamageMods,
   bonusTimeByAttack: readonly boolean[],
+  initialTacModifier: number,
 ): { attacks: AttackRollContext[]; probAll: number } {
   const attacks: AttackRollContext[] = [];
   let probAll = 1;
@@ -468,6 +480,7 @@ export function computeAttackSequence(
       tacBonus + tacFromDefCap,
       coverPen,
       bonusTimeTac,
+      initialTacModifier,
     );
     const pHit = hitProbabilityPerDie(defMin);
     const need = wrapNetCostSum(wrapPicks[i]);
