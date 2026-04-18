@@ -250,9 +250,44 @@ export function pickGeneratesMomentum(
   return momentousLineStyle(id, mods) === 'heat';
 }
 
+function bonusTimeSpent(
+  attackIndex: number,
+  bonusTimeByAttack: readonly boolean[],
+): boolean {
+  return bonusTimeByAttack[attackIndex] === true;
+}
+
 /**
- * Total momentum after this attack in activation order: starting momentum plus
- * one per pick that earns momentum (red chip) on each prior attack and on this attack.
+ * Momentum available **before** this attack’s roll (after prior attacks’ heat
+ * picks and their Bonus Time spends, not including this attack’s wrap or spend).
+ */
+export function momentumPoolBeforeBonusTime(
+  wrapPicks: WrapPick[][],
+  damageMods: PlaybookDamageMods,
+  attackIndex: number,
+  startingMomentum: number,
+  bonusTimeByAttack: readonly boolean[],
+): number {
+  const order = activationAttackIndices(wrapPicks, damageMods);
+  const pos = order.indexOf(attackIndex);
+  if (pos < 0) return startingMomentum;
+  let total = startingMomentum;
+  for (let oi = 0; oi < pos; oi++) {
+    const j = order[oi];
+    const row = wrapPicks[j];
+    if (row?.length) {
+      for (const id of row) {
+        if (pickGeneratesMomentum(id, damageMods)) total += 1;
+      }
+    }
+    if (bonusTimeSpent(j, bonusTimeByAttack)) total -= 1;
+  }
+  return total;
+}
+
+/**
+ * Total momentum after this attack in activation order: starting momentum,
+ * plus heat picks through this attack, minus Bonus Time spends through this attack.
  * Earned momentum is not capped at 20.
  */
 export function momentumAfterAttackInclusive(
@@ -260,6 +295,7 @@ export function momentumAfterAttackInclusive(
   damageMods: PlaybookDamageMods,
   attackIndex: number,
   startingMomentum: number,
+  bonusTimeByAttack: readonly boolean[],
 ): number {
   const order = activationAttackIndices(wrapPicks, damageMods);
   const pos = order.indexOf(attackIndex);
@@ -268,12 +304,44 @@ export function momentumAfterAttackInclusive(
   for (let oi = 0; oi <= pos; oi++) {
     const j = order[oi];
     const row = wrapPicks[j];
-    if (!row?.length) continue;
-    for (const id of row) {
-      if (pickGeneratesMomentum(id, damageMods)) total += 1;
+    if (row?.length) {
+      for (const id of row) {
+        if (pickGeneratesMomentum(id, damageMods)) total += 1;
+      }
     }
+    if (bonusTimeSpent(j, bonusTimeByAttack)) total -= 1;
   }
   return total;
+}
+
+/** Clears Bonus Time flags that can no longer be paid (pool less than 1 before that swing). */
+export function sanitizeBonusTimeFlags(
+  wrapPicks: WrapPick[][],
+  damageMods: PlaybookDamageMods,
+  startingMomentum: number,
+  bonusTimeByAttack: readonly boolean[],
+): boolean[] {
+  const order = activationAttackIndices(wrapPicks, damageMods);
+  const next = bonusTimeByAttack.map((b) => b);
+  for (let iter = 0; iter < order.length + 2; iter++) {
+    let changed = false;
+    for (const i of order) {
+      if (!next[i]) continue;
+      const pool = momentumPoolBeforeBonusTime(
+        wrapPicks,
+        damageMods,
+        i,
+        startingMomentum,
+        next,
+      );
+      if (pool < 1) {
+        next[i] = false;
+        changed = true;
+      }
+    }
+    if (!changed) break;
+  }
+  return next;
 }
 
 export function wrapPickClearsCover(id: WrapPick | null | undefined): boolean {

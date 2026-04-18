@@ -1,18 +1,20 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { clampAttackPlan, computeAttackSequence } from './core/attackSequence';
 import { AppChrome } from './components/AppChrome';
 import { AttacksPanel } from './components/AttacksPanel';
 import { TargetPanel } from './components/TargetPanel';
-import { BASE_ATTACK_COUNT, HP_DEFAULT } from './core/constants';
+import { BASE_ATTACK_COUNT, HP_DEFAULT, MAX_ATTACK_COUNT } from './core/constants';
 import {
   choiceUsesCharacterPlay,
   DEFAULT_PLAYBOOK_DAMAGE_MODS,
   defaultCharacterPlayPicksWrap,
   defaultWrapPicks,
+  momentumPoolBeforeBonusTime,
   type CharacterPlayPick,
   type CharacterPlayPickSlot,
   type PlaybookChoiceId,
   type PlaybookDamageMods,
+  sanitizeBonusTimeFlags,
   sanitizeCharacterPlayPicksWrap,
   type WrapPick,
 } from './core/playbook';
@@ -29,12 +31,16 @@ function App() {
   const [chargeAttackIndex, setChargeAttackIndex] = useState(0);
   const [enemyHasCover, setEnemyHasCover] = useState(false);
   const [startingMomentum, setStartingMomentum] = useState(0);
+  const [bonusTimeByAttack, setBonusTimeByAttack] = useState<boolean[]>(() =>
+    Array.from({ length: MAX_ATTACK_COUNT }, () => false),
+  );
   const [damageMods, setDamageMods] = useState<PlaybookDamageMods>(
     DEFAULT_PLAYBOOK_DAMAGE_MODS,
   );
   const [attackPlan, setAttackPlan] = useState<AttackPlan>(() => {
     const wp = defaultWrapPicks();
     const cp = defaultCharacterPlayPicksWrap();
+    const noBonus = Array.from({ length: MAX_ATTACK_COUNT }, () => false);
     const r = clampAttackPlan(
       wp,
       cp,
@@ -43,11 +49,25 @@ function App() {
       false,
       DEFAULT_PLAYBOOK_DAMAGE_MODS,
       4,
+      noBonus,
     );
     return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
   });
 
   const { wrapPicks, characterPlayPicks } = attackPlan;
+
+  useEffect(() => {
+    queueMicrotask(() => {
+      setBonusTimeByAttack((prev) =>
+        sanitizeBonusTimeFlags(
+          wrapPicks,
+          damageMods,
+          startingMomentum,
+          prev,
+        ),
+      );
+    });
+  }, [wrapPicks, damageMods, startingMomentum]);
 
   const { attacks } = useMemo(
     () =>
@@ -59,6 +79,7 @@ function App() {
         chargeAttackIndex,
         enemyHasCover,
         damageMods,
+        bonusTimeByAttack,
       ),
     [
       def,
@@ -68,6 +89,7 @@ function App() {
       chargeAttackIndex,
       enemyHasCover,
       damageMods,
+      bonusTimeByAttack,
     ],
   );
 
@@ -87,6 +109,7 @@ function App() {
       cover,
       mods,
       baseDef,
+      bonusTimeByAttack,
     );
     if (
       r.wrapPicks === prev.wrapPicks &&
@@ -234,6 +257,29 @@ function App() {
     );
   };
 
+  const handleBonusTimeChange = (attackIndex: number, value: boolean) => {
+    setBonusTimeByAttack((prev) => {
+      if (value) {
+        const pool = momentumPoolBeforeBonusTime(
+          wrapPicks,
+          damageMods,
+          attackIndex,
+          startingMomentum,
+          prev,
+        );
+        if (pool < 1) return prev;
+      }
+      const next = [...prev];
+      next[attackIndex] = value;
+      return sanitizeBonusTimeFlags(
+        wrapPicks,
+        damageMods,
+        startingMomentum,
+        next,
+      );
+    });
+  };
+
   return (
     <AppChrome>
       <TargetPanel
@@ -256,6 +302,8 @@ function App() {
         chargeAttackIndex={chargeAttackIndex}
         onChargeAttackIndexChange={handleChargeAttackIndexChange}
         startingMomentum={startingMomentum}
+        bonusTimeByAttack={bonusTimeByAttack}
+        onBonusTimeChange={handleBonusTimeChange}
         wrapPicks={wrapPicks}
         characterPlayPicks={characterPlayPicks}
         damageMods={damageMods}

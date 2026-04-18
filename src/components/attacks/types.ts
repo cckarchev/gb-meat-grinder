@@ -14,6 +14,8 @@ export type AttacksPanelProps = {
   onChargeAttackIndexChange: (index: number) => void;
   /** Momentum at the start of the activation (clamped 0–20 in the target panel). */
   startingMomentum: number;
+  bonusTimeByAttack: boolean[];
+  onBonusTimeChange: (attackIndex: number, value: boolean) => void;
   wrapPicks: WrapPick[][];
   characterPlayPicks: CharacterPlayPickSlot[][];
   damageMods: PlaybookDamageMods;

@@ -1,5 +1,8 @@
 export const VBOAR_TAC = 8;
 
+/** Bonus Time: +1 TAC this attack; costs 1 momentum before the roll. */
+export const BONUS_TIME_TAC_BONUS = 1;
+
 /** Charge + two bought attacks (Berserker does not add base rows). */
 export const BASE_ATTACK_COUNT = 3;
 

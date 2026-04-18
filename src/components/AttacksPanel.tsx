@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {
   damageIfAllHitsWrap,
   momentumAfterAttackInclusive,
+  momentumPoolBeforeBonusTime,
 } from '../core/playbook';
 import { AttackSwingRow } from './attacks/AttackSwingRow';
 import type { AttacksPanelProps } from './attacks/types';
@@ -21,6 +22,8 @@ export function AttacksPanel({
   chargeAttackIndex,
   onChargeAttackIndexChange,
   startingMomentum,
+  bonusTimeByAttack,
+  onBonusTimeChange,
   wrapPicks,
   characterPlayPicks,
   damageMods,
@@ -62,9 +65,24 @@ export function AttacksPanel({
           damageMods,
           ctx.attackIndex,
           startingMomentum,
+          bonusTimeByAttack,
         ),
       ),
-    [attacks, wrapPicks, damageMods, startingMomentum],
+    [attacks, wrapPicks, damageMods, startingMomentum, bonusTimeByAttack],
+  );
+
+  const bonusTimePoolBeforeSwing = useMemo(
+    () =>
+      attacks.map((ctx) =>
+        momentumPoolBeforeBonusTime(
+          wrapPicks,
+          damageMods,
+          ctx.attackIndex,
+          startingMomentum,
+          bonusTimeByAttack,
+        ),
+      ),
+    [attacks, wrapPicks, damageMods, startingMomentum, bonusTimeByAttack],
   );
 
   return (
@@ -81,6 +99,9 @@ export function AttacksPanel({
           damageMods={damageMods}
           remainingHpIfHit={remainingHpAfterSwing[displayIdx]}
           momentum={momentumAfterSwing[displayIdx]}
+          bonusTime={bonusTimeByAttack[a.attackIndex] === true}
+          bonusTimeMomentumPool={bonusTimePoolBeforeSwing[displayIdx]}
+          onBonusTimeChange={onBonusTimeChange}
           wrapOpen={wrapExpanded.has(a.attackIndex)}
           onChargeAttackIndexChange={onChargeAttackIndexChange}
           onChoiceChange={onChoiceChange}

@@ -1,4 +1,10 @@
-import { BASE_ATTACK_COUNT, DEF_MAX, DEF_MIN, VBOAR_TAC } from './constants';
+import {
+  BASE_ATTACK_COUNT,
+  BONUS_TIME_TAC_BONUS,
+  DEF_MAX,
+  DEF_MIN,
+  VBOAR_TAC,
+} from './constants';
 import {
   MAX_PLAYBOOK_NET,
   PLAYBOOK,
@@ -109,12 +115,19 @@ export function tacForAttack(
   chargeAttackIndex: number,
   tacBonusFromSingledOut: number,
   coverTacPenalty = 0,
+  bonusTimeTacBonus = 0,
 ): number {
   const charge =
     attackIndex < BASE_ATTACK_COUNT && attackIndex === chargeAttackIndex
       ? CHARGE_TAC_BONUS
       : 0;
-  return VBOAR_TAC + charge + tacBonusFromSingledOut - coverTacPenalty;
+  return (
+    VBOAR_TAC +
+    charge +
+    tacBonusFromSingledOut -
+    coverTacPenalty +
+    bonusTimeTacBonus
+  );
 }
 
 export function tacForAttackRow(
@@ -125,6 +138,7 @@ export function tacForAttackRow(
   enemyHasCover: boolean,
   damageMods: PlaybookDamageMods,
   baseDef: number,
+  bonusTimeByAttack: readonly boolean[],
 ): number {
   const { tacBonus, defReduction } = modifiersBeforeAttack(
     wrapPicks,
@@ -134,11 +148,14 @@ export function tacForAttackRow(
   );
   const tacFromDefCap = tacBonusFromDefReductionCap(baseDef, defReduction);
   const coverPen = coverTacPenaltyForAttack(enemyHasCover, wrapPicks, attackIndex);
+  const bonusTimeTac =
+    bonusTimeByAttack[attackIndex] === true ? BONUS_TIME_TAC_BONUS : 0;
   return tacForAttack(
     attackIndex,
     chargeAttackIndex,
     tacBonus + tacFromDefCap,
     coverPen,
+    bonusTimeTac,
   );
 }
 
@@ -152,6 +169,7 @@ export function maxPlaybookColumnForRow(
   enemyHasCover: boolean,
   damageMods: PlaybookDamageMods,
   baseDef: number,
+  bonusTimeByAttack: readonly boolean[],
 ): number {
   const tac = tacForAttackRow(
     wrapPicks,
@@ -161,6 +179,7 @@ export function maxPlaybookColumnForRow(
     enemyHasCover,
     damageMods,
     baseDef,
+    bonusTimeByAttack,
   );
   return maxNetSuccessesForRoll(tac, armor);
 }
@@ -202,6 +221,7 @@ function stripDuplicateKd(
   enemyHasCover: boolean,
   damageMods: PlaybookDamageMods,
   baseDef: number,
+  bonusTimeByAttack: readonly boolean[],
 ): boolean {
   let changed = false;
   let kdSeen = false;
@@ -215,6 +235,7 @@ function stripDuplicateKd(
       enemyHasCover,
       damageMods,
       baseDef,
+      bonusTimeByAttack,
     );
     for (let k = 0; k < next[i].length; k++) {
       const id = next[i][k];
@@ -316,6 +337,7 @@ export function clampAttackPlan(
   enemyHasCover: boolean,
   damageMods: PlaybookDamageMods,
   baseDef: number,
+  bonusTimeByAttack: readonly boolean[],
 ): { wrapPicks: WrapPick[][]; characterPlayPicks: CharacterPlayPickSlot[][] } {
   const next = clone2d(wrapPicks);
   let nextCharacterPlay = clone2d(characterPlayPicks);
@@ -360,6 +382,7 @@ export function clampAttackPlan(
         enemyHasCover,
         damageMods,
         baseDef,
+        bonusTimeByAttack,
       );
       const r = clampRowPicks(next[i], nextCharacterPlay[i], maxNet);
       const rowSame =
@@ -382,6 +405,7 @@ export function clampAttackPlan(
         enemyHasCover,
         damageMods,
         baseDef,
+        bonusTimeByAttack,
       )
     ) {
       passChanged = true;
@@ -421,6 +445,7 @@ export function computeAttackSequence(
   chargeAttackIndex: number,
   enemyHasCover: boolean,
   damageMods: PlaybookDamageMods,
+  bonusTimeByAttack: readonly boolean[],
 ): { attacks: AttackRollContext[]; probAll: number } {
   const attacks: AttackRollContext[] = [];
   let probAll = 1;
@@ -435,11 +460,14 @@ export function computeAttackSequence(
     const tacFromDefCap = tacBonusFromDefReductionCap(baseDef, defReduction);
     const defMin = effectiveDefMinRoll(baseDef, defReduction);
     const coverPen = coverTacPenaltyForAttack(enemyHasCover, wrapPicks, i);
+    const bonusTimeTac =
+      bonusTimeByAttack[i] === true ? BONUS_TIME_TAC_BONUS : 0;
     const tac = tacForAttack(
       i,
       chargeAttackIndex,
       tacBonus + tacFromDefCap,
       coverPen,
+      bonusTimeTac,
     );
     const pHit = hitProbabilityPerDie(defMin);
     const need = wrapNetCostSum(wrapPicks[i]);

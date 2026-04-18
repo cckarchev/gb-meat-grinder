@@ -96,6 +96,16 @@ const ChargeWrap = styled.label`
   font-size: 0.85rem;
 `;
 
+const BonusWrap = styled.label<{ $disabled: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: ${(p) => (p.$disabled ? 'not-allowed' : 'pointer')};
+  color: ${(p) => (p.$disabled ? 'var(--muted)' : 'var(--text)')};
+  font-size: 0.85rem;
+  user-select: none;
+`;
+
 const ChargeMetaSlot = styled(MetaItem)`
   margin-left: auto;
 `;
@@ -132,6 +142,9 @@ export function AttackSwingRow({
   damageMods,
   remainingHpIfHit,
   momentum,
+  bonusTime,
+  bonusTimeMomentumPool,
+  onBonusTimeChange,
   wrapOpen,
   onChargeAttackIndexChange,
   onChoiceChange,
@@ -148,6 +161,9 @@ export function AttackSwingRow({
   damageMods: AttacksPanelProps['damageMods'];
   remainingHpIfHit: number;
   momentum: number;
+  bonusTime: boolean;
+  bonusTimeMomentumPool: number;
+  onBonusTimeChange: AttacksPanelProps['onBonusTimeChange'];
   wrapOpen: boolean;
   onChargeAttackIndexChange: AttacksPanelProps['onChargeAttackIndexChange'];
   onChoiceChange: AttacksPanelProps['onChoiceChange'];
@@ -171,6 +187,7 @@ export function AttackSwingRow({
   );
   const hasWrapContinuation = wrapPicks[i].length > 1;
   const variant = attackBlockVariant(i, chargeAttackIndex);
+  const bonusTimeDisabled = !bonusTime && bonusTimeMomentumPool < 1;
 
   return (
     <AttackRow>
@@ -180,6 +197,24 @@ export function AttackSwingRow({
             <AttackKindLabel>
               {attackKindLabel(i, chargeAttackIndex)}
             </AttackKindLabel>
+            <MetaItem>
+              <BonusWrap
+                $disabled={bonusTimeDisabled}
+                title={
+                  bonusTimeDisabled
+                    ? 'Bonus Time needs at least 1 momentum before this attack (costs 1 before the roll).'
+                    : 'Bonus Time: +1 TAC this attack; spend 1 momentum before rolling.'
+                }
+              >
+                <input
+                  type="checkbox"
+                  checked={bonusTime}
+                  disabled={bonusTimeDisabled}
+                  onChange={(e) => onBonusTimeChange(i, e.target.checked)}
+                />
+                <span>Bonus Time (+1 TAC)</span>
+              </BonusWrap>
+            </MetaItem>
             {i < BASE_ATTACK_COUNT ? (
               <ChargeMetaSlot>
                 <ChargeWrap>
