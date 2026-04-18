@@ -32,6 +32,22 @@ import {
 
 export const CHARGE_TAC_BONUS = 4;
 
+/** Effective enemy DEF stat for this row (charge + Defensive Stance = +1, capped). */
+export function enemyDefBaseForAttackRow(
+  enemyDef: number,
+  attackIndex: number,
+  chargeAttackIndex: number,
+  enemyDefensiveStance: boolean,
+): number {
+  const stanceBonus =
+    enemyDefensiveStance &&
+    attackIndex < BASE_ATTACK_COUNT &&
+    attackIndex === chargeAttackIndex
+      ? 1
+      : 0;
+  return Math.min(DEF_MAX, enemyDef + stanceBonus);
+}
+
 /**
  * Cover: −1 TAC on this attack’s dice pool while the enemy is in terrain.
  * Push (>) or double push (>>) on any **earlier** attack in activation order
@@ -144,6 +160,7 @@ export function tacForAttackRow(
   attackIndex: number,
   chargeAttackIndex: number,
   enemyHasCover: boolean,
+  enemyDefensiveStance: boolean,
   damageMods: PlaybookDamageMods,
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
@@ -155,7 +172,13 @@ export function tacForAttackRow(
     attackIndex,
     damageMods,
   );
-  const tacFromDefCap = tacBonusFromDefReductionCap(baseDef, defReduction);
+  const defForRow = enemyDefBaseForAttackRow(
+    baseDef,
+    attackIndex,
+    chargeAttackIndex,
+    enemyDefensiveStance,
+  );
+  const tacFromDefCap = tacBonusFromDefReductionCap(defForRow, defReduction);
   const coverPen = coverTacPenaltyForAttack(
     enemyHasCover,
     wrapPicks,
@@ -181,6 +204,7 @@ export function maxPlaybookColumnForRow(
   chargeAttackIndex: number,
   armor: number,
   enemyHasCover: boolean,
+  enemyDefensiveStance: boolean,
   damageMods: PlaybookDamageMods,
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
@@ -192,6 +216,7 @@ export function maxPlaybookColumnForRow(
     attackIndex,
     chargeAttackIndex,
     enemyHasCover,
+    enemyDefensiveStance,
     damageMods,
     baseDef,
     bonusTimeByAttack,
@@ -228,6 +253,7 @@ function stripDuplicateKd(
   chargeAttackIndex: number,
   armor: number,
   enemyHasCover: boolean,
+  enemyDefensiveStance: boolean,
   damageMods: PlaybookDamageMods,
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
@@ -243,6 +269,7 @@ function stripDuplicateKd(
       chargeAttackIndex,
       armor,
       enemyHasCover,
+      enemyDefensiveStance,
       damageMods,
       baseDef,
       bonusTimeByAttack,
@@ -351,6 +378,7 @@ export function clampAttackPlan(
   chargeAttackIndex: number,
   armor: number,
   enemyHasCover: boolean,
+  enemyDefensiveStance: boolean,
   damageMods: PlaybookDamageMods,
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
@@ -397,6 +425,7 @@ export function clampAttackPlan(
         chargeAttackIndex,
         armor,
         enemyHasCover,
+        enemyDefensiveStance,
         damageMods,
         baseDef,
         bonusTimeByAttack,
@@ -421,6 +450,7 @@ export function clampAttackPlan(
         chargeAttackIndex,
         armor,
         enemyHasCover,
+        enemyDefensiveStance,
         damageMods,
         baseDef,
         bonusTimeByAttack,
@@ -463,6 +493,7 @@ export function computeAttackSequence(
   characterPlayPicks: CharacterPlayPickSlot[][],
   chargeAttackIndex: number,
   enemyHasCover: boolean,
+  enemyDefensiveStance: boolean,
   damageMods: PlaybookDamageMods,
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
@@ -477,8 +508,14 @@ export function computeAttackSequence(
       i,
       damageMods,
     );
-    const tacFromDefCap = tacBonusFromDefReductionCap(baseDef, defReduction);
-    const defMin = effectiveDefMinRoll(baseDef, defReduction);
+    const defForRow = enemyDefBaseForAttackRow(
+      baseDef,
+      i,
+      chargeAttackIndex,
+      enemyDefensiveStance,
+    );
+    const tacFromDefCap = tacBonusFromDefReductionCap(defForRow, defReduction);
+    const defMin = effectiveDefMinRoll(defForRow, defReduction);
     const coverPen = coverTacPenaltyForAttack(enemyHasCover, wrapPicks, i);
     const bonusTimeTac =
       bonusTimeByAttack[i] === true ? BONUS_TIME_TAC_BONUS : 0;

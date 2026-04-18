@@ -19,6 +19,7 @@ export type KillItSimulation = {
   hp: number;
   chargeAttackIndex: number;
   enemyHasCover: boolean;
+  enemyDefensiveStance: boolean;
   startingMomentum: number;
   initialTacModifier: number;
   damageMods: PlaybookDamageMods;
@@ -53,6 +54,7 @@ export function useKillItSimulationState(): KillItSimulation {
         characterPlayPicks,
         state.chargeAttackIndex,
         state.enemyHasCover,
+        state.enemyDefensiveStance,
         state.damageMods,
         state.bonusTimeByAttack,
         state.initialTacModifier,
@@ -64,6 +66,7 @@ export function useKillItSimulationState(): KillItSimulation {
       characterPlayPicks,
       state.chargeAttackIndex,
       state.enemyHasCover,
+      state.enemyDefensiveStance,
       state.damageMods,
       state.bonusTimeByAttack,
       state.initialTacModifier,
@@ -77,6 +80,7 @@ export function useKillItSimulationState(): KillItSimulation {
       hp: state.hp,
       chargeAttackIndex: state.chargeAttackIndex,
       enemyHasCover: state.enemyHasCover,
+      enemyDefensiveStance: state.enemyDefensiveStance,
       startingMomentum: state.startingMomentum,
       initialTacModifier: state.initialTacModifier,
       damageMods: state.damageMods,

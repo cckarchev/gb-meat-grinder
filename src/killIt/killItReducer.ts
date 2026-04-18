@@ -29,6 +29,7 @@ export type KillItState = {
   hp: number;
   chargeAttackIndex: number;
   enemyHasCover: boolean;
+  enemyDefensiveStance: boolean;
   startingMomentum: number;
   initialTacModifier: number;
   bonusTimeByAttack: boolean[];
@@ -41,6 +42,7 @@ function clampParams(s: KillItState): AttackPlanClampParams {
     chargeAttackIndex: s.chargeAttackIndex,
     armor: s.armor,
     enemyHasCover: s.enemyHasCover,
+    enemyDefensiveStance: s.enemyDefensiveStance,
     damageMods: s.damageMods,
     enemyDef: s.enemyDef,
     bonusTimeByAttack: s.bonusTimeByAttack,
@@ -66,6 +68,7 @@ export type KillItAction =
   | { type: 'hp'; value: number }
   | { type: 'chargeAttackIndex'; value: number }
   | { type: 'enemyHasCover'; value: boolean }
+  | { type: 'enemyDefensiveStance'; value: boolean }
   | { type: 'startingMomentum'; value: number }
   | { type: 'initialTacModifierRaw'; value: number }
   | { type: 'damageMods'; value: PlaybookDamageMods }
@@ -92,6 +95,7 @@ export function createInitialKillItState(): KillItState {
     hp: HP_DEFAULT,
     chargeAttackIndex: 0,
     enemyHasCover: false,
+    enemyDefensiveStance: false,
     startingMomentum: 0,
     initialTacModifier: 0,
     bonusTimeByAttack: Array.from({ length: MAX_ATTACK_COUNT }, () => false),
@@ -131,6 +135,13 @@ export function killItReducer(state: KillItState, action: KillItAction): KillItS
     }
     case 'enemyHasCover': {
       const next = { ...state, enemyHasCover: action.value };
+      return {
+        ...next,
+        attackPlan: clampPlan(next, state.attackPlan),
+      };
+    }
+    case 'enemyDefensiveStance': {
+      const next = { ...state, enemyDefensiveStance: action.value };
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),

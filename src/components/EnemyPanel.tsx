@@ -40,6 +40,7 @@ export function EnemyPanel() {
     armor,
     hp,
     enemyHasCover,
+    enemyDefensiveStance,
     damageMods,
     dispatch,
   } = useKillItSimulation();
@@ -88,6 +89,19 @@ export function EnemyPanel() {
           }
         />
         <span>Cover</span>
+      </CoverOption>
+      <CoverOption>
+        <input
+          type="checkbox"
+          checked={enemyDefensiveStance}
+          onChange={(e) =>
+            dispatch({
+              type: 'enemyDefensiveStance',
+              value: e.target.checked,
+            })
+          }
+        />
+        <span>Defensive Stance</span>
       </CoverOption>
       <BuffOption>
         <input

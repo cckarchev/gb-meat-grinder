@@ -23,6 +23,8 @@ export type AttackPlanClampParams = {
   chargeAttackIndex: number;
   armor: number;
   enemyHasCover: boolean;
+  /** +1 enemy DEF only on the attack that has the charge. */
+  enemyDefensiveStance: boolean;
   damageMods: PlaybookDamageMods;
   enemyDef: number;
   bonusTimeByAttack: readonly boolean[];
@@ -38,6 +40,7 @@ export function createInitialAttackPlan(): AttackPlan {
     cp,
     0,
     1,
+    false,
     false,
     DEFAULT_PLAYBOOK_DAMAGE_MODS,
     4,
@@ -57,6 +60,7 @@ export function clampAttackPlanState(
     params.chargeAttackIndex,
     params.armor,
     params.enemyHasCover,
+    params.enemyDefensiveStance,
     params.damageMods,
     params.enemyDef,
     params.bonusTimeByAttack,
