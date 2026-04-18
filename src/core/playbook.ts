@@ -256,14 +256,18 @@ export function coverSwingClockIndices(): number[] {
 
 /**
  * Playbook button text: plain numeric pips (label matches damage) show the
- * **effective** value; GB / 1GB show **0GB**, **1GB**, … from effective damage.
+ * **effective** value; **GB** is always the letters “GB”; **1GB** uses effective
+ * damage as **0GB**, **1GB**, **2GB**, …
  */
 export function playbookLineDisplayLabel(
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
 ): string {
   const r = getPlaybookResult(id);
-  if (r.picksCharacterPlay === true) {
+  if (id === 'gb') {
+    return r.label;
+  }
+  if (id === 'one_gb') {
     return `${effectiveDamageForChoice(id, mods)}GB`;
   }
   if (r.damage > 0 && r.label === String(r.damage)) {

@@ -92,6 +92,18 @@ export function effectiveDefMinRoll(
   return Math.max(DEF_MIN, Math.min(DEF_MAX, baseDef - defReduction));
 }
 
+/**
+ * Enemy DEF cannot be reduced below `DEF_MIN` on the dice. Each point of DEF
+ * reduction beyond that cap becomes +1 TAC for Veteran Boar on later swings.
+ */
+export function tacBonusFromDefReductionCap(
+  baseDef: number,
+  defReduction: number,
+): number {
+  const maxDefReduction = Math.max(0, baseDef - DEF_MIN);
+  return Math.max(0, defReduction - maxDefReduction);
+}
+
 export function tacForAttack(
   attackIndex: number,
   chargeAttackIndex: number,
@@ -112,15 +124,22 @@ export function tacForAttackRow(
   chargeAttackIndex: number,
   enemyHasCover: boolean,
   damageMods: PlaybookDamageMods,
+  baseDef: number,
 ): number {
-  const { tacBonus } = modifiersBeforeAttack(
+  const { tacBonus, defReduction } = modifiersBeforeAttack(
     wrapPicks,
     characterPlayPicks,
     attackIndex,
     damageMods,
   );
+  const tacFromDefCap = tacBonusFromDefReductionCap(baseDef, defReduction);
   const coverPen = coverTacPenaltyForAttack(enemyHasCover, wrapPicks, attackIndex);
-  return tacForAttack(attackIndex, chargeAttackIndex, tacBonus, coverPen);
+  return tacForAttack(
+    attackIndex,
+    chargeAttackIndex,
+    tacBonus + tacFromDefCap,
+    coverPen,
+  );
 }
 
 /** Highest net successes reachable in one roll on this row (TAC − ARM cap). */
@@ -132,6 +151,7 @@ export function maxPlaybookColumnForRow(
   armor: number,
   enemyHasCover: boolean,
   damageMods: PlaybookDamageMods,
+  baseDef: number,
 ): number {
   const tac = tacForAttackRow(
     wrapPicks,
@@ -140,6 +160,7 @@ export function maxPlaybookColumnForRow(
     chargeAttackIndex,
     enemyHasCover,
     damageMods,
+    baseDef,
   );
   return maxNetSuccessesForRoll(tac, armor);
 }
@@ -180,6 +201,7 @@ function stripDuplicateKd(
   armor: number,
   enemyHasCover: boolean,
   damageMods: PlaybookDamageMods,
+  baseDef: number,
 ): boolean {
   let changed = false;
   let kdSeen = false;
@@ -192,6 +214,7 @@ function stripDuplicateKd(
       armor,
       enemyHasCover,
       damageMods,
+      baseDef,
     );
     for (let k = 0; k < next[i].length; k++) {
       const id = next[i][k];
@@ -292,6 +315,7 @@ export function clampAttackPlan(
   armor: number,
   enemyHasCover: boolean,
   damageMods: PlaybookDamageMods,
+  baseDef: number,
 ): { wrapPicks: WrapPick[][]; characterPlayPicks: CharacterPlayPickSlot[][] } {
   const next = clone2d(wrapPicks);
   let nextCharacterPlay = clone2d(characterPlayPicks);
@@ -335,6 +359,7 @@ export function clampAttackPlan(
         armor,
         enemyHasCover,
         damageMods,
+        baseDef,
       );
       const r = clampRowPicks(next[i], nextCharacterPlay[i], maxNet);
       const rowSame =
@@ -356,6 +381,7 @@ export function clampAttackPlan(
         armor,
         enemyHasCover,
         damageMods,
+        baseDef,
       )
     ) {
       passChanged = true;
@@ -406,9 +432,15 @@ export function computeAttackSequence(
       i,
       damageMods,
     );
+    const tacFromDefCap = tacBonusFromDefReductionCap(baseDef, defReduction);
     const defMin = effectiveDefMinRoll(baseDef, defReduction);
     const coverPen = coverTacPenaltyForAttack(enemyHasCover, wrapPicks, i);
-    const tac = tacForAttack(i, chargeAttackIndex, tacBonus, coverPen);
+    const tac = tacForAttack(
+      i,
+      chargeAttackIndex,
+      tacBonus + tacFromDefCap,
+      coverPen,
+    );
     const pHit = hitProbabilityPerDie(defMin);
     const need = wrapNetCostSum(wrapPicks[i]);
     const prob = probAttackSucceeds(tac, pHit, armor, need);

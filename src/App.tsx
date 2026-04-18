@@ -41,6 +41,7 @@ function App() {
       1,
       false,
       DEFAULT_PLAYBOOK_DAMAGE_MODS,
+      4,
     );
     return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
   });
@@ -75,6 +76,7 @@ function App() {
     arm: number,
     cover: boolean,
     mods: PlaybookDamageMods,
+    baseDef: number,
   ): AttackPlan => {
     const r = clampAttackPlan(
       prev.wrapPicks,
@@ -83,6 +85,7 @@ function App() {
       arm,
       cover,
       mods,
+      baseDef,
     );
     if (
       r.wrapPicks === prev.wrapPicks &&
@@ -120,6 +123,7 @@ function App() {
         armor,
         enemyHasCover,
         damageMods,
+        def,
       );
     });
   };
@@ -144,6 +148,7 @@ function App() {
         armor,
         enemyHasCover,
         damageMods,
+        def,
       );
     });
   };
@@ -173,6 +178,7 @@ function App() {
         armor,
         enemyHasCover,
         damageMods,
+        def,
       );
     });
   };
@@ -180,7 +186,14 @@ function App() {
   const handleArmorChange = (nextArmor: number) => {
     setArmor(nextArmor);
     setAttackPlan((prev) =>
-      applyClamp(prev, chargeAttackIndex, nextArmor, enemyHasCover, damageMods),
+      applyClamp(
+        prev,
+        chargeAttackIndex,
+        nextArmor,
+        enemyHasCover,
+        damageMods,
+        def,
+      ),
     );
   };
 
@@ -188,21 +201,35 @@ function App() {
     const clamped = Math.max(0, Math.min(BASE_ATTACK_COUNT - 1, index));
     setChargeAttackIndex(clamped);
     setAttackPlan((prev) =>
-      applyClamp(prev, clamped, armor, enemyHasCover, damageMods),
+      applyClamp(prev, clamped, armor, enemyHasCover, damageMods, def),
     );
   };
 
   const handleEnemyHasCoverChange = (cover: boolean) => {
     setEnemyHasCover(cover);
     setAttackPlan((prev) =>
-      applyClamp(prev, chargeAttackIndex, armor, cover, damageMods),
+      applyClamp(prev, chargeAttackIndex, armor, cover, damageMods, def),
     );
   };
 
   const handleDamageModsChange = (next: PlaybookDamageMods) => {
     setDamageMods(next);
     setAttackPlan((prev) =>
-      applyClamp(prev, chargeAttackIndex, armor, enemyHasCover, next),
+      applyClamp(prev, chargeAttackIndex, armor, enemyHasCover, next, def),
+    );
+  };
+
+  const handleDefChange = (nextDef: number) => {
+    setDef(nextDef);
+    setAttackPlan((prev) =>
+      applyClamp(
+        prev,
+        chargeAttackIndex,
+        armor,
+        enemyHasCover,
+        damageMods,
+        nextDef,
+      ),
     );
   };
 
@@ -216,7 +243,7 @@ function App() {
         onEnemyHasCoverChange={handleEnemyHasCoverChange}
         damageMods={damageMods}
         onDamageModsChange={handleDamageModsChange}
-        onDefChange={setDef}
+        onDefChange={handleDefChange}
         onArmorChange={handleArmorChange}
         onHpChange={setHp}
       />

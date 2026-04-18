@@ -133,10 +133,7 @@ export function TargetPanel({
             onDamageModsChange({ ...damageMods, toughHide: e.target.checked })
           }
         />
-        <span>
-          Tough Hide on enemy (−1 to each <strong>selected</strong> playbook damage
-          pip)
-        </span>
+        <span>Tough Hide</span>
       </ToughHideOption>
       <BuffOption>
         <input
@@ -146,7 +143,7 @@ export function TargetPanel({
             onDamageModsChange({ ...damageMods, tooledUp: e.target.checked })
           }
         />
-        <span>Tooled Up (+1 to each selected playbook damage result)</span>
+        <span>Tooled Up</span>
       </BuffOption>
       <BuffOption>
         <input
@@ -156,7 +153,7 @@ export function TargetPanel({
             onDamageModsChange({ ...damageMods, theOwner: e.target.checked })
           }
         />
-        <span>The Owner (+1 to each selected playbook damage result)</span>
+        <span>The Owner</span>
       </BuffOption>
     </Panel>
   );
