@@ -5,19 +5,21 @@ import { AttacksPanel } from './components/AttacksPanel';
 import { TargetPanel } from './components/TargetPanel';
 import { BASE_ATTACK_COUNT, HP_DEFAULT } from './core/constants';
 import {
-  choiceUsesGbFollowUp,
-  defaultGbFollowUpsWrap,
+  choiceUsesCharacterPlay,
+  DEFAULT_PLAYBOOK_DAMAGE_MODS,
+  defaultCharacterPlayPicksWrap,
   defaultWrapPicks,
-  type GbFollowUp,
-  type GbFollowUpSlot,
+  type CharacterPlayPick,
+  type CharacterPlayPickSlot,
   type PlaybookChoiceId,
-  sanitizeGbFollowUpsWrap,
+  type PlaybookDamageMods,
+  sanitizeCharacterPlayPicksWrap,
   type WrapPick,
 } from './core/playbook';
 
 type AttackPlan = {
   wrapPicks: WrapPick[][];
-  gbFollowUps: GbFollowUpSlot[][];
+  characterPlayPicks: CharacterPlayPickSlot[][];
 };
 
 function App() {
@@ -26,14 +28,24 @@ function App() {
   const [hp, setHp] = useState(HP_DEFAULT);
   const [chargeAttackIndex, setChargeAttackIndex] = useState(0);
   const [enemyHasCover, setEnemyHasCover] = useState(false);
+  const [damageMods, setDamageMods] = useState<PlaybookDamageMods>(
+    DEFAULT_PLAYBOOK_DAMAGE_MODS,
+  );
   const [attackPlan, setAttackPlan] = useState<AttackPlan>(() => {
     const wp = defaultWrapPicks();
-    const gb = defaultGbFollowUpsWrap();
-    const r = clampAttackPlan(wp, gb, 0, 1, false);
-    return { wrapPicks: r.wrapPicks, gbFollowUps: r.gbFollowUps };
+    const cp = defaultCharacterPlayPicksWrap();
+    const r = clampAttackPlan(
+      wp,
+      cp,
+      0,
+      1,
+      false,
+      DEFAULT_PLAYBOOK_DAMAGE_MODS,
+    );
+    return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
   });
 
-  const { wrapPicks, gbFollowUps } = attackPlan;
+  const { wrapPicks, characterPlayPicks } = attackPlan;
 
   const { attacks } = useMemo(
     () =>
@@ -41,11 +53,20 @@ function App() {
         def,
         armor,
         wrapPicks,
-        gbFollowUps,
+        characterPlayPicks,
         chargeAttackIndex,
         enemyHasCover,
+        damageMods,
       ),
-    [def, armor, wrapPicks, gbFollowUps, chargeAttackIndex, enemyHasCover],
+    [
+      def,
+      armor,
+      wrapPicks,
+      characterPlayPicks,
+      chargeAttackIndex,
+      enemyHasCover,
+      damageMods,
+    ],
   );
 
   const applyClamp = (
@@ -53,12 +74,23 @@ function App() {
     charge: number,
     arm: number,
     cover: boolean,
+    mods: PlaybookDamageMods,
   ): AttackPlan => {
-    const r = clampAttackPlan(prev.wrapPicks, prev.gbFollowUps, charge, arm, cover);
-    if (r.wrapPicks === prev.wrapPicks && r.gbFollowUps === prev.gbFollowUps) {
+    const r = clampAttackPlan(
+      prev.wrapPicks,
+      prev.characterPlayPicks,
+      charge,
+      arm,
+      cover,
+      mods,
+    );
+    if (
+      r.wrapPicks === prev.wrapPicks &&
+      r.characterPlayPicks === prev.characterPlayPicks
+    ) {
       return prev;
     }
-    return { wrapPicks: r.wrapPicks, gbFollowUps: r.gbFollowUps };
+    return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
   };
 
   const setChoice = (
@@ -74,19 +106,20 @@ function App() {
           ? row.map((cur, j) => (j === pickIndex ? id : cur))
           : [...row],
       );
-      const nextGb = prev.gbFollowUps.map((row, idx) => {
+      const nextCharacterPlay = prev.characterPlayPicks.map((row, idx) => {
         if (idx !== attackIndex) return [...row];
         const nr = [...row];
         while (nr.length < nextPicks[idx].length) nr.push(null);
-        if (id === null || !choiceUsesGbFollowUp(id)) nr[pickIndex] = null;
+        if (id === null || !choiceUsesCharacterPlay(id)) nr[pickIndex] = null;
         else if (nr[pickIndex] == null) nr[pickIndex] = 'so';
         return nr.slice(0, nextPicks[idx].length);
       });
       return applyClamp(
-        { wrapPicks: nextPicks, gbFollowUps: nextGb },
+        { wrapPicks: nextPicks, characterPlayPicks: nextCharacterPlay },
         chargeAttackIndex,
         armor,
         enemyHasCover,
+        damageMods,
       );
     });
   };
@@ -96,42 +129,50 @@ function App() {
       const row = prev.wrapPicks[attackIndex];
       if (row.length <= 1) return prev;
       const pick0 = row[0];
-      let gb0: GbFollowUpSlot = prev.gbFollowUps[attackIndex]?.[0] ?? null;
-      if (pick0 == null || !choiceUsesGbFollowUp(pick0)) gb0 = null;
+      let cp0: CharacterPlayPickSlot =
+        prev.characterPlayPicks[attackIndex]?.[0] ?? null;
+      if (pick0 == null || !choiceUsesCharacterPlay(pick0)) cp0 = null;
       const nextPicks = prev.wrapPicks.map((r, idx) =>
         idx === attackIndex ? [pick0] : [...r],
       );
-      const nextGb = prev.gbFollowUps.map((r, idx) =>
-        idx === attackIndex ? [gb0] : [...r],
+      const nextCharacterPlay = prev.characterPlayPicks.map((r, idx) =>
+        idx === attackIndex ? [cp0] : [...r],
       );
       return applyClamp(
-        { wrapPicks: nextPicks, gbFollowUps: nextGb },
+        { wrapPicks: nextPicks, characterPlayPicks: nextCharacterPlay },
         chargeAttackIndex,
         armor,
         enemyHasCover,
+        damageMods,
       );
     });
   };
 
-  const setGbFollowUp = (
+  const setCharacterPlayPick = (
     attackIndex: number,
     pickIndex: number,
-    follow: GbFollowUp,
+    pick: CharacterPlayPick,
   ) => {
     setAttackPlan((prev) => {
-      if (prev.gbFollowUps[attackIndex]?.[pickIndex] === follow) return prev;
-      const nextGb = prev.gbFollowUps.map((row, idx) => {
+      if (prev.characterPlayPicks[attackIndex]?.[pickIndex] === pick)
+        return prev;
+      const nextCharacterPlay = prev.characterPlayPicks.map((row, idx) => {
         if (idx !== attackIndex) return [...row];
         const nr = [...row];
-        nr[pickIndex] = follow;
+        nr[pickIndex] = pick;
         return nr;
       });
-      const { gb } = sanitizeGbFollowUpsWrap(prev.wrapPicks, nextGb);
+      const { characterPlayPicks: sanitized } = sanitizeCharacterPlayPicksWrap(
+        prev.wrapPicks,
+        nextCharacterPlay,
+        damageMods,
+      );
       return applyClamp(
-        { wrapPicks: prev.wrapPicks, gbFollowUps: gb },
+        { wrapPicks: prev.wrapPicks, characterPlayPicks: sanitized },
         chargeAttackIndex,
         armor,
         enemyHasCover,
+        damageMods,
       );
     });
   };
@@ -139,20 +180,29 @@ function App() {
   const handleArmorChange = (nextArmor: number) => {
     setArmor(nextArmor);
     setAttackPlan((prev) =>
-      applyClamp(prev, chargeAttackIndex, nextArmor, enemyHasCover),
+      applyClamp(prev, chargeAttackIndex, nextArmor, enemyHasCover, damageMods),
     );
   };
 
   const handleChargeAttackIndexChange = (index: number) => {
     const clamped = Math.max(0, Math.min(BASE_ATTACK_COUNT - 1, index));
     setChargeAttackIndex(clamped);
-    setAttackPlan((prev) => applyClamp(prev, clamped, armor, enemyHasCover));
+    setAttackPlan((prev) =>
+      applyClamp(prev, clamped, armor, enemyHasCover, damageMods),
+    );
   };
 
   const handleEnemyHasCoverChange = (cover: boolean) => {
     setEnemyHasCover(cover);
     setAttackPlan((prev) =>
-      applyClamp(prev, chargeAttackIndex, armor, cover),
+      applyClamp(prev, chargeAttackIndex, armor, cover, damageMods),
+    );
+  };
+
+  const handleDamageModsChange = (next: PlaybookDamageMods) => {
+    setDamageMods(next);
+    setAttackPlan((prev) =>
+      applyClamp(prev, chargeAttackIndex, armor, enemyHasCover, next),
     );
   };
 
@@ -164,6 +214,8 @@ function App() {
         hp={hp}
         enemyHasCover={enemyHasCover}
         onEnemyHasCoverChange={handleEnemyHasCoverChange}
+        damageMods={damageMods}
+        onDamageModsChange={handleDamageModsChange}
         onDefChange={setDef}
         onArmorChange={handleArmorChange}
         onHpChange={setHp}
@@ -174,9 +226,10 @@ function App() {
         chargeAttackIndex={chargeAttackIndex}
         onChargeAttackIndexChange={handleChargeAttackIndexChange}
         wrapPicks={wrapPicks}
-        gbFollowUps={gbFollowUps}
+        characterPlayPicks={characterPlayPicks}
+        damageMods={damageMods}
         onChoiceChange={setChoice}
-        onGbFollowUpChange={setGbFollowUp}
+        onCharacterPlayPickChange={setCharacterPlayPick}
         onWrapContinuationCleared={clearWrapContinuation}
         attacks={attacks}
       />

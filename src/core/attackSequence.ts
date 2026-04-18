@@ -4,14 +4,17 @@ import {
   PLAYBOOK,
   activationAttackIndices,
   attackRowIsActive,
-  choiceUsesGbFollowUp,
-  type GbFollowUpSlot,
+  choiceUsesCharacterPlay,
+  coverSwingClockIndices,
+  type CharacterPlayPickSlot,
   type PlaybookChoiceId,
+  type PlaybookDamageMods,
   type WrapPick,
   netSuccessesForChoice,
   rowEffectsForPick,
-  sanitizeGbFollowUpsWrap,
+  sanitizeCharacterPlayPicksWrap,
   wrapNetCostSum,
+  wrapPickClearsCover,
   wrapSlotBudget,
   wrapSlotCount,
 } from './playbook';
@@ -25,8 +28,8 @@ export const CHARGE_TAC_BONUS = 4;
 
 /**
  * Cover: −1 TAC on this attack’s dice pool while the enemy is in terrain.
- * A Push (>) on any **earlier** attack in activation order (base → berserker → …)
- * moves them off that terrain, so cover no longer applies on later swings.
+ * Push (>) or double push (>>) on any **earlier** attack in activation order
+ * (base → berserker → …) clears that terrain benefit on later swings.
  */
 export function coverTacPenaltyForAttack(
   enemyHasCover: boolean,
@@ -34,13 +37,17 @@ export function coverTacPenaltyForAttack(
   attackIndex: number,
 ): number {
   if (!enemyHasCover) return 0;
-  const order = activationAttackIndices(wrapPicks);
-  const targetPos = order.indexOf(attackIndex);
-  if (targetPos < 0) return 0;
-  for (let oi = 0; oi < targetPos; oi++) {
-    const j = order[oi];
-    for (const id of wrapPicks[j]) {
-      if (id === 'push') return 0;
+  /* Use fixed base → berserker clock so > / >> are never skipped when a berserker
+   * row is omitted from `activationAttackIndices` (damage-gated). */
+  const clock = coverSwingClockIndices();
+  const pos = clock.indexOf(attackIndex);
+  if (pos < 0) return 1;
+  for (let p = 0; p < pos; p++) {
+    const j = clock[p];
+    const row = wrapPicks[j];
+    if (!row?.length) continue;
+    for (let k = 0; k < row.length; k++) {
+      if (wrapPickClearsCover(row[k])) return 0;
     }
   }
   return 1;
@@ -56,10 +63,11 @@ function clone2d<T>(rows: T[][]): T[][] {
  */
 export function modifiersBeforeAttack(
   wrapPicks: WrapPick[][],
-  gbFollowUps: GbFollowUpSlot[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
   attackIndex: number,
+  damageMods: PlaybookDamageMods,
 ): { tacBonus: number; defReduction: number } {
-  const order = activationAttackIndices(wrapPicks);
+  const order = activationAttackIndices(wrapPicks, damageMods);
   const targetPos = order.indexOf(attackIndex);
   if (targetPos < 0) return { tacBonus: 0, defReduction: 0 };
 
@@ -69,7 +77,7 @@ export function modifiersBeforeAttack(
     const j = order[oi];
     for (let k = 0; k < wrapPicks[j].length; k++) {
       if (wrapPicks[j][k] == null) continue;
-      const m = rowEffectsForPick(wrapPicks, gbFollowUps, j, k);
+      const m = rowEffectsForPick(wrapPicks, characterPlayPicks, j, k, damageMods);
       tacBonus += m.tacBonusForLater;
       defReduction += m.defReductionForLater;
     }
@@ -99,39 +107,39 @@ export function tacForAttack(
 
 export function tacForAttackRow(
   wrapPicks: WrapPick[][],
-  gbFollowUps: GbFollowUpSlot[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
   attackIndex: number,
   chargeAttackIndex: number,
   enemyHasCover: boolean,
+  damageMods: PlaybookDamageMods,
 ): number {
   const { tacBonus } = modifiersBeforeAttack(
     wrapPicks,
-    gbFollowUps,
+    characterPlayPicks,
     attackIndex,
+    damageMods,
   );
-  const coverPen = coverTacPenaltyForAttack(
-    enemyHasCover,
-    wrapPicks,
-    attackIndex,
-  );
+  const coverPen = coverTacPenaltyForAttack(enemyHasCover, wrapPicks, attackIndex);
   return tacForAttack(attackIndex, chargeAttackIndex, tacBonus, coverPen);
 }
 
 /** Highest net successes reachable in one roll on this row (TAC − ARM cap). */
 export function maxPlaybookColumnForRow(
   wrapPicks: WrapPick[][],
-  gbFollowUps: GbFollowUpSlot[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
   attackIndex: number,
   chargeAttackIndex: number,
   armor: number,
   enemyHasCover: boolean,
+  damageMods: PlaybookDamageMods,
 ): number {
   const tac = tacForAttackRow(
     wrapPicks,
-    gbFollowUps,
+    characterPlayPicks,
     attackIndex,
     chargeAttackIndex,
     enemyHasCover,
+    damageMods,
   );
   return maxNetSuccessesForRoll(tac, armor);
 }
@@ -167,21 +175,23 @@ function firstPickInBudgetExcludingKd(budget: number): PlaybookChoiceId {
 /** Only the first KD in activation order counts; later KD picks are replaced. */
 function stripDuplicateKd(
   next: WrapPick[][],
-  nextGb: GbFollowUpSlot[][],
+  nextCharacterPlay: CharacterPlayPickSlot[][],
   chargeAttackIndex: number,
   armor: number,
   enemyHasCover: boolean,
+  damageMods: PlaybookDamageMods,
 ): boolean {
   let changed = false;
   let kdSeen = false;
-  for (const i of activationAttackIndices(next)) {
+  for (const i of activationAttackIndices(next, damageMods)) {
     const maxNet = maxPlaybookColumnForRow(
       next,
-      nextGb,
+      nextCharacterPlay,
       i,
       chargeAttackIndex,
       armor,
       enemyHasCover,
+      damageMods,
     );
     for (let k = 0; k < next[i].length; k++) {
       const id = next[i][k];
@@ -193,7 +203,7 @@ function stripDuplicateKd(
       const b = wrapSlotBudget(maxNet, k);
       const rep = firstPickInBudgetExcludingKd(b);
       next[i][k] = rep;
-      nextGb[i][k] = choiceUsesGbFollowUp(rep) ? 'so' : null;
+      nextCharacterPlay[i][k] = choiceUsesCharacterPlay(rep) ? 'so' : null;
       changed = true;
     }
   }
@@ -202,16 +212,16 @@ function stripDuplicateKd(
 
 function clampRowPicks(
   picks: WrapPick[],
-  gb: GbFollowUpSlot[],
+  characterPlayRow: CharacterPlayPickSlot[],
   maxNet: number,
-): { picks: WrapPick[]; gb: GbFollowUpSlot[] } {
+): { picks: WrapPick[]; characterPlayRow: CharacterPlayPickSlot[] } {
   if (maxNet < 1) {
     const id = PLAYBOOK[0].results[0].id;
-    return { picks: [id], gb: [null] };
+    return { picks: [id], characterPlayRow: [null] };
   }
   const n = wrapSlotCount(maxNet);
   const p: WrapPick[] = picks.slice(0, n);
-  const g = gb.slice(0, n);
+  const g = characterPlayRow.slice(0, n);
   while (g.length < p.length) g.push(null);
   while (p.length < n) {
     p.push(null);
@@ -225,7 +235,7 @@ function clampRowPicks(
   if (p[0] == null || netSuccessesForChoice(p[0]) > b0) {
     const id = firstReachableChoiceId(b0);
     p[0] = id;
-    g[0] = choiceUsesGbFollowUp(id) ? 'so' : null;
+    g[0] = choiceUsesCharacterPlay(id) ? 'so' : null;
   }
   for (let s = 1; s < n; s++) {
     const b = wrapSlotBudget(maxNet, s);
@@ -240,10 +250,10 @@ function clampRowPicks(
       g[s] = null;
       continue;
     }
-    if (!choiceUsesGbFollowUp(p[s])) g[s] = null;
+    if (!choiceUsesCharacterPlay(p[s])) g[s] = null;
     else if (g[s] == null) g[s] = 'so';
   }
-  return { picks: p, gb: g };
+  return { picks: p, characterPlayRow: g };
 }
 
 function rows2dEqual(a: WrapPick[][], b: WrapPick[][]): boolean {
@@ -257,7 +267,10 @@ function rows2dEqual(a: WrapPick[][], b: WrapPick[][]): boolean {
   return true;
 }
 
-function gb2dEqual(a: GbFollowUpSlot[][], b: GbFollowUpSlot[][]): boolean {
+function characterPlay2dEqual(
+  a: CharacterPlayPickSlot[][],
+  b: CharacterPlayPickSlot[][],
+): boolean {
   if (a.length !== b.length) return false;
   for (let i = 0; i < a.length; i++) {
     if (a[i].length !== b[i].length) return false;
@@ -270,87 +283,99 @@ function gb2dEqual(a: GbFollowUpSlot[][], b: GbFollowUpSlot[][]): boolean {
 
 /**
  * Keeps each attack’s wrap within TAC − ARM: drop tail picks until valid, then
- * sanitize GB follow-ups.
+ * sanitize character-play picks after GB / 1GB.
  */
 export function clampAttackPlan(
   wrapPicks: WrapPick[][],
-  gbFollowUps: GbFollowUpSlot[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
   chargeAttackIndex: number,
   armor: number,
   enemyHasCover: boolean,
-): { wrapPicks: WrapPick[][]; gbFollowUps: GbFollowUpSlot[][] } {
+  damageMods: PlaybookDamageMods,
+): { wrapPicks: WrapPick[][]; characterPlayPicks: CharacterPlayPickSlot[][] } {
   const next = clone2d(wrapPicks);
-  let nextGb = clone2d(gbFollowUps);
+  let nextCharacterPlay = clone2d(characterPlayPicks);
 
   for (let pass = 0; pass < 30; pass++) {
     let passChanged = false;
     for (let i = 0; i < next.length; i++) {
-      while (nextGb[i].length > next[i].length) {
-        nextGb[i].pop();
+      while (nextCharacterPlay[i].length > next[i].length) {
+        nextCharacterPlay[i].pop();
         passChanged = true;
       }
-      while (nextGb[i].length < next[i].length) {
-        nextGb[i].push(null);
+      while (nextCharacterPlay[i].length < next[i].length) {
+        nextCharacterPlay[i].push(null);
         passChanged = true;
       }
-      if (!attackRowIsActive(next, i)) {
+      if (!attackRowIsActive(next, i, damageMods)) {
         if (
           i >= BASE_ATTACK_COUNT &&
-          (next[i].length > 0 || nextGb[i].length > 0)
+          (next[i].length > 0 || nextCharacterPlay[i].length > 0)
         ) {
           next[i] = [];
-          nextGb[i] = [];
+          nextCharacterPlay[i] = [];
           passChanged = true;
         }
         continue;
       }
       if (
         i >= BASE_ATTACK_COUNT &&
-        attackRowIsActive(next, i) &&
+        attackRowIsActive(next, i, damageMods) &&
         next[i].length === 0
       ) {
         next[i] = [PLAYBOOK[0].results[0].id];
-        nextGb[i] = [null];
+        nextCharacterPlay[i] = [null];
         passChanged = true;
       }
       const maxNet = maxPlaybookColumnForRow(
         next,
-        nextGb,
+        nextCharacterPlay,
         i,
         chargeAttackIndex,
         armor,
         enemyHasCover,
+        damageMods,
       );
-      const r = clampRowPicks(next[i], nextGb[i], maxNet);
+      const r = clampRowPicks(next[i], nextCharacterPlay[i], maxNet);
       const rowSame =
         r.picks.length === next[i].length &&
         r.picks.every((id, j) => id === next[i][j]) &&
-        r.gb.length === nextGb[i].length &&
-        r.gb.every((g, j) => g === nextGb[i][j]);
+        r.characterPlayRow.length === nextCharacterPlay[i].length &&
+        r.characterPlayRow.every((g, j) => g === nextCharacterPlay[i][j]);
       if (!rowSame) {
         next[i] = r.picks;
-        nextGb[i] = r.gb;
+        nextCharacterPlay[i] = r.characterPlayRow;
         passChanged = true;
       }
     }
-    if (stripDuplicateKd(next, nextGb, chargeAttackIndex, armor, enemyHasCover)) {
+    if (
+      stripDuplicateKd(
+        next,
+        nextCharacterPlay,
+        chargeAttackIndex,
+        armor,
+        enemyHasCover,
+        damageMods,
+      )
+    ) {
       passChanged = true;
     }
-    const { gb: sanitized, changed: gbSan } = sanitizeGbFollowUpsWrap(
-      next,
-      nextGb,
-    );
-    if (gbSan) {
-      nextGb = sanitized;
+    const { characterPlayPicks: sanitized, changed: cpSan } =
+      sanitizeCharacterPlayPicksWrap(next, nextCharacterPlay, damageMods);
+    if (cpSan) {
+      nextCharacterPlay = sanitized;
       passChanged = true;
     }
     if (!passChanged) break;
   }
 
-  if (rows2dEqual(next, wrapPicks) && gb2dEqual(nextGb, gbFollowUps)) {
-    return { wrapPicks, gbFollowUps };
+  if (
+    rows2dEqual(next, wrapPicks) &&
+    characterPlay2dEqual(nextCharacterPlay, characterPlayPicks)
+  ) {
+    return { wrapPicks, characterPlayPicks };
   }
-  return { wrapPicks: next, gbFollowUps: nextGb };
+  return { wrapPicks: next, characterPlayPicks: nextCharacterPlay };
 }
 
 export type AttackRollContext = {
@@ -366,18 +391,20 @@ export function computeAttackSequence(
   baseDef: number,
   armor: number,
   wrapPicks: WrapPick[][],
-  gbFollowUps: GbFollowUpSlot[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
   chargeAttackIndex: number,
   enemyHasCover: boolean,
+  damageMods: PlaybookDamageMods,
 ): { attacks: AttackRollContext[]; probAll: number } {
   const attacks: AttackRollContext[] = [];
   let probAll = 1;
 
-  for (const i of activationAttackIndices(wrapPicks)) {
+  for (const i of activationAttackIndices(wrapPicks, damageMods)) {
     const { tacBonus, defReduction } = modifiersBeforeAttack(
       wrapPicks,
-      gbFollowUps,
+      characterPlayPicks,
       i,
+      damageMods,
     );
     const defMin = effectiveDefMinRoll(baseDef, defReduction);
     const coverPen = coverTacPenaltyForAttack(enemyHasCover, wrapPicks, i);

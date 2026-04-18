@@ -18,9 +18,10 @@ export function AttacksPanel({
   chargeAttackIndex,
   onChargeAttackIndexChange,
   wrapPicks,
-  gbFollowUps,
+  characterPlayPicks,
+  damageMods,
   onChoiceChange,
-  onGbFollowUpChange,
+  onCharacterPlayPickChange,
   onWrapContinuationCleared,
   attacks,
 }: AttacksPanelProps) {
@@ -36,8 +37,8 @@ export function AttacksPanel({
   };
 
   const rowDamageIfHit = useMemo(
-    () => damageIfAllHitsWrap(wrapPicks),
-    [wrapPicks],
+    () => damageIfAllHitsWrap(wrapPicks, damageMods),
+    [wrapPicks, damageMods],
   );
   const remainingHpAfterSwing = useMemo(() => {
     const out: number[] = [];
@@ -59,12 +60,13 @@ export function AttacksPanel({
           armor={armor}
           chargeAttackIndex={chargeAttackIndex}
           wrapPicks={wrapPicks}
-          gbFollowUps={gbFollowUps}
+          characterPlayPicks={characterPlayPicks}
+          damageMods={damageMods}
           remainingHpIfHit={remainingHpAfterSwing[displayIdx]}
           wrapOpen={wrapExpanded.has(a.attackIndex)}
           onChargeAttackIndexChange={onChargeAttackIndexChange}
           onChoiceChange={onChoiceChange}
-          onGbFollowUpChange={onGbFollowUpChange}
+          onCharacterPlayPickChange={onCharacterPlayPickChange}
           onToggleWrapExpansion={() => toggleWrapExpanded(a.attackIndex)}
           onWrapContinuationCleared={onWrapContinuationCleared}
         />

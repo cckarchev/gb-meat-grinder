@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { narrowViewport } from '../../styles/breakpoints';
 import type { AttackRollContext } from '../../core/attackSequence';
 import { BASE_ATTACK_COUNT } from '../../core/constants';
-import { choiceUsesGbFollowUp } from '../../core/playbook';
+import { choiceUsesCharacterPlay } from '../../core/playbook';
 import { maxNetSuccessesForRoll } from '../../core/probability';
 import {
   type AttackBlockVariant,
@@ -10,9 +10,9 @@ import {
   attackKindLabel,
 } from './attackVariant';
 import { AttackStatsAside } from './AttackStatsAside';
-import { GbFollowUpSection } from './GbFollowUpSection';
+import { CharacterPlaySelection } from './CharacterPlaySelection';
 import { WrapSlotPickGrid } from './PlaybookGrid';
-import type { AttacksPanelProps, GbSlotRef } from './types';
+import type { AttacksPanelProps, CharacterPlaySlotRef } from './types';
 import { VerticalWrapStrip } from './VerticalWrapStrip';
 
 const AttackRow = styled.div`
@@ -128,12 +128,13 @@ export function AttackSwingRow({
   armor,
   chargeAttackIndex,
   wrapPicks,
-  gbFollowUps,
+  characterPlayPicks,
+  damageMods,
   remainingHpIfHit,
   wrapOpen,
   onChargeAttackIndexChange,
   onChoiceChange,
-  onGbFollowUpChange,
+  onCharacterPlayPickChange,
   onToggleWrapExpansion,
   onWrapContinuationCleared,
 }: {
@@ -142,25 +143,30 @@ export function AttackSwingRow({
   armor: number;
   chargeAttackIndex: number;
   wrapPicks: AttacksPanelProps['wrapPicks'];
-  gbFollowUps: AttacksPanelProps['gbFollowUps'];
+  characterPlayPicks: AttacksPanelProps['characterPlayPicks'];
+  damageMods: AttacksPanelProps['damageMods'];
   remainingHpIfHit: number;
   wrapOpen: boolean;
   onChargeAttackIndexChange: AttacksPanelProps['onChargeAttackIndexChange'];
   onChoiceChange: AttacksPanelProps['onChoiceChange'];
-  onGbFollowUpChange: AttacksPanelProps['onGbFollowUpChange'];
+  onCharacterPlayPickChange: AttacksPanelProps['onCharacterPlayPickChange'];
   onToggleWrapExpansion: () => void;
   onWrapContinuationCleared: AttacksPanelProps['onWrapContinuationCleared'];
 }) {
   const i = attack.attackIndex;
   const maxNet = maxNetSuccessesForRoll(attack.tac, armor);
-  const gbSlots = wrapPicks[i]
+  const characterPlaySlots = wrapPicks[i]
     .map((pid, pickIndex) => ({ pid, pickIndex }))
     .filter(
-      (x): x is GbSlotRef =>
-        x.pid != null && choiceUsesGbFollowUp(x.pid),
+      (x): x is CharacterPlaySlotRef =>
+        x.pid != null && choiceUsesCharacterPlay(x.pid),
     );
-  const gbSlotsBase = gbSlots.filter((s) => s.pickIndex === 0);
-  const gbSlotsWrap = gbSlots.filter((s) => s.pickIndex > 0);
+  const characterPlaySlotsBase = characterPlaySlots.filter(
+    (s) => s.pickIndex === 0,
+  );
+  const characterPlaySlotsWrap = characterPlaySlots.filter(
+    (s) => s.pickIndex > 0,
+  );
   const hasWrapContinuation = wrapPicks[i].length > 1;
   const variant = attackBlockVariant(i, chargeAttackIndex);
 
@@ -204,6 +210,7 @@ export function AttackSwingRow({
                     armor={armor}
                     maxNet={maxNet}
                     wrapPicks={wrapPicks}
+                    damageMods={damageMods}
                     firstSlotInSection
                     onChoiceChange={onChoiceChange}
                   />
@@ -219,13 +226,14 @@ export function AttackSwingRow({
                   />
                 ) : null}
               </PlaybookRowWithVerticalWrap>
-              <GbFollowUpSection
-                slots={gbSlotsBase}
+              <CharacterPlaySelection
+                slots={characterPlaySlotsBase}
                 wrapPicks={wrapPicks}
-                gbFollowUps={gbFollowUps}
+                characterPlayPicks={characterPlayPicks}
+                damageMods={damageMods}
                 attackIndex={i}
                 displayIdx={displayIdx}
-                onGbFollowUpChange={onGbFollowUpChange}
+                onCharacterPlayPickChange={onCharacterPlayPickChange}
               />
               {hasWrapContinuation ? (
                 <div
@@ -246,18 +254,20 @@ export function AttackSwingRow({
                         armor={armor}
                         maxNet={maxNet}
                         wrapPicks={wrapPicks}
+                        damageMods={damageMods}
                         firstSlotInSection={pickIndex === 1}
                         onChoiceChange={onChoiceChange}
                       />
                     );
                   })}
-                  <GbFollowUpSection
-                    slots={gbSlotsWrap}
+                  <CharacterPlaySelection
+                    slots={characterPlaySlotsWrap}
                     wrapPicks={wrapPicks}
-                    gbFollowUps={gbFollowUps}
+                    characterPlayPicks={characterPlayPicks}
+                    damageMods={damageMods}
                     attackIndex={i}
                     displayIdx={displayIdx}
-                    onGbFollowUpChange={onGbFollowUpChange}
+                    onCharacterPlayPickChange={onCharacterPlayPickChange}
                   />
                 </div>
               ) : null}

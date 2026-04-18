@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { narrowViewport } from '../../styles/breakpoints';
-import { gbFollowUpAvailabilityForPick } from '../../core/playbook';
-import type { AttacksPanelProps, GbSlotRef } from './types';
+import { characterPlayAvailabilityForPick } from '../../core/playbook';
+import type { AttacksPanelProps, CharacterPlaySlotRef } from './types';
 
-const CharacterPlaySection = styled.div`
+const SelectionSection = styled.div`
   margin-top: 0.75rem;
   padding-top: 0.65rem;
   border-top: 1px solid var(--border);
@@ -14,7 +14,7 @@ const CharacterPlaySection = styled.div`
   }
 `;
 
-const CharacterPlayRow = styled.div`
+const SelectionRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -36,7 +36,7 @@ const CharacterPlayRow = styled.div`
   }
 `;
 
-const CpBtn = styled.button<{ $active: boolean }>`
+const SelectionBtn = styled.button<{ $active: boolean }>`
   font: inherit;
   font-size: 0.9rem;
   font-weight: 600;
@@ -61,73 +61,78 @@ const CpBtn = styled.button<{ $active: boolean }>`
   }
 `;
 
-export function GbFollowUpSection({
+/** Singled Out / Stagger after a GB or 1GB playbook result. */
+export function CharacterPlaySelection({
   slots,
   wrapPicks,
-  gbFollowUps,
+  characterPlayPicks,
+  damageMods,
   attackIndex,
   displayIdx,
-  onGbFollowUpChange,
+  onCharacterPlayPickChange,
 }: {
-  slots: GbSlotRef[];
+  slots: CharacterPlaySlotRef[];
   wrapPicks: AttacksPanelProps['wrapPicks'];
-  gbFollowUps: AttacksPanelProps['gbFollowUps'];
+  characterPlayPicks: AttacksPanelProps['characterPlayPicks'];
+  damageMods: AttacksPanelProps['damageMods'];
   attackIndex: number;
   displayIdx: number;
-  onGbFollowUpChange: AttacksPanelProps['onGbFollowUpChange'];
+  onCharacterPlayPickChange: AttacksPanelProps['onCharacterPlayPickChange'];
 }) {
   const i = attackIndex;
   const actionable = slots.filter(({ pickIndex }) => {
-    const gbAvail = gbFollowUpAvailabilityForPick(
+    const cpAvail = characterPlayAvailabilityForPick(
       wrapPicks,
-      gbFollowUps,
+      characterPlayPicks,
       i,
       pickIndex,
+      damageMods,
     );
-    return !gbAvail.depleted && (gbAvail.canPickSo || gbAvail.canPickStagger);
+    return !cpAvail.depleted && (cpAvail.canPickSo || cpAvail.canPickStagger);
   });
   if (actionable.length === 0) return null;
 
   return (
-    <CharacterPlaySection>
+    <SelectionSection>
       {actionable.map(({ pickIndex }) => {
-        const gbAvail = gbFollowUpAvailabilityForPick(
+        const cpAvail = characterPlayAvailabilityForPick(
           wrapPicks,
-          gbFollowUps,
+          characterPlayPicks,
           i,
           pickIndex,
+          damageMods,
         );
-        const follow = gbFollowUps[i]?.[pickIndex];
+        const pick = characterPlayPicks[i]?.[pickIndex];
         const pickOrdinal = pickIndex + 1;
         const attackOrdinal = displayIdx + 1;
-        const soLabel = `Singled Out for attack ${attackOrdinal}, GB result ${pickOrdinal}`;
-        const stLabel = `Stagger for attack ${attackOrdinal}, GB result ${pickOrdinal}`;
+        const soLabel = `Singled Out for attack ${attackOrdinal}, character play ${pickOrdinal}`;
+        const stLabel = `Stagger for attack ${attackOrdinal}, character play ${pickOrdinal}`;
 
         return (
-          <CharacterPlayRow key={pickIndex}>
-            {gbAvail.canPickSo ? (
-              <CpBtn
+          <SelectionRow key={pickIndex}>
+            {cpAvail.canPickSo ? (
+              <SelectionBtn
                 type="button"
-                $active={follow === 'so'}
+                $active={pick === 'so'}
                 aria-label={soLabel}
-                onClick={() => onGbFollowUpChange(i, pickIndex, 'so')}
+                onClick={() => onCharacterPlayPickChange(i, pickIndex, 'so')}
               >
                 Singled Out
-              </CpBtn>
+              </SelectionBtn>
             ) : null}
-            {gbAvail.canPickStagger ? (
-              <CpBtn
+            {cpAvail.canPickStagger ? (
+              <SelectionBtn
                 type="button"
-                $active={follow === 'stagger'}
+                $active={pick === 'stagger'}
                 aria-label={stLabel}
-                onClick={() => onGbFollowUpChange(i, pickIndex, 'stagger')}
+                onClick={() => onCharacterPlayPickChange(i, pickIndex, 'stagger')}
               >
                 Stagger
-              </CpBtn>
+              </SelectionBtn>
             ) : null}
-          </CharacterPlayRow>
+          </SelectionRow>
         );
       })}
-    </CharacterPlaySection>
+    </SelectionSection>
   );
 }

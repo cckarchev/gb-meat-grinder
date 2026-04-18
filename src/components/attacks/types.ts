@@ -1,8 +1,9 @@
 import type { AttackRollContext } from '../../core/attackSequence';
 import type {
-  GbFollowUp,
-  GbFollowUpSlot,
+  CharacterPlayPick,
+  CharacterPlayPickSlot,
   PlaybookChoiceId,
+  PlaybookDamageMods,
   WrapPick,
 } from '../../core/playbook';
 
@@ -12,19 +13,20 @@ export type AttacksPanelProps = {
   chargeAttackIndex: number;
   onChargeAttackIndexChange: (index: number) => void;
   wrapPicks: WrapPick[][];
-  gbFollowUps: GbFollowUpSlot[][];
+  characterPlayPicks: CharacterPlayPickSlot[][];
+  damageMods: PlaybookDamageMods;
   onChoiceChange: (
     attackIndex: number,
     pickIndex: number,
     id: PlaybookChoiceId | null,
   ) => void;
-  onGbFollowUpChange: (
+  onCharacterPlayPickChange: (
     attackIndex: number,
     pickIndex: number,
-    follow: GbFollowUp,
+    pick: CharacterPlayPick,
   ) => void;
   onWrapContinuationCleared: (attackIndex: number) => void;
   attacks: AttackRollContext[];
 };
 
-export type GbSlotRef = { pid: PlaybookChoiceId; pickIndex: number };
+export type CharacterPlaySlotRef = { pid: PlaybookChoiceId; pickIndex: number };

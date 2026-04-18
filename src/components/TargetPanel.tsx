@@ -1,4 +1,3 @@
-import { useId } from 'react';
 import styled from 'styled-components';
 import {
   ARM_MAX,
@@ -8,9 +7,10 @@ import {
   HP_MAX,
   HP_MIN,
 } from '../core/constants';
+import type { PlaybookDamageMods } from '../core/playbook';
 import { narrowViewport } from '../styles/breakpoints';
-import { Panel, PanelTitle, Row } from './ui';
 import { StepControl } from './StepControl';
+import { Panel, PanelTitle, Row } from './ui';
 
 /*
   Previously: footnote with planned damage if all attacks hit and HP remaining
@@ -38,13 +38,21 @@ const CoverOption = styled.label`
   }
 `;
 
-const CoverHint = styled.span`
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 0.78rem;
-  font-weight: 400;
+const DamageSectionTitle = styled.h3`
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--muted);
-  line-height: 1.4;
+  margin: 1rem 0 0.4rem;
+`;
+
+const ToughHideOption = styled(CoverOption)`
+  margin-top: 0.5rem;
+`;
+
+const BuffOption = styled(CoverOption)`
+  margin-top: 0.35rem;
 `;
 
 export type TargetPanelProps = {
@@ -53,6 +61,8 @@ export type TargetPanelProps = {
   hp: number;
   enemyHasCover: boolean;
   onEnemyHasCoverChange: (cover: boolean) => void;
+  damageMods: PlaybookDamageMods;
+  onDamageModsChange: (mods: PlaybookDamageMods) => void;
   onDefChange: (def: number) => void;
   onArmorChange: (armor: number) => void;
   onHpChange: (hp: number) => void;
@@ -64,11 +74,12 @@ export function TargetPanel({
   hp,
   enemyHasCover,
   onEnemyHasCoverChange,
+  damageMods,
+  onDamageModsChange,
   onDefChange,
   onArmorChange,
   onHpChange,
 }: TargetPanelProps) {
-  const coverHintId = useId();
   return (
     <Panel>
       <PanelTitle>Target</PanelTitle>
@@ -109,16 +120,44 @@ export function TargetPanel({
           type="checkbox"
           checked={enemyHasCover}
           onChange={(e) => onEnemyHasCoverChange(e.target.checked)}
-          aria-describedby={coverHintId}
+        />
+        <span>Cover</span>
+      </CoverOption>
+
+      <DamageSectionTitle>Playbook damage</DamageSectionTitle>
+      <ToughHideOption>
+        <input
+          type="checkbox"
+          checked={damageMods.toughHide}
+          onChange={(e) =>
+            onDamageModsChange({ ...damageMods, toughHide: e.target.checked })
+          }
         />
         <span>
-          <strong>Cover</strong> — enemy near terrain (−1 TAC to the pool).
-          <CoverHint id={coverHintId}>
-            A Push ({'>'}) on any earlier swing in this activation moves them off
-            that terrain, so later swings no longer take that −1.
-          </CoverHint>
+          Tough Hide on enemy (−1 to each <strong>selected</strong> playbook damage
+          pip)
         </span>
-      </CoverOption>
+      </ToughHideOption>
+      <BuffOption>
+        <input
+          type="checkbox"
+          checked={damageMods.tooledUp}
+          onChange={(e) =>
+            onDamageModsChange({ ...damageMods, tooledUp: e.target.checked })
+          }
+        />
+        <span>Tooled Up (+1 to each selected playbook damage result)</span>
+      </BuffOption>
+      <BuffOption>
+        <input
+          type="checkbox"
+          checked={damageMods.theOwner}
+          onChange={(e) =>
+            onDamageModsChange({ ...damageMods, theOwner: e.target.checked })
+          }
+        />
+        <span>The Owner (+1 to each selected playbook damage result)</span>
+      </BuffOption>
     </Panel>
   );
 }

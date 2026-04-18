@@ -3,8 +3,11 @@ import { narrowViewport } from '../../styles/breakpoints';
 import {
   PLAYBOOK,
   kdAlreadyTakenBeforePick,
+  momentousLineStyle,
+  playbookLineDisplayLabel,
   wrapExtendedNetNeeded,
   wrapSlotBudget,
+  type PlaybookDamageMods,
   type WrapPick,
 } from '../../core/playbook';
 import {
@@ -94,7 +97,11 @@ const ColumnHead = styled.div<{ $p: number }>`
   }
 `;
 
-const LineButton = styled.button<{ $momentous: boolean; $selected: boolean }>`
+const LineButton = styled.button<{
+  $momentous: boolean;
+  $momentousZeroEffective: boolean;
+  $selected: boolean;
+}>`
   font: inherit;
   font-size: 0.76rem;
   font-weight: 600;
@@ -127,10 +134,20 @@ const LineButton = styled.button<{ $momentous: boolean; $selected: boolean }>`
   flex-shrink: 0;
 
   background: ${(p) =>
-    p.$momentous ? '#b71c1c' : 'var(--playbook-line-nm-bg)'};
-  color: ${(p) => (p.$momentous ? '#ffffff' : 'var(--playbook-line-nm-fg)')};
+    p.$momentous
+      ? '#b71c1c'
+      : p.$momentousZeroEffective
+        ? '#ffffff'
+        : 'var(--playbook-line-nm-bg)'};
+  color: ${(p) =>
+    p.$momentous ? '#ffffff' : 'var(--playbook-line-nm-fg)'};
   border: 1px solid
-    ${(p) => (p.$momentous ? '#7f1515' : 'var(--playbook-line-nm-border)')};
+    ${(p) =>
+      p.$momentous
+        ? '#7f1515'
+        : p.$momentousZeroEffective
+          ? 'var(--playbook-line-nm-border)'
+          : 'var(--playbook-line-nm-border)'};
 
   &:hover {
     filter: brightness(1.06);
@@ -168,6 +185,7 @@ export function WrapSlotPickGrid({
   armor,
   maxNet,
   wrapPicks,
+  damageMods,
   firstSlotInSection,
   onChoiceChange,
 }: {
@@ -178,6 +196,7 @@ export function WrapSlotPickGrid({
   armor: number;
   maxNet: number;
   wrapPicks: WrapPick[][];
+  damageMods: PlaybookDamageMods;
   firstSlotInSection: boolean;
   onChoiceChange: AttacksPanelProps['onChoiceChange'];
 }) {
@@ -197,15 +216,22 @@ export function WrapSlotPickGrid({
               <ColumnResults>
                 {col.results.map((e) => {
                   const selected = wrapPicks[i][pickIndex] === e.id;
+                  const mStyle = momentousLineStyle(e.id, damageMods);
                   const kdLocked =
                     e.id === 'kd' &&
-                    kdAlreadyTakenBeforePick(wrapPicks, i, pickIndex);
+                    kdAlreadyTakenBeforePick(
+                      wrapPicks,
+                      i,
+                      pickIndex,
+                      damageMods,
+                    );
                   return (
                     <LineButton
                       key={e.id}
                       type="button"
                       disabled={kdLocked}
-                      $momentous={e.momentum === true}
+                      $momentous={mStyle === 'heat'}
+                      $momentousZeroEffective={mStyle === 'zeroed'}
                       $selected={selected}
                       aria-pressed={selected}
                       title={
@@ -221,7 +247,7 @@ export function WrapSlotPickGrid({
                         }
                       }}
                     >
-                      {e.label}
+                      {playbookLineDisplayLabel(e.id, damageMods)}
                     </LineButton>
                   );
                 })}
