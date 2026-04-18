@@ -131,6 +131,7 @@ export function AttackSwingRow({
   characterPlayPicks,
   damageMods,
   remainingHpIfHit,
+  momentum,
   wrapOpen,
   onChargeAttackIndexChange,
   onChoiceChange,
@@ -146,6 +147,7 @@ export function AttackSwingRow({
   characterPlayPicks: AttacksPanelProps['characterPlayPicks'];
   damageMods: AttacksPanelProps['damageMods'];
   remainingHpIfHit: number;
+  momentum: number;
   wrapOpen: boolean;
   onChargeAttackIndexChange: AttacksPanelProps['onChargeAttackIndexChange'];
   onChoiceChange: AttacksPanelProps['onChoiceChange'];
@@ -278,6 +280,7 @@ export function AttackSwingRow({
       <AttackStatsAside
         tac={attack.tac}
         defMinRoll={attack.defMinRoll}
+        momentum={momentum}
         remainingHpIfHit={remainingHpIfHit}
       />
     </AttackRow>

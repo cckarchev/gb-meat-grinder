@@ -15,7 +15,12 @@ const AttackStatsRail = styled.aside`
   }
 `;
 
-const AttackStatBlock = styled.div`
+const StatRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.35rem;
   margin-bottom: 0.45rem;
 
   &:last-of-type {
@@ -23,18 +28,18 @@ const AttackStatBlock = styled.div`
   }
 
   ${narrowViewport} {
+    gap: 0.28rem;
     margin-bottom: 0.3rem;
   }
 `;
 
 const AttackStatCaption = styled.span`
-  display: block;
+  flex-shrink: 0;
   font-size: 0.68em;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--muted);
-  margin-bottom: 0.08rem;
 
   ${narrowViewport} {
     letter-spacing: 0.03em;
@@ -69,25 +74,33 @@ const AttackHpValue = styled(Mono)`
 export function AttackStatsAside({
   tac,
   defMinRoll,
+  momentum,
   remainingHpIfHit,
 }: {
   tac: number;
   defMinRoll: number;
+  momentum: number;
   remainingHpIfHit: number;
 }) {
   return (
     <AttackStatsRail aria-label="Attack roll stats">
-      <AttackStatBlock>
+      <StatRow>
         <AttackStatCaption>TAC</AttackStatCaption>
         <AttackStatMono>{tac}</AttackStatMono>
-      </AttackStatBlock>
-      <AttackStatBlock>
+      </StatRow>
+      <StatRow>
         <AttackStatCaption>DEF</AttackStatCaption>
         <AttackStatMono>{defMinRoll}+</AttackStatMono>
-      </AttackStatBlock>
+      </StatRow>
+      <StatRow>
+        <AttackStatCaption>Mom</AttackStatCaption>
+        <AttackStatMono>{momentum}</AttackStatMono>
+      </StatRow>
       <AttackHpRailBlock>
-        <AttackStatCaption>HP</AttackStatCaption>
-        <AttackHpValue>{remainingHpIfHit}</AttackHpValue>
+        <StatRow>
+          <AttackStatCaption>HP</AttackStatCaption>
+          <AttackHpValue>{remainingHpIfHit}</AttackHpValue>
+        </StatRow>
       </AttackHpRailBlock>
     </AttackStatsRail>
   );

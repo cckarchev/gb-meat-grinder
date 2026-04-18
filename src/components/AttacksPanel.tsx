@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { damageIfAllHitsWrap } from '../core/playbook';
+import {
+  damageIfAllHitsWrap,
+  momentumAfterAttackInclusive,
+} from '../core/playbook';
 import { AttackSwingRow } from './attacks/AttackSwingRow';
 import type { AttacksPanelProps } from './attacks/types';
 
@@ -17,6 +20,7 @@ export function AttacksPanel({
   armor,
   chargeAttackIndex,
   onChargeAttackIndexChange,
+  startingMomentum,
   wrapPicks,
   characterPlayPicks,
   damageMods,
@@ -50,6 +54,19 @@ export function AttacksPanel({
     return out;
   }, [attacks, rowDamageIfHit, targetHp]);
 
+  const momentumAfterSwing = useMemo(
+    () =>
+      attacks.map((ctx) =>
+        momentumAfterAttackInclusive(
+          wrapPicks,
+          damageMods,
+          ctx.attackIndex,
+          startingMomentum,
+        ),
+      ),
+    [attacks, wrapPicks, damageMods, startingMomentum],
+  );
+
   return (
     <AttacksList>
       {attacks.map((a, displayIdx) => (
@@ -63,6 +80,7 @@ export function AttacksPanel({
           characterPlayPicks={characterPlayPicks}
           damageMods={damageMods}
           remainingHpIfHit={remainingHpAfterSwing[displayIdx]}
+          momentum={momentumAfterSwing[displayIdx]}
           wrapOpen={wrapExpanded.has(a.attackIndex)}
           onChargeAttackIndexChange={onChargeAttackIndexChange}
           onChoiceChange={onChoiceChange}

@@ -6,6 +6,8 @@ import {
   DEF_MIN,
   HP_MAX,
   HP_MIN,
+  STARTING_MOMENTUM_MAX,
+  STARTING_MOMENTUM_MIN,
 } from '../core/constants';
 import type { PlaybookDamageMods } from '../core/playbook';
 import { narrowViewport } from '../styles/breakpoints';
@@ -66,6 +68,8 @@ export type TargetPanelProps = {
   onDefChange: (def: number) => void;
   onArmorChange: (armor: number) => void;
   onHpChange: (hp: number) => void;
+  startingMomentum: number;
+  onStartingMomentumChange: (value: number) => void;
 };
 
 export function TargetPanel({
@@ -79,6 +83,8 @@ export function TargetPanel({
   onDefChange,
   onArmorChange,
   onHpChange,
+  startingMomentum,
+  onStartingMomentumChange,
 }: TargetPanelProps) {
   return (
     <Panel>
@@ -113,6 +119,16 @@ export function TargetPanel({
           valueLabel={String(hp)}
           decrementAriaLabel="Decrease target HP"
           incrementAriaLabel="Increase target HP"
+        />
+        <StepControl
+          label="Starting momentum"
+          value={startingMomentum}
+          min={STARTING_MOMENTUM_MIN}
+          max={STARTING_MOMENTUM_MAX}
+          onChange={onStartingMomentumChange}
+          valueLabel={String(startingMomentum)}
+          decrementAriaLabel="Decrease starting momentum"
+          incrementAriaLabel="Increase starting momentum"
         />
       </Row>
       <CoverOption>

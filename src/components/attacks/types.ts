@@ -12,6 +12,8 @@ export type AttacksPanelProps = {
   armor: number;
   chargeAttackIndex: number;
   onChargeAttackIndexChange: (index: number) => void;
+  /** Momentum at the start of the activation (clamped 0–20 in the target panel). */
+  startingMomentum: number;
   wrapPicks: WrapPick[][];
   characterPlayPicks: CharacterPlayPickSlot[][];
   damageMods: PlaybookDamageMods;

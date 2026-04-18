@@ -18,3 +18,7 @@ export const ARM_MAX = 6;
 export const HP_MIN = 1;
 export const HP_MAX = 30;
 export const HP_DEFAULT = 16;
+
+/** Momentum the Boar begins the activation with (earned momentum has no cap). */
+export const STARTING_MOMENTUM_MIN = 0;
+export const STARTING_MOMENTUM_MAX = 20;

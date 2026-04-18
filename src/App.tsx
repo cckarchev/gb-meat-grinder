@@ -28,6 +28,7 @@ function App() {
   const [hp, setHp] = useState(HP_DEFAULT);
   const [chargeAttackIndex, setChargeAttackIndex] = useState(0);
   const [enemyHasCover, setEnemyHasCover] = useState(false);
+  const [startingMomentum, setStartingMomentum] = useState(0);
   const [damageMods, setDamageMods] = useState<PlaybookDamageMods>(
     DEFAULT_PLAYBOOK_DAMAGE_MODS,
   );
@@ -246,12 +247,15 @@ function App() {
         onDefChange={handleDefChange}
         onArmorChange={handleArmorChange}
         onHpChange={setHp}
+        startingMomentum={startingMomentum}
+        onStartingMomentumChange={setStartingMomentum}
       />
       <AttacksPanel
         targetHp={hp}
         armor={armor}
         chargeAttackIndex={chargeAttackIndex}
         onChargeAttackIndexChange={handleChargeAttackIndexChange}
+        startingMomentum={startingMomentum}
         wrapPicks={wrapPicks}
         characterPlayPicks={characterPlayPicks}
         damageMods={damageMods}

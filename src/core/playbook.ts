@@ -238,6 +238,44 @@ export function momentousLineStyle(
   return effectiveDamageForChoice(id, mods) > 0 ? 'heat' : 'zeroed';
 }
 
+/**
+ * True when this pick earns momentum on a hit: momentous on the card **and**
+ * effective damage greater than 0 (same rule as the red playbook chip; Tough Hide can zero it out).
+ */
+export function pickGeneratesMomentum(
+  id: WrapPick | null | undefined,
+  mods: PlaybookDamageMods,
+): boolean {
+  if (id == null) return false;
+  return momentousLineStyle(id, mods) === 'heat';
+}
+
+/**
+ * Total momentum after this attack in activation order: starting momentum plus
+ * one per pick that earns momentum (red chip) on each prior attack and on this attack.
+ * Earned momentum is not capped at 20.
+ */
+export function momentumAfterAttackInclusive(
+  wrapPicks: WrapPick[][],
+  damageMods: PlaybookDamageMods,
+  attackIndex: number,
+  startingMomentum: number,
+): number {
+  const order = activationAttackIndices(wrapPicks, damageMods);
+  const pos = order.indexOf(attackIndex);
+  if (pos < 0) return startingMomentum;
+  let total = startingMomentum;
+  for (let oi = 0; oi <= pos; oi++) {
+    const j = order[oi];
+    const row = wrapPicks[j];
+    if (!row?.length) continue;
+    for (const id of row) {
+      if (pickGeneratesMomentum(id, damageMods)) total += 1;
+    }
+  }
+  return total;
+}
+
 export function wrapPickClearsCover(id: WrapPick | null | undefined): boolean {
   return id === 'push' || id === 'push_push';
 }
