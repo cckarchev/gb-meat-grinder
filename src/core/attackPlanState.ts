@@ -24,7 +24,7 @@ export type AttackPlanClampParams = {
   armor: number;
   enemyHasCover: boolean;
   damageMods: PlaybookDamageMods;
-  def: number;
+  enemyDef: number;
   bonusTimeByAttack: readonly boolean[];
   initialTacModifier: number;
 };
@@ -58,7 +58,7 @@ export function clampAttackPlanState(
     params.armor,
     params.enemyHasCover,
     params.damageMods,
-    params.def,
+    params.enemyDef,
     params.bonusTimeByAttack,
     params.initialTacModifier,
   );

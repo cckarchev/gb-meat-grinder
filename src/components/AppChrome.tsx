@@ -27,11 +27,6 @@ const Title = styled.h1`
   }
 `;
 
-/*
-  Previously: Lead paragraph (TAC, 2 INF / six attacks, charge, wrap rules,
-  columns, GB, KD, Berserker). Removed from UI per request.
-*/
-
 type AppChromeProps = {
   children: ReactNode;
 };

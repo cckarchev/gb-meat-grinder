@@ -5,8 +5,8 @@ import {
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
 } from '../core/playbook';
+import { useKillItSimulation } from '../killIt/useKillItSimulation';
 import { AttackSwingRow } from './attacks/AttackSwingRow';
-import type { AttacksPanelProps } from './attacks/types';
 
 export type { AttacksPanelProps } from './attacks/types';
 
@@ -16,22 +16,20 @@ const AttacksList = styled.div`
   gap: 1rem;
 `;
 
-export function AttacksPanel({
-  targetHp,
-  armor,
-  chargeAttackIndex,
-  onChargeAttackIndexChange,
-  startingMomentum,
-  bonusTimeByAttack,
-  onBonusTimeChange,
-  wrapPicks,
-  characterPlayPicks,
-  damageMods,
-  onChoiceChange,
-  onCharacterPlayPickChange,
-  onWrapContinuationCleared,
-  attacks,
-}: AttacksPanelProps) {
+export function AttacksPanel() {
+  const {
+    hp: targetHp,
+    armor,
+    chargeAttackIndex,
+    startingMomentum,
+    bonusTimeByAttack,
+    wrapPicks,
+    characterPlayPicks,
+    damageMods,
+    attacks,
+    dispatch,
+  } = useKillItSimulation();
+
   const [wrapExpanded, setWrapExpanded] = useState(() => new Set<number>());
 
   const toggleWrapExpanded = (attackIndex: number) => {
@@ -101,13 +99,28 @@ export function AttacksPanel({
           momentum={momentumAfterSwing[displayIdx]}
           bonusTime={bonusTimeByAttack[a.attackIndex] === true}
           bonusTimeMomentumPool={bonusTimePoolBeforeSwing[displayIdx]}
-          onBonusTimeChange={onBonusTimeChange}
+          onBonusTimeChange={(attackIndex, value) =>
+            dispatch({ type: 'bonusTime', attackIndex, value })
+          }
           wrapOpen={wrapExpanded.has(a.attackIndex)}
-          onChargeAttackIndexChange={onChargeAttackIndexChange}
-          onChoiceChange={onChoiceChange}
-          onCharacterPlayPickChange={onCharacterPlayPickChange}
+          onChargeAttackIndexChange={(index) =>
+            dispatch({ type: 'chargeAttackIndex', value: index })
+          }
+          onChoiceChange={(attackIndex, pickIndex, id) =>
+            dispatch({ type: 'wrapChoice', attackIndex, pickIndex, id })
+          }
+          onCharacterPlayPickChange={(attackIndex, pickIndex, pick) =>
+            dispatch({
+              type: 'characterPlayPick',
+              attackIndex,
+              pickIndex,
+              pick,
+            })
+          }
           onToggleWrapExpansion={() => toggleWrapExpanded(a.attackIndex)}
-          onWrapContinuationCleared={onWrapContinuationCleared}
+          onWrapContinuationCleared={(attackIndex) =>
+            dispatch({ type: 'clearWrapContinuation', attackIndex })
+          }
         />
       ))}
     </AttacksList>
