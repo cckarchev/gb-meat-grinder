@@ -1,4 +1,8 @@
-import type { CharacterPlayPickSlot, PlaybookDamageMods, WrapPick } from '@/types/core/playbook';
+import type {
+  CharacterPlayPickSlot,
+  PlaybookDamageMods,
+  WrapPick,
+} from '@/types/core/playbook';
 
 export type AttackPlan = {
   wrapPicks: WrapPick[][];

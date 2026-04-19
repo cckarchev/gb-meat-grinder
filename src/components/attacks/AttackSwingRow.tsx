@@ -4,7 +4,10 @@ import type { AttackRollContext } from '@/types/core/attackSequence';
 import { BASE_ATTACK_COUNT } from '@/core/constants';
 import { choiceUsesCharacterPlay } from '@/core/playbook';
 import { maxNetSuccessesForRoll } from '@/core/probability';
-import { attackBlockVariant, attackKindLabel } from '@/components/attacks/attackVariant';
+import {
+  attackBlockVariant,
+  attackKindLabel,
+} from '@/components/attacks/attackVariant';
 import type { AttackBlockVariant } from '@/types/components/attacks';
 import { Mono } from '@/components/ui';
 import { AttackStatsAside } from '@/components/attacks/AttackStatsAside';

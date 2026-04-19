@@ -7,7 +7,10 @@ import {
   defaultWrapPicks,
   sanitizeCharacterPlayPicksWrap,
 } from '@/core/playbook';
-import type { AttackPlan, AttackPlanClampParams } from '@/types/core/attackPlan';
+import type {
+  AttackPlan,
+  AttackPlanClampParams,
+} from '@/types/core/attackPlan';
 import type {
   CharacterPlayPick,
   CharacterPlayPickSlot,

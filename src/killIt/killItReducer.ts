@@ -17,7 +17,10 @@ import {
   momentumPoolBeforeBonusTime,
   sanitizeBonusTimeFlags,
 } from '@/core/playbook';
-import type { AttackPlan, AttackPlanClampParams } from '@/types/core/attackPlan';
+import type {
+  AttackPlan,
+  AttackPlanClampParams,
+} from '@/types/core/attackPlan';
 import type { KillItAction, KillItState } from '@/types/killIt/reducer';
 
 function clampParams(s: KillItState): AttackPlanClampParams {
