@@ -497,9 +497,8 @@ export function computeAttackSequence(
   damageMods: PlaybookDamageMods,
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
-): { attacks: AttackRollContext[]; probAll: number } {
+): { attacks: AttackRollContext[] } {
   const attacks: AttackRollContext[] = [];
-  let probAll = 1;
 
   for (const i of activationAttackIndices(wrapPicks, damageMods)) {
     const { tacBonus, defReduction } = modifiersBeforeAttack(
@@ -530,7 +529,6 @@ export function computeAttackSequence(
     const pHit = hitProbabilityPerDie(defMin);
     const need = wrapNetThresholdAllHits(wrapPicks[i]);
     const prob = probAttackSucceeds(tac, pHit, armor, need);
-    probAll *= prob;
     attacks.push({
       attackIndex: i,
       tac,
@@ -541,5 +539,5 @@ export function computeAttackSequence(
     });
   }
 
-  return { attacks, probAll };
+  return { attacks };
 }

@@ -27,8 +27,6 @@ export type KillItSimulation = {
   wrapPicks: WrapPick[][];
   characterPlayPicks: CharacterPlayPickSlot[][];
   attacks: AttackRollContext[];
-  /** P(all activation swings hit their selected playbook net), assuming independence. */
-  probAllSelectedHits: number;
   dispatch: Dispatch<KillItAction>;
 };
 
@@ -47,7 +45,7 @@ export function useKillItSimulationState(): KillItSimulation {
     });
   }, [wrapPicks, state.damageMods, state.startingMomentum]);
 
-  const { attacks, probAll: probAllSelectedHits } = useMemo(
+  const { attacks } = useMemo(
     () =>
       computeAttackSequence(
         state.enemyDef,
@@ -90,16 +88,8 @@ export function useKillItSimulationState(): KillItSimulation {
       wrapPicks,
       characterPlayPicks,
       attacks,
-      probAllSelectedHits,
       dispatch,
     }),
-    [
-      state,
-      wrapPicks,
-      characterPlayPicks,
-      attacks,
-      probAllSelectedHits,
-      dispatch,
-    ],
+    [state, wrapPicks, characterPlayPicks, attacks, dispatch],
   );
 }

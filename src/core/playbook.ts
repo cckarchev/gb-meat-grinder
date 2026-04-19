@@ -629,17 +629,6 @@ export function netSuccessesForChoice(id: PlaybookChoiceId): number {
   return col.netSuccesses;
 }
 
-/**
- * Sum of column net costs on one attack (card pips only). Used for bookkeeping;
- * hit probability for wrapped rows uses {@link wrapNetThresholdAllHits}.
- */
-export function wrapNetCostSum(picks: WrapPick[]): number {
-  return picks.reduce(
-    (s, id) => s + (id == null ? 0 : netSuccessesForChoice(id)),
-    0,
-  );
-}
-
 /** How many playbook results this attack can resolve (ceil(maxNet / card cap)). */
 export function wrapSlotCount(maxNet: number): number {
   if (maxNet < 1) return 1;

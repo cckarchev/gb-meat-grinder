@@ -65,14 +65,8 @@ const TotalsSectionTitle = styled(ProbabilitySummaryTitle)`
   margin-top: 1rem;
 `;
 
-/** Dotted underline hints native `title` breakdown (momentous / Bonus Time). */
-const NetMomentumMono = styled(Mono)`
-  cursor: help;
-  text-decoration: underline dotted;
-  text-underline-offset: 0.12em;
-`;
-
-const DamageDealtMono = styled(Mono)`
+/** Dotted underline hints native `title` on summary stat values. */
+const SummaryStatMono = styled(Mono)`
   cursor: help;
   text-decoration: underline dotted;
   text-underline-offset: 0.12em;
@@ -220,16 +214,16 @@ export function AttacksPanelSummary() {
       <TotalsSectionTitle>Totals</TotalsSectionTitle>
       <ProbabilityRow>
         <span title={damageDealtTooltip}>Damage dealt</span>
-        <DamageDealtMono title={damageDealtTooltip}>
+        <SummaryStatMono title={damageDealtTooltip}>
           {totalDamageIfAllHit}
-        </DamageDealtMono>
+        </SummaryStatMono>
       </ProbabilityRow>
       <ProbabilityRow>
         <span>Net momentum</span>
-        <NetMomentumMono title={netMomentumTooltip}>
+        <SummaryStatMono title={netMomentumTooltip}>
           {netMomentumIfAllHit > 0 ? '+' : ''}
           {netMomentumIfAllHit}
-        </NetMomentumMono>
+        </SummaryStatMono>
       </ProbabilityRow>
     </Summary>
   );

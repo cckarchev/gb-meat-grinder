@@ -41,15 +41,6 @@ export function probAttackSucceeds(
   return tail;
 }
 
-/** Independent attacks: probability all succeed. */
-export function probAllSucceed(probs: number[]): number {
-  let prod = 1;
-  for (const q of probs) {
-    prod *= q;
-  }
-  return prod;
-}
-
 export function formatPercent(x: number, digits = 1): string {
   if (!Number.isFinite(x)) return '-';
   if (x < 0.0001 && x > 0) return '<0.01%';
