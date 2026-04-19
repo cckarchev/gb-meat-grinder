@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
 import styled from 'styled-components';
-import { narrowViewport } from '../styles/breakpoints';
+import type { AppChromeProps } from '@/types/components/layout';
+import { narrowViewport } from '@/styles/breakpoints';
 
 const Shell = styled.div`
   box-sizing: border-box;
@@ -26,10 +26,6 @@ const Title = styled.h1`
     margin-bottom: 0.85rem;
   }
 `;
-
-type AppChromeProps = {
-  children: ReactNode;
-};
 
 export function AppChrome({ children }: AppChromeProps) {
   return (

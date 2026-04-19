@@ -1,6 +1,7 @@
 import { useId } from 'react';
 import styled from 'styled-components';
-import { narrowViewport } from '../styles/breakpoints';
+import type { StepControlProps } from '@/types/components/stepControl';
+import { narrowViewport } from '@/styles/breakpoints';
 
 const Wrap = styled.div`
   display: flex;
@@ -83,19 +84,6 @@ const Hint = styled.span`
   font-size: 0.72rem;
   color: var(--muted);
 `;
-
-export type StepControlProps = {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  onChange: (next: number) => void;
-  /** Shown inside the value box, e.g. `4+` or `2` */
-  valueLabel: string;
-  hint?: string;
-  decrementAriaLabel: string;
-  incrementAriaLabel: string;
-};
 
 export function StepControl({
   label,

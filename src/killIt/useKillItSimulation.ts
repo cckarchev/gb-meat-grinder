@@ -1,11 +1,9 @@
 import { createContext, useContext } from 'react';
-import type { KillItSimulation } from './useKillItSimulationState';
+import type { KillItSimulation } from '@/types/killIt/simulation';
 
 export const KillItSimulationContext = createContext<KillItSimulation | null>(
   null,
 );
-
-export type { KillItSimulation } from './useKillItSimulationState';
 
 export function useKillItSimulation(): KillItSimulation {
   const ctx = useContext(KillItSimulationContext);

@@ -3,11 +3,11 @@ import {
   INITIAL_TAC_MODIFIER_MIN,
   STARTING_MOMENTUM_MAX,
   STARTING_MOMENTUM_MIN,
-} from '../core/constants';
-import { useKillItSimulation } from '../killIt/useKillItSimulation';
-import { StepControl } from './StepControl';
-import { BuffOption } from './targetPanelPrimitives';
-import { Panel, PanelTitle, Row } from './ui';
+} from '@/core/constants';
+import { useKillItSimulation } from '@/killIt/useKillItSimulation';
+import { StepControl } from '@/components/StepControl';
+import { BuffOption } from '@/components/targetPanelPrimitives';
+import { Panel, PanelTitle, Row } from '@/components/ui';
 
 const TOOLTIP_TOOLED_UP =
   '+1 damage on each selected playbook line damage result.';

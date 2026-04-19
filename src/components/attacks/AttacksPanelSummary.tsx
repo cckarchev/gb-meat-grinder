@@ -6,12 +6,12 @@ import {
   formatWrapRowSelectionLabel,
   momentumAfterAttackInclusive,
   pickGeneratesMomentum,
-  type WrapPick,
-} from '../../core/playbook';
-import { formatPercent } from '../../core/probability';
-import { useKillItSimulation } from '../../killIt/useKillItSimulation';
-import { Mono, Summary } from '../ui';
-import { attackKindLabel } from './attackVariant';
+} from '@/core/playbook';
+import type { WrapPick } from '@/types/core/playbook';
+import { formatPercent } from '@/core/probability';
+import { useKillItSimulation } from '@/killIt/useKillItSimulation';
+import { Mono, Summary } from '@/components/ui';
+import { attackKindLabel } from '@/components/attacks/attackVariant';
 
 const ProbabilitySummaryTitle = styled.h2`
   font-size: 0.75rem;

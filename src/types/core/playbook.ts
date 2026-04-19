@@ -1,0 +1,69 @@
+/** Playbook and wrap / character-play selection types (Veteran Boar card). */
+
+export type PlaybookChoiceId =
+  | 'push'
+  | 'dmg1'
+  | 'gb'
+  | 'dmg2'
+  | 'kd'
+  | 'push_push'
+  | 'dmg3'
+  | 'one_gb'
+  | 'tackle'
+  | 'dmg5'
+  | 'dmg6';
+
+/** One wrap slot: a line, or empty (ignored for damage / chain / GB). */
+export type WrapPick = PlaybookChoiceId | null;
+
+/** Singled Out vs Stagger after GB or 1GB (each can apply once per activation). */
+export type CharacterPlayPick = 'so' | 'stagger';
+
+/** Which character-play picks have already been used on earlier swings (same activation). */
+export type CharacterPlayUsage = { so: boolean; stagger: boolean };
+
+export type PlaybookResult = {
+  id: PlaybookChoiceId;
+  label: string;
+  /** +TAC on later attacks (Singled Out); from character play when using GB / 1GB. */
+  tacBonusForLater: number;
+  /** −enemy DEF on later attacks (KD / Stagger). */
+  defReductionForLater: number;
+  /** Damage to enemy HP when this attack hits with this line. */
+  damage: number;
+  /** True if this line generates momentum (momentous). */
+  momentum?: boolean;
+  /** After GB / 1GB, pick Singled Out or Stagger (once each per activation). */
+  picksCharacterPlay?: boolean;
+};
+
+export type PlaybookColumn = {
+  netSuccesses: number;
+  results:
+    | readonly [PlaybookResult]
+    | readonly [PlaybookResult, PlaybookResult];
+};
+
+export type PlaybookDamageMods = {
+  /** Enemy Tough Hide: −1 to each **selected** playbook line that has card damage. */
+  toughHide: boolean;
+  /** +1 to each **selected** damage pip only (same scope as Tough Hide). */
+  tooledUp: boolean;
+  /** +1 to each **selected** damage pip only (same scope as Tough Hide). */
+  theOwner: boolean;
+};
+
+/** Playbook line button look for momentous damage pips (after Tough Hide / buffs). */
+export type MomentousLineStyle = 'heat' | 'zeroed' | 'none';
+
+/** Per-pick character play slot; `null` when that pick is not GB / 1GB. */
+export type CharacterPlayPickSlot = CharacterPlayPick | null;
+
+/** How much selected damage pips contribute, split by Tough Hide vs Boar buffs. */
+export type DamageModifierBreakdown = {
+  rawCardDamage: number;
+  toughHideReduction: number;
+  tooledUpBonus: number;
+  theOwnerBonus: number;
+  totalEffective: number;
+};

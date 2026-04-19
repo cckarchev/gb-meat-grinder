@@ -1,7 +1,6 @@
-import { BASE_ATTACK_COUNT } from '../../core/constants';
-import { attackRowIsBerserker } from '../../core/playbook';
-
-export type AttackBlockVariant = 'charge' | 'berserker' | 'base';
+import { BASE_ATTACK_COUNT } from '@/core/constants';
+import { attackRowIsBerserker } from '@/core/playbook';
+import type { AttackBlockVariant } from '@/types/components/attacks';
 
 export function attackBlockVariant(
   attackIndex: number,

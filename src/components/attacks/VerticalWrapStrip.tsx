@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { narrowViewport } from '../../styles/breakpoints';
-import { PLAYBOOK_COLUMN_TRACK } from './playbookLayout';
+import { narrowViewport } from '@/styles/breakpoints';
+import { PLAYBOOK_COLUMN_TRACK } from '@/components/attacks/playbookLayout';
 
 const VerticalWrapToggle = styled.button`
   align-self: stretch;

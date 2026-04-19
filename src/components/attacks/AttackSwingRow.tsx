@@ -1,20 +1,20 @@
 import styled from 'styled-components';
-import { narrowViewport } from '../../styles/breakpoints';
-import type { AttackRollContext } from '../../core/attackSequence';
-import { BASE_ATTACK_COUNT } from '../../core/constants';
-import { choiceUsesCharacterPlay } from '../../core/playbook';
-import { maxNetSuccessesForRoll } from '../../core/probability';
-import {
-  type AttackBlockVariant,
-  attackBlockVariant,
-  attackKindLabel,
-} from './attackVariant';
-import { Mono } from '../ui';
-import { AttackStatsAside } from './AttackStatsAside';
-import { CharacterPlaySelection } from './CharacterPlaySelection';
-import { WrapSlotPickGrid } from './PlaybookGrid';
-import type { AttacksPanelProps, CharacterPlaySlotRef } from './types';
-import { VerticalWrapStrip } from './VerticalWrapStrip';
+import { narrowViewport } from '@/styles/breakpoints';
+import type { AttackRollContext } from '@/types/core/attackSequence';
+import { BASE_ATTACK_COUNT } from '@/core/constants';
+import { choiceUsesCharacterPlay } from '@/core/playbook';
+import { maxNetSuccessesForRoll } from '@/core/probability';
+import { attackBlockVariant, attackKindLabel } from '@/components/attacks/attackVariant';
+import type { AttackBlockVariant } from '@/types/components/attacks';
+import { Mono } from '@/components/ui';
+import { AttackStatsAside } from '@/components/attacks/AttackStatsAside';
+import { CharacterPlaySelection } from '@/components/attacks/CharacterPlaySelection';
+import { WrapSlotPickGrid } from '@/components/attacks/PlaybookGrid';
+import type {
+  AttacksPanelProps,
+  CharacterPlaySlotRef,
+} from '@/types/components/attacks';
+import { VerticalWrapStrip } from '@/components/attacks/VerticalWrapStrip';
 
 const AttackRow = styled.div`
   display: flex;

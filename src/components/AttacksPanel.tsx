@@ -4,12 +4,10 @@ import {
   damageIfAllHitsWrap,
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
-} from '../core/playbook';
-import { useKillItSimulation } from '../killIt/useKillItSimulation';
-import { AttackSwingRow } from './attacks/AttackSwingRow';
-import { AttacksPanelSummary } from './attacks/AttacksPanelSummary';
-
-export type { AttacksPanelProps } from './attacks/types';
+} from '@/core/playbook';
+import { useKillItSimulation } from '@/killIt/useKillItSimulation';
+import { AttackSwingRow } from '@/components/attacks/AttackSwingRow';
+import { AttacksPanelSummary } from '@/components/attacks/AttacksPanelSummary';
 
 const AttacksList = styled.div`
   display: flex;

@@ -6,12 +6,12 @@ import {
   DEF_MIN,
   HP_MAX,
   HP_MIN,
-} from '../core/constants';
-import { useKillItSimulation } from '../killIt/useKillItSimulation';
-import { narrowViewport } from '../styles/breakpoints';
-import { StepControl } from './StepControl';
-import { BuffOption } from './targetPanelPrimitives';
-import { Panel, PanelTitle, Row } from './ui';
+} from '@/core/constants';
+import { useKillItSimulation } from '@/killIt/useKillItSimulation';
+import { narrowViewport } from '@/styles/breakpoints';
+import { StepControl } from '@/components/StepControl';
+import { BuffOption } from '@/components/targetPanelPrimitives';
+import { Panel, PanelTitle, Row } from '@/components/ui';
 
 const TOOLTIP_COVER =
   'Terrain: attacks that still count as in cover take -1 TAC. An earlier > or >> in this activation can clear cover for later swings.';

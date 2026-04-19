@@ -1,7 +1,10 @@
 import styled from 'styled-components';
-import { narrowViewport } from '../../styles/breakpoints';
-import { characterPlayAvailabilityForPick } from '../../core/playbook';
-import type { AttacksPanelProps, CharacterPlaySlotRef } from './types';
+import { narrowViewport } from '@/styles/breakpoints';
+import { characterPlayAvailabilityForPick } from '@/core/playbook';
+import type {
+  AttacksPanelProps,
+  CharacterPlaySlotRef,
+} from '@/types/components/attacks';
 
 const SelectionRow = styled.div`
   display: flex;

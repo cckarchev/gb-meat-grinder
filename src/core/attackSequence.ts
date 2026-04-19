@@ -4,7 +4,7 @@ import {
   DEF_MAX,
   DEF_MIN,
   VBOAR_TAC,
-} from './constants';
+} from '@/core/constants';
 import {
   MAX_PLAYBOOK_NET,
   PLAYBOOK,
@@ -12,10 +12,6 @@ import {
   attackRowIsActive,
   choiceUsesCharacterPlay,
   coverSwingClockIndices,
-  type CharacterPlayPickSlot,
-  type PlaybookChoiceId,
-  type PlaybookDamageMods,
-  type WrapPick,
   netSuccessesForChoice,
   rowEffectsForPick,
   sanitizeCharacterPlayPicksWrap,
@@ -23,12 +19,19 @@ import {
   wrapPickClearsCover,
   wrapSlotBudget,
   wrapSlotCount,
-} from './playbook';
+} from '@/core/playbook';
+import type {
+  CharacterPlayPickSlot,
+  PlaybookChoiceId,
+  PlaybookDamageMods,
+  WrapPick,
+} from '@/types/core/playbook';
+import type { AttackRollContext } from '@/types/core/attackSequence';
 import {
   hitProbabilityPerDie,
   maxNetSuccessesForRoll,
   probAttackSucceeds,
-} from './probability';
+} from '@/core/probability';
 
 export const CHARGE_TAC_BONUS = 4;
 
@@ -476,15 +479,6 @@ export function clampAttackPlan(
   }
   return { wrapPicks: next, characterPlayPicks: nextCharacterPlay };
 }
-
-export type AttackRollContext = {
-  attackIndex: number;
-  tac: number;
-  defMinRoll: number;
-  pHit: number;
-  netSuccessesNeeded: number;
-  prob: number;
-};
 
 export function computeAttackSequence(
   baseDef: number,

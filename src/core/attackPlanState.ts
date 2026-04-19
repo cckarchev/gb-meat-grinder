@@ -1,35 +1,19 @@
-import { clampAttackPlan } from './attackSequence';
-import { MAX_ATTACK_COUNT } from './constants';
+import { clampAttackPlan } from '@/core/attackSequence';
+import { MAX_ATTACK_COUNT } from '@/core/constants';
 import {
   choiceUsesCharacterPlay,
   DEFAULT_PLAYBOOK_DAMAGE_MODS,
   defaultCharacterPlayPicksWrap,
   defaultWrapPicks,
   sanitizeCharacterPlayPicksWrap,
-  type CharacterPlayPick,
-  type CharacterPlayPickSlot,
-  type PlaybookChoiceId,
-  type PlaybookDamageMods,
-  type WrapPick,
-} from './playbook';
-
-export type AttackPlan = {
-  wrapPicks: WrapPick[][];
-  characterPlayPicks: CharacterPlayPickSlot[][];
-};
-
-/** Inputs to `clampAttackPlan` bundled for reuse with `clampAttackPlanState`. */
-export type AttackPlanClampParams = {
-  chargeAttackIndex: number;
-  armor: number;
-  enemyHasCover: boolean;
-  /** +1 enemy DEF only on the attack that has the charge. */
-  enemyDefensiveStance: boolean;
-  damageMods: PlaybookDamageMods;
-  enemyDef: number;
-  bonusTimeByAttack: readonly boolean[];
-  initialTacModifier: number;
-};
+} from '@/core/playbook';
+import type { AttackPlan, AttackPlanClampParams } from '@/types/core/attackPlan';
+import type {
+  CharacterPlayPick,
+  CharacterPlayPickSlot,
+  PlaybookChoiceId,
+  PlaybookDamageMods,
+} from '@/types/core/playbook';
 
 export function createInitialAttackPlan(): AttackPlan {
   const wp = defaultWrapPicks();

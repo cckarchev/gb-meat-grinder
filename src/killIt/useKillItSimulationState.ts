@@ -1,34 +1,10 @@
-import type { Dispatch } from 'react';
 import { useEffect, useMemo, useReducer } from 'react';
-import type { AttackRollContext } from '../core/attackSequence';
-import { computeAttackSequence } from '../core/attackSequence';
-import type {
-  CharacterPlayPickSlot,
-  PlaybookDamageMods,
-  WrapPick,
-} from '../core/playbook';
+import { computeAttackSequence } from '@/core/attackSequence';
 import {
   createInitialKillItState,
   killItReducer,
-  type KillItAction,
-} from './killItReducer';
-
-export type KillItSimulation = {
-  enemyDef: number;
-  armor: number;
-  hp: number;
-  chargeAttackIndex: number;
-  enemyHasCover: boolean;
-  enemyDefensiveStance: boolean;
-  startingMomentum: number;
-  initialTacModifier: number;
-  damageMods: PlaybookDamageMods;
-  bonusTimeByAttack: boolean[];
-  wrapPicks: WrapPick[][];
-  characterPlayPicks: CharacterPlayPickSlot[][];
-  attacks: AttackRollContext[];
-  dispatch: Dispatch<KillItAction>;
-};
+} from '@/killIt/killItReducer';
+import type { KillItSimulation } from '@/types/killIt/simulation';
 
 export function useKillItSimulationState(): KillItSimulation {
   const [state, dispatch] = useReducer(

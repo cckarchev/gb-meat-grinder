@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { narrowViewport } from '../styles/breakpoints';
+import { narrowViewport } from '@/styles/breakpoints';
 
 export const Panel = styled.section`
   border: 1px solid var(--border);

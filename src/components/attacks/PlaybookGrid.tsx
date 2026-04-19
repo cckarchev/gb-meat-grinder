@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { narrowViewport } from '../../styles/breakpoints';
+import { narrowViewport } from '@/styles/breakpoints';
 import {
   PLAYBOOK,
   kdAlreadyTakenBeforePick,
@@ -7,17 +7,19 @@ import {
   playbookLineDisplayLabel,
   wrapExtendedNetNeeded,
   wrapSlotBudget,
-  type PlaybookDamageMods,
-  type WrapPick,
-} from '../../core/playbook';
+} from '@/core/playbook';
+import type { PlaybookDamageMods, WrapPick } from '@/types/core/playbook';
 import {
   probHeatBackground,
   probHeatBorder,
   probHeatTextColor,
-} from '../../core/probStyle';
-import { formatPercent, probAttackSucceeds } from '../../core/probability';
-import type { AttacksPanelProps } from './types';
-import { PLAYBOOK_COLUMN_TRACK, PLAYBOOK_GRID_GAP } from './playbookLayout';
+} from '@/core/probStyle';
+import { formatPercent, probAttackSucceeds } from '@/core/probability';
+import type { AttacksPanelProps } from '@/types/components/attacks';
+import {
+  PLAYBOOK_COLUMN_TRACK,
+  PLAYBOOK_GRID_GAP,
+} from '@/components/attacks/playbookLayout';
 
 const WrapSlotBlock = styled.div<{ $first: boolean }>`
   margin-top: ${(p) => (p.$first ? 0 : '0.85rem')};

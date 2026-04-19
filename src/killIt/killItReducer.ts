@@ -4,38 +4,21 @@ import {
   INITIAL_TAC_MODIFIER_MAX,
   INITIAL_TAC_MODIFIER_MIN,
   MAX_ATTACK_COUNT,
-} from '../core/constants';
+} from '@/core/constants';
 import {
   clampAttackPlanState,
   createInitialAttackPlan,
   nextPlanAfterCharacterPlayPick,
   nextPlanAfterClearWrapContinuation,
   nextPlanAfterWrapChoice,
-  type AttackPlan,
-  type AttackPlanClampParams,
-} from '../core/attackPlanState';
+} from '@/core/attackPlanState';
 import {
   DEFAULT_PLAYBOOK_DAMAGE_MODS,
   momentumPoolBeforeBonusTime,
   sanitizeBonusTimeFlags,
-  type CharacterPlayPick,
-  type PlaybookChoiceId,
-  type PlaybookDamageMods,
-} from '../core/playbook';
-
-export type KillItState = {
-  enemyDef: number;
-  armor: number;
-  hp: number;
-  chargeAttackIndex: number;
-  enemyHasCover: boolean;
-  enemyDefensiveStance: boolean;
-  startingMomentum: number;
-  initialTacModifier: number;
-  bonusTimeByAttack: boolean[];
-  damageMods: PlaybookDamageMods;
-  attackPlan: AttackPlan;
-};
+} from '@/core/playbook';
+import type { AttackPlan, AttackPlanClampParams } from '@/types/core/attackPlan';
+import type { KillItAction, KillItState } from '@/types/killIt/reducer';
 
 function clampParams(s: KillItState): AttackPlanClampParams {
   return {
@@ -58,32 +41,6 @@ function bonusTimeEqual(a: readonly boolean[], b: readonly boolean[]): boolean {
   if (a.length !== b.length) return false;
   return a.every((v, i) => v === b[i]);
 }
-
-export type KillItAction =
-  | { type: 'enemyDef'; value: number }
-  | { type: 'armor'; value: number }
-  | { type: 'hp'; value: number }
-  | { type: 'chargeAttackIndex'; value: number }
-  | { type: 'enemyHasCover'; value: boolean }
-  | { type: 'enemyDefensiveStance'; value: boolean }
-  | { type: 'startingMomentum'; value: number }
-  | { type: 'initialTacModifierRaw'; value: number }
-  | { type: 'damageMods'; value: PlaybookDamageMods }
-  | { type: 'bonusTime'; attackIndex: number; value: boolean }
-  | { type: 'sanitizeBonusTime' }
-  | {
-      type: 'wrapChoice';
-      attackIndex: number;
-      pickIndex: number;
-      id: PlaybookChoiceId | null;
-    }
-  | { type: 'clearWrapContinuation'; attackIndex: number }
-  | {
-      type: 'characterPlayPick';
-      attackIndex: number;
-      pickIndex: number;
-      pick: CharacterPlayPick;
-    };
 
 export function createInitialKillItState(): KillItState {
   return {

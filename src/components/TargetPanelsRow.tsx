@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
 import styled from 'styled-components';
-import { narrowViewport } from '../styles/breakpoints';
-import { Panel } from './ui';
+import type { TargetPanelsRowProps } from '@/types/components/layout';
+import { narrowViewport } from '@/styles/breakpoints';
+import { Panel } from '@/components/ui';
 
 const Row = styled.div`
   display: flex;
@@ -20,10 +20,6 @@ const Row = styled.div`
     margin-bottom: 0.65rem;
   }
 `;
-
-type TargetPanelsRowProps = {
-  children: ReactNode;
-};
 
 export function TargetPanelsRow({ children }: TargetPanelsRowProps) {
   return <Row>{children}</Row>;

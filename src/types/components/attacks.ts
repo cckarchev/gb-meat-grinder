@@ -1,11 +1,11 @@
-import type { AttackRollContext } from '../../core/attackSequence';
+import type { AttackRollContext } from '@/types/core/attackSequence';
 import type {
   CharacterPlayPick,
   CharacterPlayPickSlot,
   PlaybookChoiceId,
   PlaybookDamageMods,
   WrapPick,
-} from '../../core/playbook';
+} from '@/types/core/playbook';
 
 export type AttacksPanelProps = {
   targetHp: number;
@@ -34,3 +34,6 @@ export type AttacksPanelProps = {
 };
 
 export type CharacterPlaySlotRef = { pid: PlaybookChoiceId; pickIndex: number };
+
+/** Visual variant for the attack block (charge / berserker / base). */
+export type AttackBlockVariant = 'charge' | 'berserker' | 'base';

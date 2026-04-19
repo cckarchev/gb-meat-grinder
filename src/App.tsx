@@ -1,5 +1,5 @@
-import { AppChrome } from './components/AppChrome';
-import { KillItRoot } from './killIt';
+import { AppChrome } from '@/components/AppChrome';
+import { KillItRoot } from '@/killIt/KillItRoot';
 
 function App() {
   return (
