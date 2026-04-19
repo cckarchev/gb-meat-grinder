@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { narrowViewport } from '@/styles/breakpoints';
+import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import {
   PLAYBOOK,
   kdAlreadyTakenBeforePick,
@@ -18,6 +18,7 @@ import { formatPercent, probAttackSucceeds } from '@/core/probability';
 import type { AttacksPanelProps } from '@/types/components/attacks';
 import {
   PLAYBOOK_COLUMN_TRACK,
+  PLAYBOOK_COLUMN_WIDTH_VAR,
   PLAYBOOK_GRID_GAP,
 } from '@/components/attacks/playbookLayout';
 
@@ -33,13 +34,18 @@ const WrapSlotBlock = styled.div<{ $first: boolean }>`
     margin-top: ${(p) => (p.$first ? 0 : '0.55rem')};
     padding-top: ${(p) => (p.$first ? 0 : '0.45rem')};
   }
+
+  ${extraNarrowViewport} {
+    margin-top: ${(p) => (p.$first ? 0 : '0.45rem')};
+    padding-top: ${(p) => (p.$first ? 0 : '0.38rem')};
+  }
 `;
 
 const ColumnGrid = styled.div<{ $columnCount: number }>`
   display: grid;
   grid-template-columns: repeat(
     ${(p) => Math.max(1, p.$columnCount)},
-    ${PLAYBOOK_COLUMN_TRACK}
+    var(${PLAYBOOK_COLUMN_WIDTH_VAR}, ${PLAYBOOK_COLUMN_TRACK})
   );
   gap: ${PLAYBOOK_GRID_GAP};
   align-items: stretch;
@@ -48,13 +54,12 @@ const ColumnGrid = styled.div<{ $columnCount: number }>`
   min-width: 0;
 
   ${narrowViewport} {
-    /* Fluid columns: fixed track widths overflow ~390px viewports (7 cols). */
-    width: 100%;
-    grid-template-columns: repeat(
-      ${(p) => Math.max(1, p.$columnCount)},
-      minmax(0, 1fr)
-    );
+    /* Same fixed track as wrap control; scroll horizontally instead of stretching. */
     gap: 0.22rem;
+  }
+
+  ${extraNarrowViewport} {
+    gap: 0.14rem;
   }
 `;
 
@@ -81,6 +86,11 @@ const ColumnResults = styled.div`
     gap: 0.22rem;
     padding-bottom: 0.08rem;
   }
+
+  ${extraNarrowViewport} {
+    gap: 0.14rem;
+    padding-bottom: 0.04rem;
+  }
 `;
 
 const ColumnHead = styled.div<{ $p: number }>`
@@ -100,6 +110,12 @@ const ColumnHead = styled.div<{ $p: number }>`
     font-size: 0.62rem;
     padding: 0.28rem 0.2rem;
     letter-spacing: 0.02em;
+  }
+
+  ${extraNarrowViewport} {
+    font-size: 0.56rem;
+    padding: 0.22rem 0.12rem;
+    letter-spacing: 0.01em;
   }
 `;
 
@@ -130,6 +146,12 @@ const LineButton = styled.button<{
     max-width: 100%;
     font-size: clamp(0.55rem, 2.8vw, 0.66rem);
     margin-bottom: 0.12rem;
+  }
+
+  ${extraNarrowViewport} {
+    width: min(1.85rem, 100%);
+    font-size: clamp(0.48rem, 3.2vw, 0.58rem);
+    margin-bottom: 0.08rem;
   }
   transition:
     box-shadow 0.12s ease,

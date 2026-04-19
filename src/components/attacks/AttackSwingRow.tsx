@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { narrowViewport } from '@/styles/breakpoints';
+import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import type { AttackRollContext } from '@/types/core/attackSequence';
 import { BASE_ATTACK_COUNT } from '@/core/constants';
 import { choiceUsesCharacterPlay } from '@/core/playbook';
@@ -14,7 +14,11 @@ import type {
   AttacksPanelProps,
   CharacterPlaySlotRef,
 } from '@/types/components/attacks';
-import { VerticalWrapStrip } from '@/components/attacks/VerticalWrapStrip';
+import {
+  PLAYBOOK_COLUMN_TRACK,
+  PLAYBOOK_COLUMN_WIDTH_VAR,
+} from '@/components/attacks/playbookLayout';
+import { WrapContinuationToggle } from '@/components/attacks/WrapContinuationToggle';
 
 const AttackRow = styled.div`
   display: flex;
@@ -34,6 +38,7 @@ const AttackMain = styled.div`
 `;
 
 const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
+  ${PLAYBOOK_COLUMN_WIDTH_VAR}: ${PLAYBOOK_COLUMN_TRACK};
   border-radius: 10px;
   padding: 0.65rem 0.75rem 0.85rem;
   border: 1px solid var(--border);
@@ -59,8 +64,14 @@ const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
         : ''}
 
   ${narrowViewport} {
+    ${PLAYBOOK_COLUMN_WIDTH_VAR}: clamp(2.15rem, 10.5vw, ${PLAYBOOK_COLUMN_TRACK});
     padding: 0.5rem 0.55rem 0.65rem;
     border-radius: 8px;
+  }
+
+  ${extraNarrowViewport} {
+    ${PLAYBOOK_COLUMN_WIDTH_VAR}: clamp(1.75rem, 11vw, ${PLAYBOOK_COLUMN_TRACK});
+    padding: 0.45rem 0.45rem 0.55rem;
   }
 `;
 
@@ -103,11 +114,12 @@ const PoolCluster = styled.div`
   flex: 1 1 auto;
 `;
 
-const TacPoolBadge = styled.div`
+/** TAC readout + wrap toggle (wrap lives here so the playbook row can use full width). */
+const TacPoolRight = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: baseline;
-  gap: 0.35rem;
+  align-items: center;
+  gap: 0.5rem;
   flex: 0 0 auto;
   margin-left: auto;
   padding-left: 0.35rem;
@@ -122,7 +134,17 @@ const TacPoolBadge = styled.div`
     border-left: none;
     border-top: 1px solid var(--border);
     justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.4rem;
   }
+`;
+
+const TacPoolBadge = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.35rem;
+  flex: 0 0 auto;
 `;
 
 const TacPoolLabel = styled.span`
@@ -164,19 +186,8 @@ const BonusWrap = styled.label<{ $disabled: boolean }>`
   user-select: none;
 `;
 
-const PlaybookRowWithVerticalWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: 0.45rem;
-
-  ${narrowViewport} {
-    gap: 0.28rem;
-  }
-`;
-
-const PlaybookGridCell = styled.div`
-  flex: 0 1 auto;
+const PlaybookPrimarySlot = styled.div`
+  width: 100%;
   min-width: 0;
 `;
 
@@ -272,10 +283,22 @@ export function AttackSwingRow({
                 <span>Bonus Time (+1 TAC)</span>
               </BonusWrap>
             </PoolCluster>
-            <TacPoolBadge>
-              <TacPoolLabel>TAC</TacPoolLabel>
-              <TacPoolValue>{attack.tac}</TacPoolValue>
-            </TacPoolBadge>
+            <TacPoolRight>
+              {hasWrapContinuation && maxNet >= 1 ? (
+                <WrapContinuationToggle
+                  attackIndex={i}
+                  wrapOpen={wrapOpen}
+                  onClick={() => {
+                    if (wrapOpen) onWrapContinuationCleared(i);
+                    onToggleWrapExpansion();
+                  }}
+                />
+              ) : null}
+              <TacPoolBadge>
+                <TacPoolLabel>TAC</TacPoolLabel>
+                <TacPoolValue>{attack.tac}</TacPoolValue>
+              </TacPoolBadge>
+            </TacPoolRight>
           </DicePoolStrip>
 
           {maxNet < 1 ? (
@@ -285,32 +308,20 @@ export function AttackSwingRow({
             </UnreachableNote>
           ) : (
             <>
-              <PlaybookRowWithVerticalWrap>
-                <PlaybookGridCell>
-                  <WrapSlotPickGrid
-                    attackIndex={i}
-                    pickIndex={0}
-                    tac={attack.tac}
-                    pHit={attack.pHit}
-                    armor={armor}
-                    maxNet={maxNet}
-                    wrapPicks={wrapPicks}
-                    damageMods={damageMods}
-                    firstSlotInSection
-                    onChoiceChange={onChoiceChange}
-                  />
-                </PlaybookGridCell>
-                {hasWrapContinuation ? (
-                  <VerticalWrapStrip
-                    attackIndex={i}
-                    wrapOpen={wrapOpen}
-                    onClick={() => {
-                      if (wrapOpen) onWrapContinuationCleared(i);
-                      onToggleWrapExpansion();
-                    }}
-                  />
-                ) : null}
-              </PlaybookRowWithVerticalWrap>
+              <PlaybookPrimarySlot>
+                <WrapSlotPickGrid
+                  attackIndex={i}
+                  pickIndex={0}
+                  tac={attack.tac}
+                  pHit={attack.pHit}
+                  armor={armor}
+                  maxNet={maxNet}
+                  wrapPicks={wrapPicks}
+                  damageMods={damageMods}
+                  firstSlotInSection
+                  onChoiceChange={onChoiceChange}
+                />
+              </PlaybookPrimarySlot>
               {hasWrapContinuation ? (
                 <div
                   id={`attack-wrap-${i}`}
