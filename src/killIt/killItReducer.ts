@@ -54,10 +54,7 @@ function clampPlan(s: KillItState, plan: AttackPlan): AttackPlan {
   return clampAttackPlanState(plan, clampParams(s));
 }
 
-function bonusTimeEqual(
-  a: readonly boolean[],
-  b: readonly boolean[],
-): boolean {
+function bonusTimeEqual(a: readonly boolean[], b: readonly boolean[]): boolean {
   if (a.length !== b.length) return false;
   return a.every((v, i) => v === b[i]);
 }
@@ -104,7 +101,10 @@ export function createInitialKillItState(): KillItState {
   };
 }
 
-export function killItReducer(state: KillItState, action: KillItAction): KillItState {
+export function killItReducer(
+  state: KillItState,
+  action: KillItAction,
+): KillItState {
   switch (action.type) {
     case 'enemyDef': {
       const next = { ...state, enemyDef: action.value };
