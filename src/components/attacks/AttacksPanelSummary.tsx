@@ -5,6 +5,7 @@ import {
   formatWrapRowSelectionLabel,
   momentumAfterAttackInclusive,
   pickGeneratesMomentum,
+  type WrapPick,
 } from '../../core/playbook';
 import { formatPercent } from '../../core/probability';
 import { useKillItSimulation } from '../../killIt/useKillItSimulation';
@@ -66,6 +67,10 @@ const NetMomentumMono = styled(Mono)`
   text-underline-offset: 0.12em;
 `;
 
+function swingHasWrapSelection(picks: readonly WrapPick[] | undefined): boolean {
+  return (picks ?? []).some((id) => id != null);
+}
+
 export function AttacksPanelSummary() {
   const {
     chargeAttackIndex,
@@ -123,6 +128,12 @@ export function AttacksPanelSummary() {
     return `${t}.`;
   }, [momentousMomentumIfAllHit, bonusTimeSpendsInActivation]);
 
+  const everySwingHasWrapPick = useMemo(
+    () =>
+      attacks.every((ctx) => swingHasWrapSelection(wrapPicks[ctx.attackIndex])),
+    [attacks, wrapPicks],
+  );
+
   return (
     <Summary as="section" aria-label="Per-swing hit odds">
       <ProbabilitySummaryTitle>Odds</ProbabilitySummaryTitle>
@@ -139,12 +150,18 @@ export function AttacksPanelSummary() {
               )}
             </SelectionPicksInline>
           </SelectionLine>
-          <Mono>{formatPercent(a.prob)}</Mono>
+          <Mono>
+            {swingHasWrapSelection(wrapPicks[a.attackIndex])
+              ? formatPercent(a.prob)
+              : '-'}
+          </Mono>
         </ProbabilityRow>
       ))}
       <CombinedOddsRow>
         <span>All swings hit</span>
-        <CombinedOddsValue>{formatPercent(probAllSelectedHits)}</CombinedOddsValue>
+        <CombinedOddsValue>
+          {everySwingHasWrapPick ? formatPercent(probAllSelectedHits) : '-'}
+        </CombinedOddsValue>
       </CombinedOddsRow>
       <TotalsSectionTitle>Totals</TotalsSectionTitle>
       <ProbabilityRow>
