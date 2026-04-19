@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import styled from 'styled-components';
 import {
   damageIfAllHitsWrap,
+  damageModifierBreakdownWrap,
   formatWrapRowSelectionLabel,
   momentumAfterAttackInclusive,
   pickGeneratesMomentum,
@@ -71,6 +72,12 @@ const NetMomentumMono = styled(Mono)`
   text-underline-offset: 0.12em;
 `;
 
+const DamageDealtMono = styled(Mono)`
+  cursor: help;
+  text-decoration: underline dotted;
+  text-underline-offset: 0.12em;
+`;
+
 function swingHasWrapSelection(
   picks: readonly WrapPick[] | undefined,
 ): boolean {
@@ -128,10 +135,29 @@ export function AttacksPanelSummary() {
   const netMomentumTooltip = useMemo(() => {
     let t = `+${momentousMomentumIfAllHit} from momentous results`;
     if (bonusTimeSpendsInActivation > 0) {
-      t += `; −${bonusTimeSpendsInActivation} Bonus Time`;
+      t += `; -${bonusTimeSpendsInActivation} Bonus Time`;
     }
     return `${t}.`;
   }, [momentousMomentumIfAllHit, bonusTimeSpendsInActivation]);
+
+  const damageDealtTooltip = useMemo(() => {
+    const b = damageModifierBreakdownWrap(wrapPicks, damageMods);
+    if (b.rawCardDamage === 0 && b.totalEffective === 0) {
+      return 'No selected playbook lines deal card damage to HP (after Tough Hide).';
+    }
+    let t = `${b.rawCardDamage} from card pips`;
+    if (b.toughHideReduction > 0) {
+      t += `; -${b.toughHideReduction} Tough Hide`;
+    }
+    if (b.tooledUpBonus > 0) {
+      t += `; +${b.tooledUpBonus} Tooled Up`;
+    }
+    if (b.theOwnerBonus > 0) {
+      t += `; +${b.theOwnerBonus} The Owner`;
+    }
+    t += ` = ${b.totalEffective}.`;
+    return t;
+  }, [wrapPicks, damageMods]);
 
   const { avgLineHitProb, roughestRollProb } = useMemo(() => {
     const probs = attacks
@@ -193,8 +219,10 @@ export function AttacksPanelSummary() {
       </OddsAggregateBlock>
       <TotalsSectionTitle>Totals</TotalsSectionTitle>
       <ProbabilityRow>
-        <span>Damage dealt</span>
-        <Mono>{totalDamageIfAllHit}</Mono>
+        <span title={damageDealtTooltip}>Damage dealt</span>
+        <DamageDealtMono title={damageDealtTooltip}>
+          {totalDamageIfAllHit}
+        </DamageDealtMono>
       </ProbabilityRow>
       <ProbabilityRow>
         <span>Net momentum</span>

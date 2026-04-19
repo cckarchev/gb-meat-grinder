@@ -692,6 +692,57 @@ export function defaultWrapPicks(): WrapPick[][] {
   return Array.from({ length: MAX_ATTACK_COUNT }, () => [null]);
 }
 
+/** How much selected damage pips contribute, split by Tough Hide vs Boar buffs. */
+export type DamageModifierBreakdown = {
+  rawCardDamage: number;
+  toughHideReduction: number;
+  tooledUpBonus: number;
+  theOwnerBonus: number;
+  totalEffective: number;
+};
+
+/**
+ * Sums card pip damage and marginal effects of Tough Hide, Tooled Up, and The
+ * Owner across all active rows (same scope as {@link damageIfAllHitsWrap}).
+ */
+export function damageModifierBreakdownWrap(
+  wrapPicks: WrapPick[][],
+  damageMods: PlaybookDamageMods,
+): DamageModifierBreakdown {
+  let rawCardDamage = 0;
+  let toughHideReduction = 0;
+  let tooledUpBonus = 0;
+  let theOwnerBonus = 0;
+  let totalEffective = 0;
+
+  for (let i = 0; i < wrapPicks.length; i++) {
+    if (!attackRowIsActive(wrapPicks, i, damageMods)) continue;
+    for (const id of wrapPicks[i]) {
+      if (id == null) continue;
+      const card = getPlaybookResult(id).damage;
+      if (card <= 0) continue;
+      rawCardDamage += card;
+      const full = effectiveDamageForChoice(id, damageMods);
+      totalEffective += full;
+      toughHideReduction +=
+        effectiveDamageForChoice(id, { ...damageMods, toughHide: false }) -
+        full;
+      tooledUpBonus +=
+        full - effectiveDamageForChoice(id, { ...damageMods, tooledUp: false });
+      theOwnerBonus +=
+        full - effectiveDamageForChoice(id, { ...damageMods, theOwner: false });
+    }
+  }
+
+  return {
+    rawCardDamage,
+    toughHideReduction,
+    tooledUpBonus,
+    theOwnerBonus,
+    totalEffective,
+  };
+}
+
 /** Damage per attack if every pick on that attack hits (playbook modifiers applied). */
 export function damageIfAllHitsWrap(
   wrapPicks: WrapPick[][],
