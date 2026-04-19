@@ -392,7 +392,7 @@ export function formatWrapRowSelectionLabel(
     if (id == null) continue;
     labels.push(playbookLineDisplayLabel(id, damageMods));
   }
-  return labels.length > 0 ? labels.join(' → ') : '—';
+  return labels.length > 0 ? labels.join(' → ') : '-';
 }
 
 /** Rows 0–2: charge + two bought attacks. Rows 3–5: berserkers for bases 0–2. */
@@ -427,7 +427,7 @@ export function attackRowIsActive(
 
 /**
  * Swing order: each base, then its berserker (if any) before the next base.
- * Berserkers cannot be banked — they always resolve immediately after the base that earned them.
+ * Berserkers cannot be banked; they always resolve immediately after the base that earned them.
  */
 export function activationAttackIndices(
   wrapPicks: WrapPick[][],
@@ -648,7 +648,7 @@ export function wrapSlotCount(maxNet: number): number {
 
 /**
  * Max net for slot `slotIndex` (0-based): each full card-width step consumes
- * `MAX_PLAYBOOK_NET`; leftover is the cap for the next result — not based on
+ * `MAX_PLAYBOOK_NET`; leftover is the cap for the next result, not based on
  * what you picked in the previous slot.
  */
 export function wrapSlotBudget(maxNet: number, slotIndex: number): number {
@@ -670,8 +670,8 @@ export function wrapExtendedNetNeeded(
 
 /**
  * Net successes the pool must reach so every non-null wrap pick resolves,
- * using the same extended indexing as the playbook UI (not a sum of column
- * costs — later wrap steps sit past the card width).
+ * using the same extended indexing as the playbook UI. Not a naive sum of
+ * column costs: later wrap slots count past the card width.
  */
 export function wrapNetThresholdAllHits(picks: readonly WrapPick[]): number {
   let maxNeed = 0;

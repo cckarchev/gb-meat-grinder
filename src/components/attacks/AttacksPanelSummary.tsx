@@ -42,19 +42,23 @@ const SelectionPicksInline = styled.span`
   font-weight: 500;
 `;
 
-const CombinedOddsRow = styled(ProbabilityRow)`
+const OddsAggregateBlock = styled.div`
   margin-top: 0.2rem;
-  padding-top: 0.65rem;
+  padding-top: 0.55rem;
   border-top: 1px solid var(--border);
-  font-size: 0.98rem;
-  font-weight: 600;
 `;
 
-const CombinedOddsValue = styled(Mono)`
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+const ThemedOddsLabel = styled.span`
+  cursor: help;
+  text-decoration: underline dotted;
+  text-underline-offset: 0.1em;
 `;
+
+const TOOLTIP_AVERAGE_VIOLENCE =
+  'Average of each swing\'s "all selected lines hit" chance, counting only swings where you actually picked playbook lines. Each roll is still its own independent dice pool. This is not the chance that the whole activation hits every line (that would multiply the swings together, and gets brutal fast).';
+
+const TOOLTIP_ROUGHEST_ROLL =
+  'The lowest per-swing hit chance among swings with a pick. The roll that usually gives you the most grief if every selected line has to land.';
 
 const TotalsSectionTitle = styled(ProbabilitySummaryTitle)`
   margin-top: 1rem;
@@ -67,7 +71,9 @@ const NetMomentumMono = styled(Mono)`
   text-underline-offset: 0.12em;
 `;
 
-function swingHasWrapSelection(picks: readonly WrapPick[] | undefined): boolean {
+function swingHasWrapSelection(
+  picks: readonly WrapPick[] | undefined,
+): boolean {
   return (picks ?? []).some((id) => id != null);
 }
 
@@ -79,7 +85,6 @@ export function AttacksPanelSummary() {
     wrapPicks,
     damageMods,
     attacks,
-    probAllSelectedHits,
   } = useKillItSimulation();
 
   const rowDamageIfHit = useMemo(
@@ -128,11 +133,22 @@ export function AttacksPanelSummary() {
     return `${t}.`;
   }, [momentousMomentumIfAllHit, bonusTimeSpendsInActivation]);
 
-  const everySwingHasWrapPick = useMemo(
-    () =>
-      attacks.every((ctx) => swingHasWrapSelection(wrapPicks[ctx.attackIndex])),
-    [attacks, wrapPicks],
-  );
+  const { avgLineHitProb, roughestRollProb } = useMemo(() => {
+    const probs = attacks
+      .filter((ctx) => swingHasWrapSelection(wrapPicks[ctx.attackIndex]))
+      .map((ctx) => ctx.prob);
+    if (probs.length === 0) {
+      return {
+        avgLineHitProb: null as number | null,
+        roughestRollProb: null as number | null,
+      };
+    }
+    const sum = probs.reduce((a, b) => a + b, 0);
+    return {
+      avgLineHitProb: sum / probs.length,
+      roughestRollProb: Math.min(...probs),
+    };
+  }, [attacks, wrapPicks]);
 
   return (
     <Summary as="section" aria-label="Per-swing hit odds">
@@ -157,12 +173,24 @@ export function AttacksPanelSummary() {
           </Mono>
         </ProbabilityRow>
       ))}
-      <CombinedOddsRow>
-        <span>All swings hit</span>
-        <CombinedOddsValue>
-          {everySwingHasWrapPick ? formatPercent(probAllSelectedHits) : '-'}
-        </CombinedOddsValue>
-      </CombinedOddsRow>
+      <OddsAggregateBlock>
+        <ProbabilityRow>
+          <ThemedOddsLabel title={TOOLTIP_AVERAGE_VIOLENCE}>
+            Average violence
+          </ThemedOddsLabel>
+          <Mono title={TOOLTIP_AVERAGE_VIOLENCE}>
+            {avgLineHitProb != null ? formatPercent(avgLineHitProb) : '-'}
+          </Mono>
+        </ProbabilityRow>
+        <ProbabilityRow>
+          <ThemedOddsLabel title={TOOLTIP_ROUGHEST_ROLL}>
+            Roughest roll
+          </ThemedOddsLabel>
+          <Mono title={TOOLTIP_ROUGHEST_ROLL}>
+            {roughestRollProb != null ? formatPercent(roughestRollProb) : '-'}
+          </Mono>
+        </ProbabilityRow>
+      </OddsAggregateBlock>
       <TotalsSectionTitle>Totals</TotalsSectionTitle>
       <ProbabilityRow>
         <span>Damage dealt</span>

@@ -51,7 +51,7 @@ export function probAllSucceed(probs: number[]): number {
 }
 
 export function formatPercent(x: number, digits = 1): string {
-  if (!Number.isFinite(x)) return '—';
+  if (!Number.isFinite(x)) return '-';
   if (x < 0.0001 && x > 0) return '<0.01%';
   return `${(100 * x).toFixed(digits)}%`;
 }
