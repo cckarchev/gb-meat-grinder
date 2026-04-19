@@ -13,6 +13,15 @@ import { StepControl } from './StepControl';
 import { BuffOption } from './targetPanelPrimitives';
 import { Panel, PanelTitle, Row } from './ui';
 
+const TOOLTIP_COVER =
+  'Terrain: attacks that still count as in cover take -1 TAC. An earlier > or >> in this activation can clear cover for later swings.';
+
+const TOOLTIP_DEFENSIVE_STANCE =
+  'On the charge attack only, the model counts as +1 DEF on its hit roll (still capped at the normal DEF maximum).';
+
+const TOOLTIP_TOUGH_HIDE =
+  '-1 to damage on each selected playbook line that has card damage (can reduce a pip to 0).';
+
 const CoverOption = styled.label`
   display: flex;
   align-items: flex-start;
@@ -80,7 +89,7 @@ export function EnemyPanel() {
           incrementAriaLabel="Increase target HP"
         />
       </Row>
-      <CoverOption>
+      <CoverOption title={TOOLTIP_COVER}>
         <input
           type="checkbox"
           checked={enemyHasCover}
@@ -90,7 +99,7 @@ export function EnemyPanel() {
         />
         <span>Cover</span>
       </CoverOption>
-      <CoverOption>
+      <CoverOption title={TOOLTIP_DEFENSIVE_STANCE}>
         <input
           type="checkbox"
           checked={enemyDefensiveStance}
@@ -103,7 +112,7 @@ export function EnemyPanel() {
         />
         <span>Defensive Stance</span>
       </CoverOption>
-      <BuffOption>
+      <BuffOption title={TOOLTIP_TOUGH_HIDE}>
         <input
           type="checkbox"
           checked={damageMods.toughHide}

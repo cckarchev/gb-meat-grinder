@@ -9,13 +9,15 @@ import { StepControl } from './StepControl';
 import { BuffOption } from './targetPanelPrimitives';
 import { Panel, PanelTitle, Row } from './ui';
 
+const TOOLTIP_TOOLED_UP =
+  '+1 damage on each selected playbook line damage result.';
+
+const TOOLTIP_THE_OWNER =
+  '+1 damage on each selected playbook line damage result.';
+
 export function VBoarPanel() {
-  const {
-    damageMods,
-    startingMomentum,
-    initialTacModifier,
-    dispatch,
-  } = useKillItSimulation();
+  const { damageMods, startingMomentum, initialTacModifier, dispatch } =
+    useKillItSimulation();
 
   const tacModLabel =
     initialTacModifier > 0
@@ -49,7 +51,7 @@ export function VBoarPanel() {
           incrementAriaLabel="Increase initial TAC modifier"
         />
       </Row>
-      <BuffOption>
+      <BuffOption title={TOOLTIP_TOOLED_UP}>
         <input
           type="checkbox"
           checked={damageMods.tooledUp}
@@ -62,7 +64,7 @@ export function VBoarPanel() {
         />
         <span>Tooled Up</span>
       </BuffOption>
-      <BuffOption>
+      <BuffOption title={TOOLTIP_THE_OWNER}>
         <input
           type="checkbox"
           checked={damageMods.theOwner}
