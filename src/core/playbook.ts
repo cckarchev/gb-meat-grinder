@@ -629,7 +629,10 @@ export function netSuccessesForChoice(id: PlaybookChoiceId): number {
   return col.netSuccesses;
 }
 
-/** Total net successes spent on one attack’s wrap (sum of column costs). */
+/**
+ * Sum of column net costs on one attack (card pips only). Used for bookkeeping;
+ * hit probability for wrapped rows uses {@link wrapNetThresholdAllHits}.
+ */
 export function wrapNetCostSum(picks: WrapPick[]): number {
   return picks.reduce(
     (s, id) => s + (id == null ? 0 : netSuccessesForChoice(id)),
@@ -663,6 +666,22 @@ export function wrapExtendedNetNeeded(
   columnNet: number,
 ): number {
   return slotIndex * MAX_PLAYBOOK_NET + columnNet;
+}
+
+/**
+ * Net successes the pool must reach so every non-null wrap pick resolves,
+ * using the same extended indexing as the playbook UI (not a sum of column
+ * costs — later wrap steps sit past the card width).
+ */
+export function wrapNetThresholdAllHits(picks: readonly WrapPick[]): number {
+  let maxNeed = 0;
+  for (let k = 0; k < picks.length; k++) {
+    const id = picks[k];
+    if (id == null) continue;
+    const need = wrapExtendedNetNeeded(k, netSuccessesForChoice(id));
+    if (need > maxNeed) maxNeed = need;
+  }
+  return maxNeed;
 }
 
 export function defaultCharacterPlayPicksWrap(): CharacterPlayPickSlot[][] {

@@ -19,7 +19,7 @@ import {
   netSuccessesForChoice,
   rowEffectsForPick,
   sanitizeCharacterPlayPicksWrap,
-  wrapNetCostSum,
+  wrapNetThresholdAllHits,
   wrapPickClearsCover,
   wrapSlotBudget,
   wrapSlotCount,
@@ -528,7 +528,7 @@ export function computeAttackSequence(
       initialTacModifier,
     );
     const pHit = hitProbabilityPerDie(defMin);
-    const need = wrapNetCostSum(wrapPicks[i]);
+    const need = wrapNetThresholdAllHits(wrapPicks[i]);
     const prob = probAttackSucceeds(tac, pHit, armor, need);
     probAll *= prob;
     attacks.push({
