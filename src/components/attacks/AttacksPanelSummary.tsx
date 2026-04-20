@@ -55,8 +55,8 @@ const ThemedOddsLabel = styled.span`
   text-underline-offset: 0.1em;
 `;
 
-const TOOLTIP_AVERAGE_VIOLENCE =
-  'Average of each swing\'s "all selected lines hit" chance, counting only swings where you actually picked playbook lines. Each roll is still its own independent dice pool. This is not the chance that the whole activation hits every line (that would multiply the swings together, and gets brutal fast).';
+const TOOLTIP_GEOMETRIC_VIOLENCE =
+  'Geometric mean of each swing\'s "all selected lines hit" chance (n-th root of the product of those probabilities), counting only swings where you picked playbook lines. Weighs low rolls more than a plain average: one rough swing pulls the whole number down. Each roll is still its own independent dice pool. This is not P(all swings hit every line at once).';
 
 const TOOLTIP_ROUGHEST_ROLL =
   'The lowest per-swing hit chance among swings with a pick. The roll that usually gives you the most grief if every selected line has to land.';
@@ -153,19 +153,25 @@ export function AttacksPanelSummary() {
     return t;
   }, [wrapPicks, damageMods]);
 
-  const { avgLineHitProb, roughestRollProb } = useMemo(() => {
+  const { geometricMeanLineHitProb, roughestRollProb } = useMemo(() => {
     const probs = attacks
       .filter((ctx) => swingHasWrapSelection(wrapPicks[ctx.attackIndex]))
       .map((ctx) => ctx.prob);
     if (probs.length === 0) {
       return {
-        avgLineHitProb: null as number | null,
+        geometricMeanLineHitProb: null as number | null,
         roughestRollProb: null as number | null,
       };
     }
-    const sum = probs.reduce((a, b) => a + b, 0);
+    if (probs.some((p) => p <= 0)) {
+      return {
+        geometricMeanLineHitProb: 0,
+        roughestRollProb: Math.min(...probs),
+      };
+    }
+    const logSum = probs.reduce((s, p) => s + Math.log(p), 0);
     return {
-      avgLineHitProb: sum / probs.length,
+      geometricMeanLineHitProb: Math.exp(logSum / probs.length),
       roughestRollProb: Math.min(...probs),
     };
   }, [attacks, wrapPicks]);
@@ -195,11 +201,13 @@ export function AttacksPanelSummary() {
       ))}
       <OddsAggregateBlock>
         <ProbabilityRow>
-          <ThemedOddsLabel title={TOOLTIP_AVERAGE_VIOLENCE}>
+          <ThemedOddsLabel title={TOOLTIP_GEOMETRIC_VIOLENCE}>
             Average violence
           </ThemedOddsLabel>
-          <Mono title={TOOLTIP_AVERAGE_VIOLENCE}>
-            {avgLineHitProb != null ? formatPercent(avgLineHitProb) : '-'}
+          <Mono title={TOOLTIP_GEOMETRIC_VIOLENCE}>
+            {geometricMeanLineHitProb != null
+              ? formatPercent(geometricMeanLineHitProb)
+              : '-'}
           </Mono>
         </ProbabilityRow>
         <ProbabilityRow>
