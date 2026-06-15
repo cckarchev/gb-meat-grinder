@@ -7,7 +7,7 @@ import {
   HP_MAX,
   HP_MIN,
 } from '@/core/constants';
-import { useKillItSimulation } from '@/killIt/useKillItSimulation';
+import { useMeatGrinderSimulation } from '@/meatGrinder/useMeatGrinderSimulation';
 import { narrowViewport } from '@/styles/breakpoints';
 import { StepControl } from '@/components/StepControl';
 import { BuffOption } from '@/components/targetPanelPrimitives';
@@ -52,7 +52,7 @@ export function EnemyPanel() {
     enemyDefensiveStance,
     damageMods,
     dispatch,
-  } = useKillItSimulation();
+  } = useMeatGrinderSimulation();
 
   return (
     <Panel>

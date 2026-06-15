@@ -9,7 +9,7 @@ import {
 } from '@/core/playbook';
 import type { WrapPick } from '@/types/core/playbook';
 import { formatPercent } from '@/core/probability';
-import { useKillItSimulation } from '@/killIt/useKillItSimulation';
+import { useMeatGrinderSimulation } from '@/meatGrinder/useMeatGrinderSimulation';
 import { Mono, Summary } from '@/components/ui';
 import { attackKindLabel } from '@/components/attacks/attackVariant';
 
@@ -86,7 +86,7 @@ export function AttacksPanelSummary() {
     wrapPicks,
     damageMods,
     attacks,
-  } = useKillItSimulation();
+  } = useMeatGrinderSimulation();
 
   const rowDamageIfHit = useMemo(
     () => damageIfAllHitsWrap(wrapPicks, damageMods),

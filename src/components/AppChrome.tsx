@@ -30,7 +30,7 @@ const Title = styled.h1`
 export function AppChrome({ children }: AppChromeProps) {
   return (
     <Shell>
-      <Title>Can vBoar kill it?</Title>
+      <Title>GB Meat Grinder</Title>
       {children}
     </Shell>
   );

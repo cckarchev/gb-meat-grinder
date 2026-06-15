@@ -5,7 +5,7 @@ import {
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
 } from '@/core/playbook';
-import { useKillItSimulation } from '@/killIt/useKillItSimulation';
+import { useMeatGrinderSimulation } from '@/meatGrinder/useMeatGrinderSimulation';
 import { AttackSwingRow } from '@/components/attacks/AttackSwingRow';
 import { AttacksPanelSummary } from '@/components/attacks/AttacksPanelSummary';
 
@@ -27,7 +27,7 @@ export function AttacksPanel() {
     damageMods,
     attacks,
     dispatch,
-  } = useKillItSimulation();
+  } = useMeatGrinderSimulation();
 
   const [wrapExpanded, setWrapExpanded] = useState(() => new Set<number>());
 

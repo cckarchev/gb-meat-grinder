@@ -1,10 +1,10 @@
 import { AppChrome } from '@/components/AppChrome';
-import { KillItRoot } from '@/killIt/KillItRoot';
+import { MeatGrinderRoot } from '@/meatGrinder/MeatGrinderRoot';
 
 function App() {
   return (
     <AppChrome>
-      <KillItRoot />
+      <MeatGrinderRoot />
     </AppChrome>
   );
 }

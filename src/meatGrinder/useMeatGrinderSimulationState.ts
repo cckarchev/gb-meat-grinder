@@ -1,16 +1,16 @@
 import { useEffect, useMemo, useReducer } from 'react';
 import { computeAttackSequence } from '@/core/attackSequence';
 import {
-  createInitialKillItState,
-  killItReducer,
-} from '@/killIt/killItReducer';
-import type { KillItSimulation } from '@/types/killIt/simulation';
+  createInitialMeatGrinderState,
+  meatGrinderReducer,
+} from '@/meatGrinder/meatGrinderReducer';
+import type { MeatGrinderSimulation } from '@/types/meatGrinder/simulation';
 
-export function useKillItSimulationState(): KillItSimulation {
+export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
   const [state, dispatch] = useReducer(
-    killItReducer,
+    meatGrinderReducer,
     undefined,
-    createInitialKillItState,
+    createInitialMeatGrinderState,
   );
 
   const { wrapPicks, characterPlayPicks } = state.attackPlan;

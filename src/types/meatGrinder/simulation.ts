@@ -5,10 +5,10 @@ import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/types/core/playbook';
-import type { KillItAction } from '@/types/killIt/reducer';
+import type { MeatGrinderAction } from '@/types/meatGrinder/reducer';
 
-/** React hook + context value for the Kill It simulation. */
-export type KillItSimulation = {
+/** React hook + context value for the Meat Grinder simulation. */
+export type MeatGrinderSimulation = {
   enemyDef: number;
   armor: number;
   hp: number;
@@ -22,5 +22,5 @@ export type KillItSimulation = {
   wrapPicks: WrapPick[][];
   characterPlayPicks: CharacterPlayPickSlot[][];
   attacks: AttackRollContext[];
-  dispatch: Dispatch<KillItAction>;
+  dispatch: Dispatch<MeatGrinderAction>;
 };

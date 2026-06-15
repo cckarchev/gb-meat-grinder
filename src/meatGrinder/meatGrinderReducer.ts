@@ -21,9 +21,9 @@ import type {
   AttackPlan,
   AttackPlanClampParams,
 } from '@/types/core/attackPlan';
-import type { KillItAction, KillItState } from '@/types/killIt/reducer';
+import type { MeatGrinderAction, MeatGrinderState } from '@/types/meatGrinder/reducer';
 
-function clampParams(s: KillItState): AttackPlanClampParams {
+function clampParams(s: MeatGrinderState): AttackPlanClampParams {
   return {
     chargeAttackIndex: s.chargeAttackIndex,
     armor: s.armor,
@@ -36,7 +36,7 @@ function clampParams(s: KillItState): AttackPlanClampParams {
   };
 }
 
-function clampPlan(s: KillItState, plan: AttackPlan): AttackPlan {
+function clampPlan(s: MeatGrinderState, plan: AttackPlan): AttackPlan {
   return clampAttackPlanState(plan, clampParams(s));
 }
 
@@ -45,7 +45,7 @@ function bonusTimeEqual(a: readonly boolean[], b: readonly boolean[]): boolean {
   return a.every((v, i) => v === b[i]);
 }
 
-export function createInitialKillItState(): KillItState {
+export function createInitialMeatGrinderState(): MeatGrinderState {
   return {
     enemyDef: 4,
     armor: 1,
@@ -61,10 +61,10 @@ export function createInitialKillItState(): KillItState {
   };
 }
 
-export function killItReducer(
-  state: KillItState,
-  action: KillItAction,
-): KillItState {
+export function meatGrinderReducer(
+  state: MeatGrinderState,
+  action: MeatGrinderAction,
+): MeatGrinderState {
   switch (action.type) {
     case 'enemyDef': {
       const next = { ...state, enemyDef: action.value };

@@ -5,7 +5,7 @@ import type {
   PlaybookDamageMods,
 } from '@/types/core/playbook';
 
-export type KillItState = {
+export type MeatGrinderState = {
   enemyDef: number;
   armor: number;
   hp: number;
@@ -19,7 +19,7 @@ export type KillItState = {
   attackPlan: AttackPlan;
 };
 
-export type KillItAction =
+export type MeatGrinderAction =
   | { type: 'enemyDef'; value: number }
   | { type: 'armor'; value: number }
   | { type: 'hp'; value: number }

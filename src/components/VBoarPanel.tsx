@@ -4,7 +4,7 @@ import {
   STARTING_MOMENTUM_MAX,
   STARTING_MOMENTUM_MIN,
 } from '@/core/constants';
-import { useKillItSimulation } from '@/killIt/useKillItSimulation';
+import { useMeatGrinderSimulation } from '@/meatGrinder/useMeatGrinderSimulation';
 import { StepControl } from '@/components/StepControl';
 import { BuffOption } from '@/components/targetPanelPrimitives';
 import { Panel, PanelTitle, Row } from '@/components/ui';
@@ -17,7 +17,7 @@ const TOOLTIP_THE_OWNER =
 
 export function VBoarPanel() {
   const { damageMods, startingMomentum, initialTacModifier, dispatch } =
-    useKillItSimulation();
+    useMeatGrinderSimulation();
 
   const tacModLabel =
     initialTacModifier > 0
