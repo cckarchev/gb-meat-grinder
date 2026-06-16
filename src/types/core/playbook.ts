@@ -32,6 +32,11 @@ export type PlaybookResult = {
   clearsCover?: boolean;
   /** KD: applies Knocked Down; only the first one in the activation counts. */
   appliesKnockDown?: boolean;
+  /**
+   * A GB that applies They Ain't Tough! (−1 enemy ARM) for later swings this
+   * activation. A condition, so it does not stack with itself.
+   */
+  appliesArmorReduction?: boolean;
 };
 
 export type PlaybookColumn = {

@@ -4,6 +4,7 @@ import {
   damageIfAllHitsWrap,
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
+  specialAbilityFlatDamage,
 } from '@/core/playbook';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { AttackSwingRow } from '@/components/attacks/AttackSwingRow';
@@ -19,7 +20,6 @@ export function AttacksPanel() {
   const {
     attacker,
     hp: targetHp,
-    effectiveArmor: armor,
     charging,
     chargeAttackIndex,
     activeBaseCount,
@@ -28,6 +28,7 @@ export function AttacksPanel() {
     wrapPicks,
     characterPlayPicks,
     damageMods,
+    specialAbilities,
     attacks,
     dispatch,
   } = useMeatGrinderSimulation();
@@ -51,13 +52,15 @@ export function AttacksPanel() {
   );
   const remainingHpAfterSwing = useMemo(() => {
     const out: number[] = [];
-    let dealt = 0;
+    // Special-ability damage is guaranteed and untied to a swing, so apply it
+    // up front as a baseline before the per-swing chip damage.
+    let dealt = specialAbilityFlatDamage(attacker, specialAbilities);
     for (const ctx of attacks) {
       dealt += rowDamageIfHit[ctx.attackIndex];
       out.push(Math.max(0, targetHp - dealt));
     }
     return out;
-  }, [attacks, rowDamageIfHit, targetHp]);
+  }, [attacker, specialAbilities, attacks, rowDamageIfHit, targetHp]);
 
   const momentumAfterSwing = useMemo(
     () =>
@@ -114,7 +117,7 @@ export function AttacksPanel() {
           key={a.attackIndex}
           attack={a}
           displayIdx={displayIdx}
-          armor={armor}
+          armor={a.armor}
           charging={charging}
           chargeAttackIndex={effectiveChargeAttackIndex}
           activeBaseCount={activeBaseCount}

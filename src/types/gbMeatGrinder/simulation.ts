@@ -30,6 +30,8 @@ export type MeatGrinderSimulation = {
   startingMomentum: number;
   initialTacModifier: number;
   damageMods: PlaybookDamageMods;
+  /** Toggled model-specific flat-damage abilities, by ability id. */
+  specialAbilities: Record<string, boolean>;
   bonusTimeByAttack: boolean[];
   wrapPicks: WrapPick[][];
   characterPlayPicks: CharacterPlayPickSlot[][];

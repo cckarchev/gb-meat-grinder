@@ -23,6 +23,8 @@ export type MeatGrinderState = {
   initialTacModifier: number;
   bonusTimeByAttack: boolean[];
   damageMods: PlaybookDamageMods;
+  /** Toggled model-specific flat-damage abilities, by ability id. */
+  specialAbilities: Record<string, boolean>;
   attackPlan: AttackPlan;
 };
 
@@ -39,6 +41,7 @@ export type MeatGrinderAction =
   | { type: 'startingMomentum'; value: number }
   | { type: 'initialTacModifierRaw'; value: number }
   | { type: 'damageMods'; value: PlaybookDamageMods }
+  | { type: 'specialAbility'; id: string; value: boolean }
   | { type: 'bonusTime'; attackIndex: number; value: boolean }
   | { type: 'sanitizeBonusTime' }
   | {

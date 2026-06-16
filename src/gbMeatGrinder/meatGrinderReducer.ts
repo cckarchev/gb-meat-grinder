@@ -97,6 +97,7 @@ function stateForAttacker(
       () => false,
     ),
     damageMods: { toughHide: prev?.damageMods?.toughHide ?? false, buffs: {} },
+    specialAbilities: {},
     attackPlan: createInitialAttackPlan(attacker, influence, charging),
   };
 }
@@ -208,6 +209,14 @@ export function meatGrinderReducer(
         attackPlan: clampPlan(next, state.attackPlan),
       };
     }
+    case 'specialAbility':
+      return {
+        ...state,
+        specialAbilities: {
+          ...state.specialAbilities,
+          [action.id]: action.value,
+        },
+      };
     case 'bonusTime': {
       const { attackIndex, value } = action;
       const activeBaseCount = activeBaseCountOf(state);

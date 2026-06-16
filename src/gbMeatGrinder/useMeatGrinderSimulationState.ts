@@ -84,6 +84,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       startingMomentum: state.startingMomentum,
       initialTacModifier: state.initialTacModifier,
       damageMods: state.damageMods,
+      specialAbilities: state.specialAbilities,
       bonusTimeByAttack: state.bonusTimeByAttack,
       wrapPicks,
       characterPlayPicks,

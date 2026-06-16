@@ -33,9 +33,29 @@ export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
   buffs: {},
 };
 
-/** The attacker's buffs that are currently toggled on. */
+/** Guild buffs this model can receive (excludes buffs it is the source of). */
+export function availableBuffs(attacker: AttackerData) {
+  const excluded = attacker.excludedGuildBuffs ?? [];
+  return attacker.guild.buffs.filter((b) => !excluded.includes(b.id));
+}
+
+/** The attacker's available buffs that are currently toggled on. */
 export function activeBuffs(attacker: AttackerData, mods: PlaybookDamageMods) {
-  return attacker.guild.buffs.filter((b) => mods.buffs[b.id]);
+  return availableBuffs(attacker).filter((b) => mods.buffs[b.id]);
+}
+
+/**
+ * Flat, unmodified damage from the model's toggled special abilities (e.g.
+ * Thresher's Don't Fear The Reaper). Independent of attack rolls and ARM /
+ * Tough Hide / buffs, so it is simply added to the activation's damage.
+ */
+export function specialAbilityFlatDamage(
+  attacker: AttackerData,
+  toggled: Record<string, boolean>,
+): number {
+  return (attacker.specialAbilities ?? [])
+    .filter((a) => toggled[a.id])
+    .reduce((sum, a) => sum + a.flatDamage, 0);
 }
 
 /** Sum of the +damage from selected buffs. */
@@ -221,6 +241,36 @@ export function wrapPickClearsCover(
 ): boolean {
   if (id == null) return false;
   return getPlaybookResult(attacker, id).clearsCover === true;
+}
+
+/**
+ * −1 ARM on this swing if an earlier swing's GB applied They Ain't Tough!
+ * (activation order, strictly earlier). A condition, so it never stacks past 1.
+ */
+export function armorReductionBeforeAttack(
+  attacker: AttackerData,
+  wrapPicks: WrapPick[][],
+  damageMods: PlaybookDamageMods,
+  attackIndex: number,
+  activeBaseCount: number,
+): number {
+  const order = activationAttackIndices(
+    attacker,
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+  );
+  const pos = order.indexOf(attackIndex);
+  if (pos < 0) return 0;
+  for (let oi = 0; oi < pos; oi++) {
+    const row = wrapPicks[order[oi]];
+    for (const id of row) {
+      if (id != null && getPlaybookResult(attacker, id).appliesArmorReduction) {
+        return 1;
+      }
+    }
+  }
+  return 0;
 }
 
 /**
@@ -649,7 +699,7 @@ export function damageModifierBreakdownWrap(
   let rawCardDamage = 0;
   let toughHideReduction = 0;
   let totalEffective = 0;
-  const buffBonuses = attacker.guild.buffs.map((buff) => ({
+  const buffBonuses = availableBuffs(attacker).map((buff) => ({
     id: buff.id,
     label: buff.label,
     bonus: 0,

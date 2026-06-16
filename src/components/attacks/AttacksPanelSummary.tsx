@@ -6,6 +6,7 @@ import {
   formatWrapRowSelectionLabel,
   momentumAfterAttackInclusive,
   pickGeneratesMomentum,
+  specialAbilityFlatDamage,
 } from '@/core/playbook';
 import type { WrapPick } from '@/types/core/playbook';
 import { formatPercent } from '@/core/probability';
@@ -88,6 +89,7 @@ export function AttacksPanelSummary() {
     bonusTimeByAttack,
     wrapPicks,
     damageMods,
+    specialAbilities,
     attacks,
   } = useMeatGrinderSimulation();
 
@@ -98,9 +100,16 @@ export function AttacksPanelSummary() {
     [attacker, wrapPicks, damageMods, activeBaseCount],
   );
 
+  const flatDamage = useMemo(
+    () => specialAbilityFlatDamage(attacker, specialAbilities),
+    [attacker, specialAbilities],
+  );
+
   const totalDamageIfAllHit = useMemo(
-    () => attacks.reduce((s, ctx) => s + rowDamageIfHit[ctx.attackIndex], 0),
-    [attacks, rowDamageIfHit],
+    () =>
+      attacks.reduce((s, ctx) => s + rowDamageIfHit[ctx.attackIndex], 0) +
+      flatDamage,
+    [attacks, rowDamageIfHit, flatDamage],
   );
 
   const momentousMomentumIfAllHit = useMemo(() => {
@@ -149,6 +158,12 @@ export function AttacksPanelSummary() {
     return `${t}.`;
   }, [momentousMomentumIfAllHit, bonusTimeSpendsInActivation]);
 
+  const activeFlatAbilities = useMemo(
+    () =>
+      (attacker.specialAbilities ?? []).filter((a) => specialAbilities[a.id]),
+    [attacker, specialAbilities],
+  );
+
   const damageDealtTooltip = useMemo(() => {
     const b = damageModifierBreakdownWrap(
       attacker,
@@ -156,7 +171,7 @@ export function AttacksPanelSummary() {
       damageMods,
       activeBaseCount,
     );
-    if (b.rawCardDamage === 0 && b.totalEffective === 0) {
+    if (b.rawCardDamage === 0 && b.totalEffective === 0 && flatDamage === 0) {
       return 'No selected playbook lines deal card damage to HP (after Tough Hide).';
     }
     let t = `${b.rawCardDamage} from card pips`;
@@ -168,9 +183,12 @@ export function AttacksPanelSummary() {
         t += `; +${bb.bonus} ${bb.label}`;
       }
     }
-    t += ` = ${b.totalEffective}.`;
+    for (const a of activeFlatAbilities) {
+      t += `; +${a.flatDamage} ${a.label}`;
+    }
+    t += ` = ${b.totalEffective + flatDamage}.`;
     return t;
-  }, [attacker, wrapPicks, damageMods, activeBaseCount]);
+  }, [attacker, wrapPicks, damageMods, activeBaseCount, flatDamage, activeFlatAbilities]);
 
   const { geometricMeanLineHitProb, roughestRollProb } = useMemo(() => {
     const probs = attacks

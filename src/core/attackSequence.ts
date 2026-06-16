@@ -2,6 +2,7 @@ import { BONUS_TIME_TAC_BONUS, DEF_MAX, DEF_MIN } from '@/core/constants';
 import { maxPlaybookNet } from '@/core/playbookIndex';
 import {
   activationAttackIndices,
+  armorReductionBeforeAttack,
   attackRowIsActive,
   choiceUsesCharacterPlay,
   coverSwingClockIndices,
@@ -247,7 +248,37 @@ export function maxPlaybookColumnForRow(
     initialTacModifier,
     activeBaseCount,
   );
-  return maxNetSuccessesForRoll(tac, armor);
+  const rowArmor = armorForAttackRow(
+    attacker,
+    armor,
+    wrapPicks,
+    damageMods,
+    attackIndex,
+    activeBaseCount,
+  );
+  return maxNetSuccessesForRoll(tac, rowArmor);
+}
+
+/** Enemy ARM for a swing: the buff-reduced base minus any earlier GB They Ain't Tough. */
+function armorForAttackRow(
+  attacker: AttackerData,
+  baseArmor: number,
+  wrapPicks: WrapPick[][],
+  damageMods: PlaybookDamageMods,
+  attackIndex: number,
+  activeBaseCount: number,
+): number {
+  return Math.max(
+    0,
+    baseArmor -
+      armorReductionBeforeAttack(
+        attacker,
+        wrapPicks,
+        damageMods,
+        attackIndex,
+        activeBaseCount,
+      ),
+  );
 }
 
 function firstReachableChoiceId(
@@ -595,12 +626,21 @@ export function computeAttackSequence(
       bonusTimeTac,
       initialTacModifier,
     );
+    const rowArmor = armorForAttackRow(
+      attacker,
+      armor,
+      wrapPicks,
+      damageMods,
+      i,
+      activeBaseCount,
+    );
     const pHit = hitProbabilityPerDie(defMin);
     const need = wrapNetThresholdAllHits(attacker, wrapPicks[i]);
-    const prob = probAttackSucceeds(tac, pHit, armor, need);
+    const prob = probAttackSucceeds(tac, pHit, rowArmor, need);
     attacks.push({
       attackIndex: i,
       tac,
+      armor: rowArmor,
       defMinRoll: defMin,
       pHit,
       netSuccessesNeeded: need,

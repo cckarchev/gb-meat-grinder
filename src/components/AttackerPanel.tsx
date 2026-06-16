@@ -8,6 +8,7 @@ export function AttackerPanel() {
     attacker,
     availableAttackers,
     damageMods,
+    specialAbilities,
     startingMomentum,
     initialTacModifier,
     influence,
@@ -96,22 +97,52 @@ export function AttackerPanel() {
         />
         <span>Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}</span>
       </BuffOption>
-      {attacker.guild.buffs.map((buff) => (
-        <BuffOption key={buff.id} title={buff.tooltip}>
+      {attacker.guild.buffs.map((buff) => {
+        const disabled = attacker.excludedGuildBuffs?.includes(buff.id) ?? false;
+        return (
+          <BuffOption
+            key={buff.id}
+            $disabled={disabled}
+            title={
+              disabled
+                ? `${buff.tooltip} (not available to ${attacker.name})`
+                : buff.tooltip
+            }
+          >
+            <input
+              type="checkbox"
+              disabled={disabled}
+              checked={!disabled && damageMods.buffs[buff.id] === true}
+              onChange={(e) =>
+                dispatch({
+                  type: 'damageMods',
+                  value: {
+                    ...damageMods,
+                    buffs: { ...damageMods.buffs, [buff.id]: e.target.checked },
+                  },
+                })
+              }
+            />
+            <span>{buff.label}</span>
+          </BuffOption>
+        );
+      })}
+      {(attacker.specialAbilities ?? []).map((ability) => (
+        <BuffOption key={ability.id} title={ability.tooltip}>
           <input
             type="checkbox"
-            checked={damageMods.buffs[buff.id] === true}
+            checked={specialAbilities[ability.id] === true}
             onChange={(e) =>
               dispatch({
-                type: 'damageMods',
-                value: {
-                  ...damageMods,
-                  buffs: { ...damageMods.buffs, [buff.id]: e.target.checked },
-                },
+                type: 'specialAbility',
+                id: ability.id,
+                value: e.target.checked,
               })
             }
           />
-          <span>{buff.label}</span>
+          <span>
+            {ability.label} (+{ability.flatDamage})
+          </span>
         </BuffOption>
       ))}
     </Panel>
