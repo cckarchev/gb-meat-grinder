@@ -12,17 +12,12 @@ import type { WrapPick } from '@/types/core/playbook';
 import { formatPercent } from '@/core/probability';
 import { planDamageOutcome } from '@/core/killOdds';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-import { Mono, Summary } from '@/components/ui';
+import { Mono, PanelTitle, Summary } from '@/components/ui';
 import { InfoTip } from '@/components/InfoTip';
 import { attackKindLabel } from '@/components/attacks/attackVariant';
 
-const ProbabilitySummaryTitle = styled.h2`
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  margin: 0 0 0.5rem;
+const ProbabilitySummaryTitle = styled(PanelTitle)`
+  margin-bottom: 0.5rem;
 `;
 
 const ProbabilityRow = styled.div`

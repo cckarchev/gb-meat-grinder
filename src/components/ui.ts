@@ -48,31 +48,6 @@ export const Select = styled.select`
   color: var(--text);
 `;
 
-export const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-
-  th,
-  td {
-    padding: 0.5rem 0.45rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-
-  th {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-    font-weight: 600;
-  }
-
-  tr:last-child td {
-    border-bottom: none;
-  }
-`;
-
 export const Mono = styled.span`
   font-family: var(--mono);
   font-variant-numeric: tabular-nums;
