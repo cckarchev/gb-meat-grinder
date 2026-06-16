@@ -1,7 +1,47 @@
+import { useMemo } from 'react';
+import styled from 'styled-components';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { StepControl } from '@/components/StepControl';
 import { BuffOption } from '@/components/targetPanelPrimitives';
-import { Panel, PanelTitle, Row, Select } from '@/components/ui';
+import { Panel, PanelTitle, Select } from '@/components/ui';
+import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
+import type { AttackerData } from '@/types/core/attacker';
+
+/**
+ * Two equal columns so the controls line up in a grid (e.g. Influence sits
+ * directly above Initial TAC modifier) instead of flex-wrapping unaligned.
+ */
+const ControlsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+
+  ${narrowViewport} {
+    gap: 0.55rem;
+  }
+
+  ${extraNarrowViewport} {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const ModelField = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+`;
+
+const ModelFieldLabel = styled.span`
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+`;
+
+const ModelSelect = styled(Select)`
+  width: 100%;
+`;
 
 export function AttackerPanel() {
   const {
@@ -21,35 +61,45 @@ export function AttackerPanel() {
       ? `+${initialTacModifier}`
       : String(initialTacModifier);
 
+  const guildGroups = useMemo(() => {
+    const byGuild = new Map<string, { name: string; models: AttackerData[] }>();
+    for (const a of availableAttackers) {
+      const group = byGuild.get(a.guild.id) ?? { name: a.guild.name, models: [] };
+      group.models.push(a);
+      byGuild.set(a.guild.id, group);
+    }
+    return [...byGuild.values()]
+      .map((g) => ({
+        name: g.name,
+        models: [...g.models].sort((x, y) => x.name.localeCompare(y.name)),
+      }))
+      .sort((x, y) => x.name.localeCompare(y.name));
+  }, [availableAttackers]);
+
   return (
     <Panel>
       <PanelTitle>Attacker</PanelTitle>
-      <Row>
-        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-          <span
-            style={{
-              fontSize: '0.72rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              color: 'var(--muted)',
-            }}
-          >
-            Model
-          </span>
-          <Select
+      <ControlsGrid>
+        <ModelField>
+          <ModelFieldLabel>Model</ModelFieldLabel>
+          <ModelSelect
             value={attacker.id}
             onChange={(e) =>
               dispatch({ type: 'selectAttacker', id: e.target.value })
             }
             aria-label="Select attacker model"
           >
-            {availableAttackers.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
+            {guildGroups.map((group) => (
+              <optgroup key={group.name} label={group.name}>
+                {group.models.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                ))}
+              </optgroup>
             ))}
-          </Select>
-        </label>
+          </ModelSelect>
+        </ModelField>
         <StepControl
           label="Influence"
           value={influence}
@@ -82,7 +132,7 @@ export function AttackerPanel() {
           decrementAriaLabel="Decrease initial TAC modifier"
           incrementAriaLabel="Increase initial TAC modifier"
         />
-      </Row>
+      </ControlsGrid>
       <BuffOption
         title={
           attacker.furious

@@ -80,15 +80,18 @@ const ColumnResults = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.35rem;
+  padding-top: 0.5rem;
   padding-bottom: 0.15rem;
 
   ${narrowViewport} {
     gap: 0.22rem;
+    padding-top: 0.4rem;
     padding-bottom: 0.08rem;
   }
 
   ${extraNarrowViewport} {
     gap: 0.14rem;
+    padding-top: 0.3rem;
     padding-bottom: 0.04rem;
   }
 `;
