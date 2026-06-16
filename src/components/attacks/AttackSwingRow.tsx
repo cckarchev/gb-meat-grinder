@@ -171,20 +171,8 @@ const TacPoolValue = styled(Mono)`
   }
 `;
 
-const ChargeWrap = styled.label`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  cursor: pointer;
-  color: var(--text);
-  font-size: 0.85rem;
-
-  input {
-    accent-color: var(--focus-ring);
-  }
-`;
-
-const BonusWrap = styled.label<{ $disabled: boolean }>`
+/** Inline pill toggle (charge radio / bonus-time checkbox) inside the dice-pool strip. */
+const PoolToggle = styled.label<{ $disabled?: boolean }>`
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -275,7 +263,7 @@ export function AttackSwingRow({
           <DicePoolStrip aria-label="Dice pool for this attack">
             <PoolCluster>
               {charging && !attackRowIsBerserker(attacker, i) ? (
-                <ChargeWrap>
+                <PoolToggle>
                   <input
                     type="radio"
                     name="charge-attack"
@@ -283,9 +271,9 @@ export function AttackSwingRow({
                     onChange={() => onChargeAttackIndexChange(i)}
                   />
                   <span>+4 TAC charge</span>
-                </ChargeWrap>
+                </PoolToggle>
               ) : null}
-              <BonusWrap $disabled={bonusTimeDisabled}>
+              <PoolToggle $disabled={bonusTimeDisabled}>
                 <input
                   type="checkbox"
                   checked={bonusTime}
@@ -301,7 +289,7 @@ export function AttackSwingRow({
                 >
                   Bonus Time (+1 Dice Pool)
                 </InfoTip>
-              </BonusWrap>
+              </PoolToggle>
             </PoolCluster>
             <TacPoolRight>
               {hasWrapContinuation && maxNet >= 1 ? (
