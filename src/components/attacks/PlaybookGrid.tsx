@@ -182,6 +182,11 @@ const LineButton = styled.button<{
     filter: brightness(1.06);
   }
 
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
   ${(p) =>
     p.$selected && p.$momentous
       ? `
@@ -291,6 +296,9 @@ export function WrapSlotPickGrid({
                       $momentousColor={attacker.guild.color}
                       $selected={selected}
                       aria-pressed={selected}
+                      aria-label={`${selected ? 'Selected' : 'Select'} playbook result ${segments.join(
+                        ' ',
+                      )}, ${formatPercent(pCol, 1)} to hit`}
                       title={
                         kdLocked
                           ? 'Knock Down unavailable: the target is already Knocked Down (only one KD applies)'

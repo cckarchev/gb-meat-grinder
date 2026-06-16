@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { narrowViewport } from '@/styles/breakpoints';
 import { characterPlayAvailabilityForPick } from '@/core/playbook';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { ToggleButton } from '@/components/controls';
 import type {
   AttacksPanelProps,
   CharacterPlaySlotRef,
@@ -29,28 +30,11 @@ const SelectionRow = styled.div`
   }
 `;
 
-const SelectionBtn = styled.button<{ $active: boolean }>`
-  font: inherit;
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
+const SelectionBtn = styled(ToggleButton)`
   min-width: 8.5rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  white-space: nowrap;
-  background: ${(p) => (p.$active ? 'var(--text)' : 'var(--input-bg)')};
-  color: ${(p) => (p.$active ? 'var(--bg)' : 'var(--text)')};
-
-  &:hover {
-    filter: brightness(1.05);
-  }
 
   ${narrowViewport} {
-    font-size: 0.8rem;
-    padding: 0.38rem 0.55rem;
     min-width: 6.75rem;
-    border-radius: 5px;
   }
 `;
 

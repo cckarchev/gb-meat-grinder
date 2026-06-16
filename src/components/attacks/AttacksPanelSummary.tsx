@@ -13,6 +13,7 @@ import { formatPercent } from '@/core/probability';
 import { planDamageOutcome } from '@/core/killOdds';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { Mono, Summary } from '@/components/ui';
+import { InfoTip } from '@/components/InfoTip';
 import { attackKindLabel } from '@/components/attacks/attackVariant';
 
 const ProbabilitySummaryTitle = styled.h2`
@@ -51,12 +52,6 @@ const OddsAggregateBlock = styled.div`
   border-top: 1px solid var(--border);
 `;
 
-const ThemedOddsLabel = styled.span`
-  cursor: help;
-  text-decoration: underline dotted;
-  text-underline-offset: 0.1em;
-`;
-
 const TOOLTIP_KILL =
   'Chance this activation drops the target: P(total damage >= remaining HP) using the lines you actually picked. Each swing deals its picked damage when the roll reaches it, or the best lower column it does reach; each swing rolls its own dice pool. Guaranteed special-ability damage is included, and the swings shown are assumed to happen.';
 
@@ -65,13 +60,6 @@ const TOOLTIP_EXPECTED_DAMAGE =
 
 const TotalsSectionTitle = styled(ProbabilitySummaryTitle)`
   margin-top: 1rem;
-`;
-
-/** Dotted underline hints native `title` on summary stat values. */
-const SummaryStatMono = styled(Mono)`
-  cursor: help;
-  text-decoration: underline dotted;
-  text-underline-offset: 0.12em;
 `;
 
 function swingHasWrapSelection(
@@ -243,33 +231,25 @@ export function AttacksPanelSummary() {
       ))}
       <OddsAggregateBlock>
         <ProbabilityRow>
-          <ThemedOddsLabel title={TOOLTIP_KILL}>
-            Kills the target
-          </ThemedOddsLabel>
-          <Mono title={TOOLTIP_KILL}>{formatPercent(killProbability)}</Mono>
+          <InfoTip content={TOOLTIP_KILL}>Kills the target</InfoTip>
+          <Mono>{formatPercent(killProbability)}</Mono>
         </ProbabilityRow>
         <ProbabilityRow>
-          <ThemedOddsLabel title={TOOLTIP_EXPECTED_DAMAGE}>
-            Expected damage
-          </ThemedOddsLabel>
-          <Mono title={TOOLTIP_EXPECTED_DAMAGE}>
-            {expectedDamage.toFixed(1)}
-          </Mono>
+          <InfoTip content={TOOLTIP_EXPECTED_DAMAGE}>Expected damage</InfoTip>
+          <Mono>{expectedDamage.toFixed(1)}</Mono>
         </ProbabilityRow>
       </OddsAggregateBlock>
       <TotalsSectionTitle>Totals</TotalsSectionTitle>
       <ProbabilityRow>
-        <span title={damageDealtTooltip}>Damage dealt</span>
-        <SummaryStatMono title={damageDealtTooltip}>
-          {totalDamageIfAllHit}
-        </SummaryStatMono>
+        <InfoTip content={damageDealtTooltip}>Damage dealt</InfoTip>
+        <Mono>{totalDamageIfAllHit}</Mono>
       </ProbabilityRow>
       <ProbabilityRow>
-        <span>Net momentum</span>
-        <SummaryStatMono title={netMomentumTooltip}>
+        <InfoTip content={netMomentumTooltip}>Net momentum</InfoTip>
+        <Mono>
           {netMomentumIfAllHit > 0 ? '+' : ''}
           {netMomentumIfAllHit}
-        </SummaryStatMono>
+        </Mono>
       </ProbabilityRow>
     </Summary>
   );

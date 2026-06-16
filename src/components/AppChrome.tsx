@@ -15,23 +15,6 @@ const Shell = styled.div`
   }
 `;
 
-const Title = styled.h1`
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 0 0 1.5rem;
-  letter-spacing: -0.02em;
-
-  ${narrowViewport} {
-    font-size: 1.25rem;
-    margin-bottom: 0.85rem;
-  }
-`;
-
 export function AppChrome({ children }: AppChromeProps) {
-  return (
-    <Shell>
-      <Title>GB Meat Grinder</Title>
-      {children}
-    </Shell>
-  );
+  return <Shell>{children}</Shell>;
 }

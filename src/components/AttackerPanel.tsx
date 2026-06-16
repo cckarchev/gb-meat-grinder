@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import styled from 'styled-components';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { StepControl } from '@/components/StepControl';
-import { BuffOption } from '@/components/targetPanelPrimitives';
+import { CheckOption } from '@/components/targetPanelPrimitives';
+import { InfoTip } from '@/components/InfoTip';
 import { Panel, PanelTitle, Select } from '@/components/ui';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import type { AttackerData } from '@/types/core/attacker';
@@ -158,13 +159,7 @@ export function AttackerPanel() {
         />
       </ControlsGrid>
       <PreAttackSection>
-        <BuffOption
-          title={
-            attacker.furious
-              ? 'Charge this activation (free for Furious).'
-              : 'Charge this activation (costs 2 influence).'
-          }
-        >
+        <CheckOption>
           <input
             type="checkbox"
             checked={charging}
@@ -173,22 +168,22 @@ export function AttackerPanel() {
             }
           />
           <span>
-            Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}
+            <InfoTip
+              content={
+                attacker.furious
+                  ? 'Charge this activation (free for Furious).'
+                  : 'Charge this activation (costs 2 influence).'
+              }
+            >
+              Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}
+            </InfoTip>
           </span>
-        </BuffOption>
+        </CheckOption>
         {attacker.guild.buffs.map((buff) => {
           const disabled =
             attacker.excludedGuildBuffs?.includes(buff.id) ?? false;
           return (
-            <BuffOption
-              key={buff.id}
-              $disabled={disabled}
-              title={
-                disabled
-                  ? `${buff.tooltip} (not available to ${attacker.name})`
-                  : buff.tooltip
-              }
-            >
+            <CheckOption key={buff.id} $disabled={disabled}>
               <input
                 type="checkbox"
                 disabled={disabled}
@@ -206,12 +201,22 @@ export function AttackerPanel() {
                   })
                 }
               />
-              <span>{buff.label}</span>
-            </BuffOption>
+              <span>
+                <InfoTip
+                  content={
+                    disabled
+                      ? `${buff.tooltip} (not available to ${attacker.name})`
+                      : buff.tooltip
+                  }
+                >
+                  {buff.label}
+                </InfoTip>
+              </span>
+            </CheckOption>
           );
         })}
         {(attacker.specialAbilities ?? []).map((ability) => (
-          <BuffOption key={ability.id} title={ability.tooltip}>
+          <CheckOption key={ability.id}>
             <input
               type="checkbox"
               checked={specialAbilities[ability.id] === true}
@@ -224,9 +229,11 @@ export function AttackerPanel() {
               }
             />
             <span>
-              {ability.label} (+{ability.flatDamage})
+              <InfoTip content={ability.tooltip}>
+                {ability.label} (+{ability.flatDamage})
+              </InfoTip>
             </span>
-          </BuffOption>
+          </CheckOption>
         ))}
       </PreAttackSection>
     </Panel>

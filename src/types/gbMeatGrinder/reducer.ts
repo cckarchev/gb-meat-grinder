@@ -36,6 +36,7 @@ export type MeatGrinderState = {
 };
 
 export type MeatGrinderAction =
+  | { type: 'reset' }
   | { type: 'selectAttacker'; id: string }
   | { type: 'enemyDef'; value: number }
   | { type: 'armor'; value: number }

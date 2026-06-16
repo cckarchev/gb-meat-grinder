@@ -10,7 +10,8 @@ import {
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import { StepControl } from '@/components/StepControl';
-import { BuffOption } from '@/components/targetPanelPrimitives';
+import { CheckOption } from '@/components/targetPanelPrimitives';
+import { InfoTip } from '@/components/InfoTip';
 import { Panel, PanelTitle, Row } from '@/components/ui';
 
 /** Stretch to the row height so the conditions can sit at the bottom. */
@@ -73,27 +74,6 @@ const TOOLTIP_KNOCKED_DOWN =
 
 const TOOLTIP_SNARED = 'Target starts the activation Snared: -1 DEF.';
 
-const CoverOption = styled.label`
-  display: flex;
-  align-items: flex-start;
-  gap: 0.45rem;
-  margin-top: 0.5rem;
-  cursor: pointer;
-  font-size: 0.88rem;
-  color: var(--text);
-  line-height: 1.35;
-
-  input {
-    margin-top: 0.2rem;
-    flex-shrink: 0;
-  }
-
-  ${narrowViewport} {
-    margin-top: 0.4rem;
-    font-size: 0.82rem;
-  }
-`;
-
 export function EnemyPanel() {
   const {
     enemyDef,
@@ -145,7 +125,7 @@ export function EnemyPanel() {
       <ConditionsSection>
         <ConditionsGrid>
           <ConditionsColumn>
-            <CoverOption title={TOOLTIP_COVER}>
+            <CheckOption>
               <input
                 type="checkbox"
                 checked={enemyHasCover}
@@ -153,9 +133,11 @@ export function EnemyPanel() {
                   dispatch({ type: 'enemyHasCover', value: e.target.checked })
                 }
               />
-              <span>Cover</span>
-            </CoverOption>
-            <CoverOption title={TOOLTIP_DEFENSIVE_STANCE}>
+              <span>
+                <InfoTip content={TOOLTIP_COVER}>Cover</InfoTip>
+              </span>
+            </CheckOption>
+            <CheckOption>
               <input
                 type="checkbox"
                 checked={enemyDefensiveStance}
@@ -166,9 +148,13 @@ export function EnemyPanel() {
                   })
                 }
               />
-              <span>Defensive Stance</span>
-            </CoverOption>
-            <BuffOption title={TOOLTIP_TOUGH_HIDE}>
+              <span>
+                <InfoTip content={TOOLTIP_DEFENSIVE_STANCE}>
+                  Defensive Stance
+                </InfoTip>
+              </span>
+            </CheckOption>
+            <CheckOption>
               <input
                 type="checkbox"
                 checked={damageMods.toughHide}
@@ -179,11 +165,13 @@ export function EnemyPanel() {
                   })
                 }
               />
-              <span>Tough Hide</span>
-            </BuffOption>
+              <span>
+                <InfoTip content={TOOLTIP_TOUGH_HIDE}>Tough Hide</InfoTip>
+              </span>
+            </CheckOption>
           </ConditionsColumn>
           <ConditionsColumn>
-            <CoverOption title={TOOLTIP_KNOCKED_DOWN}>
+            <CheckOption>
               <input
                 type="checkbox"
                 checked={enemyKnockedDown}
@@ -191,9 +179,13 @@ export function EnemyPanel() {
                   dispatch({ type: 'enemyKnockedDown', value: e.target.checked })
                 }
               />
-              <span>Knocked Down (-1 DEF)</span>
-            </CoverOption>
-            <CoverOption title={TOOLTIP_SNARED}>
+              <span>
+                <InfoTip content={TOOLTIP_KNOCKED_DOWN}>
+                  Knocked Down (-1 DEF)
+                </InfoTip>
+              </span>
+            </CheckOption>
+            <CheckOption>
               <input
                 type="checkbox"
                 checked={enemySnared}
@@ -201,8 +193,10 @@ export function EnemyPanel() {
                   dispatch({ type: 'enemySnared', value: e.target.checked })
                 }
               />
-              <span>Snared (-1 DEF)</span>
-            </CoverOption>
+              <span>
+                <InfoTip content={TOOLTIP_SNARED}>Snared (-1 DEF)</InfoTip>
+              </span>
+            </CheckOption>
           </ConditionsColumn>
         </ConditionsGrid>
       </ConditionsSection>

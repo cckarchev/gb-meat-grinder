@@ -122,6 +122,9 @@ export function meatGrinderReducer(
   action: MeatGrinderAction,
 ): MeatGrinderState {
   switch (action.type) {
+    case 'reset':
+      // Reset everything to defaults but keep the currently selected model.
+      return stateForAttacker(attackerOf(state));
     case 'selectAttacker': {
       if (action.id === state.attackerId) return state;
       const attacker = attackerById(action.id);

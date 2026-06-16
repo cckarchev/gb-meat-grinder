@@ -54,26 +54,32 @@ const AttackStatMono = styled(Mono)`
 
 export function AttackStatsAside({
   defMinRoll,
+  armor,
   momentum,
   remainingHpIfHit,
 }: {
   defMinRoll: number;
+  armor: number;
   momentum: number;
   remainingHpIfHit: number;
 }) {
   return (
-    <AttackStatsRail aria-label="Defense, momentum, and HP after this swing">
+    <AttackStatsRail aria-label="Defense, armor, momentum, and HP after this swing">
       <StatRow>
         <AttackStatCaption>DEF</AttackStatCaption>
         <AttackStatMono>{defMinRoll}+</AttackStatMono>
       </StatRow>
       <StatRow>
-        <AttackStatCaption>Mom</AttackStatCaption>
-        <AttackStatMono>{momentum}</AttackStatMono>
+        <AttackStatCaption>ARM</AttackStatCaption>
+        <AttackStatMono>{armor}</AttackStatMono>
       </StatRow>
       <StatRow>
         <AttackStatCaption>HP</AttackStatCaption>
         <AttackStatMono>{remainingHpIfHit}</AttackStatMono>
+      </StatRow>
+      <StatRow>
+        <AttackStatCaption>Mom</AttackStatCaption>
+        <AttackStatMono>{momentum}</AttackStatMono>
       </StatRow>
     </AttackStatsRail>
   );

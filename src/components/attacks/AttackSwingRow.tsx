@@ -10,6 +10,7 @@ import {
 } from '@/components/attacks/attackVariant';
 import type { AttackBlockVariant } from '@/types/components/attacks';
 import { Mono } from '@/components/ui';
+import { InfoTip } from '@/components/InfoTip';
 import { AttackStatsAside } from '@/components/attacks/AttackStatsAside';
 import { CharacterPlaySelection } from '@/components/attacks/CharacterPlaySelection';
 import { WrapSlotPickGrid } from '@/components/attacks/PlaybookGrid';
@@ -50,19 +51,19 @@ const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
   ${(p) =>
     p.$variant === 'charge'
       ? `
-    border: 2px solid #e65100;
-    background: color-mix(in srgb, #ff9800 24%, var(--panel));
+    border: 2px solid var(--accent-charge);
+    background: color-mix(in srgb, var(--accent-charge-soft) 24%, var(--panel));
     box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, #f57c00 38%, transparent),
-      0 0 0 1px color-mix(in srgb, #fb8c00 40%, transparent);
+      inset 0 0 0 1px color-mix(in srgb, var(--accent-charge) 38%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--accent-charge-soft) 40%, transparent);
   `
       : p.$variant === 'berserker'
         ? `
-    border: 2px solid #b71c1c;
-    background: color-mix(in srgb, #ef5350 24%, var(--panel));
+    border: 2px solid var(--accent-berserker);
+    background: color-mix(in srgb, var(--accent-berserker-soft) 24%, var(--panel));
     box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, #c62828 38%, transparent),
-      0 0 0 1px color-mix(in srgb, #e53935 40%, transparent);
+      inset 0 0 0 1px color-mix(in srgb, var(--accent-berserker) 38%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--accent-berserker-soft) 40%, transparent);
   `
         : ''}
 
@@ -177,6 +178,10 @@ const ChargeWrap = styled.label`
   cursor: pointer;
   color: var(--text);
   font-size: 0.85rem;
+
+  input {
+    accent-color: var(--focus-ring);
+  }
 `;
 
 const BonusWrap = styled.label<{ $disabled: boolean }>`
@@ -187,6 +192,10 @@ const BonusWrap = styled.label<{ $disabled: boolean }>`
   color: ${(p) => (p.$disabled ? 'var(--muted)' : 'var(--text)')};
   font-size: 0.85rem;
   user-select: none;
+
+  input {
+    accent-color: var(--focus-ring);
+  }
 `;
 
 const PlaybookPrimarySlot = styled.div`
@@ -276,21 +285,24 @@ export function AttackSwingRow({
                   <span>+4 TAC charge</span>
                 </ChargeWrap>
               ) : null}
-              <BonusWrap
-                $disabled={bonusTimeDisabled}
-                title={
-                  bonusTimeDisabled
-                    ? 'Bonus Time needs at least 1 momentum before this attack (costs 1 before the roll).'
-                    : 'Bonus Time: +1 Dice Pool this attack; spend 1 momentum before rolling.'
-                }
-              >
+              <BonusWrap $disabled={bonusTimeDisabled}>
                 <input
                   type="checkbox"
                   checked={bonusTime}
                   disabled={bonusTimeDisabled}
                   onChange={(e) => onBonusTimeChange(i, e.target.checked)}
                 />
-                <span>Bonus Time (+1 Dice Pool)</span>
+                <span>
+                  <InfoTip
+                    content={
+                      bonusTimeDisabled
+                        ? 'Bonus Time needs at least 1 momentum before this attack (costs 1 before the roll).'
+                        : 'Bonus Time: +1 Dice Pool this attack; spend 1 momentum before rolling.'
+                    }
+                  >
+                    Bonus Time (+1 Dice Pool)
+                  </InfoTip>
+                </span>
               </BonusWrap>
             </PoolCluster>
             <TacPoolRight>
@@ -377,6 +389,7 @@ export function AttackSwingRow({
       </AttackMain>
       <AttackStatsAside
         defMinRoll={attack.defMinRoll}
+        armor={armor}
         momentum={momentum}
         remainingHpIfHit={remainingHpIfHit}
       />

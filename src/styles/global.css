@@ -15,6 +15,14 @@
   --playbook-line-nm-bg: #e2e6ed;
   --playbook-line-nm-fg: #0b0f14;
   --playbook-line-nm-border: #c1c9d4;
+  /** Shared keyboard focus indicator. */
+  --focus-ring: #0969da;
+  /** Charge attack accent (solid border + soft fill mixed into the panel). */
+  --accent-charge: #e65100;
+  --accent-charge-soft: #ff9800;
+  /** Berserker attack accent. */
+  --accent-berserker: #b71c1c;
+  --accent-berserker-soft: #ef5350;
   --mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
 
   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -37,6 +45,11 @@
     --playbook-line-nm-bg: #d5dce6;
     --playbook-line-nm-fg: #070a0f;
     --playbook-line-nm-border: #a8b3c2;
+    --focus-ring: #388bfd;
+    --accent-charge: #ff9d3f;
+    --accent-charge-soft: #b35e00;
+    --accent-berserker: #ff6b6b;
+    --accent-berserker-soft: #8c1d1d;
   }
 }
 
