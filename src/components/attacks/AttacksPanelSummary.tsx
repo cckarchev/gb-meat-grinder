@@ -141,8 +141,7 @@ export function AttacksPanelSummary() {
     [activeAttacks, bonusTimeByAttack],
   );
 
-  const killingBlowMomentum =
-    killingBlowIndex >= 0 ? KILLING_BLOW_MOMENTUM : 0;
+  const killingBlowMomentum = killingBlowIndex >= 0 ? KILLING_BLOW_MOMENTUM : 0;
 
   const netMomentumIfAllHit = useMemo(() => {
     if (activeAttacks.length === 0) return killingBlowMomentum;
@@ -177,7 +176,11 @@ export function AttacksPanelSummary() {
       t += `; -${bonusTimeSpendsInActivation} Bonus Time`;
     }
     return `${t}.`;
-  }, [momentousMomentumIfAllHit, killingBlowMomentum, bonusTimeSpendsInActivation]);
+  }, [
+    momentousMomentumIfAllHit,
+    killingBlowMomentum,
+    bonusTimeSpendsInActivation,
+  ]);
 
   const activeFlatAbilities = useMemo(
     () =>

@@ -83,7 +83,12 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
     () =>
       killingBlowDisplayIndex(
         attacks,
-        damageIfAllHitsWrap(attacker, wrapPicks, state.damageMods, activeBaseCount),
+        damageIfAllHitsWrap(
+          attacker,
+          wrapPicks,
+          state.damageMods,
+          activeBaseCount,
+        ),
         specialAbilityFlatDamage(attacker, state.specialAbilities),
         state.hp,
       ),

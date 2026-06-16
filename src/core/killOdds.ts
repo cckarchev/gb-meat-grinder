@@ -156,7 +156,10 @@ function activationOutcome(
   const damageDistribution: DamageDistribution = new Map();
   for (const [dmg, prob] of total) {
     const withFlat = dmg + flatDamage;
-    damageDistribution.set(withFlat, (damageDistribution.get(withFlat) ?? 0) + prob);
+    damageDistribution.set(
+      withFlat,
+      (damageDistribution.get(withFlat) ?? 0) + prob,
+    );
   }
 
   let expectedDamage = 0;
@@ -189,6 +192,11 @@ export function planDamageOutcome(
     flatDamage,
     targetHp,
     (attack) => (net) =>
-      pickedDamageForNet(attacker, mods, wrapPicks[attack.attackIndex] ?? [], net),
+      pickedDamageForNet(
+        attacker,
+        mods,
+        wrapPicks[attack.attackIndex] ?? [],
+        net,
+      ),
   );
 }

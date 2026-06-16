@@ -170,7 +170,10 @@ export function EnemyPanel() {
                 type="checkbox"
                 checked={enemyKnockedDown}
                 onChange={(e) =>
-                  dispatch({ type: 'enemyKnockedDown', value: e.target.checked })
+                  dispatch({
+                    type: 'enemyKnockedDown',
+                    value: e.target.checked,
+                  })
                 }
               />
               <InfoTip content={TOOLTIP_KNOCKED_DOWN}>
