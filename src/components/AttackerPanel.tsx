@@ -1,11 +1,12 @@
-import { activeAttacker } from '@/attackers/activeAttacker';
-import { useMeatGrinderSimulation } from '@/meatGrinder/useMeatGrinderSimulation';
+import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { StepControl } from '@/components/StepControl';
 import { BuffOption } from '@/components/targetPanelPrimitives';
-import { Panel, PanelTitle, Row } from '@/components/ui';
+import { Panel, PanelTitle, Row, Select } from '@/components/ui';
 
 export function AttackerPanel() {
   const {
+    attacker,
+    availableAttackers,
     damageMods,
     startingMomentum,
     initialTacModifier,
@@ -21,13 +22,38 @@ export function AttackerPanel() {
 
   return (
     <Panel>
-      <PanelTitle>{activeAttacker.name}</PanelTitle>
+      <PanelTitle>Attacker</PanelTitle>
       <Row>
+        <label style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+          <span
+            style={{
+              fontSize: '0.72rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              color: 'var(--muted)',
+            }}
+          >
+            Model
+          </span>
+          <Select
+            value={attacker.id}
+            onChange={(e) =>
+              dispatch({ type: 'selectAttacker', id: e.target.value })
+            }
+            aria-label="Select attacker model"
+          >
+            {availableAttackers.map((a) => (
+              <option key={a.id} value={a.id}>
+                {a.name}
+              </option>
+            ))}
+          </Select>
+        </label>
         <StepControl
           label="Influence"
           value={influence}
           min={0}
-          max={activeAttacker.inf}
+          max={attacker.inf}
           onChange={(v) => dispatch({ type: 'influence', value: v })}
           valueLabel={String(influence)}
           decrementAriaLabel="Decrease influence"
@@ -36,8 +62,8 @@ export function AttackerPanel() {
         <StepControl
           label="Starting momentum"
           value={startingMomentum}
-          min={activeAttacker.startingMomentum.min}
-          max={activeAttacker.startingMomentum.max}
+          min={attacker.startingMomentum.min}
+          max={attacker.startingMomentum.max}
           onChange={(v) => dispatch({ type: 'startingMomentum', value: v })}
           valueLabel={String(startingMomentum)}
           decrementAriaLabel="Decrease starting momentum"
@@ -46,8 +72,8 @@ export function AttackerPanel() {
         <StepControl
           label="Initial TAC modifier"
           value={initialTacModifier}
-          min={activeAttacker.initialTacModifier.min}
-          max={activeAttacker.initialTacModifier.max}
+          min={attacker.initialTacModifier.min}
+          max={attacker.initialTacModifier.max}
           onChange={(v) =>
             dispatch({ type: 'initialTacModifierRaw', value: v })
           }
@@ -58,7 +84,7 @@ export function AttackerPanel() {
       </Row>
       <BuffOption
         title={
-          activeAttacker.furious
+          attacker.furious
             ? 'Charge this activation (free for Furious).'
             : 'Charge this activation (costs 2 influence).'
         }
@@ -68,11 +94,9 @@ export function AttackerPanel() {
           checked={charging}
           onChange={(e) => dispatch({ type: 'charging', value: e.target.checked })}
         />
-        <span>
-          Charging{activeAttacker.furious ? ' (free)' : ' (-2 influence)'}
-        </span>
+        <span>Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}</span>
       </BuffOption>
-      {activeAttacker.damageBuffs.map((buff) => (
+      {attacker.damageBuffs.map((buff) => (
         <BuffOption key={buff.id} title={buff.tooltip}>
           <input
             type="checkbox"

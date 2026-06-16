@@ -1,3 +1,4 @@
+import type { AttackerData } from '@/types/core/attacker';
 import type {
   CharacterPlayPickSlot,
   PlaybookDamageMods,
@@ -11,6 +12,8 @@ export type AttackPlan = {
 
 /** Inputs to `clampAttackPlan` bundled for reuse with `clampAttackPlanState`. */
 export type AttackPlanClampParams = {
+  /** The model being clamped. */
+  attacker: AttackerData;
   /** Effective charge row, or -1 when the model is not charging. */
   chargeAttackIndex: number;
   armor: number;

@@ -9,7 +9,7 @@ import {
 } from '@/core/playbook';
 import type { WrapPick } from '@/types/core/playbook';
 import { formatPercent } from '@/core/probability';
-import { useMeatGrinderSimulation } from '@/meatGrinder/useMeatGrinderSimulation';
+import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { Mono, Summary } from '@/components/ui';
 import { attackKindLabel } from '@/components/attacks/attackVariant';
 
@@ -80,6 +80,7 @@ function swingHasWrapSelection(
 
 export function AttacksPanelSummary() {
   const {
+    attacker,
     charging,
     chargeAttackIndex,
     activeBaseCount,
@@ -93,8 +94,8 @@ export function AttacksPanelSummary() {
   const effectiveChargeAttackIndex = charging ? chargeAttackIndex : -1;
 
   const rowDamageIfHit = useMemo(
-    () => damageIfAllHitsWrap(wrapPicks, damageMods, activeBaseCount),
-    [wrapPicks, damageMods, activeBaseCount],
+    () => damageIfAllHitsWrap(attacker, wrapPicks, damageMods, activeBaseCount),
+    [attacker, wrapPicks, damageMods, activeBaseCount],
   );
 
   const totalDamageIfAllHit = useMemo(
@@ -106,11 +107,11 @@ export function AttacksPanelSummary() {
     let m = 0;
     for (const ctx of attacks) {
       for (const id of wrapPicks[ctx.attackIndex] ?? []) {
-        if (id != null && pickGeneratesMomentum(id, damageMods)) m += 1;
+        if (id != null && pickGeneratesMomentum(attacker, id, damageMods)) m += 1;
       }
     }
     return m;
-  }, [attacks, wrapPicks, damageMods]);
+  }, [attacker, attacks, wrapPicks, damageMods]);
 
   const bonusTimeSpendsInActivation = useMemo(
     () => attacks.filter((ctx) => bonusTimeByAttack[ctx.attackIndex]).length,
@@ -121,6 +122,7 @@ export function AttacksPanelSummary() {
     if (attacks.length === 0) return 0;
     const lastIdx = attacks[attacks.length - 1].attackIndex;
     const end = momentumAfterAttackInclusive(
+      attacker,
       wrapPicks,
       damageMods,
       lastIdx,
@@ -130,6 +132,7 @@ export function AttacksPanelSummary() {
     );
     return end - startingMomentum;
   }, [
+    attacker,
     attacks,
     wrapPicks,
     damageMods,
@@ -147,7 +150,12 @@ export function AttacksPanelSummary() {
   }, [momentousMomentumIfAllHit, bonusTimeSpendsInActivation]);
 
   const damageDealtTooltip = useMemo(() => {
-    const b = damageModifierBreakdownWrap(wrapPicks, damageMods, activeBaseCount);
+    const b = damageModifierBreakdownWrap(
+      attacker,
+      wrapPicks,
+      damageMods,
+      activeBaseCount,
+    );
     if (b.rawCardDamage === 0 && b.totalEffective === 0) {
       return 'No selected playbook lines deal card damage to HP (after Tough Hide).';
     }
@@ -162,7 +170,7 @@ export function AttacksPanelSummary() {
     }
     t += ` = ${b.totalEffective}.`;
     return t;
-  }, [wrapPicks, damageMods, activeBaseCount]);
+  }, [attacker, wrapPicks, damageMods, activeBaseCount]);
 
   const { geometricMeanLineHitProb, roughestRollProb } = useMemo(() => {
     const probs = attacks
@@ -194,10 +202,11 @@ export function AttacksPanelSummary() {
         <ProbabilityRow key={a.attackIndex}>
           <SelectionLine>
             <Mono>{displayIdx + 1}</Mono>.{' '}
-            {attackKindLabel(a.attackIndex, effectiveChargeAttackIndex)}
+            {attackKindLabel(attacker, a.attackIndex, effectiveChargeAttackIndex)}
             {' -> '}
             <SelectionPicksInline>
               {formatWrapRowSelectionLabel(
+                attacker,
                 wrapPicks[a.attackIndex] ?? [],
                 damageMods,
               )}

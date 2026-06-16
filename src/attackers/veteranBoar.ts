@@ -15,6 +15,7 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
         tacBonusForLater: 0,
         defReductionForLater: 0,
         damage: 0,
+        clearsCover: true,
       },
       {
         id: 'dmg1',
@@ -56,6 +57,7 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
         tacBonusForLater: 0,
         defReductionForLater: 1,
         damage: 0,
+        appliesKnockDown: true,
       },
     ],
   },
@@ -68,6 +70,7 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
         tacBonusForLater: 0,
         defReductionForLater: 0,
         damage: 0,
+        clearsCover: true,
       },
       {
         id: 'dmg3',

@@ -7,7 +7,7 @@ import {
   HP_MAX,
   HP_MIN,
 } from '@/core/constants';
-import { useMeatGrinderSimulation } from '@/meatGrinder/useMeatGrinderSimulation';
+import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { narrowViewport } from '@/styles/breakpoints';
 import { StepControl } from '@/components/StepControl';
 import { BuffOption } from '@/components/targetPanelPrimitives';

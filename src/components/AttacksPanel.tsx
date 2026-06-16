@@ -5,7 +5,7 @@ import {
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
 } from '@/core/playbook';
-import { useMeatGrinderSimulation } from '@/meatGrinder/useMeatGrinderSimulation';
+import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { AttackSwingRow } from '@/components/attacks/AttackSwingRow';
 import { AttacksPanelSummary } from '@/components/attacks/AttacksPanelSummary';
 
@@ -17,6 +17,7 @@ const AttacksList = styled.div`
 
 export function AttacksPanel() {
   const {
+    attacker,
     hp: targetHp,
     armor,
     charging,
@@ -45,8 +46,8 @@ export function AttacksPanel() {
   };
 
   const rowDamageIfHit = useMemo(
-    () => damageIfAllHitsWrap(wrapPicks, damageMods, activeBaseCount),
-    [wrapPicks, damageMods, activeBaseCount],
+    () => damageIfAllHitsWrap(attacker, wrapPicks, damageMods, activeBaseCount),
+    [attacker, wrapPicks, damageMods, activeBaseCount],
   );
   const remainingHpAfterSwing = useMemo(() => {
     const out: number[] = [];
@@ -62,6 +63,7 @@ export function AttacksPanel() {
     () =>
       attacks.map((ctx) =>
         momentumAfterAttackInclusive(
+          attacker,
           wrapPicks,
           damageMods,
           ctx.attackIndex,
@@ -71,6 +73,7 @@ export function AttacksPanel() {
         ),
       ),
     [
+      attacker,
       attacks,
       wrapPicks,
       damageMods,
@@ -84,6 +87,7 @@ export function AttacksPanel() {
     () =>
       attacks.map((ctx) =>
         momentumPoolBeforeBonusTime(
+          attacker,
           wrapPicks,
           damageMods,
           ctx.attackIndex,
@@ -93,6 +97,7 @@ export function AttacksPanel() {
         ),
       ),
     [
+      attacker,
       attacks,
       wrapPicks,
       damageMods,

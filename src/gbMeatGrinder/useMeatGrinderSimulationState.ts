@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useReducer } from 'react';
+import { attackerById, ATTACKERS } from '@/attackers/registry';
 import { computeAttackSequence } from '@/core/attackSequence';
 import { activeBaseAttackCount } from '@/core/attackStructure';
 import {
   createInitialMeatGrinderState,
   meatGrinderReducer,
-} from '@/meatGrinder/meatGrinderReducer';
-import type { MeatGrinderSimulation } from '@/types/meatGrinder/simulation';
+} from '@/gbMeatGrinder/meatGrinderReducer';
+import type { MeatGrinderSimulation } from '@/types/gbMeatGrinder/simulation';
 
 export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
   const [state, dispatch] = useReducer(
@@ -16,7 +17,12 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
 
   const { wrapPicks, characterPlayPicks } = state.attackPlan;
 
-  const activeBaseCount = activeBaseAttackCount(state.influence, state.charging);
+  const attacker = attackerById(state.attackerId);
+  const activeBaseCount = activeBaseAttackCount(
+    attacker,
+    state.influence,
+    state.charging,
+  );
   const effectiveChargeAttackIndex = state.charging
     ? state.chargeAttackIndex
     : -1;
@@ -30,6 +36,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
   const { attacks } = useMemo(
     () =>
       computeAttackSequence(
+        attacker,
         state.enemyDef,
         state.armor,
         wrapPicks,
@@ -43,6 +50,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
         activeBaseCount,
       ),
     [
+      attacker,
       state.enemyDef,
       state.armor,
       wrapPicks,
@@ -59,6 +67,8 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
 
   return useMemo(
     () => ({
+      attacker,
+      availableAttackers: ATTACKERS,
       enemyDef: state.enemyDef,
       armor: state.armor,
       hp: state.hp,
@@ -77,6 +87,14 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       attacks,
       dispatch,
     }),
-    [state, wrapPicks, characterPlayPicks, attacks, activeBaseCount, dispatch],
+    [
+      state,
+      attacker,
+      wrapPicks,
+      characterPlayPicks,
+      attacks,
+      activeBaseCount,
+      dispatch,
+    ],
   );
 }

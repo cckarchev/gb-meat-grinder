@@ -1,14 +1,19 @@
 import type { Dispatch } from 'react';
+import type { AttackerData } from '@/types/core/attacker';
 import type { AttackRollContext } from '@/types/core/attackSequence';
 import type {
   CharacterPlayPickSlot,
   PlaybookDamageMods,
   WrapPick,
 } from '@/types/core/playbook';
-import type { MeatGrinderAction } from '@/types/meatGrinder/reducer';
+import type { MeatGrinderAction } from '@/types/gbMeatGrinder/reducer';
 
 /** React hook + context value for the Meat Grinder simulation. */
 export type MeatGrinderSimulation = {
+  /** The selected attacker model. */
+  attacker: AttackerData;
+  /** Every model that can be selected. */
+  availableAttackers: readonly AttackerData[];
   enemyDef: number;
   armor: number;
   hp: number;

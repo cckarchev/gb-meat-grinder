@@ -7,6 +7,7 @@ import {
   defaultWrapPicks,
   sanitizeCharacterPlayPicksWrap,
 } from '@/core/playbook';
+import type { AttackerData } from '@/types/core/attacker';
 import type {
   AttackPlan,
   AttackPlanClampParams,
@@ -19,13 +20,15 @@ import type {
 } from '@/types/core/playbook';
 
 export function createInitialAttackPlan(
+  attacker: AttackerData,
   influence: number,
   charging: boolean,
 ): AttackPlan {
-  const wp = defaultWrapPicks();
-  const cp = defaultCharacterPlayPicksWrap();
-  const noBonus = Array.from({ length: attackArraySize() }, () => false);
+  const wp = defaultWrapPicks(attackArraySize(attacker));
+  const cp = defaultCharacterPlayPicksWrap(attackArraySize(attacker));
+  const noBonus = Array.from({ length: attackArraySize(attacker) }, () => false);
   const r = clampAttackPlan(
+    attacker,
     wp,
     cp,
     charging ? 0 : -1,
@@ -36,7 +39,7 @@ export function createInitialAttackPlan(
     4,
     noBonus,
     0,
-    activeBaseAttackCount(influence, charging),
+    activeBaseAttackCount(attacker, influence, charging),
   );
   return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
 }
@@ -46,6 +49,7 @@ export function clampAttackPlanState(
   params: AttackPlanClampParams,
 ): AttackPlan {
   const r = clampAttackPlan(
+    params.attacker,
     prev.wrapPicks,
     prev.characterPlayPicks,
     params.chargeAttackIndex,
@@ -69,6 +73,7 @@ export function clampAttackPlanState(
 
 /** Returns `null` when the choice is a no-op. */
 export function nextPlanAfterWrapChoice(
+  attacker: AttackerData,
   prev: AttackPlan,
   attackIndex: number,
   pickIndex: number,
@@ -86,7 +91,7 @@ export function nextPlanAfterWrapChoice(
     if (idx !== attackIndex) return [...row];
     const nr = [...row];
     while (nr.length < nextPicks[idx].length) nr.push(null);
-    if (id === null || !choiceUsesCharacterPlay(id)) nr[pickIndex] = null;
+    if (id === null || !choiceUsesCharacterPlay(attacker, id)) nr[pickIndex] = null;
     else if (nr[pickIndex] == null) nr[pickIndex] = 'so';
     return nr.slice(0, nextPicks[idx].length);
   });
@@ -96,6 +101,7 @@ export function nextPlanAfterWrapChoice(
 
 /** Returns `null` when there is no continuation to clear. */
 export function nextPlanAfterClearWrapContinuation(
+  attacker: AttackerData,
   prev: AttackPlan,
   attackIndex: number,
 ): AttackPlan | null {
@@ -105,7 +111,7 @@ export function nextPlanAfterClearWrapContinuation(
   const pick0 = row[0];
   let cp0: CharacterPlayPickSlot =
     prev.characterPlayPicks[attackIndex]?.[0] ?? null;
-  if (pick0 == null || !choiceUsesCharacterPlay(pick0)) cp0 = null;
+  if (pick0 == null || !choiceUsesCharacterPlay(attacker, pick0)) cp0 = null;
 
   const nextPicks = prev.wrapPicks.map((r, idx) =>
     idx === attackIndex ? [pick0] : [...r],
@@ -119,6 +125,7 @@ export function nextPlanAfterClearWrapContinuation(
 
 /** Returns `null` when the pick is unchanged. */
 export function nextPlanAfterCharacterPlayPick(
+  attacker: AttackerData,
   prev: AttackPlan,
   attackIndex: number,
   pickIndex: number,
@@ -135,6 +142,7 @@ export function nextPlanAfterCharacterPlayPick(
     return nr;
   });
   const { characterPlayPicks: sanitized } = sanitizeCharacterPlayPicksWrap(
+    attacker,
     prev.wrapPicks,
     nextCharacterPlay,
     damageMods,

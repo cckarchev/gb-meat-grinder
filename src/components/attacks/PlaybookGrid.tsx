@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import {
-  PLAYBOOK,
   kdAlreadyTakenBeforePick,
   momentousLineStyle,
   playbookLineDisplayLabel,
   wrapExtendedNetNeeded,
   wrapSlotBudget,
 } from '@/core/playbook';
+import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import type { PlaybookDamageMods, WrapPick } from '@/types/core/playbook';
 import {
   probHeatBackground,
@@ -229,15 +229,22 @@ export function WrapSlotPickGrid({
   firstSlotInSection: boolean;
   onChoiceChange: AttacksPanelProps['onChoiceChange'];
 }) {
+  const { attacker } = useMeatGrinderSimulation();
   const i = attackIndex;
-  const budget = wrapSlotBudget(maxNet, pickIndex);
-  const visibleColumns = PLAYBOOK.filter((c) => c.netSuccesses <= budget);
+  const budget = wrapSlotBudget(attacker, maxNet, pickIndex);
+  const visibleColumns = attacker.playbook.filter(
+    (c) => c.netSuccesses <= budget,
+  );
 
   return (
     <WrapSlotBlock $first={firstSlotInSection}>
       <ColumnGrid $columnCount={visibleColumns.length}>
         {visibleColumns.map((col) => {
-          const netForHeat = wrapExtendedNetNeeded(pickIndex, col.netSuccesses);
+          const netForHeat = wrapExtendedNetNeeded(
+            attacker,
+            pickIndex,
+            col.netSuccesses,
+          );
           const pCol = probAttackSucceeds(tac, pHit, armor, netForHeat);
           return (
             <ColumnBlock key={col.netSuccesses}>
@@ -245,10 +252,11 @@ export function WrapSlotPickGrid({
               <ColumnResults>
                 {col.results.map((e) => {
                   const selected = wrapPicks[i][pickIndex] === e.id;
-                  const mStyle = momentousLineStyle(e.id, damageMods);
+                  const mStyle = momentousLineStyle(attacker, e.id, damageMods);
                   const kdLocked =
-                    e.id === 'kd' &&
+                    e.appliesKnockDown === true &&
                     kdAlreadyTakenBeforePick(
+                      attacker,
                       wrapPicks,
                       i,
                       pickIndex,
@@ -277,7 +285,7 @@ export function WrapSlotPickGrid({
                         }
                       }}
                     >
-                      {playbookLineDisplayLabel(e.id, damageMods)}
+                      {playbookLineDisplayLabel(attacker, e.id, damageMods)}
                     </LineButton>
                   );
                 })}

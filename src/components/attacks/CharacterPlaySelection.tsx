@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { narrowViewport } from '@/styles/breakpoints';
 import { characterPlayAvailabilityForPick } from '@/core/playbook';
+import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import type {
   AttacksPanelProps,
   CharacterPlaySlotRef,
@@ -73,9 +74,11 @@ export function CharacterPlaySelection({
   activeBaseCount: number;
   onCharacterPlayPickChange: AttacksPanelProps['onCharacterPlayPickChange'];
 }) {
+  const { attacker } = useMeatGrinderSimulation();
   const i = attackIndex;
   const actionable = slots.filter(({ pickIndex }) => {
     const cpAvail = characterPlayAvailabilityForPick(
+      attacker,
       wrapPicks,
       characterPlayPicks,
       i,
@@ -91,6 +94,7 @@ export function CharacterPlaySelection({
     <>
       {actionable.map(({ pickIndex }) => {
         const cpAvail = characterPlayAvailabilityForPick(
+          attacker,
           wrapPicks,
           characterPlayPicks,
           i,

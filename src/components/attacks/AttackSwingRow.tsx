@@ -3,6 +3,7 @@ import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import type { AttackRollContext } from '@/types/core/attackSequence';
 import { attackRowIsBerserker, choiceUsesCharacterPlay } from '@/core/playbook';
 import { maxNetSuccessesForRoll } from '@/core/probability';
+import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import {
   attackBlockVariant,
   attackKindLabel,
@@ -242,26 +243,29 @@ export function AttackSwingRow({
   onToggleWrapExpansion: () => void;
   onWrapContinuationCleared: AttacksPanelProps['onWrapContinuationCleared'];
 }) {
+  const { attacker } = useMeatGrinderSimulation();
   const i = attack.attackIndex;
   const maxNet = maxNetSuccessesForRoll(attack.tac, armor);
   const characterPlaySlots = wrapPicks[i]
     .map((pid, pickIndex) => ({ pid, pickIndex }))
     .filter(
       (x): x is CharacterPlaySlotRef =>
-        x.pid != null && choiceUsesCharacterPlay(x.pid),
+        x.pid != null && choiceUsesCharacterPlay(attacker, x.pid),
     );
   const hasWrapContinuation = wrapPicks[i].length > 1;
-  const variant = attackBlockVariant(i, chargeAttackIndex);
+  const variant = attackBlockVariant(attacker, i, chargeAttackIndex);
   const bonusTimeDisabled = !bonusTime && bonusTimeMomentumPool < 1;
 
   return (
     <AttackRow>
       <AttackMain>
         <AttackBlock $variant={variant}>
-          <AttackHeading>{attackKindLabel(i, chargeAttackIndex)}</AttackHeading>
+          <AttackHeading>
+            {attackKindLabel(attacker, i, chargeAttackIndex)}
+          </AttackHeading>
           <DicePoolStrip aria-label="Dice pool for this attack">
             <PoolCluster>
-              {charging && !attackRowIsBerserker(i) ? (
+              {charging && !attackRowIsBerserker(attacker, i) ? (
                 <ChargeWrap>
                   <input
                     type="radio"

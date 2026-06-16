@@ -1,4 +1,3 @@
-import { activeAttacker } from '@/attackers/activeAttacker';
 import type { AttackerData } from '@/types/core/attacker';
 
 /**
@@ -6,8 +5,8 @@ import type { AttackerData } from '@/types/core/attacker';
  * 0 when the model is not charging.
  */
 export function chargeInfluenceCost(
+  attacker: AttackerData,
   charging: boolean,
-  attacker: AttackerData = activeAttacker,
 ): number {
   if (!charging) return 0;
   return attacker.furious ? 0 : 2;
@@ -19,11 +18,14 @@ export function chargeInfluenceCost(
  * these, not counted here.
  */
 export function activeBaseAttackCount(
+  attacker: AttackerData,
   influence: number,
   charging: boolean,
-  attacker: AttackerData = activeAttacker,
 ): number {
-  const bought = Math.max(0, influence - chargeInfluenceCost(charging, attacker));
+  const bought = Math.max(
+    0,
+    influence - chargeInfluenceCost(attacker, charging),
+  );
   return (charging ? 1 : 0) + bought + (attacker.feral ? 1 : 0);
 }
 
@@ -32,23 +34,17 @@ export function activeBaseAttackCount(
  * free charge/Feral). Fixes the array layout so rows keep stable indices as the
  * allocated influence changes.
  */
-export function maxBaseAttackCount(
-  attacker: AttackerData = activeAttacker,
-): number {
+export function maxBaseAttackCount(attacker: AttackerData): number {
   return attacker.inf + (attacker.furious ? 1 : 0) + (attacker.feral ? 1 : 0);
 }
 
 /** Berserker rows live at `maxBaseAttackCount + baseIndex`, so this is the offset. */
-export function berserkerRowOffset(
-  attacker: AttackerData = activeAttacker,
-): number {
+export function berserkerRowOffset(attacker: AttackerData): number {
   return maxBaseAttackCount(attacker);
 }
 
 /** Total rows the attack-plan arrays reserve (bases + one Berserker slot each). */
-export function attackArraySize(
-  attacker: AttackerData = activeAttacker,
-): number {
+export function attackArraySize(attacker: AttackerData): number {
   const base = maxBaseAttackCount(attacker);
   return attacker.berserker ? base * 2 : base;
 }

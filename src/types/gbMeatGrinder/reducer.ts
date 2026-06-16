@@ -6,6 +6,8 @@ import type {
 } from '@/types/core/playbook';
 
 export type MeatGrinderState = {
+  /** Id of the selected attacker model (see attacker registry). */
+  attackerId: string;
   enemyDef: number;
   armor: number;
   hp: number;
@@ -25,6 +27,7 @@ export type MeatGrinderState = {
 };
 
 export type MeatGrinderAction =
+  | { type: 'selectAttacker'; id: string }
   | { type: 'enemyDef'; value: number }
   | { type: 'armor'; value: number }
   | { type: 'hp'; value: number }

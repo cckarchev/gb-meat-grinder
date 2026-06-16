@@ -1,4 +1,4 @@
-import { activeAttacker } from '@/attackers/activeAttacker';
+import { attackerById, DEFAULT_ATTACKER } from '@/attackers/registry';
 import { HP_DEFAULT } from '@/core/constants';
 import {
   activeBaseAttackCount,
@@ -12,19 +12,23 @@ import {
   nextPlanAfterWrapChoice,
 } from '@/core/attackPlanState';
 import {
-  DEFAULT_PLAYBOOK_DAMAGE_MODS,
   momentumPoolBeforeBonusTime,
   sanitizeBonusTimeFlags,
 } from '@/core/playbook';
+import type { AttackerData } from '@/types/core/attacker';
 import type {
   AttackPlan,
   AttackPlanClampParams,
 } from '@/types/core/attackPlan';
-import type { MeatGrinderAction, MeatGrinderState } from '@/types/meatGrinder/reducer';
+import type { MeatGrinderAction, MeatGrinderState } from '@/types/gbMeatGrinder/reducer';
+
+function attackerOf(s: MeatGrinderState): AttackerData {
+  return attackerById(s.attackerId);
+}
 
 /** Active base attacks for the current influence / charge choice. */
 function activeBaseCountOf(s: MeatGrinderState): number {
-  return activeBaseAttackCount(s.influence, s.charging);
+  return activeBaseAttackCount(attackerOf(s), s.influence, s.charging);
 }
 
 /** Charge row the engine should use: the chosen base, or -1 when not charging. */
@@ -34,6 +38,7 @@ function effectiveChargeIndex(s: MeatGrinderState): number {
 
 function clampParams(s: MeatGrinderState): AttackPlanClampParams {
   return {
+    attacker: attackerOf(s),
     chargeAttackIndex: effectiveChargeIndex(s),
     armor: s.armor,
     enemyHasCover: s.enemyHasCover,
@@ -55,24 +60,48 @@ function bonusTimeEqual(a: readonly boolean[], b: readonly boolean[]): boolean {
   return a.every((v, i) => v === b[i]);
 }
 
-export function createInitialMeatGrinderState(): MeatGrinderState {
-  const influence = Math.min(2, activeAttacker.inf);
-  const charging = true;
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
+/** Fresh attacker-side state for a model, preserving enemy stats from `prev`. */
+function stateForAttacker(
+  attacker: AttackerData,
+  prev?: Partial<MeatGrinderState>,
+): MeatGrinderState {
+  const influence = clamp(prev?.influence ?? attacker.inf, 0, attacker.inf);
+  const charging = prev?.charging ?? true;
   return {
-    enemyDef: 4,
-    armor: 1,
-    hp: HP_DEFAULT,
+    attackerId: attacker.id,
+    enemyDef: prev?.enemyDef ?? 4,
+    armor: prev?.armor ?? 1,
+    hp: prev?.hp ?? HP_DEFAULT,
     influence,
     charging,
     chargeAttackIndex: 0,
-    enemyHasCover: false,
-    enemyDefensiveStance: false,
-    startingMomentum: 0,
-    initialTacModifier: 0,
-    bonusTimeByAttack: Array.from({ length: attackArraySize() }, () => false),
-    damageMods: DEFAULT_PLAYBOOK_DAMAGE_MODS,
-    attackPlan: createInitialAttackPlan(influence, charging),
+    enemyHasCover: prev?.enemyHasCover ?? false,
+    enemyDefensiveStance: prev?.enemyDefensiveStance ?? false,
+    startingMomentum: clamp(
+      prev?.startingMomentum ?? 0,
+      attacker.startingMomentum.min,
+      attacker.startingMomentum.max,
+    ),
+    initialTacModifier: clamp(
+      prev?.initialTacModifier ?? 0,
+      attacker.initialTacModifier.min,
+      attacker.initialTacModifier.max,
+    ),
+    bonusTimeByAttack: Array.from(
+      { length: attackArraySize(attacker) },
+      () => false,
+    ),
+    damageMods: { toughHide: prev?.damageMods?.toughHide ?? false, buffs: {} },
+    attackPlan: createInitialAttackPlan(attacker, influence, charging),
   };
+}
+
+export function createInitialMeatGrinderState(): MeatGrinderState {
+  return stateForAttacker(DEFAULT_ATTACKER);
 }
 
 export function meatGrinderReducer(
@@ -80,6 +109,11 @@ export function meatGrinderReducer(
   action: MeatGrinderAction,
 ): MeatGrinderState {
   switch (action.type) {
+    case 'selectAttacker': {
+      if (action.id === state.attackerId) return state;
+      const attacker = attackerById(action.id);
+      return stateForAttacker(attacker, state);
+    }
     case 'enemyDef': {
       const next = { ...state, enemyDef: action.value };
       return {
@@ -97,10 +131,7 @@ export function meatGrinderReducer(
     case 'hp':
       return { ...state, hp: action.value };
     case 'influence': {
-      const influence = Math.max(
-        0,
-        Math.min(activeAttacker.inf, action.value),
-      );
+      const influence = clamp(action.value, 0, attackerOf(state).inf);
       const withInfluence = { ...state, influence };
       const baseCount = activeBaseCountOf(withInfluence);
       const next = {
@@ -157,9 +188,11 @@ export function meatGrinderReducer(
     case 'startingMomentum':
       return { ...state, startingMomentum: action.value };
     case 'initialTacModifierRaw': {
-      const initialTacModifier = Math.max(
-        activeAttacker.initialTacModifier.min,
-        Math.min(activeAttacker.initialTacModifier.max, action.value),
+      const tacRange = attackerOf(state).initialTacModifier;
+      const initialTacModifier = clamp(
+        action.value,
+        tacRange.min,
+        tacRange.max,
       );
       const next = { ...state, initialTacModifier };
       return {
@@ -179,6 +212,7 @@ export function meatGrinderReducer(
       const activeBaseCount = activeBaseCountOf(state);
       if (value) {
         const pool = momentumPoolBeforeBonusTime(
+          attackerOf(state),
           state.attackPlan.wrapPicks,
           state.damageMods,
           attackIndex,
@@ -191,6 +225,7 @@ export function meatGrinderReducer(
       const nextFlags = [...state.bonusTimeByAttack];
       nextFlags[attackIndex] = value;
       const sanitized = sanitizeBonusTimeFlags(
+        attackerOf(state),
         state.attackPlan.wrapPicks,
         state.damageMods,
         state.startingMomentum,
@@ -201,6 +236,7 @@ export function meatGrinderReducer(
     }
     case 'sanitizeBonusTime': {
       const sanitized = sanitizeBonusTimeFlags(
+        attackerOf(state),
         state.attackPlan.wrapPicks,
         state.damageMods,
         state.startingMomentum,
@@ -212,6 +248,7 @@ export function meatGrinderReducer(
     }
     case 'wrapChoice': {
       const merged = nextPlanAfterWrapChoice(
+        attackerOf(state),
         state.attackPlan,
         action.attackIndex,
         action.pickIndex,
@@ -225,6 +262,7 @@ export function meatGrinderReducer(
     }
     case 'clearWrapContinuation': {
       const merged = nextPlanAfterClearWrapContinuation(
+        attackerOf(state),
         state.attackPlan,
         action.attackIndex,
       );
@@ -236,6 +274,7 @@ export function meatGrinderReducer(
     }
     case 'characterPlayPick': {
       const merged = nextPlanAfterCharacterPlayPick(
+        attackerOf(state),
         state.attackPlan,
         action.attackIndex,
         action.pickIndex,
