@@ -35,7 +35,7 @@ export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
 
 /** The attacker's buffs that are currently toggled on. */
 export function activeBuffs(attacker: AttackerData, mods: PlaybookDamageMods) {
-  return attacker.buffs.filter((b) => mods.buffs[b.id]);
+  return attacker.guild.buffs.filter((b) => mods.buffs[b.id]);
 }
 
 /** Sum of the +damage from selected buffs. */
@@ -649,7 +649,7 @@ export function damageModifierBreakdownWrap(
   let rawCardDamage = 0;
   let toughHideReduction = 0;
   let totalEffective = 0;
-  const buffBonuses = attacker.buffs.map((buff) => ({
+  const buffBonuses = attacker.guild.buffs.map((buff) => ({
     id: buff.id,
     label: buff.label,
     bonus: 0,

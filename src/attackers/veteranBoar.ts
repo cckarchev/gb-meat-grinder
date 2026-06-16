@@ -1,3 +1,4 @@
+import { butchers } from '@/guilds/butchers';
 import type { AttackerData } from '@/types/core/attacker';
 import type { PlaybookColumn } from '@/types/core/playbook';
 
@@ -144,20 +145,7 @@ export const veteranBoar: AttackerData = {
   berserker: true,
   feral: false,
   playbook: PLAYBOOK,
-  buffs: [
-    {
-      id: 'tooledUp',
-      label: 'Tooled Up',
-      tooltip: '+1 damage on each selected playbook line damage result.',
-      damageBonus: 1,
-    },
-    {
-      id: 'theOwner',
-      label: 'The Owner',
-      tooltip: '+1 damage on each selected playbook line damage result.',
-      damageBonus: 1,
-    },
-  ],
+  guild: butchers,
   startingMomentum: { min: 0, max: 20 },
   initialTacModifier: { min: -5, max: 5 },
 };

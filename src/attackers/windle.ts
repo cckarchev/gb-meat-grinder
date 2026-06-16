@@ -1,3 +1,4 @@
+import { farmers } from '@/guilds/farmers';
 import type { AttackerData } from '@/types/core/attacker';
 import type { PlaybookColumn } from '@/types/core/playbook';
 
@@ -107,27 +108,7 @@ export const windle: AttackerData = {
   berserker: true,
   feral: false,
   playbook: PLAYBOOK,
-  buffs: [
-    {
-      id: 'theyAintTough',
-      label: "They Ain't Tough!",
-      tooltip: 'The enemy model suffers -1 ARM.',
-      armorReduction: 1,
-    },
-    {
-      id: 'weakPoint',
-      label: 'Weak Point',
-      tooltip: 'The enemy model suffers -1 ARM (stacks with They Ain\'t Tough!).',
-      armorReduction: 1,
-    },
-    {
-      id: 'ourToolsAreSharp',
-      label: 'Our Tools Are Sharp',
-      tooltip:
-        'Playbook damage becomes Condition Damage, ignoring the enemy\'s Tough Hide.',
-      ignoresToughHide: true,
-    },
-  ],
+  guild: farmers,
   startingMomentum: { min: 0, max: 20 },
   initialTacModifier: { min: -5, max: 5 },
 };
