@@ -47,7 +47,7 @@ function clampParams(s: MeatGrinderState): AttackPlanClampParams {
     damageMods: s.damageMods,
     enemyDef: s.enemyDef,
     bonusTimeByAttack: s.bonusTimeByAttack,
-    initialTacModifier: s.initialTacModifier,
+    initialTacModifier: s.gangingUp - s.crowdingOut,
     activeBaseCount: activeBaseCountOf(s),
   };
 }
@@ -70,7 +70,7 @@ function stateForAttacker(
   attacker: AttackerData,
   prev?: Partial<MeatGrinderState>,
 ): MeatGrinderState {
-  const influence = clamp(prev?.influence ?? attacker.inf, 0, attacker.inf);
+  const influence = attacker.inf;
   const charging = prev?.charging ?? false;
   return {
     attackerId: attacker.id,
@@ -87,10 +87,15 @@ function stateForAttacker(
       attacker.startingMomentum.min,
       attacker.startingMomentum.max,
     ),
-    initialTacModifier: clamp(
-      prev?.initialTacModifier ?? 0,
-      attacker.initialTacModifier.min,
-      attacker.initialTacModifier.max,
+    gangingUp: clamp(
+      prev?.gangingUp ?? 0,
+      attacker.gangingUp.min,
+      attacker.gangingUp.max,
+    ),
+    crowdingOut: clamp(
+      prev?.crowdingOut ?? 0,
+      attacker.crowdingOut.min,
+      attacker.crowdingOut.max,
     ),
     bonusTimeByAttack: Array.from(
       { length: attackArraySize(attacker) },
@@ -192,14 +197,19 @@ export function meatGrinderReducer(
     }
     case 'startingMomentum':
       return { ...state, startingMomentum: action.value };
-    case 'initialTacModifierRaw': {
-      const tacRange = attackerOf(state).initialTacModifier;
-      const initialTacModifier = clamp(
-        action.value,
-        tacRange.min,
-        tacRange.max,
-      );
-      const next = { ...state, initialTacModifier };
+    case 'gangingUpRaw': {
+      const range = attackerOf(state).gangingUp;
+      const gangingUp = clamp(action.value, range.min, range.max);
+      const next = { ...state, gangingUp };
+      return {
+        ...next,
+        attackPlan: clampPlan(next, state.attackPlan),
+      };
+    }
+    case 'crowdingOutRaw': {
+      const range = attackerOf(state).crowdingOut;
+      const crowdingOut = clamp(action.value, range.min, range.max);
+      const next = { ...state, crowdingOut };
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),

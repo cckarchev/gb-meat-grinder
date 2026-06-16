@@ -28,6 +28,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
     ? state.chargeAttackIndex
     : -1;
   const armor = effectiveArmor(attacker, state.armor, state.damageMods);
+  const initialTacModifier = state.gangingUp - state.crowdingOut;
 
   useEffect(() => {
     queueMicrotask(() => {
@@ -48,7 +49,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
         state.enemyDefensiveStance,
         state.damageMods,
         state.bonusTimeByAttack,
-        state.initialTacModifier,
+        initialTacModifier,
         activeBaseCount,
       ),
     [
@@ -62,7 +63,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       state.enemyDefensiveStance,
       state.damageMods,
       state.bonusTimeByAttack,
-      state.initialTacModifier,
+      initialTacModifier,
       activeBaseCount,
     ],
   );
@@ -82,7 +83,8 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       enemyHasCover: state.enemyHasCover,
       enemyDefensiveStance: state.enemyDefensiveStance,
       startingMomentum: state.startingMomentum,
-      initialTacModifier: state.initialTacModifier,
+      gangingUp: state.gangingUp,
+      crowdingOut: state.crowdingOut,
       damageMods: state.damageMods,
       specialAbilities: state.specialAbilities,
       bonusTimeByAttack: state.bonusTimeByAttack,

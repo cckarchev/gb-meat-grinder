@@ -149,5 +149,6 @@ export const veteranBoar: AttackerData = {
   guild: butchers,
   characterPlays: [singledOut, stagger],
   startingMomentum: { min: 0, max: 20 },
-  initialTacModifier: { min: -5, max: 5 },
+  gangingUp: { min: 0, max: 5 },
+  crowdingOut: { min: 0, max: 5 },
 };

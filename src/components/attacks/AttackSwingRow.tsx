@@ -281,7 +281,7 @@ export function AttackSwingRow({
                 title={
                   bonusTimeDisabled
                     ? 'Bonus Time needs at least 1 momentum before this attack (costs 1 before the roll).'
-                    : 'Bonus Time: +1 TAC this attack; spend 1 momentum before rolling.'
+                    : 'Bonus Time: +1 Dice Pool this attack; spend 1 momentum before rolling.'
                 }
               >
                 <input
@@ -290,7 +290,7 @@ export function AttackSwingRow({
                   disabled={bonusTimeDisabled}
                   onChange={(e) => onBonusTimeChange(i, e.target.checked)}
                 />
-                <span>Bonus Time (+1 TAC)</span>
+                <span>Bonus Time (+1 Dice Pool)</span>
               </BonusWrap>
             </PoolCluster>
             <TacPoolRight>
@@ -305,7 +305,7 @@ export function AttackSwingRow({
                 />
               ) : null}
               <TacPoolBadge>
-                <TacPoolLabel>TAC</TacPoolLabel>
+                <TacPoolLabel>Dice Pool</TacPoolLabel>
                 <TacPoolValue>{attack.tac}</TacPoolValue>
               </TacPoolBadge>
             </TacPoolRight>

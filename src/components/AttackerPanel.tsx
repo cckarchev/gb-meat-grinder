@@ -8,8 +8,9 @@ import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import type { AttackerData } from '@/types/core/attacker';
 
 /**
- * Two equal columns so the controls line up in a grid (e.g. Influence sits
- * directly above Initial TAC modifier) instead of flex-wrapping unaligned.
+ * Model spans the full width on its own row; the paired steppers (Influence /
+ * Starting momentum, then Ganging Up / Crowding Out) line up in two columns
+ * instead of flex-wrapping unaligned.
  */
 const ControlsGrid = styled.div`
   display: grid;
@@ -30,6 +31,7 @@ const ModelField = styled.label`
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  grid-column: 1 / -1;
 `;
 
 const ModelFieldLabel = styled.span`
@@ -43,6 +45,18 @@ const ModelSelect = styled(Select)`
   width: 100%;
 `;
 
+/** Visual break before the pre-attack toggles; no heading, just a rule. */
+const PreAttackSection = styled.div`
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+
+  ${narrowViewport} {
+    margin-top: 0.65rem;
+    padding-top: 0.6rem;
+  }
+`;
+
 export function AttackerPanel() {
   const {
     attacker,
@@ -50,16 +64,15 @@ export function AttackerPanel() {
     damageMods,
     specialAbilities,
     startingMomentum,
-    initialTacModifier,
+    gangingUp,
+    crowdingOut,
     influence,
     charging,
     dispatch,
   } = useMeatGrinderSimulation();
 
-  const tacModLabel =
-    initialTacModifier > 0
-      ? `+${initialTacModifier}`
-      : String(initialTacModifier);
+  const gangingUpLabel = gangingUp > 0 ? `+${gangingUp}` : '0';
+  const crowdingOutLabel = crowdingOut > 0 ? `-${crowdingOut}` : '0';
 
   const guildGroups = useMemo(() => {
     const byGuild = new Map<string, { name: string; models: AttackerData[] }>();
@@ -124,83 +137,98 @@ export function AttackerPanel() {
           incrementAriaLabel="Increase starting momentum"
         />
         <StepControl
-          label="Initial TAC modifier"
-          value={initialTacModifier}
-          min={attacker.initialTacModifier.min}
-          max={attacker.initialTacModifier.max}
-          onChange={(v) =>
-            dispatch({ type: 'initialTacModifierRaw', value: v })
-          }
-          valueLabel={tacModLabel}
-          decrementAriaLabel="Decrease initial TAC modifier"
-          incrementAriaLabel="Increase initial TAC modifier"
+          label="Ganging Up"
+          value={gangingUp}
+          min={attacker.gangingUp.min}
+          max={attacker.gangingUp.max}
+          onChange={(v) => dispatch({ type: 'gangingUpRaw', value: v })}
+          valueLabel={gangingUpLabel}
+          decrementAriaLabel="Decrease Ganging Up"
+          incrementAriaLabel="Increase Ganging Up"
+        />
+        <StepControl
+          label="Crowding Out"
+          value={crowdingOut}
+          min={attacker.crowdingOut.min}
+          max={attacker.crowdingOut.max}
+          onChange={(v) => dispatch({ type: 'crowdingOutRaw', value: v })}
+          valueLabel={crowdingOutLabel}
+          decrementAriaLabel="Decrease Crowding Out"
+          incrementAriaLabel="Increase Crowding Out"
         />
       </ControlsGrid>
-      <BuffOption
-        title={
-          attacker.furious
-            ? 'Charge this activation (free for Furious).'
-            : 'Charge this activation (costs 2 influence).'
-        }
-      >
-        <input
-          type="checkbox"
-          checked={charging}
-          onChange={(e) =>
-            dispatch({ type: 'charging', value: e.target.checked })
+      <PreAttackSection>
+        <BuffOption
+          title={
+            attacker.furious
+              ? 'Charge this activation (free for Furious).'
+              : 'Charge this activation (costs 2 influence).'
           }
-        />
-        <span>Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}</span>
-      </BuffOption>
-      {attacker.guild.buffs.map((buff) => {
-        const disabled =
-          attacker.excludedGuildBuffs?.includes(buff.id) ?? false;
-        return (
-          <BuffOption
-            key={buff.id}
-            $disabled={disabled}
-            title={
-              disabled
-                ? `${buff.tooltip} (not available to ${attacker.name})`
-                : buff.tooltip
-            }
-          >
-            <input
-              type="checkbox"
-              disabled={disabled}
-              checked={!disabled && damageMods.buffs[buff.id] === true}
-              onChange={(e) =>
-                dispatch({
-                  type: 'damageMods',
-                  value: {
-                    ...damageMods,
-                    buffs: { ...damageMods.buffs, [buff.id]: e.target.checked },
-                  },
-                })
-              }
-            />
-            <span>{buff.label}</span>
-          </BuffOption>
-        );
-      })}
-      {(attacker.specialAbilities ?? []).map((ability) => (
-        <BuffOption key={ability.id} title={ability.tooltip}>
+        >
           <input
             type="checkbox"
-            checked={specialAbilities[ability.id] === true}
+            checked={charging}
             onChange={(e) =>
-              dispatch({
-                type: 'specialAbility',
-                id: ability.id,
-                value: e.target.checked,
-              })
+              dispatch({ type: 'charging', value: e.target.checked })
             }
           />
           <span>
-            {ability.label} (+{ability.flatDamage})
+            Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}
           </span>
         </BuffOption>
-      ))}
+        {attacker.guild.buffs.map((buff) => {
+          const disabled =
+            attacker.excludedGuildBuffs?.includes(buff.id) ?? false;
+          return (
+            <BuffOption
+              key={buff.id}
+              $disabled={disabled}
+              title={
+                disabled
+                  ? `${buff.tooltip} (not available to ${attacker.name})`
+                  : buff.tooltip
+              }
+            >
+              <input
+                type="checkbox"
+                disabled={disabled}
+                checked={!disabled && damageMods.buffs[buff.id] === true}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'damageMods',
+                    value: {
+                      ...damageMods,
+                      buffs: {
+                        ...damageMods.buffs,
+                        [buff.id]: e.target.checked,
+                      },
+                    },
+                  })
+                }
+              />
+              <span>{buff.label}</span>
+            </BuffOption>
+          );
+        })}
+        {(attacker.specialAbilities ?? []).map((ability) => (
+          <BuffOption key={ability.id} title={ability.tooltip}>
+            <input
+              type="checkbox"
+              checked={specialAbilities[ability.id] === true}
+              onChange={(e) =>
+                dispatch({
+                  type: 'specialAbility',
+                  id: ability.id,
+                  value: e.target.checked,
+                })
+              }
+            />
+            <span>
+              {ability.label} (+{ability.flatDamage})
+            </span>
+          </BuffOption>
+        ))}
+      </PreAttackSection>
     </Panel>
   );
 }

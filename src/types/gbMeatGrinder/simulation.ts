@@ -28,7 +28,10 @@ export type MeatGrinderSimulation = {
   enemyHasCover: boolean;
   enemyDefensiveStance: boolean;
   startingMomentum: number;
-  initialTacModifier: number;
+  /** Extra attack dice from Ganging Up (added to TAC). */
+  gangingUp: number;
+  /** Attack dice lost to Crowding Out (subtracted from TAC). */
+  crowdingOut: number;
   damageMods: PlaybookDamageMods;
   /** Toggled model-specific flat-damage abilities, by ability id. */
   specialAbilities: Record<string, boolean>;

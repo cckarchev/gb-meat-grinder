@@ -110,5 +110,6 @@ export const windle: AttackerData = {
   playbook: PLAYBOOK,
   guild: farmers,
   startingMomentum: { min: 0, max: 20 },
-  initialTacModifier: { min: -5, max: 5 },
+  gangingUp: { min: 0, max: 5 },
+  crowdingOut: { min: 0, max: 5 },
 };

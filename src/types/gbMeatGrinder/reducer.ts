@@ -20,7 +20,10 @@ export type MeatGrinderState = {
   enemyHasCover: boolean;
   enemyDefensiveStance: boolean;
   startingMomentum: number;
-  initialTacModifier: number;
+  /** Extra attack dice from Ganging Up (added to TAC). */
+  gangingUp: number;
+  /** Attack dice lost to Crowding Out (subtracted from TAC). */
+  crowdingOut: number;
   bonusTimeByAttack: boolean[];
   damageMods: PlaybookDamageMods;
   /** Toggled model-specific flat-damage abilities, by ability id. */
@@ -39,7 +42,8 @@ export type MeatGrinderAction =
   | { type: 'enemyHasCover'; value: boolean }
   | { type: 'enemyDefensiveStance'; value: boolean }
   | { type: 'startingMomentum'; value: number }
-  | { type: 'initialTacModifierRaw'; value: number }
+  | { type: 'gangingUpRaw'; value: number }
+  | { type: 'crowdingOutRaw'; value: number }
   | { type: 'damageMods'; value: PlaybookDamageMods }
   | { type: 'specialAbility'; id: string; value: boolean }
   | { type: 'bonusTime'; attackIndex: number; value: boolean }

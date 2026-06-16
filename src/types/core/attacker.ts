@@ -48,5 +48,8 @@ export type AttackerData = {
   /** Model-specific toggleable abilities that add flat, unmodified damage. */
   specialAbilities?: readonly SpecialAbility[];
   startingMomentum: { min: number; max: number };
-  initialTacModifier: { min: number; max: number };
+  /** Extra attack dice from Ganging Up (added to TAC). */
+  gangingUp: { min: number; max: number };
+  /** Attack dice lost to Crowding Out (subtracted from TAC). */
+  crowdingOut: { min: number; max: number };
 };
