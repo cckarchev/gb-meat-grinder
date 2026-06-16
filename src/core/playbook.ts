@@ -8,6 +8,7 @@ import { berserkerRowOffset } from '@/core/attackStructure';
 import { maxPlaybookNet, playbookIndex } from '@/core/playbookIndex';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
+  CharacterPlay,
   CharacterPlayPick,
   CharacterPlayPickSlot,
   CharacterPlayUsage,
@@ -18,6 +19,28 @@ import type {
   PlaybookResult,
   WrapPick,
 } from '@/types/core/playbook';
+
+/** Character plays this attacker's GB / 1GB results can trigger (from the catalog). */
+export function characterPlaysForAttacker(
+  attacker: AttackerData,
+): readonly CharacterPlay[] {
+  return attacker.characterPlays ?? [];
+}
+
+export function getCharacterPlay(
+  attacker: AttackerData,
+  id: CharacterPlayPick | null,
+): CharacterPlay | undefined {
+  if (id == null) return undefined;
+  return characterPlaysForAttacker(attacker).find((c) => c.id === id);
+}
+
+/** Play picked by default when a GB result is chosen: the first guild play. */
+export function defaultCharacterPlayId(
+  attacker: AttackerData,
+): CharacterPlayPick | null {
+  return characterPlaysForAttacker(attacker)[0]?.id ?? null;
+}
 
 export function getPlaybookResult(
   attacker: AttackerData,
@@ -244,12 +267,14 @@ export function wrapPickClearsCover(
 }
 
 /**
- * −1 ARM on this swing if an earlier swing's GB applied They Ain't Tough!
- * (activation order, strictly earlier). A condition, so it never stacks past 1.
+ * −1 ARM on this swing if an earlier swing's GB triggered a character play that
+ * reduces ARM (e.g. They Ain't Tough!), in activation order (strictly earlier).
+ * A condition, so it never stacks past 1.
  */
 export function armorReductionBeforeAttack(
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
   damageMods: PlaybookDamageMods,
   attackIndex: number,
   activeBaseCount: number,
@@ -262,15 +287,23 @@ export function armorReductionBeforeAttack(
   );
   const pos = order.indexOf(attackIndex);
   if (pos < 0) return 0;
+  let reduction = 0;
   for (let oi = 0; oi < pos; oi++) {
-    const row = wrapPicks[order[oi]];
-    for (const id of row) {
-      if (id != null && getPlaybookResult(attacker, id).appliesArmorReduction) {
-        return 1;
-      }
+    const j = order[oi];
+    for (let k = 0; k < wrapPicks[j].length; k++) {
+      if (wrapPicks[j][k] == null) continue;
+      reduction += rowEffectsForPick(
+        attacker,
+        wrapPicks,
+        characterPlayPicks,
+        j,
+        k,
+        damageMods,
+        activeBaseCount,
+      ).armorReduction;
     }
   }
-  return 0;
+  return Math.min(1, reduction);
 }
 
 /**
@@ -418,17 +451,25 @@ export function choiceUsesCharacterPlay(
   return getPlaybookResult(attacker, id).picksCharacterPlay === true;
 }
 
-export function characterPlayPickModifiers(pick: CharacterPlayPick): {
+export function characterPlayPickModifiers(
+  attacker: AttackerData,
+  pick: CharacterPlayPick,
+): {
   tacBonusForLater: number;
   defReductionForLater: number;
+  armorReduction: number;
 } {
-  if (pick === 'so') return { tacBonusForLater: 2, defReductionForLater: 0 };
-  return { tacBonusForLater: 0, defReductionForLater: 1 };
+  const cp = getCharacterPlay(attacker, pick);
+  return {
+    tacBonusForLater: cp?.tacBonusForLater ?? 0,
+    defReductionForLater: cp?.defReductionForLater ?? 0,
+    armorReduction: cp?.armorReduction ?? 0,
+  };
 }
 
 /**
- * SO / Stagger already taken on picks strictly before `(attackIndex, pickIndex)`
- * in activation order (base then its berserker, then next base, …).
+ * Character plays already taken on picks strictly before `(attackIndex,
+ * pickIndex)` in activation order (base then its berserker, then next base, …).
  */
 export function characterPlayUsageBeforePick(
   attacker: AttackerData,
@@ -439,11 +480,10 @@ export function characterPlayUsageBeforePick(
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
 ): CharacterPlayUsage {
-  let so = false;
-  let stagger = false;
+  const used = new Set<string>();
   const order = activationAttackIndices(attacker, wrapPicks, damageMods, activeBaseCount);
   const targetPos = order.indexOf(attackIndex);
-  if (targetPos < 0) return { so, stagger };
+  if (targetPos < 0) return used;
 
   for (let oi = 0; oi <= targetPos; oi++) {
     const j = order[oi];
@@ -451,12 +491,11 @@ export function characterPlayUsageBeforePick(
     for (let k = 0; k < kLimit; k++) {
       const id = wrapPicks[j][k];
       if (id == null || !choiceUsesCharacterPlay(attacker, id)) continue;
-      const f = characterPlayPicks[j]?.[k] ?? 'so';
-      if (f === 'so') so = true;
-      else stagger = true;
+      const f = characterPlayPicks[j]?.[k] ?? defaultCharacterPlayId(attacker);
+      if (f != null) used.add(f);
     }
   }
-  return { so, stagger };
+  return used;
 }
 
 /** True if Knock Down was already taken on a strictly earlier wrap pick (activation order). */
@@ -497,11 +536,10 @@ export function rowEffectsForPick(
   pickIndex: number,
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
-): { tacBonusForLater: number; defReductionForLater: number } {
+): { tacBonusForLater: number; defReductionForLater: number; armorReduction: number } {
+  const none = { tacBonusForLater: 0, defReductionForLater: 0, armorReduction: 0 };
   const id = wrapPicks[attackIndex][pickIndex];
-  if (id == null) {
-    return { tacBonusForLater: 0, defReductionForLater: 0 };
-  }
+  if (id == null) return none;
   const result = getPlaybookResult(attacker, id);
   if (
     result.appliesKnockDown &&
@@ -514,15 +552,16 @@ export function rowEffectsForPick(
       activeBaseCount,
     )
   ) {
-    return { tacBonusForLater: 0, defReductionForLater: 0 };
+    return none;
   }
   if (!choiceUsesCharacterPlay(attacker, id)) {
     return {
       tacBonusForLater: result.tacBonusForLater,
       defReductionForLater: result.defReductionForLater,
+      armorReduction: 0,
     };
   }
-  const u = characterPlayUsageBeforePick(
+  const used = characterPlayUsageBeforePick(
     attacker,
     wrapPicks,
     characterPlayPicks,
@@ -531,20 +570,12 @@ export function rowEffectsForPick(
     damageMods,
     activeBaseCount,
   );
-  if (u.so && u.stagger) {
-    return { tacBonusForLater: 0, defReductionForLater: 0 };
-  }
-  const f = characterPlayPicks[attackIndex]?.[pickIndex] ?? 'so';
-  if (f === 'stagger' && u.stagger) {
-    return { tacBonusForLater: 0, defReductionForLater: 0 };
-  }
-  if (f === 'so' && u.so) {
-    return { tacBonusForLater: 0, defReductionForLater: 0 };
-  }
-  return characterPlayPickModifiers(f);
+  const f = characterPlayPicks[attackIndex]?.[pickIndex] ?? defaultCharacterPlayId(attacker);
+  if (f == null || used.has(f)) return none;
+  return characterPlayPickModifiers(attacker, f);
 }
 
-/** Which character-play options can still be chosen on this pick (before resolving it). */
+/** Character plays still choosable on this pick (those not used by earlier picks). */
 export function characterPlayAvailabilityForPick(
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
@@ -553,8 +584,8 @@ export function characterPlayAvailabilityForPick(
   pickIndex: number,
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
-): { canPickSo: boolean; canPickStagger: boolean; depleted: boolean } {
-  const u = characterPlayUsageBeforePick(
+): { available: readonly CharacterPlay[]; depleted: boolean } {
+  const used = characterPlayUsageBeforePick(
     attacker,
     wrapPicks,
     characterPlayPicks,
@@ -563,14 +594,10 @@ export function characterPlayAvailabilityForPick(
     damageMods,
     activeBaseCount,
   );
-  if (u.so && u.stagger) {
-    return { canPickSo: false, canPickStagger: false, depleted: true };
-  }
-  return {
-    canPickSo: !u.so,
-    canPickStagger: !u.stagger,
-    depleted: false,
-  };
+  const available = characterPlaysForAttacker(attacker).filter(
+    (cp) => !used.has(cp.id),
+  );
+  return { available, depleted: available.length === 0 };
 }
 
 /** Fix illegal character-play rows when earlier picks consumed SO or Stagger. */
@@ -597,7 +624,7 @@ export function sanitizeCharacterPlayPicksWrap(
         }
         continue;
       }
-      const u = characterPlayUsageBeforePick(
+      const used = characterPlayUsageBeforePick(
         attacker,
         wrapPicks,
         next,
@@ -606,16 +633,13 @@ export function sanitizeCharacterPlayPicksWrap(
         damageMods,
         activeBaseCount,
       );
-      if (u.so && u.stagger) continue;
-      let f = next[i][k] ?? 'so';
-      if (u.stagger && f === 'stagger') {
-        f = 'so';
-        next[i][k] = f;
-        changed = true;
-      }
-      f = next[i][k] ?? 'so';
-      if (u.so && f === 'so') {
-        next[i][k] = 'stagger';
+      const available = characterPlaysForAttacker(attacker).filter(
+        (cp) => !used.has(cp.id),
+      );
+      if (available.length === 0) continue;
+      const f = next[i][k];
+      if (f == null || !available.some((cp) => cp.id === f)) {
+        next[i][k] = available[0].id;
         changed = true;
       }
     }

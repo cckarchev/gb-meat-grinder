@@ -3,6 +3,7 @@ import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
 import {
   choiceUsesCharacterPlay,
   DEFAULT_PLAYBOOK_DAMAGE_MODS,
+  defaultCharacterPlayId,
   defaultCharacterPlayPicksWrap,
   defaultWrapPicks,
   sanitizeCharacterPlayPicksWrap,
@@ -92,7 +93,7 @@ export function nextPlanAfterWrapChoice(
     const nr = [...row];
     while (nr.length < nextPicks[idx].length) nr.push(null);
     if (id === null || !choiceUsesCharacterPlay(attacker, id)) nr[pickIndex] = null;
-    else if (nr[pickIndex] == null) nr[pickIndex] = 'so';
+    else if (nr[pickIndex] == null) nr[pickIndex] = defaultCharacterPlayId(attacker);
     return nr.slice(0, nextPicks[idx].length);
   });
 

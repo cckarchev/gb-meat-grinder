@@ -9,11 +9,26 @@ export type PlaybookChoiceId = string;
 /** One wrap slot: a line, or empty (ignored for damage / chain / GB). */
 export type WrapPick = PlaybookChoiceId | null;
 
-/** Singled Out vs Stagger after GB or 1GB (each can apply once per activation). */
-export type CharacterPlayPick = 'so' | 'stagger';
+/**
+ * A character play a GB / 1GB playbook result can trigger. Defined per guild;
+ * each can be used once per activation, applying its effect to later swings.
+ */
+export type CharacterPlay = {
+  id: string;
+  label: string;
+  /** +TAC on later attacks (e.g. Singled Out). */
+  tacBonusForLater?: number;
+  /** −enemy DEF on later attacks (e.g. Stagger). */
+  defReductionForLater?: number;
+  /** −enemy ARM on later attacks (e.g. They Ain't Tough!). A condition; caps at 1. */
+  armorReduction?: number;
+};
 
-/** Which character-play picks have already been used on earlier swings (same activation). */
-export type CharacterPlayUsage = { so: boolean; stagger: boolean };
+/** A chosen character play, keyed by {@link CharacterPlay.id}. */
+export type CharacterPlayPick = string;
+
+/** Ids of character plays already used on earlier swings (same activation). */
+export type CharacterPlayUsage = ReadonlySet<string>;
 
 export type PlaybookResult = {
   id: PlaybookChoiceId;
@@ -37,11 +52,6 @@ export type PlaybookResult = {
    * for the attack math, but the symbol is still shown in the line label.
    */
   dodge?: boolean;
-  /**
-   * A GB that applies They Ain't Tough! (−1 enemy ARM) for later swings this
-   * activation. A condition, so it does not stack with itself.
-   */
-  appliesArmorReduction?: boolean;
 };
 
 export type PlaybookColumn = {

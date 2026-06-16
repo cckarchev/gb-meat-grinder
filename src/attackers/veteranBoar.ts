@@ -1,3 +1,4 @@
+import { singledOut, stagger } from '@/characterPlays';
 import { butchers } from '@/guilds/butchers';
 import type { AttackerData } from '@/types/core/attacker';
 import type { PlaybookColumn } from '@/types/core/playbook';
@@ -146,6 +147,7 @@ export const veteranBoar: AttackerData = {
   feral: false,
   playbook: PLAYBOOK,
   guild: butchers,
+  characterPlays: [singledOut, stagger],
   startingMomentum: { min: 0, max: 20 },
   initialTacModifier: { min: -5, max: 5 },
 };

@@ -6,6 +6,7 @@ import {
   attackRowIsActive,
   choiceUsesCharacterPlay,
   coverSwingClockIndices,
+  defaultCharacterPlayId,
   getPlaybookResult,
   netSuccessesForChoice,
   rowEffectsForPick,
@@ -252,6 +253,7 @@ export function maxPlaybookColumnForRow(
     attacker,
     armor,
     wrapPicks,
+    characterPlayPicks,
     damageMods,
     attackIndex,
     activeBaseCount,
@@ -264,6 +266,7 @@ function armorForAttackRow(
   attacker: AttackerData,
   baseArmor: number,
   wrapPicks: WrapPick[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
   damageMods: PlaybookDamageMods,
   attackIndex: number,
   activeBaseCount: number,
@@ -274,6 +277,7 @@ function armorForAttackRow(
       armorReductionBeforeAttack(
         attacker,
         wrapPicks,
+        characterPlayPicks,
         damageMods,
         attackIndex,
         activeBaseCount,
@@ -361,7 +365,7 @@ function stripDuplicateKd(
       const rep = firstPickInBudgetExcludingKd(attacker, b);
       next[i][k] = rep;
       nextCharacterPlay[i][k] = choiceUsesCharacterPlay(attacker, rep)
-        ? 'so'
+        ? defaultCharacterPlayId(attacker)
         : null;
       changed = true;
     }
@@ -394,7 +398,9 @@ function clampRowPicks(
   if (p[0] != null && netSuccessesForChoice(attacker, p[0]) > b0) {
     const id = firstReachableChoiceId(attacker, b0);
     p[0] = id;
-    g[0] = choiceUsesCharacterPlay(attacker, id) ? 'so' : null;
+    g[0] = choiceUsesCharacterPlay(attacker, id)
+      ? defaultCharacterPlayId(attacker)
+      : null;
   }
   if (p[0] == null) {
     for (let s = 1; s < n; s++) {
@@ -416,7 +422,7 @@ function clampRowPicks(
       continue;
     }
     if (!choiceUsesCharacterPlay(attacker, p[s])) g[s] = null;
-    else if (g[s] == null) g[s] = 'so';
+    else if (g[s] == null) g[s] = defaultCharacterPlayId(attacker);
   }
   return { picks: p, characterPlayRow: g };
 }
@@ -630,6 +636,7 @@ export function computeAttackSequence(
       attacker,
       armor,
       wrapPicks,
+      characterPlayPicks,
       damageMods,
       i,
       activeBaseCount,

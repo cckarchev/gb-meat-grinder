@@ -1,5 +1,5 @@
 import type { Guild } from '@/types/core/guild';
-import type { PlaybookColumn } from '@/types/core/playbook';
+import type { CharacterPlay, PlaybookColumn } from '@/types/core/playbook';
 
 /**
  * A toggleable, model-specific ability that deals a flat amount of unmodified
@@ -35,6 +35,11 @@ export type AttackerData = {
   playbook: readonly PlaybookColumn[];
   /** The model's guild; its buffs are the ones this model can receive. */
   guild: Guild;
+  /**
+   * Character plays this model's GB / 1GB results can trigger, from the shared
+   * catalog. Model-specific (each card lists its own), not guild-wide.
+   */
+  characterPlays?: readonly CharacterPlay[];
   /**
    * Guild buff ids this model cannot receive as a pre-applied buff — e.g. the
    * model that is the source of the buff for the guild (applies it itself).

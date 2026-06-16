@@ -1,3 +1,4 @@
+import { theyAintTough } from '@/characterPlays';
 import { farmers } from '@/guilds/farmers';
 import type { AttackerData } from '@/types/core/attacker';
 import type { PlaybookColumn } from '@/types/core/playbook';
@@ -49,7 +50,7 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
         tacBonusForLater: 0,
         defReductionForLater: 0,
         damage: 3,
-        appliesArmorReduction: true,
+        picksCharacterPlay: true,
       },
       {
         id: 'kd_dodge',
@@ -115,6 +116,7 @@ export const thresher: AttackerData = {
   feral: false,
   playbook: PLAYBOOK,
   guild: farmers,
+  characterPlays: [theyAintTough],
   // He is the guild's source of They Ain't Tough!; another captain grants Our
   // Tools Are Sharp. So neither can be pre-applied to him.
   excludedGuildBuffs: ['theyAintTough', 'ourToolsAreSharp'],

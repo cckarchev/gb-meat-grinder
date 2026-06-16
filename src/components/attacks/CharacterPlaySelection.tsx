@@ -54,7 +54,7 @@ const SelectionBtn = styled.button<{ $active: boolean }>`
   }
 `;
 
-/** Singled Out / Stagger after a GB or 1GB playbook result. */
+/** Character-play options offered after a GB / 1GB playbook result. */
 export function CharacterPlaySelection({
   slots,
   wrapPicks,
@@ -86,14 +86,14 @@ export function CharacterPlaySelection({
       damageMods,
       activeBaseCount,
     );
-    return !cpAvail.depleted && (cpAvail.canPickSo || cpAvail.canPickStagger);
+    return !cpAvail.depleted;
   });
   if (actionable.length === 0) return null;
 
   return (
     <>
       {actionable.map(({ pickIndex }) => {
-        const cpAvail = characterPlayAvailabilityForPick(
+        const { available } = characterPlayAvailabilityForPick(
           attacker,
           wrapPicks,
           characterPlayPicks,
@@ -105,33 +105,20 @@ export function CharacterPlaySelection({
         const pick = characterPlayPicks[i]?.[pickIndex];
         const pickOrdinal = pickIndex + 1;
         const attackOrdinal = displayIdx + 1;
-        const soLabel = `Singled Out for attack ${attackOrdinal}, character play ${pickOrdinal}`;
-        const stLabel = `Stagger for attack ${attackOrdinal}, character play ${pickOrdinal}`;
 
         return (
           <SelectionRow key={pickIndex}>
-            {cpAvail.canPickSo ? (
+            {available.map((cp) => (
               <SelectionBtn
+                key={cp.id}
                 type="button"
-                $active={pick === 'so'}
-                aria-label={soLabel}
-                onClick={() => onCharacterPlayPickChange(i, pickIndex, 'so')}
+                $active={pick === cp.id}
+                aria-label={`${cp.label} for attack ${attackOrdinal}, character play ${pickOrdinal}`}
+                onClick={() => onCharacterPlayPickChange(i, pickIndex, cp.id)}
               >
-                Singled Out
+                {cp.label}
               </SelectionBtn>
-            ) : null}
-            {cpAvail.canPickStagger ? (
-              <SelectionBtn
-                type="button"
-                $active={pick === 'stagger'}
-                aria-label={stLabel}
-                onClick={() =>
-                  onCharacterPlayPickChange(i, pickIndex, 'stagger')
-                }
-              >
-                Stagger
-              </SelectionBtn>
-            ) : null}
+            ))}
           </SelectionRow>
         );
       })}
