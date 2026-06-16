@@ -3,6 +3,7 @@ import type { Guild } from '@/types/core/guild';
 export const butchers: Guild = {
   id: 'butchers',
   name: 'Butchers',
+  color: '#ce1f27',
   buffs: [
     {
       id: 'tooledUp',

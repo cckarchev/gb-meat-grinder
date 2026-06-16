@@ -20,6 +20,8 @@ export type GuildBuff = {
 export type Guild = {
   id: string;
   name: string;
+  /** Guild signature color (hex), used to theme momentous playbook results. */
+  color: string;
   /** Buffs any model in this guild can be granted by a teammate. */
   buffs: readonly GuildBuff[];
 };

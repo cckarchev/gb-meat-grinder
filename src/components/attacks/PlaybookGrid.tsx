@@ -122,6 +122,7 @@ const ColumnHead = styled.div<{ $p: number }>`
 const LineButton = styled.button<{
   $momentous: boolean;
   $momentousZeroEffective: boolean;
+  $momentousColor: string;
   $selected: boolean;
 }>`
   font: inherit;
@@ -163,7 +164,7 @@ const LineButton = styled.button<{
 
   background: ${(p) =>
     p.$momentous
-      ? '#b71c1c'
+      ? p.$momentousColor
       : p.$momentousZeroEffective
         ? '#ffffff'
         : 'var(--playbook-line-nm-bg)'};
@@ -171,10 +172,8 @@ const LineButton = styled.button<{
   border: 1px solid
     ${(p) =>
       p.$momentous
-        ? '#7f1515'
-        : p.$momentousZeroEffective
-          ? 'var(--playbook-line-nm-border)'
-          : 'var(--playbook-line-nm-border)'};
+        ? `color-mix(in srgb, ${p.$momentousColor} 60%, #000)`
+        : 'var(--playbook-line-nm-border)'};
 
   &:hover {
     filter: brightness(1.06);
@@ -270,6 +269,7 @@ export function WrapSlotPickGrid({
                       disabled={kdLocked}
                       $momentous={mStyle === 'heat'}
                       $momentousZeroEffective={mStyle === 'zeroed'}
+                      $momentousColor={attacker.guild.color}
                       $selected={selected}
                       aria-pressed={selected}
                       title={

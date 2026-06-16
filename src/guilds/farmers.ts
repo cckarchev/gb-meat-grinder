@@ -3,6 +3,7 @@ import type { Guild } from '@/types/core/guild';
 export const farmers: Guild = {
   id: 'farmers',
   name: 'Farmers',
+  color: '#ea8329',
   buffs: [
     {
       id: 'theyAintTough',
