@@ -1,4 +1,4 @@
-import { attackerById, DEFAULT_ATTACKER } from '@/attackers/registry';
+import { attackerById, randomAttacker } from '@/attackers/registry';
 import { HP_DEFAULT } from '@/core/constants';
 import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
 import {
@@ -115,7 +115,7 @@ function stateForAttacker(
 }
 
 export function createInitialMeatGrinderState(): MeatGrinderState {
-  return stateForAttacker(DEFAULT_ATTACKER);
+  return stateForAttacker(randomAttacker());
 }
 
 export function meatGrinderReducer(
