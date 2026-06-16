@@ -133,9 +133,7 @@ export function EnemyPanel() {
                   dispatch({ type: 'enemyHasCover', value: e.target.checked })
                 }
               />
-              <span>
-                <InfoTip content={TOOLTIP_COVER}>Cover</InfoTip>
-              </span>
+              <InfoTip content={TOOLTIP_COVER}>Cover</InfoTip>
             </CheckOption>
             <CheckOption>
               <input
@@ -148,11 +146,9 @@ export function EnemyPanel() {
                   })
                 }
               />
-              <span>
-                <InfoTip content={TOOLTIP_DEFENSIVE_STANCE}>
-                  Defensive Stance
-                </InfoTip>
-              </span>
+              <InfoTip content={TOOLTIP_DEFENSIVE_STANCE}>
+                Defensive Stance
+              </InfoTip>
             </CheckOption>
             <CheckOption>
               <input
@@ -165,9 +161,7 @@ export function EnemyPanel() {
                   })
                 }
               />
-              <span>
-                <InfoTip content={TOOLTIP_TOUGH_HIDE}>Tough Hide</InfoTip>
-              </span>
+              <InfoTip content={TOOLTIP_TOUGH_HIDE}>Tough Hide</InfoTip>
             </CheckOption>
           </ConditionsColumn>
           <ConditionsColumn>
@@ -179,11 +173,9 @@ export function EnemyPanel() {
                   dispatch({ type: 'enemyKnockedDown', value: e.target.checked })
                 }
               />
-              <span>
-                <InfoTip content={TOOLTIP_KNOCKED_DOWN}>
-                  Knocked Down (-1 DEF)
-                </InfoTip>
-              </span>
+              <InfoTip content={TOOLTIP_KNOCKED_DOWN}>
+                Knocked Down (-1 DEF)
+              </InfoTip>
             </CheckOption>
             <CheckOption>
               <input
@@ -193,9 +185,7 @@ export function EnemyPanel() {
                   dispatch({ type: 'enemySnared', value: e.target.checked })
                 }
               />
-              <span>
-                <InfoTip content={TOOLTIP_SNARED}>Snared (-1 DEF)</InfoTip>
-              </span>
+              <InfoTip content={TOOLTIP_SNARED}>Snared (-1 DEF)</InfoTip>
             </CheckOption>
           </ConditionsColumn>
         </ConditionsGrid>

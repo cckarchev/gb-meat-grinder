@@ -167,17 +167,15 @@ export function AttackerPanel() {
               dispatch({ type: 'charging', value: e.target.checked })
             }
           />
-          <span>
-            <InfoTip
-              content={
-                attacker.furious
-                  ? 'Charge this activation (free for Furious).'
-                  : 'Charge this activation (costs 2 influence).'
-              }
-            >
-              Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}
-            </InfoTip>
-          </span>
+          <InfoTip
+            content={
+              attacker.furious
+                ? 'Charge this activation (free for Furious).'
+                : 'Charge this activation (costs 2 influence).'
+            }
+          >
+            Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}
+          </InfoTip>
         </CheckOption>
         {attacker.guild.buffs.map((buff) => {
           const disabled =
@@ -201,17 +199,15 @@ export function AttackerPanel() {
                   })
                 }
               />
-              <span>
-                <InfoTip
-                  content={
-                    disabled
-                      ? `${buff.tooltip} (not available to ${attacker.name})`
-                      : buff.tooltip
-                  }
-                >
-                  {buff.label}
-                </InfoTip>
-              </span>
+              <InfoTip
+                content={
+                  disabled
+                    ? `${buff.tooltip} (not available to ${attacker.name})`
+                    : buff.tooltip
+                }
+              >
+                {buff.label}
+              </InfoTip>
             </CheckOption>
           );
         })}
@@ -228,11 +224,9 @@ export function AttackerPanel() {
                 })
               }
             />
-            <span>
-              <InfoTip content={ability.tooltip}>
-                {ability.label} (+{ability.flatDamage})
-              </InfoTip>
-            </span>
+            <InfoTip content={ability.tooltip}>
+              {ability.label} (+{ability.flatDamage})
+            </InfoTip>
           </CheckOption>
         ))}
       </PreAttackSection>

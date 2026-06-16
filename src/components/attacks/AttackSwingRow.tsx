@@ -292,17 +292,15 @@ export function AttackSwingRow({
                   disabled={bonusTimeDisabled}
                   onChange={(e) => onBonusTimeChange(i, e.target.checked)}
                 />
-                <span>
-                  <InfoTip
-                    content={
-                      bonusTimeDisabled
-                        ? 'Bonus Time needs at least 1 momentum before this attack (costs 1 before the roll).'
-                        : 'Bonus Time: +1 Dice Pool this attack; spend 1 momentum before rolling.'
-                    }
-                  >
-                    Bonus Time (+1 Dice Pool)
-                  </InfoTip>
-                </span>
+                <InfoTip
+                  content={
+                    bonusTimeDisabled
+                      ? 'Bonus Time needs at least 1 momentum before this attack (costs 1 before the roll).'
+                      : 'Bonus Time: +1 Dice Pool this attack; spend 1 momentum before rolling.'
+                  }
+                >
+                  Bonus Time (+1 Dice Pool)
+                </InfoTip>
               </BonusWrap>
             </PoolCluster>
             <TacPoolRight>
