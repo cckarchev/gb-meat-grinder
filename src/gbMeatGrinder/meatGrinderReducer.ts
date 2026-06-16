@@ -70,7 +70,7 @@ function stateForAttacker(
   prev?: Partial<MeatGrinderState>,
 ): MeatGrinderState {
   const influence = clamp(prev?.influence ?? attacker.inf, 0, attacker.inf);
-  const charging = prev?.charging ?? true;
+  const charging = prev?.charging ?? false;
   return {
     attackerId: attacker.id,
     enemyDef: prev?.enemyDef ?? 4,
