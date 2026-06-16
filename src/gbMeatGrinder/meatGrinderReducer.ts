@@ -12,6 +12,7 @@ import {
   nextPlanAfterWrapChoice,
 } from '@/core/attackPlanState';
 import {
+  effectiveArmor,
   momentumPoolBeforeBonusTime,
   sanitizeBonusTimeFlags,
 } from '@/core/playbook';
@@ -40,7 +41,7 @@ function clampParams(s: MeatGrinderState): AttackPlanClampParams {
   return {
     attacker: attackerOf(s),
     chargeAttackIndex: effectiveChargeIndex(s),
-    armor: s.armor,
+    armor: effectiveArmor(attackerOf(s), s.armor, s.damageMods),
     enemyHasCover: s.enemyHasCover,
     enemyDefensiveStance: s.enemyDefensiveStance,
     damageMods: s.damageMods,

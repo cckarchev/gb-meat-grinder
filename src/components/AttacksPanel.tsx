@@ -19,7 +19,7 @@ export function AttacksPanel() {
   const {
     attacker,
     hp: targetHp,
-    armor,
+    effectiveArmor: armor,
     charging,
     chargeAttackIndex,
     activeBaseCount,

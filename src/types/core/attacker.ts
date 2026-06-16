@@ -1,8 +1,9 @@
 import type { PlaybookColumn } from '@/types/core/playbook';
 
 /**
- * An attacker-side damage buff (e.g. Tooled Up). These are external / teammate
- * granted; enemy traits such as Tough Hide are not buffs and live separately.
+ * An attacker-side buff, usually granted by a teammate (e.g. Tooled Up, They
+ * Ain't Tough!). Each effect field is optional; a buff applies whichever it
+ * sets. Enemy traits such as Tough Hide are not buffs and live separately.
  */
 export type AttackerBuff = {
   /** Stable key toggled in `PlaybookDamageMods.buffs`. */
@@ -10,7 +11,11 @@ export type AttackerBuff = {
   label: string;
   tooltip: string;
   /** +damage applied to each selected playbook line that has card damage. */
-  damageBonus: number;
+  damageBonus?: number;
+  /** −ARM on the enemy this activation (reduces net successes needed). */
+  armorReduction?: number;
+  /** Playbook damage becomes Condition Damage, ignoring the enemy's Tough Hide. */
+  ignoresToughHide?: boolean;
 };
 
 /**
@@ -32,7 +37,8 @@ export type AttackerData = {
   /** One free base attack that does not spend influence. */
   feral: boolean;
   playbook: readonly PlaybookColumn[];
-  damageBuffs: readonly AttackerBuff[];
+  /** Buffs this model can receive (rendered as toggles). */
+  buffs: readonly AttackerBuff[];
   startingMomentum: { min: number; max: number };
   initialTacModifier: { min: number; max: number };
 };

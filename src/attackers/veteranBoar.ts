@@ -144,7 +144,7 @@ export const veteranBoar: AttackerData = {
   berserker: true,
   feral: false,
   playbook: PLAYBOOK,
-  damageBuffs: [
+  buffs: [
     {
       id: 'tooledUp',
       label: 'Tooled Up',

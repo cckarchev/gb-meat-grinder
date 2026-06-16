@@ -15,7 +15,10 @@ export type MeatGrinderSimulation = {
   /** Every model that can be selected. */
   availableAttackers: readonly AttackerData[];
   enemyDef: number;
+  /** Enemy's printed ARM (what the stepper edits). */
   armor: number;
+  /** ARM after attacker buffs (e.g. They Ain't Tough!); used in the rolls. */
+  effectiveArmor: number;
   hp: number;
   influence: number;
   charging: boolean;

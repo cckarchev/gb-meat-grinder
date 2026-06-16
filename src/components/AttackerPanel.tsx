@@ -96,7 +96,7 @@ export function AttackerPanel() {
         />
         <span>Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}</span>
       </BuffOption>
-      {attacker.damageBuffs.map((buff) => (
+      {attacker.buffs.map((buff) => (
         <BuffOption key={buff.id} title={buff.tooltip}>
           <input
             type="checkbox"

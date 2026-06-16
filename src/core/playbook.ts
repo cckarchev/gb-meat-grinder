@@ -33,16 +33,40 @@ export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
   buffs: {},
 };
 
-/** Sum of the attacker's damage buffs that are currently selected. */
+/** The attacker's buffs that are currently toggled on. */
+export function activeBuffs(attacker: AttackerData, mods: PlaybookDamageMods) {
+  return attacker.buffs.filter((b) => mods.buffs[b.id]);
+}
+
+/** Sum of the +damage from selected buffs. */
 export function playbookDamageBonusSum(
   attacker: AttackerData,
   mods: PlaybookDamageMods,
 ): number {
   let sum = 0;
-  for (const buff of attacker.damageBuffs) {
-    if (mods.buffs[buff.id]) sum += buff.damageBonus;
-  }
+  for (const buff of activeBuffs(attacker, mods)) sum += buff.damageBonus ?? 0;
   return sum;
+}
+
+/** True if a selected buff turns playbook damage into Tough-Hide-ignoring Condition Damage. */
+export function buffsIgnoreToughHide(
+  attacker: AttackerData,
+  mods: PlaybookDamageMods,
+): boolean {
+  return activeBuffs(attacker, mods).some((b) => b.ignoresToughHide === true);
+}
+
+/** Enemy ARM after the selected buffs' reductions (floored at 0). */
+export function effectiveArmor(
+  attacker: AttackerData,
+  baseArmor: number,
+  mods: PlaybookDamageMods,
+): number {
+  const reduction = activeBuffs(attacker, mods).reduce(
+    (s, b) => s + (b.armorReduction ?? 0),
+    0,
+  );
+  return Math.max(0, baseArmor - reduction);
 }
 
 export function effectivePlaybookDamage(
@@ -53,7 +77,7 @@ export function effectivePlaybookDamage(
   if (cardDamage <= 0) {
     return 0;
   }
-  const pen = mods.toughHide ? 1 : 0;
+  const pen = mods.toughHide && !buffsIgnoreToughHide(attacker, mods) ? 1 : 0;
   return Math.max(0, cardDamage - pen + playbookDamageBonusSum(attacker, mods));
 }
 
@@ -625,7 +649,7 @@ export function damageModifierBreakdownWrap(
   let rawCardDamage = 0;
   let toughHideReduction = 0;
   let totalEffective = 0;
-  const buffBonuses = attacker.damageBuffs.map((buff) => ({
+  const buffBonuses = attacker.buffs.map((buff) => ({
     id: buff.id,
     label: buff.label,
     bonus: 0,

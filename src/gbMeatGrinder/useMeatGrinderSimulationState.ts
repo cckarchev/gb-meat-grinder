@@ -2,6 +2,7 @@ import { useEffect, useMemo, useReducer } from 'react';
 import { attackerById, ATTACKERS } from '@/attackers/registry';
 import { computeAttackSequence } from '@/core/attackSequence';
 import { activeBaseAttackCount } from '@/core/attackStructure';
+import { effectiveArmor } from '@/core/playbook';
 import {
   createInitialMeatGrinderState,
   meatGrinderReducer,
@@ -26,6 +27,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
   const effectiveChargeAttackIndex = state.charging
     ? state.chargeAttackIndex
     : -1;
+  const armor = effectiveArmor(attacker, state.armor, state.damageMods);
 
   useEffect(() => {
     queueMicrotask(() => {
@@ -38,7 +40,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       computeAttackSequence(
         attacker,
         state.enemyDef,
-        state.armor,
+        armor,
         wrapPicks,
         characterPlayPicks,
         effectiveChargeAttackIndex,
@@ -52,7 +54,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
     [
       attacker,
       state.enemyDef,
-      state.armor,
+      armor,
       wrapPicks,
       characterPlayPicks,
       effectiveChargeAttackIndex,
@@ -71,6 +73,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       availableAttackers: ATTACKERS,
       enemyDef: state.enemyDef,
       armor: state.armor,
+      effectiveArmor: armor,
       hp: state.hp,
       influence: state.influence,
       charging: state.charging,
@@ -90,6 +93,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
     [
       state,
       attacker,
+      armor,
       wrapPicks,
       characterPlayPicks,
       attacks,
