@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
+import { focusRing } from '@/styles/mixins';
 import {
   kdAlreadyTakenBeforePick,
   momentousLineStyle,
@@ -182,10 +183,7 @@ const LineButton = styled.button<{
     filter: brightness(1.06);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
-  }
+  ${focusRing}
 
   ${(p) =>
     p.$selected && p.$momentous

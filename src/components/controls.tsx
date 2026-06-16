@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { narrowViewport } from '@/styles/breakpoints';
+import { focusRing } from '@/styles/mixins';
 
 /**
  * Pill toggle / action button used for character-play selection and the Reset
@@ -10,7 +11,7 @@ export const ToggleButton = styled.button<{ $active?: boolean }>`
   font-size: 0.9rem;
   font-weight: 600;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   cursor: pointer;
   white-space: nowrap;
@@ -25,10 +26,7 @@ export const ToggleButton = styled.button<{ $active?: boolean }>`
     border-color: var(--muted);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
-  }
+  ${focusRing}
 
   &:disabled {
     opacity: 0.4;
@@ -39,6 +37,6 @@ export const ToggleButton = styled.button<{ $active?: boolean }>`
   ${narrowViewport} {
     font-size: 0.8rem;
     padding: 0.38rem 0.55rem;
-    border-radius: 5px;
+    border-radius: var(--radius-xs);
   }
 `;

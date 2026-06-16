@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import styled from 'styled-components';
+import { focusRing } from '@/styles/mixins';
 
 const Wrap = styled.span`
   position: relative;
@@ -19,9 +20,9 @@ const Trigger = styled.button`
   text-underline-offset: 0.12em;
   text-align: inherit;
 
+  ${focusRing}
+
   &:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
     border-radius: 2px;
   }
 `;
@@ -35,7 +36,7 @@ const Bubble = styled.span`
   max-width: min(18rem, 80vw);
   padding: 0.5rem 0.6rem;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--panel);
   color: var(--text);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);

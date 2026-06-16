@@ -17,7 +17,6 @@ export const CheckOption = styled.label<{ $disabled?: boolean }>`
   input {
     margin-top: 0.2rem;
     flex-shrink: 0;
-    accent-color: var(--focus-ring);
     opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
   }
 

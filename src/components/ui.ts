@@ -3,7 +3,7 @@ import { narrowViewport } from '@/styles/breakpoints';
 
 export const Panel = styled.section`
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   padding: 1rem 1.1rem;
   margin-bottom: 1rem;
   background: var(--panel);
@@ -11,7 +11,7 @@ export const Panel = styled.section`
   ${narrowViewport} {
     padding: 0.65rem 0.55rem;
     margin-bottom: 0.65rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
   }
 `;
 
@@ -42,7 +42,7 @@ export const Row = styled.div`
 export const Select = styled.select`
   font: inherit;
   padding: 0.45rem 0.55rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--input-bg);
   color: var(--text);

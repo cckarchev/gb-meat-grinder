@@ -2,6 +2,7 @@ import { useId } from 'react';
 import styled from 'styled-components';
 import type { StepControlProps } from '@/types/components/stepControl';
 import { narrowViewport } from '@/styles/breakpoints';
+import { focusRing } from '@/styles/mixins';
 
 const Wrap = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ const StepButton = styled.button`
   width: 2.25rem;
   height: 2.25rem;
   padding: 0;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--input-bg);
   color: var(--text);
@@ -48,10 +49,7 @@ const StepButton = styled.button`
     cursor: not-allowed;
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--text);
-    outline-offset: 2px;
-  }
+  ${focusRing}
 
   ${narrowViewport} {
     width: 2rem;
@@ -68,7 +66,7 @@ const ValueDisplay = styled.span`
   font-variant-numeric: tabular-nums;
   font-size: 0.95rem;
   padding: 0.35rem 0.25rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--input-bg);
   color: var(--text);

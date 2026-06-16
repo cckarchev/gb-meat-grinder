@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
+import { focusRing } from '@/styles/mixins';
 
 const WrapToggleButton = styled.button`
   display: inline-flex;
@@ -12,7 +13,7 @@ const WrapToggleButton = styled.button`
   margin: 0;
   padding: 0.28rem 0.45rem;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   background: var(--input-bg);
   color: var(--text);
   cursor: pointer;
@@ -31,10 +32,7 @@ const WrapToggleButton = styled.button`
     border-color: var(--muted);
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--text);
-    outline-offset: 2px;
-  }
+  ${focusRing}
 
   ${narrowViewport} {
     padding: 0.24rem 0.38rem;
@@ -46,7 +44,7 @@ const WrapToggleButton = styled.button`
     padding: 0.2rem 0.32rem;
     font-size: 0.62rem;
     gap: 0.18rem;
-    border-radius: 5px;
+    border-radius: var(--radius-xs);
   }
 `;
 

@@ -43,7 +43,7 @@ const AttackMain = styled.div`
 
 const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
   ${PLAYBOOK_COLUMN_WIDTH_VAR}: ${PLAYBOOK_COLUMN_TRACK};
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   padding: 0.65rem 0.75rem 0.85rem;
   border: 1px solid var(--border);
   background: var(--panel);
@@ -70,7 +70,7 @@ const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
   ${narrowViewport} {
     ${PLAYBOOK_COLUMN_WIDTH_VAR}: clamp(2.15rem, 10.5vw, ${PLAYBOOK_COLUMN_TRACK});
     padding: 0.5rem 0.55rem 0.65rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
   }
 
   ${extraNarrowViewport} {
@@ -98,7 +98,7 @@ const DicePoolStrip = styled.div`
   gap: 0.55rem 0.85rem;
   margin-bottom: 0.65rem;
   padding: 0.5rem 0.65rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: color-mix(in srgb, var(--input-bg) 88%, var(--border));
 
@@ -180,10 +180,6 @@ const PoolToggle = styled.label<{ $disabled?: boolean }>`
   color: ${(p) => (p.$disabled ? 'var(--muted)' : 'var(--text)')};
   font-size: 0.85rem;
   user-select: none;
-
-  input {
-    accent-color: var(--focus-ring);
-  }
 `;
 
 const PlaybookPrimarySlot = styled.div`
