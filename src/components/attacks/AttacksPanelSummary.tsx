@@ -10,7 +10,7 @@ import {
 } from '@/core/playbook';
 import type { WrapPick } from '@/types/core/playbook';
 import { formatPercent } from '@/core/probability';
-import { planDamageOutcome } from '@/core/killOdds';
+import { damageQuantile, planDamageOutcome } from '@/core/killOdds';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { Mono, PanelTitle, Summary } from '@/components/ui';
 import { InfoTip } from '@/components/InfoTip';
@@ -23,11 +23,19 @@ const ProbabilitySummaryTitle = styled(PanelTitle)`
 const ProbabilityRow = styled.div`
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   gap: 0.35rem 0.75rem;
+  padding: 0.2rem 0.4rem;
+  margin: 0 -0.4rem;
+  border-radius: var(--radius-sm);
   font-size: 0.9rem;
   color: var(--text);
+  transition: background-color 0.1s ease;
+
+  &:hover {
+    background: var(--row-hover);
+  }
 `;
 
 const SelectionLine = styled.span`
@@ -52,6 +60,15 @@ const TOOLTIP_KILL =
 
 const TOOLTIP_EXPECTED_DAMAGE =
   'Mean total damage across the activation using your picked lines (best lower column on an under-roll), plus guaranteed special-ability damage.';
+
+const TOOLTIP_PLAN_FAILS =
+  'Chance the plan does not fully come together: 1 - P(every selected swing reaches its picked wrap line). A swing with no picks always "succeeds". High here means your line relies on rolls that often whiff, even if expected damage looks fine.';
+
+const TOOLTIP_HP_LEFT =
+  'Mean target HP remaining afterwards: average of max(0, HP - total damage) over every outcome. ~0 means a near-certain kill; a large number means you need another activation.';
+
+const TOOLTIP_DAMAGE_RANGE =
+  'Likely total damage: the 10th-90th percentile band. Roughly 8 in 10 activations land in this range, so a wide band means the result is swingy and a tight band means it is reliable.';
 
 const TotalsSectionTitle = styled(ProbabilitySummaryTitle)`
   margin-top: 1rem;
@@ -183,18 +200,29 @@ export function AttacksPanelSummary() {
     activeFlatAbilities,
   ]);
 
-  const { killProbability, expectedDamage } = useMemo(
-    () =>
-      planDamageOutcome(
+  const planFailureProbability = useMemo(
+    () => 1 - attacks.reduce((p, a) => p * a.prob, 1),
+    [attacks],
+  );
+
+  const { killProbability, expectedDamage, expectedHpRemaining, damageRange } =
+    useMemo(() => {
+      const outcome = planDamageOutcome(
         attacker,
         attacks,
         wrapPicks,
         damageMods,
         flatDamage,
         targetHp,
-      ),
-    [attacker, attacks, wrapPicks, damageMods, flatDamage, targetHp],
-  );
+      );
+      return {
+        ...outcome,
+        damageRange: {
+          low: damageQuantile(outcome.damageDistribution, 0.1),
+          high: damageQuantile(outcome.damageDistribution, 0.9),
+        },
+      };
+    }, [attacker, attacks, wrapPicks, damageMods, flatDamage, targetHp]);
 
   return (
     <Summary as="section" aria-label="Per-swing hit odds">
@@ -230,8 +258,24 @@ export function AttacksPanelSummary() {
           <Mono>{formatPercent(killProbability)}</Mono>
         </ProbabilityRow>
         <ProbabilityRow>
+          <InfoTip content={TOOLTIP_PLAN_FAILS}>Plan fails</InfoTip>
+          <Mono>{formatPercent(planFailureProbability)}</Mono>
+        </ProbabilityRow>
+        <ProbabilityRow>
           <InfoTip content={TOOLTIP_EXPECTED_DAMAGE}>Expected damage</InfoTip>
           <Mono>{expectedDamage.toFixed(1)}</Mono>
+        </ProbabilityRow>
+        <ProbabilityRow>
+          <InfoTip content={TOOLTIP_HP_LEFT}>Expected HP left</InfoTip>
+          <Mono>{expectedHpRemaining.toFixed(1)}</Mono>
+        </ProbabilityRow>
+        <ProbabilityRow>
+          <InfoTip content={TOOLTIP_DAMAGE_RANGE}>Likely damage</InfoTip>
+          <Mono>
+            {damageRange.low === damageRange.high
+              ? damageRange.low
+              : `${damageRange.low}-${damageRange.high}`}
+          </Mono>
         </ProbabilityRow>
       </OddsAggregateBlock>
       <TotalsSectionTitle>Totals</TotalsSectionTitle>

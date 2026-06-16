@@ -17,6 +17,8 @@
   --playbook-line-nm-border: #c1c9d4;
   /** Shared keyboard focus indicator. */
   --focus-ring: #0969da;
+  /** Subtle row hover wash (ties a label to its value while scanning). */
+  --row-hover: rgba(15, 20, 25, 0.05);
   /** Corner radius scale (lg: panels/blocks, md: chips/tooltips, sm/xs: controls). */
   --radius-lg: 10px;
   --radius-md: 8px;
@@ -51,6 +53,7 @@
     --playbook-line-nm-fg: #070a0f;
     --playbook-line-nm-border: #a8b3c2;
     --focus-ring: #388bfd;
+    --row-hover: rgba(230, 237, 243, 0.07);
     --accent-charge: #ff9d3f;
     --accent-charge-soft: #b35e00;
     --accent-berserker: #ff6b6b;

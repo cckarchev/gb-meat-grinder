@@ -106,7 +106,30 @@ export type ActivationDamageOutcome = {
   killProbability: number;
   /** Mean total damage across the activation (including guaranteed flat damage). */
   expectedDamage: number;
+  /** Mean target HP left afterwards: E[max(0, targetHp - total damage)]. */
+  expectedHpRemaining: number;
+  /** Total activation damage distribution (incl. flat damage): damage -> probability. */
+  damageDistribution: ReadonlyMap<number, number>;
 };
+
+/**
+ * Smallest total damage whose cumulative probability reaches `quantile` (0..1).
+ * Used for "likely damage" ranges (e.g. 10th/90th percentile) from a discrete
+ * damage distribution. Returns 0 for an empty distribution.
+ */
+export function damageQuantile(
+  distribution: ReadonlyMap<number, number>,
+  quantile: number,
+): number {
+  const damages = [...distribution.keys()].sort((a, b) => a - b);
+  if (damages.length === 0) return 0;
+  let cumulative = 0;
+  for (const dmg of damages) {
+    cumulative += distribution.get(dmg) ?? 0;
+    if (cumulative >= quantile) return dmg;
+  }
+  return damages[damages.length - 1];
+}
 
 /**
  * Convolves every swing's damage distribution, then reports the chance the
@@ -128,14 +151,28 @@ function activationOutcome(
     );
   }
 
-  let expectedDamage = flatDamage;
-  let killProbability = 0;
-  const threshold = targetHp - flatDamage;
+  // Fold guaranteed flat damage into the distribution so every stat below is
+  // expressed in terms of total damage actually dealt to the target.
+  const damageDistribution: DamageDistribution = new Map();
   for (const [dmg, prob] of total) {
-    expectedDamage += dmg * prob;
-    if (threshold <= 0 || dmg >= threshold) killProbability += prob;
+    const withFlat = dmg + flatDamage;
+    damageDistribution.set(withFlat, (damageDistribution.get(withFlat) ?? 0) + prob);
   }
-  return { killProbability, expectedDamage };
+
+  let expectedDamage = 0;
+  let expectedHpRemaining = 0;
+  let killProbability = 0;
+  for (const [dmg, prob] of damageDistribution) {
+    expectedDamage += dmg * prob;
+    expectedHpRemaining += Math.max(0, targetHp - dmg) * prob;
+    if (dmg >= targetHp) killProbability += prob;
+  }
+  return {
+    killProbability,
+    expectedDamage,
+    expectedHpRemaining,
+    damageDistribution,
+  };
 }
 
 /** Each swing only deals the damage of the lines you actually picked. */
