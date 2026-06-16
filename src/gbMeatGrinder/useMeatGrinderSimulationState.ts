@@ -2,7 +2,13 @@ import { useEffect, useMemo, useReducer } from 'react';
 import { attackerById, ATTACKERS } from '@/attackers/registry';
 import { computeAttackSequence } from '@/core/attackSequence';
 import { activeBaseAttackCount } from '@/core/attackStructure';
-import { effectiveArmor, effectiveEnemyDef } from '@/core/playbook';
+import {
+  damageIfAllHitsWrap,
+  effectiveArmor,
+  effectiveEnemyDef,
+  specialAbilityFlatDamage,
+} from '@/core/playbook';
+import { killingBlowDisplayIndex } from '@/core/killingBlow';
 import {
   createInitialMeatGrinderState,
   meatGrinderReducer,
@@ -73,6 +79,25 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
     ],
   );
 
+  const killingBlowIndex = useMemo(
+    () =>
+      killingBlowDisplayIndex(
+        attacks,
+        damageIfAllHitsWrap(attacker, wrapPicks, state.damageMods, activeBaseCount),
+        specialAbilityFlatDamage(attacker, state.specialAbilities),
+        state.hp,
+      ),
+    [
+      attacks,
+      attacker,
+      wrapPicks,
+      state.damageMods,
+      activeBaseCount,
+      state.specialAbilities,
+      state.hp,
+    ],
+  );
+
   return useMemo(
     () => ({
       attacker,
@@ -98,6 +123,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       wrapPicks,
       characterPlayPicks,
       attacks,
+      killingBlowIndex,
       dispatch,
     }),
     [
@@ -107,6 +133,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       wrapPicks,
       characterPlayPicks,
       attacks,
+      killingBlowIndex,
       activeBaseCount,
       dispatch,
     ],

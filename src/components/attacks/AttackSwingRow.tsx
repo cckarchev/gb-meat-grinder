@@ -41,12 +41,23 @@ const AttackMain = styled.div`
   min-width: 0;
 `;
 
-const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
+const AttackBlock = styled.div<{
+  $variant: AttackBlockVariant;
+  $disabled?: boolean;
+}>`
   ${PLAYBOOK_COLUMN_WIDTH_VAR}: ${PLAYBOOK_COLUMN_TRACK};
   border-radius: var(--radius-lg);
   padding: 0.65rem 0.75rem 0.85rem;
   border: 1px solid var(--border);
   background: var(--panel);
+
+  ${(p) =>
+    p.$disabled
+      ? `
+    opacity: 0.5;
+    filter: grayscale(0.6);
+  `
+      : ''}
 
   ${(p) =>
     p.$variant === 'charge'
@@ -80,6 +91,10 @@ const AttackBlock = styled.div<{ $variant: AttackBlockVariant }>`
 `;
 
 const AttackHeading = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--text);
@@ -193,9 +208,23 @@ const UnreachableNote = styled.p`
   color: var(--muted);
 `;
 
+const KillingBlowBadge = styled.span`
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--panel);
+  background: var(--accent-berserker);
+  white-space: nowrap;
+`;
+
 export function AttackSwingRow({
   attack,
   displayIdx,
+  disabled = false,
+  isKillingBlow = false,
   armor,
   charging,
   chargeAttackIndex,
@@ -217,6 +246,8 @@ export function AttackSwingRow({
 }: {
   attack: AttackRollContext;
   displayIdx: number;
+  disabled?: boolean;
+  isKillingBlow?: boolean;
   armor: number;
   charging: boolean;
   chargeAttackIndex: number;
@@ -252,9 +283,12 @@ export function AttackSwingRow({
   return (
     <AttackRow>
       <AttackMain>
-        <AttackBlock $variant={variant}>
+        <AttackBlock $variant={variant} $disabled={disabled} inert={disabled}>
           <AttackHeading>
             {attackKindLabel(attacker, i, chargeAttackIndex)}
+            {isKillingBlow ? (
+              <KillingBlowBadge>Killing blow · +1 MOM</KillingBlowBadge>
+            ) : null}
           </AttackHeading>
           <DicePoolStrip aria-label="Dice pool for this attack">
             <PoolCluster>

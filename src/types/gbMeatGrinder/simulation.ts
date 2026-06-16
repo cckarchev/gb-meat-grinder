@@ -43,5 +43,15 @@ export type MeatGrinderSimulation = {
   wrapPicks: WrapPick[][];
   characterPlayPicks: CharacterPlayPickSlot[][];
   attacks: AttackRollContext[];
+  /**
+   * Display index into `attacks` of the swing that drops the target to 0 HP in
+   * the deterministic all-hit projection, or -1 if it never falls. The
+   * activation ends here: this swing earns +1 momentum (killing blow) and every
+   * later swing can no longer be made.
+   */
+  killingBlowIndex: number;
   dispatch: Dispatch<MeatGrinderAction>;
 };
+
+/** Momentum gained for taking the target out (killing blow). */
+export const KILLING_BLOW_MOMENTUM = 1;

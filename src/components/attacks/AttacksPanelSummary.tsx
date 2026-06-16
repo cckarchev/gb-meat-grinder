@@ -12,6 +12,7 @@ import type { WrapPick } from '@/types/core/playbook';
 import { formatPercent } from '@/core/probability';
 import { damageQuantile, planDamageOutcome } from '@/core/killOdds';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { KILLING_BLOW_MOMENTUM } from '@/types/gbMeatGrinder/simulation';
 import { Mono, PanelTitle, Summary } from '@/components/ui';
 import { InfoTip } from '@/components/InfoTip';
 import { attackKindLabel } from '@/components/attacks/attackVariant';
@@ -93,9 +94,18 @@ export function AttacksPanelSummary() {
     damageMods,
     specialAbilities,
     attacks,
+    killingBlowIndex,
   } = useMeatGrinderSimulation();
 
   const effectiveChargeAttackIndex = charging ? chargeAttackIndex : -1;
+
+  // The activation ends on the killing blow, so every total/odds below counts
+  // only the swings that actually happen (through that swing inclusive).
+  const activeAttacks = useMemo(
+    () =>
+      killingBlowIndex >= 0 ? attacks.slice(0, killingBlowIndex + 1) : attacks,
+    [attacks, killingBlowIndex],
+  );
 
   const rowDamageIfHit = useMemo(
     () => damageIfAllHitsWrap(attacker, wrapPicks, damageMods, activeBaseCount),
@@ -109,30 +119,34 @@ export function AttacksPanelSummary() {
 
   const totalDamageIfAllHit = useMemo(
     () =>
-      attacks.reduce((s, ctx) => s + rowDamageIfHit[ctx.attackIndex], 0) +
+      activeAttacks.reduce((s, ctx) => s + rowDamageIfHit[ctx.attackIndex], 0) +
       flatDamage,
-    [attacks, rowDamageIfHit, flatDamage],
+    [activeAttacks, rowDamageIfHit, flatDamage],
   );
 
   const momentousMomentumIfAllHit = useMemo(() => {
     let m = 0;
-    for (const ctx of attacks) {
+    for (const ctx of activeAttacks) {
       for (const id of wrapPicks[ctx.attackIndex] ?? []) {
         if (id != null && pickGeneratesMomentum(attacker, id, damageMods))
           m += 1;
       }
     }
     return m;
-  }, [attacker, attacks, wrapPicks, damageMods]);
+  }, [attacker, activeAttacks, wrapPicks, damageMods]);
 
   const bonusTimeSpendsInActivation = useMemo(
-    () => attacks.filter((ctx) => bonusTimeByAttack[ctx.attackIndex]).length,
-    [attacks, bonusTimeByAttack],
+    () =>
+      activeAttacks.filter((ctx) => bonusTimeByAttack[ctx.attackIndex]).length,
+    [activeAttacks, bonusTimeByAttack],
   );
 
+  const killingBlowMomentum =
+    killingBlowIndex >= 0 ? KILLING_BLOW_MOMENTUM : 0;
+
   const netMomentumIfAllHit = useMemo(() => {
-    if (attacks.length === 0) return 0;
-    const lastIdx = attacks[attacks.length - 1].attackIndex;
+    if (activeAttacks.length === 0) return killingBlowMomentum;
+    const lastIdx = activeAttacks[activeAttacks.length - 1].attackIndex;
     const end = momentumAfterAttackInclusive(
       attacker,
       wrapPicks,
@@ -142,24 +156,28 @@ export function AttacksPanelSummary() {
       bonusTimeByAttack,
       activeBaseCount,
     );
-    return end - startingMomentum;
+    return end + killingBlowMomentum - startingMomentum;
   }, [
     attacker,
-    attacks,
+    activeAttacks,
     wrapPicks,
     damageMods,
     startingMomentum,
     bonusTimeByAttack,
     activeBaseCount,
+    killingBlowMomentum,
   ]);
 
   const netMomentumTooltip = useMemo(() => {
     let t = `+${momentousMomentumIfAllHit} from momentous results`;
+    if (killingBlowMomentum > 0) {
+      t += `; +${killingBlowMomentum} killing blow`;
+    }
     if (bonusTimeSpendsInActivation > 0) {
       t += `; -${bonusTimeSpendsInActivation} Bonus Time`;
     }
     return `${t}.`;
-  }, [momentousMomentumIfAllHit, bonusTimeSpendsInActivation]);
+  }, [momentousMomentumIfAllHit, killingBlowMomentum, bonusTimeSpendsInActivation]);
 
   const activeFlatAbilities = useMemo(
     () =>
@@ -201,15 +219,15 @@ export function AttacksPanelSummary() {
   ]);
 
   const planFailureProbability = useMemo(
-    () => 1 - attacks.reduce((p, a) => p * a.prob, 1),
-    [attacks],
+    () => 1 - activeAttacks.reduce((p, a) => p * a.prob, 1),
+    [activeAttacks],
   );
 
   const { killProbability, expectedDamage, expectedHpRemaining, damageRange } =
     useMemo(() => {
       const outcome = planDamageOutcome(
         attacker,
-        attacks,
+        activeAttacks,
         wrapPicks,
         damageMods,
         flatDamage,
@@ -222,12 +240,12 @@ export function AttacksPanelSummary() {
           high: damageQuantile(outcome.damageDistribution, 0.9),
         },
       };
-    }, [attacker, attacks, wrapPicks, damageMods, flatDamage, targetHp]);
+    }, [attacker, activeAttacks, wrapPicks, damageMods, flatDamage, targetHp]);
 
   return (
     <Summary as="section" aria-label="Per-swing hit odds">
       <ProbabilitySummaryTitle>Odds</ProbabilitySummaryTitle>
-      {attacks.map((a, displayIdx) => (
+      {activeAttacks.map((a, displayIdx) => (
         <ProbabilityRow key={a.attackIndex}>
           <SelectionLine>
             <Mono>{displayIdx + 1}</Mono>.{' '}

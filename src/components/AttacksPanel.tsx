@@ -7,6 +7,7 @@ import {
   specialAbilityFlatDamage,
 } from '@/core/playbook';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { KILLING_BLOW_MOMENTUM } from '@/types/gbMeatGrinder/simulation';
 import { AttackSwingRow } from '@/components/attacks/AttackSwingRow';
 import { AttacksPanelSummary } from '@/components/attacks/AttacksPanelSummary';
 
@@ -30,6 +31,7 @@ export function AttacksPanel() {
     damageMods,
     specialAbilities,
     attacks,
+    killingBlowIndex,
     dispatch,
   } = useMeatGrinderSimulation();
 
@@ -62,29 +64,33 @@ export function AttacksPanel() {
     return out;
   }, [attacker, specialAbilities, attacks, rowDamageIfHit, targetHp]);
 
-  const momentumAfterSwing = useMemo(
-    () =>
-      attacks.map((ctx) =>
-        momentumAfterAttackInclusive(
-          attacker,
-          wrapPicks,
-          damageMods,
-          ctx.attackIndex,
-          startingMomentum,
-          bonusTimeByAttack,
-          activeBaseCount,
-        ),
+  const momentumAfterSwing = useMemo(() => {
+    const base = attacks.map((ctx) =>
+      momentumAfterAttackInclusive(
+        attacker,
+        wrapPicks,
+        damageMods,
+        ctx.attackIndex,
+        startingMomentum,
+        bonusTimeByAttack,
+        activeBaseCount,
       ),
-    [
-      attacker,
-      attacks,
-      wrapPicks,
-      damageMods,
-      startingMomentum,
-      bonusTimeByAttack,
-      activeBaseCount,
-    ],
-  );
+    );
+    if (killingBlowIndex < 0) return base;
+    // The activation ends on the killing blow: that swing earns +1 momentum and
+    // later (disabled) swings freeze at the post-kill total.
+    const afterKill = base[killingBlowIndex] + KILLING_BLOW_MOMENTUM;
+    return base.map((m, idx) => (idx >= killingBlowIndex ? afterKill : m));
+  }, [
+    attacker,
+    attacks,
+    wrapPicks,
+    damageMods,
+    startingMomentum,
+    bonusTimeByAttack,
+    activeBaseCount,
+    killingBlowIndex,
+  ]);
 
   const bonusTimePoolBeforeSwing = useMemo(
     () =>
@@ -117,6 +123,8 @@ export function AttacksPanel() {
           key={a.attackIndex}
           attack={a}
           displayIdx={displayIdx}
+          disabled={killingBlowIndex >= 0 && displayIdx > killingBlowIndex}
+          isKillingBlow={displayIdx === killingBlowIndex}
           armor={a.armor}
           charging={charging}
           chargeAttackIndex={effectiveChargeAttackIndex}
