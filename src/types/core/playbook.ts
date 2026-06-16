@@ -33,6 +33,11 @@ export type PlaybookResult = {
   /** KD: applies Knocked Down; only the first one in the activation counts. */
   appliesKnockDown?: boolean;
   /**
+   * Card shows a dodge (`<`) on this result. Cosmetic only — dodges do nothing
+   * for the attack math, but the symbol is still shown in the line label.
+   */
+  dodge?: boolean;
+  /**
    * A GB that applies They Ain't Tough! (−1 enemy ARM) for later swings this
    * activation. A condition, so it does not stack with itself.
    */

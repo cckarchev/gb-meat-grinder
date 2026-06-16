@@ -301,13 +301,28 @@ export function playbookLineDisplayLabel(
   mods: PlaybookDamageMods,
 ): string {
   const r = getPlaybookResult(attacker, id);
+  const dodge = r.dodge ? '<' : '';
   if (r.picksCharacterPlay && r.damage > 0) {
-    return `${effectiveDamageForChoice(attacker, id, mods)}GB`;
+    return `${effectiveDamageForChoice(attacker, id, mods)}GB${dodge}`;
   }
   if (r.damage > 0 && r.label === String(r.damage)) {
-    return String(effectiveDamageForChoice(attacker, id, mods));
+    return `${effectiveDamageForChoice(attacker, id, mods)}${dodge}`;
   }
-  return r.label;
+  return r.label + dodge;
+}
+
+/**
+ * {@link playbookLineDisplayLabel} split into stackable rows so a multi-effect
+ * line can render one effect per line in the playbook circle (e.g. `3GB` →
+ * `3` / `GB`, `KD<` → `KD` / `<`). Single-effect lines return one segment.
+ */
+export function playbookLineDisplaySegments(
+  attacker: AttackerData,
+  id: PlaybookChoiceId,
+  mods: PlaybookDamageMods,
+): string[] {
+  const label = playbookLineDisplayLabel(attacker, id, mods);
+  return label.match(/\d+|<|[A-Za-z]+/g) ?? [label];
 }
 
 /** Selected playbook lines on one attack row, for summaries (e.g. `> → 2 → GB`). */

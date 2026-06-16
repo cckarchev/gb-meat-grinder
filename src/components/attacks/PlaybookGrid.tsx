@@ -3,7 +3,7 @@ import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import {
   kdAlreadyTakenBeforePick,
   momentousLineStyle,
-  playbookLineDisplayLabel,
+  playbookLineDisplaySegments,
   wrapExtendedNetNeeded,
   wrapSlotBudget,
 } from '@/core/playbook';
@@ -203,6 +203,16 @@ const LineButton = styled.button<{
   }
 `;
 
+/** Stacks multi-effect line segments (e.g. `3` / `GB`) inside the circle. */
+const LineLabelStack = styled.span`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  gap: 0.12em;
+`;
+
 export function WrapSlotPickGrid({
   attackIndex,
   pickIndex,
@@ -252,6 +262,11 @@ export function WrapSlotPickGrid({
                 {col.results.map((e) => {
                   const selected = wrapPicks[i][pickIndex] === e.id;
                   const mStyle = momentousLineStyle(attacker, e.id, damageMods);
+                  const segments = playbookLineDisplaySegments(
+                    attacker,
+                    e.id,
+                    damageMods,
+                  );
                   const kdLocked =
                     e.appliesKnockDown === true &&
                     kdAlreadyTakenBeforePick(
@@ -285,7 +300,15 @@ export function WrapSlotPickGrid({
                         }
                       }}
                     >
-                      {playbookLineDisplayLabel(attacker, e.id, damageMods)}
+                      {segments.length > 1 ? (
+                        <LineLabelStack>
+                          {segments.map((seg, idx) => (
+                            <span key={idx}>{seg}</span>
+                          ))}
+                        </LineLabelStack>
+                      ) : (
+                        segments[0]
+                      )}
                     </LineButton>
                   );
                 })}
