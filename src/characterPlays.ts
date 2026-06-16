@@ -23,3 +23,13 @@ export const theyAintTough: CharacterPlay = {
   label: "They Ain't Tough!",
   armorReduction: 1,
 };
+
+/**
+ * Windle's Snack Break (recover HP). It has no effect on the attack math — it
+ * neither buffs later swings nor adds damage — but it is still a character play
+ * the GB result can trigger, so it is shown as a (no-op) menu option.
+ */
+export const snackBreak: CharacterPlay = {
+  id: 'snackBreak',
+  label: 'Snack Break',
+};

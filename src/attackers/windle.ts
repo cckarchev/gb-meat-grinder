@@ -1,11 +1,13 @@
+import { snackBreak } from '@/characterPlays';
 import { farmers } from '@/guilds/farmers';
 import type { AttackerData } from '@/types/core/attacker';
 import type { PlaybookColumn } from '@/types/core/playbook';
 
 /**
  * Windle playbook. All damage results are momentous. The momentous-2 on column
- * 3 also has a GB, but Windle's character play is irrelevant to attacking, so it
- * is modelled as a plain momentous-2 (no character-play menu).
+ * 3 also has a GB triggering Snack Break (recover HP) — it still deals its 2
+ * damage, and the character play has no effect on the attack math, so it shows
+ * as a 2 plus a (no-op) character-play menu.
  */
 const PLAYBOOK: readonly PlaybookColumn[] = [
   {
@@ -68,6 +70,7 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
         defReductionForLater: 0,
         damage: 2,
         momentum: true,
+        picksCharacterPlay: true,
       },
     ],
   },
@@ -109,6 +112,7 @@ export const windle: AttackerData = {
   feral: false,
   playbook: PLAYBOOK,
   guild: farmers,
+  characterPlays: [snackBreak],
   startingMomentum: { min: 0, max: 20 },
   gangingUp: { min: 0, max: 5 },
   crowdingOut: { min: 0, max: 5 },
