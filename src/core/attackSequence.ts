@@ -133,15 +133,17 @@ export function effectiveDefMinRoll(
 }
 
 /**
- * Enemy DEF cannot be reduced below `DEF_MIN` on the dice. Each point of DEF
- * reduction beyond that cap becomes +1 TAC for the attacker on later swings.
+ * Enemy DEF cannot be reduced below `DEF_MIN` on the dice (1s always miss). Each
+ * point of DEF reduction past that floor — whether from playbook plays
+ * (`defReduction`) or from pre-attack conditions already baked into `baseDef`
+ * (Knocked Down, Snared) — instead becomes +1 attack die. `baseDef` may be below
+ * `DEF_MIN` here; the surplus below the floor is the bonus.
  */
 export function tacBonusFromDefReductionCap(
   baseDef: number,
   defReduction: number,
 ): number {
-  const maxDefReduction = Math.max(0, baseDef - DEF_MIN);
-  return Math.max(0, defReduction - maxDefReduction);
+  return Math.max(0, DEF_MIN - (baseDef - defReduction));
 }
 
 export function tacForAttack(

@@ -5,7 +5,7 @@
  */
 
 import { berserkerRowOffset } from '@/core/attackStructure';
-import { DEF_MAX, DEF_MIN } from '@/core/constants';
+import { DEF_MAX } from '@/core/constants';
 import { maxPlaybookNet, playbookIndex } from '@/core/playbookIndex';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
@@ -102,7 +102,10 @@ export function buffsIgnoreToughHide(
 
 /**
  * Enemy DEF after pre-attack conditions. Knocked Down and Snared each give the
- * attacker −1 DEF; the effective DEF is floored at {@link DEF_MIN}.
+ * attacker −1 DEF. The result is intentionally NOT floored at {@link DEF_MIN}:
+ * the to-hit roll floors at 2+ elsewhere (see `effectiveDefMinRoll`), and any
+ * reduction past that floor is surfaced here so the engine can convert the
+ * surplus into bonus attack dice (see `tacBonusFromDefReductionCap`).
  */
 export function effectiveEnemyDef(
   enemyDef: number,
@@ -110,7 +113,7 @@ export function effectiveEnemyDef(
   snared: boolean,
 ): number {
   const reduction = (knockedDown ? 1 : 0) + (snared ? 1 : 0);
-  return Math.max(DEF_MIN, Math.min(DEF_MAX, enemyDef - reduction));
+  return Math.min(DEF_MAX, enemyDef - reduction);
 }
 
 /** Enemy ARM after the selected buffs' reductions (floored at 0). */
