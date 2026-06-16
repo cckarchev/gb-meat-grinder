@@ -10,7 +10,7 @@ function binomialCoeff(n: number, k: number): number {
   return c;
 }
 
-function binomialPmf(n: number, p: number, k: number): number {
+export function binomialPmf(n: number, p: number, k: number): number {
   return binomialCoeff(n, k) * p ** k * (1 - p) ** (n - k);
 }
 

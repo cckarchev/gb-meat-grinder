@@ -10,6 +10,7 @@ import {
 } from '@/core/playbook';
 import type { WrapPick } from '@/types/core/playbook';
 import { formatPercent } from '@/core/probability';
+import { planDamageOutcome } from '@/core/killOdds';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { Mono, Summary } from '@/components/ui';
 import { attackKindLabel } from '@/components/attacks/attackVariant';
@@ -56,11 +57,11 @@ const ThemedOddsLabel = styled.span`
   text-underline-offset: 0.1em;
 `;
 
-const TOOLTIP_GEOMETRIC_VIOLENCE =
-  'Geometric mean of each swing\'s "all selected lines hit" chance (n-th root of the product of those probabilities), counting only swings where you picked playbook lines. Weighs low rolls more than a plain average: one rough swing pulls the whole number down. Each roll is still its own independent dice pool. This is not P(all swings hit every line at once).';
+const TOOLTIP_KILL =
+  'Chance this activation drops the target: P(total damage >= remaining HP) using the lines you actually picked. Each swing deals its picked damage when the roll reaches it, or the best lower column it does reach; each swing rolls its own dice pool. Guaranteed special-ability damage is included, and the swings shown are assumed to happen.';
 
-const TOOLTIP_ROUGHEST_ROLL =
-  'The lowest per-swing hit chance among swings with a pick. The roll that usually gives you the most grief if every selected line has to land.';
+const TOOLTIP_EXPECTED_DAMAGE =
+  'Mean total damage across the activation using your picked lines (best lower column on an under-roll), plus guaranteed special-ability damage.';
 
 const TotalsSectionTitle = styled(ProbabilitySummaryTitle)`
   margin-top: 1rem;
@@ -82,6 +83,7 @@ function swingHasWrapSelection(
 export function AttacksPanelSummary() {
   const {
     attacker,
+    hp: targetHp,
     charging,
     chargeAttackIndex,
     activeBaseCount,
@@ -198,28 +200,18 @@ export function AttacksPanelSummary() {
     activeFlatAbilities,
   ]);
 
-  const { geometricMeanLineHitProb, roughestRollProb } = useMemo(() => {
-    const probs = attacks
-      .filter((ctx) => swingHasWrapSelection(wrapPicks[ctx.attackIndex]))
-      .map((ctx) => ctx.prob);
-    if (probs.length === 0) {
-      return {
-        geometricMeanLineHitProb: null as number | null,
-        roughestRollProb: null as number | null,
-      };
-    }
-    if (probs.some((p) => p <= 0)) {
-      return {
-        geometricMeanLineHitProb: 0,
-        roughestRollProb: Math.min(...probs),
-      };
-    }
-    const logSum = probs.reduce((s, p) => s + Math.log(p), 0);
-    return {
-      geometricMeanLineHitProb: Math.exp(logSum / probs.length),
-      roughestRollProb: Math.min(...probs),
-    };
-  }, [attacks, wrapPicks]);
+  const { killProbability, expectedDamage } = useMemo(
+    () =>
+      planDamageOutcome(
+        attacker,
+        attacks,
+        wrapPicks,
+        damageMods,
+        flatDamage,
+        targetHp,
+      ),
+    [attacker, attacks, wrapPicks, damageMods, flatDamage, targetHp],
+  );
 
   return (
     <Summary as="section" aria-label="Per-swing hit odds">
@@ -251,21 +243,17 @@ export function AttacksPanelSummary() {
       ))}
       <OddsAggregateBlock>
         <ProbabilityRow>
-          <ThemedOddsLabel title={TOOLTIP_GEOMETRIC_VIOLENCE}>
-            Average violence
+          <ThemedOddsLabel title={TOOLTIP_KILL}>
+            Kills the target
           </ThemedOddsLabel>
-          <Mono title={TOOLTIP_GEOMETRIC_VIOLENCE}>
-            {geometricMeanLineHitProb != null
-              ? formatPercent(geometricMeanLineHitProb)
-              : '-'}
-          </Mono>
+          <Mono title={TOOLTIP_KILL}>{formatPercent(killProbability)}</Mono>
         </ProbabilityRow>
         <ProbabilityRow>
-          <ThemedOddsLabel title={TOOLTIP_ROUGHEST_ROLL}>
-            Roughest roll
+          <ThemedOddsLabel title={TOOLTIP_EXPECTED_DAMAGE}>
+            Expected damage
           </ThemedOddsLabel>
-          <Mono title={TOOLTIP_ROUGHEST_ROLL}>
-            {roughestRollProb != null ? formatPercent(roughestRollProb) : '-'}
+          <Mono title={TOOLTIP_EXPECTED_DAMAGE}>
+            {expectedDamage.toFixed(1)}
           </Mono>
         </ProbabilityRow>
       </OddsAggregateBlock>
