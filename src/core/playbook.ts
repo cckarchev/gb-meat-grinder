@@ -506,6 +506,32 @@ export function characterPlayPickModifiers(
   };
 }
 
+/** True when this play changes the attack math (so a no-op like Snack Break is false). */
+export function characterPlayHasEffect(cp: CharacterPlay): boolean {
+  return Boolean(
+    cp.tacBonusForLater || cp.defReductionForLater || cp.armorReduction,
+  );
+}
+
+/** Human-readable effect + cadence, used for the selector tooltip / aria-label. */
+export function characterPlayEffectSummary(cp: CharacterPlay): string {
+  const effects: string[] = [];
+  if (cp.tacBonusForLater) {
+    effects.push(`+${cp.tacBonusForLater} TAC on later attacks`);
+  }
+  if (cp.defReductionForLater) {
+    effects.push(`−${cp.defReductionForLater} enemy DEF on later attacks`);
+  }
+  if (cp.armorReduction) {
+    effects.push(`−${cp.armorReduction} enemy ARM on later attacks`);
+  }
+  const effect = effects.length
+    ? `${effects.join('; ')}.`
+    : 'No effect on the attack math.';
+  const cadence = cp.repeatable ? 'Repeatable.' : 'Once per turn.';
+  return `${effect} ${cadence}`;
+}
+
 /**
  * Character plays already taken on picks strictly before `(attackIndex,
  * pickIndex)` in activation order (base then its berserker, then next base, …).
@@ -536,7 +562,11 @@ export function characterPlayUsageBeforePick(
       const id = wrapPicks[j][k];
       if (id == null || !choiceUsesCharacterPlay(attacker, id)) continue;
       const f = characterPlayPicks[j]?.[k] ?? defaultCharacterPlayId(attacker);
-      if (f != null) used.add(f);
+      // Repeatable plays may be taken again and stack, so they never count as
+      // "used up" — they stay available and keep applying on later swings.
+      if (f != null && getCharacterPlay(attacker, f)?.repeatable !== true) {
+        used.add(f);
+      }
     }
   }
   return used;
