@@ -14,7 +14,8 @@ export const farmers: Guild = {
     {
       id: 'weakPoint',
       label: 'Weak Point',
-      tooltip: "The enemy model suffers -1 ARM (stacks with They Ain't Tough!).",
+      tooltip:
+        "The enemy model suffers -1 ARM (stacks with They Ain't Tough!).",
       armorReduction: 1,
     },
     {

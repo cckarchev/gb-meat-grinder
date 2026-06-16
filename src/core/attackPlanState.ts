@@ -27,7 +27,10 @@ export function createInitialAttackPlan(
 ): AttackPlan {
   const wp = defaultWrapPicks(attackArraySize(attacker));
   const cp = defaultCharacterPlayPicksWrap(attackArraySize(attacker));
-  const noBonus = Array.from({ length: attackArraySize(attacker) }, () => false);
+  const noBonus = Array.from(
+    { length: attackArraySize(attacker) },
+    () => false,
+  );
   const r = clampAttackPlan(
     attacker,
     wp,
@@ -92,8 +95,10 @@ export function nextPlanAfterWrapChoice(
     if (idx !== attackIndex) return [...row];
     const nr = [...row];
     while (nr.length < nextPicks[idx].length) nr.push(null);
-    if (id === null || !choiceUsesCharacterPlay(attacker, id)) nr[pickIndex] = null;
-    else if (nr[pickIndex] == null) nr[pickIndex] = defaultCharacterPlayId(attacker);
+    if (id === null || !choiceUsesCharacterPlay(attacker, id))
+      nr[pickIndex] = null;
+    else if (nr[pickIndex] == null)
+      nr[pickIndex] = defaultCharacterPlayId(attacker);
     return nr.slice(0, nextPicks[idx].length);
   });
 

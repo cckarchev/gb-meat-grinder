@@ -129,7 +129,11 @@ export function effectiveDamageForChoice(
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
 ): number {
-  return effectivePlaybookDamage(attacker, getPlaybookResult(attacker, id).damage, mods);
+  return effectivePlaybookDamage(
+    attacker,
+    getPlaybookResult(attacker, id).damage,
+    mods,
+  );
 }
 
 export function momentousLineStyle(
@@ -175,7 +179,12 @@ export function momentumPoolBeforeBonusTime(
   bonusTimeByAttack: readonly boolean[],
   activeBaseCount: number,
 ): number {
-  const order = activationAttackIndices(attacker, wrapPicks, damageMods, activeBaseCount);
+  const order = activationAttackIndices(
+    attacker,
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+  );
   const pos = order.indexOf(attackIndex);
   if (pos < 0) return startingMomentum;
   let total = startingMomentum;
@@ -206,7 +215,12 @@ export function momentumAfterAttackInclusive(
   bonusTimeByAttack: readonly boolean[],
   activeBaseCount: number,
 ): number {
-  const order = activationAttackIndices(attacker, wrapPicks, damageMods, activeBaseCount);
+  const order = activationAttackIndices(
+    attacker,
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+  );
   const pos = order.indexOf(attackIndex);
   if (pos < 0) return startingMomentum;
   let total = startingMomentum;
@@ -232,7 +246,12 @@ export function sanitizeBonusTimeFlags(
   bonusTimeByAttack: readonly boolean[],
   activeBaseCount: number,
 ): boolean[] {
-  const order = activationAttackIndices(attacker, wrapPicks, damageMods, activeBaseCount);
+  const order = activationAttackIndices(
+    attacker,
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+  );
   const next = bonusTimeByAttack.map((b) => b);
   for (let iter = 0; iter < order.length + 2; iter++) {
     let changed = false;
@@ -394,7 +413,8 @@ export function baseAttackDealtDamage(
   damageMods: PlaybookDamageMods,
 ): boolean {
   return picks.some(
-    (id) => id != null && effectiveDamageForChoice(attacker, id, damageMods) > 0,
+    (id) =>
+      id != null && effectiveDamageForChoice(attacker, id, damageMods) > 0,
   );
 }
 
@@ -436,7 +456,9 @@ export function activationAttackIndices(
     out.push(b);
     if (!attacker.berserker) continue;
     const ber = offset + b;
-    if (attackRowIsActive(attacker, wrapPicks, ber, damageMods, activeBaseCount)) {
+    if (
+      attackRowIsActive(attacker, wrapPicks, ber, damageMods, activeBaseCount)
+    ) {
       out.push(ber);
     }
   }
@@ -481,7 +503,12 @@ export function characterPlayUsageBeforePick(
   activeBaseCount: number,
 ): CharacterPlayUsage {
   const used = new Set<string>();
-  const order = activationAttackIndices(attacker, wrapPicks, damageMods, activeBaseCount);
+  const order = activationAttackIndices(
+    attacker,
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+  );
   const targetPos = order.indexOf(attackIndex);
   if (targetPos < 0) return used;
 
@@ -507,7 +534,12 @@ export function kdAlreadyTakenBeforePick(
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
 ): boolean {
-  const order = activationAttackIndices(attacker, wrapPicks, damageMods, activeBaseCount);
+  const order = activationAttackIndices(
+    attacker,
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+  );
   const targetPos = order.indexOf(attackIndex);
   if (targetPos < 0) return false;
 
@@ -536,8 +568,16 @@ export function rowEffectsForPick(
   pickIndex: number,
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
-): { tacBonusForLater: number; defReductionForLater: number; armorReduction: number } {
-  const none = { tacBonusForLater: 0, defReductionForLater: 0, armorReduction: 0 };
+): {
+  tacBonusForLater: number;
+  defReductionForLater: number;
+  armorReduction: number;
+} {
+  const none = {
+    tacBonusForLater: 0,
+    defReductionForLater: 0,
+    armorReduction: 0,
+  };
   const id = wrapPicks[attackIndex][pickIndex];
   if (id == null) return none;
   const result = getPlaybookResult(attacker, id);
@@ -570,7 +610,9 @@ export function rowEffectsForPick(
     damageMods,
     activeBaseCount,
   );
-  const f = characterPlayPicks[attackIndex]?.[pickIndex] ?? defaultCharacterPlayId(attacker);
+  const f =
+    characterPlayPicks[attackIndex]?.[pickIndex] ??
+    defaultCharacterPlayId(attacker);
   if (f == null || used.has(f)) return none;
   return characterPlayPickModifiers(attacker, f);
 }
@@ -651,9 +693,7 @@ export function netSuccessesForChoice(
   attacker: AttackerData,
   id: PlaybookChoiceId,
 ): number {
-  const col = attacker.playbook.find((c) =>
-    c.results.some((r) => r.id === id),
-  );
+  const col = attacker.playbook.find((c) => c.results.some((r) => r.id === id));
   if (!col) throw new Error(`No column for id ${id}`);
   return col.netSuccesses;
 }
@@ -745,7 +785,9 @@ export function damageModifierBreakdownWrap(
   }));
 
   for (let i = 0; i < wrapPicks.length; i++) {
-    if (!attackRowIsActive(attacker, wrapPicks, i, damageMods, activeBaseCount)) {
+    if (
+      !attackRowIsActive(attacker, wrapPicks, i, damageMods, activeBaseCount)
+    ) {
       continue;
     }
     for (const id of wrapPicks[i]) {
@@ -756,8 +798,10 @@ export function damageModifierBreakdownWrap(
       const full = effectiveDamageForChoice(attacker, id, damageMods);
       totalEffective += full;
       toughHideReduction +=
-        effectiveDamageForChoice(attacker, id, { ...damageMods, toughHide: false }) -
-        full;
+        effectiveDamageForChoice(attacker, id, {
+          ...damageMods,
+          toughHide: false,
+        }) - full;
       for (const bb of buffBonuses) {
         const without: PlaybookDamageMods = {
           ...damageMods,
@@ -788,7 +832,9 @@ export function damageIfAllHitsWrap(
       ? picks.reduce(
           (s, id) =>
             s +
-            (id == null ? 0 : effectiveDamageForChoice(attacker, id, damageMods)),
+            (id == null
+              ? 0
+              : effectiveDamageForChoice(attacker, id, damageMods)),
           0,
         )
       : 0,

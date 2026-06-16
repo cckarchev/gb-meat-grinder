@@ -64,7 +64,10 @@ export function AttackerPanel() {
   const guildGroups = useMemo(() => {
     const byGuild = new Map<string, { name: string; models: AttackerData[] }>();
     for (const a of availableAttackers) {
-      const group = byGuild.get(a.guild.id) ?? { name: a.guild.name, models: [] };
+      const group = byGuild.get(a.guild.id) ?? {
+        name: a.guild.name,
+        models: [],
+      };
       group.models.push(a);
       byGuild.set(a.guild.id, group);
     }
@@ -143,12 +146,15 @@ export function AttackerPanel() {
         <input
           type="checkbox"
           checked={charging}
-          onChange={(e) => dispatch({ type: 'charging', value: e.target.checked })}
+          onChange={(e) =>
+            dispatch({ type: 'charging', value: e.target.checked })
+          }
         />
         <span>Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}</span>
       </BuffOption>
       {attacker.guild.buffs.map((buff) => {
-        const disabled = attacker.excludedGuildBuffs?.includes(buff.id) ?? false;
+        const disabled =
+          attacker.excludedGuildBuffs?.includes(buff.id) ?? false;
         return (
           <BuffOption
             key={buff.id}

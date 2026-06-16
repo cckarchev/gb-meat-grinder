@@ -1,9 +1,6 @@
 import { attackerById, DEFAULT_ATTACKER } from '@/attackers/registry';
 import { HP_DEFAULT } from '@/core/constants';
-import {
-  activeBaseAttackCount,
-  attackArraySize,
-} from '@/core/attackStructure';
+import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
 import {
   clampAttackPlanState,
   createInitialAttackPlan,
@@ -21,7 +18,10 @@ import type {
   AttackPlan,
   AttackPlanClampParams,
 } from '@/types/core/attackPlan';
-import type { MeatGrinderAction, MeatGrinderState } from '@/types/gbMeatGrinder/reducer';
+import type {
+  MeatGrinderAction,
+  MeatGrinderState,
+} from '@/types/gbMeatGrinder/reducer';
 
 function attackerOf(s: MeatGrinderState): AttackerData {
   return attackerById(s.attackerId);
@@ -139,7 +139,10 @@ export function meatGrinderReducer(
       const next = {
         ...withInfluence,
         chargeAttackIndex: withInfluence.charging
-          ? Math.max(0, Math.min(baseCount - 1, withInfluence.chargeAttackIndex))
+          ? Math.max(
+              0,
+              Math.min(baseCount - 1, withInfluence.chargeAttackIndex),
+            )
           : withInfluence.chargeAttackIndex,
       };
       return {

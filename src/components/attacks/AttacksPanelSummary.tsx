@@ -116,7 +116,8 @@ export function AttacksPanelSummary() {
     let m = 0;
     for (const ctx of attacks) {
       for (const id of wrapPicks[ctx.attackIndex] ?? []) {
-        if (id != null && pickGeneratesMomentum(attacker, id, damageMods)) m += 1;
+        if (id != null && pickGeneratesMomentum(attacker, id, damageMods))
+          m += 1;
       }
     }
     return m;
@@ -188,7 +189,14 @@ export function AttacksPanelSummary() {
     }
     t += ` = ${b.totalEffective + flatDamage}.`;
     return t;
-  }, [attacker, wrapPicks, damageMods, activeBaseCount, flatDamage, activeFlatAbilities]);
+  }, [
+    attacker,
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+    flatDamage,
+    activeFlatAbilities,
+  ]);
 
   const { geometricMeanLineHitProb, roughestRollProb } = useMemo(() => {
     const probs = attacks
@@ -220,7 +228,11 @@ export function AttacksPanelSummary() {
         <ProbabilityRow key={a.attackIndex}>
           <SelectionLine>
             <Mono>{displayIdx + 1}</Mono>.{' '}
-            {attackKindLabel(attacker, a.attackIndex, effectiveChargeAttackIndex)}
+            {attackKindLabel(
+              attacker,
+              a.attackIndex,
+              effectiveChargeAttackIndex,
+            )}
             {' -> '}
             <SelectionPicksInline>
               {formatWrapRowSelectionLabel(

@@ -4,7 +4,11 @@ import { windle } from '@/attackers/windle';
 import type { AttackerData } from '@/types/core/attacker';
 
 /** Every model the calculator can simulate, in display order. */
-export const ATTACKERS: readonly AttackerData[] = [veteranBoar, windle, thresher];
+export const ATTACKERS: readonly AttackerData[] = [
+  veteranBoar,
+  windle,
+  thresher,
+];
 
 /** Model selected on first load. */
 export const DEFAULT_ATTACKER: AttackerData = veteranBoar;
