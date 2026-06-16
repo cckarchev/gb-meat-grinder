@@ -8,10 +8,56 @@ import {
   HP_MIN,
 } from '@/core/constants';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-import { narrowViewport } from '@/styles/breakpoints';
+import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import { StepControl } from '@/components/StepControl';
 import { BuffOption } from '@/components/targetPanelPrimitives';
 import { Panel, PanelTitle, Row } from '@/components/ui';
+
+/** Stretch to the row height so the conditions can sit at the bottom. */
+const EnemyPanelBox = styled(Panel)`
+  display: flex;
+  flex-direction: column;
+`;
+
+/**
+ * Pre-attack conditions: a rule separates them from the stat steppers, and
+ * `margin-top: auto` pins the group to the bottom so it aligns with the
+ * attacker panel's toggles in the same row.
+ */
+const ConditionsSection = styled.div`
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+
+  ${narrowViewport} {
+    padding-top: 0.6rem;
+  }
+`;
+
+/** Cover/Defensive Stance/Tough Hide on the left, KD/Snared on the right. */
+const ConditionsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 1rem;
+  align-items: start;
+
+  ${narrowViewport} {
+    gap: 0 0.55rem;
+  }
+
+  ${extraNarrowViewport} {
+    grid-template-columns: 1fr;
+  }
+
+  > div > label:first-child {
+    margin-top: 0;
+  }
+`;
+
+const ConditionsColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const TOOLTIP_COVER =
   'Terrain: attacks that still count as in cover take -1 TAC. An earlier > or >> in this activation can clear cover for later swings.';
@@ -21,6 +67,11 @@ const TOOLTIP_DEFENSIVE_STANCE =
 
 const TOOLTIP_TOUGH_HIDE =
   '-1 to damage on each selected playbook line that has card damage (can reduce a pip to 0).';
+
+const TOOLTIP_KNOCKED_DOWN =
+  'Target starts the activation Knocked Down: -1 DEF. Only one KD can apply, so the playbook KD is disabled.';
+
+const TOOLTIP_SNARED = 'Target starts the activation Snared: -1 DEF.';
 
 const CoverOption = styled.label`
   display: flex;
@@ -50,12 +101,14 @@ export function EnemyPanel() {
     hp,
     enemyHasCover,
     enemyDefensiveStance,
+    enemyKnockedDown,
+    enemySnared,
     damageMods,
     dispatch,
   } = useMeatGrinderSimulation();
 
   return (
-    <Panel>
+    <EnemyPanelBox>
       <PanelTitle>Enemy</PanelTitle>
       <Row>
         <StepControl
@@ -89,42 +142,70 @@ export function EnemyPanel() {
           incrementAriaLabel="Increase target HP"
         />
       </Row>
-      <CoverOption title={TOOLTIP_COVER}>
-        <input
-          type="checkbox"
-          checked={enemyHasCover}
-          onChange={(e) =>
-            dispatch({ type: 'enemyHasCover', value: e.target.checked })
-          }
-        />
-        <span>Cover</span>
-      </CoverOption>
-      <CoverOption title={TOOLTIP_DEFENSIVE_STANCE}>
-        <input
-          type="checkbox"
-          checked={enemyDefensiveStance}
-          onChange={(e) =>
-            dispatch({
-              type: 'enemyDefensiveStance',
-              value: e.target.checked,
-            })
-          }
-        />
-        <span>Defensive Stance</span>
-      </CoverOption>
-      <BuffOption title={TOOLTIP_TOUGH_HIDE}>
-        <input
-          type="checkbox"
-          checked={damageMods.toughHide}
-          onChange={(e) =>
-            dispatch({
-              type: 'damageMods',
-              value: { ...damageMods, toughHide: e.target.checked },
-            })
-          }
-        />
-        <span>Tough Hide</span>
-      </BuffOption>
-    </Panel>
+      <ConditionsSection>
+        <ConditionsGrid>
+          <ConditionsColumn>
+            <CoverOption title={TOOLTIP_COVER}>
+              <input
+                type="checkbox"
+                checked={enemyHasCover}
+                onChange={(e) =>
+                  dispatch({ type: 'enemyHasCover', value: e.target.checked })
+                }
+              />
+              <span>Cover</span>
+            </CoverOption>
+            <CoverOption title={TOOLTIP_DEFENSIVE_STANCE}>
+              <input
+                type="checkbox"
+                checked={enemyDefensiveStance}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'enemyDefensiveStance',
+                    value: e.target.checked,
+                  })
+                }
+              />
+              <span>Defensive Stance</span>
+            </CoverOption>
+            <BuffOption title={TOOLTIP_TOUGH_HIDE}>
+              <input
+                type="checkbox"
+                checked={damageMods.toughHide}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'damageMods',
+                    value: { ...damageMods, toughHide: e.target.checked },
+                  })
+                }
+              />
+              <span>Tough Hide</span>
+            </BuffOption>
+          </ConditionsColumn>
+          <ConditionsColumn>
+            <CoverOption title={TOOLTIP_KNOCKED_DOWN}>
+              <input
+                type="checkbox"
+                checked={enemyKnockedDown}
+                onChange={(e) =>
+                  dispatch({ type: 'enemyKnockedDown', value: e.target.checked })
+                }
+              />
+              <span>Knocked Down (-1 DEF)</span>
+            </CoverOption>
+            <CoverOption title={TOOLTIP_SNARED}>
+              <input
+                type="checkbox"
+                checked={enemySnared}
+                onChange={(e) =>
+                  dispatch({ type: 'enemySnared', value: e.target.checked })
+                }
+              />
+              <span>Snared (-1 DEF)</span>
+            </CoverOption>
+          </ConditionsColumn>
+        </ConditionsGrid>
+      </ConditionsSection>
+    </EnemyPanelBox>
   );
 }

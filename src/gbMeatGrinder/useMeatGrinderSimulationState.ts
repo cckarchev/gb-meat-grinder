@@ -2,7 +2,7 @@ import { useEffect, useMemo, useReducer } from 'react';
 import { attackerById, ATTACKERS } from '@/attackers/registry';
 import { computeAttackSequence } from '@/core/attackSequence';
 import { activeBaseAttackCount } from '@/core/attackStructure';
-import { effectiveArmor } from '@/core/playbook';
+import { effectiveArmor, effectiveEnemyDef } from '@/core/playbook';
 import {
   createInitialMeatGrinderState,
   meatGrinderReducer,
@@ -28,6 +28,11 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
     ? state.chargeAttackIndex
     : -1;
   const armor = effectiveArmor(attacker, state.armor, state.damageMods);
+  const enemyDef = effectiveEnemyDef(
+    state.enemyDef,
+    state.enemyKnockedDown,
+    state.enemySnared,
+  );
   const initialTacModifier = state.gangingUp - state.crowdingOut;
 
   useEffect(() => {
@@ -40,7 +45,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
     () =>
       computeAttackSequence(
         attacker,
-        state.enemyDef,
+        enemyDef,
         armor,
         wrapPicks,
         characterPlayPicks,
@@ -54,7 +59,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       ),
     [
       attacker,
-      state.enemyDef,
+      enemyDef,
       armor,
       wrapPicks,
       characterPlayPicks,
@@ -82,6 +87,8 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       activeBaseCount,
       enemyHasCover: state.enemyHasCover,
       enemyDefensiveStance: state.enemyDefensiveStance,
+      enemyKnockedDown: state.enemyKnockedDown,
+      enemySnared: state.enemySnared,
       startingMomentum: state.startingMomentum,
       gangingUp: state.gangingUp,
       crowdingOut: state.crowdingOut,

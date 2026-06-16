@@ -241,7 +241,7 @@ export function WrapSlotPickGrid({
   firstSlotInSection: boolean;
   onChoiceChange: AttacksPanelProps['onChoiceChange'];
 }) {
-  const { attacker } = useMeatGrinderSimulation();
+  const { attacker, enemyKnockedDown } = useMeatGrinderSimulation();
   const i = attackIndex;
   const budget = wrapSlotBudget(attacker, maxNet, pickIndex);
   const visibleColumns = attacker.playbook.filter(
@@ -279,6 +279,7 @@ export function WrapSlotPickGrid({
                       pickIndex,
                       damageMods,
                       activeBaseCount,
+                      enemyKnockedDown,
                     );
                   return (
                     <LineButton
@@ -292,7 +293,7 @@ export function WrapSlotPickGrid({
                       aria-pressed={selected}
                       title={
                         kdLocked
-                          ? 'Knock Down already used this activation (target is KD)'
+                          ? 'Knock Down unavailable: the target is already Knocked Down (only one KD applies)'
                           : undefined
                       }
                       onClick={() => {

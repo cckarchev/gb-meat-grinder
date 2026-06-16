@@ -328,9 +328,12 @@ function stripDuplicateKd(
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
   activeBaseCount: number,
+  enemyKnockedDown: boolean,
 ): boolean {
   let changed = false;
-  let kdSeen = false;
+  // A target that is already Knocked Down counts as the one allowed KD, so every
+  // playbook KD pick is redundant and gets replaced.
+  let kdSeen = enemyKnockedDown;
   for (const i of activationAttackIndices(
     attacker,
     next,
@@ -470,6 +473,7 @@ export function clampAttackPlan(
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
   activeBaseCount: number,
+  enemyKnockedDown: boolean,
 ): { wrapPicks: WrapPick[][]; characterPlayPicks: CharacterPlayPickSlot[][] } {
   const next = clone2d(wrapPicks);
   let nextCharacterPlay = clone2d(characterPlayPicks);
@@ -546,6 +550,7 @@ export function clampAttackPlan(
         bonusTimeByAttack,
         initialTacModifier,
         activeBaseCount,
+        enemyKnockedDown,
       )
     ) {
       passChanged = true;

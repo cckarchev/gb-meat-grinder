@@ -19,6 +19,10 @@ export type MeatGrinderState = {
   chargeAttackIndex: number;
   enemyHasCover: boolean;
   enemyDefensiveStance: boolean;
+  /** Target is Knocked Down before the activation (−1 DEF; disables playbook KD). */
+  enemyKnockedDown: boolean;
+  /** Target is Snared before the activation (−1 DEF). */
+  enemySnared: boolean;
   startingMomentum: number;
   /** Extra attack dice from Ganging Up (added to TAC). */
   gangingUp: number;
@@ -41,6 +45,8 @@ export type MeatGrinderAction =
   | { type: 'chargeAttackIndex'; value: number }
   | { type: 'enemyHasCover'; value: boolean }
   | { type: 'enemyDefensiveStance'; value: boolean }
+  | { type: 'enemyKnockedDown'; value: boolean }
+  | { type: 'enemySnared'; value: boolean }
   | { type: 'startingMomentum'; value: number }
   | { type: 'gangingUpRaw'; value: number }
   | { type: 'crowdingOutRaw'; value: number }

@@ -44,6 +44,7 @@ export function createInitialAttackPlan(
     noBonus,
     0,
     activeBaseAttackCount(attacker, influence, charging),
+    false,
   );
   return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
 }
@@ -65,6 +66,7 @@ export function clampAttackPlanState(
     params.bonusTimeByAttack,
     params.initialTacModifier,
     params.activeBaseCount,
+    params.enemyKnockedDown,
   );
   if (
     r.wrapPicks === prev.wrapPicks &&

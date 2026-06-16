@@ -10,6 +10,7 @@ import {
 } from '@/core/attackPlanState';
 import {
   effectiveArmor,
+  effectiveEnemyDef,
   momentumPoolBeforeBonusTime,
   sanitizeBonusTimeFlags,
 } from '@/core/playbook';
@@ -45,9 +46,10 @@ function clampParams(s: MeatGrinderState): AttackPlanClampParams {
     enemyHasCover: s.enemyHasCover,
     enemyDefensiveStance: s.enemyDefensiveStance,
     damageMods: s.damageMods,
-    enemyDef: s.enemyDef,
+    enemyDef: effectiveEnemyDef(s.enemyDef, s.enemyKnockedDown, s.enemySnared),
     bonusTimeByAttack: s.bonusTimeByAttack,
     initialTacModifier: s.gangingUp - s.crowdingOut,
+    enemyKnockedDown: s.enemyKnockedDown,
     activeBaseCount: activeBaseCountOf(s),
   };
 }
@@ -71,7 +73,9 @@ function stateForAttacker(
   prev?: Partial<MeatGrinderState>,
 ): MeatGrinderState {
   const influence = attacker.inf;
-  const charging = prev?.charging ?? false;
+  // Models with a free charge (Furious) default to charging; otherwise carry
+  // over the prior toggle (or off for a fresh state).
+  const charging = attacker.furious ? true : (prev?.charging ?? false);
   return {
     attackerId: attacker.id,
     enemyDef: prev?.enemyDef ?? 4,
@@ -82,6 +86,8 @@ function stateForAttacker(
     chargeAttackIndex: 0,
     enemyHasCover: prev?.enemyHasCover ?? false,
     enemyDefensiveStance: prev?.enemyDefensiveStance ?? false,
+    enemyKnockedDown: prev?.enemyKnockedDown ?? false,
+    enemySnared: prev?.enemySnared ?? false,
     startingMomentum: clamp(
       prev?.startingMomentum ?? 0,
       attacker.startingMomentum.min,
@@ -190,6 +196,20 @@ export function meatGrinderReducer(
     }
     case 'enemyDefensiveStance': {
       const next = { ...state, enemyDefensiveStance: action.value };
+      return {
+        ...next,
+        attackPlan: clampPlan(next, state.attackPlan),
+      };
+    }
+    case 'enemyKnockedDown': {
+      const next = { ...state, enemyKnockedDown: action.value };
+      return {
+        ...next,
+        attackPlan: clampPlan(next, state.attackPlan),
+      };
+    }
+    case 'enemySnared': {
+      const next = { ...state, enemySnared: action.value };
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),

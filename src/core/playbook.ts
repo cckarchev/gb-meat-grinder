@@ -5,6 +5,7 @@
  */
 
 import { berserkerRowOffset } from '@/core/attackStructure';
+import { DEF_MAX, DEF_MIN } from '@/core/constants';
 import { maxPlaybookNet, playbookIndex } from '@/core/playbookIndex';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
@@ -97,6 +98,19 @@ export function buffsIgnoreToughHide(
   mods: PlaybookDamageMods,
 ): boolean {
   return activeBuffs(attacker, mods).some((b) => b.ignoresToughHide === true);
+}
+
+/**
+ * Enemy DEF after pre-attack conditions. Knocked Down and Snared each give the
+ * attacker −1 DEF; the effective DEF is floored at {@link DEF_MIN}.
+ */
+export function effectiveEnemyDef(
+  enemyDef: number,
+  knockedDown: boolean,
+  snared: boolean,
+): number {
+  const reduction = (knockedDown ? 1 : 0) + (snared ? 1 : 0);
+  return Math.max(DEF_MIN, Math.min(DEF_MAX, enemyDef - reduction));
 }
 
 /** Enemy ARM after the selected buffs' reductions (floored at 0). */
@@ -525,7 +539,11 @@ export function characterPlayUsageBeforePick(
   return used;
 }
 
-/** True if Knock Down was already taken on a strictly earlier wrap pick (activation order). */
+/**
+ * True if Knock Down is unavailable for this pick: either the target is already
+ * Knocked Down before the activation, or KD was taken on a strictly earlier wrap
+ * pick (activation order). Only one KD can ever apply.
+ */
 export function kdAlreadyTakenBeforePick(
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
@@ -533,7 +551,9 @@ export function kdAlreadyTakenBeforePick(
   pickIndex: number,
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
+  enemyKnockedDown = false,
 ): boolean {
+  if (enemyKnockedDown) return true;
   const order = activationAttackIndices(
     attacker,
     wrapPicks,

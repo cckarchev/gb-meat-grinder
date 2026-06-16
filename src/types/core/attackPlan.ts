@@ -24,6 +24,8 @@ export type AttackPlanClampParams = {
   enemyDef: number;
   bonusTimeByAttack: readonly boolean[];
   initialTacModifier: number;
+  /** Target is already Knocked Down (disables the playbook KD). */
+  enemyKnockedDown: boolean;
   /** Active base attacks this activation (derived from traits + influence). */
   activeBaseCount: number;
 };

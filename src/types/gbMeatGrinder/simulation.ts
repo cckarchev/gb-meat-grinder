@@ -27,6 +27,10 @@ export type MeatGrinderSimulation = {
   activeBaseCount: number;
   enemyHasCover: boolean;
   enemyDefensiveStance: boolean;
+  /** Target is Knocked Down before the activation (−1 DEF; disables playbook KD). */
+  enemyKnockedDown: boolean;
+  /** Target is Snared before the activation (−1 DEF). */
+  enemySnared: boolean;
   startingMomentum: number;
   /** Extra attack dice from Ganging Up (added to TAC). */
   gangingUp: number;
