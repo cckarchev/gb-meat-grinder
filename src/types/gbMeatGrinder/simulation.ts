@@ -31,6 +31,8 @@ export type MeatGrinderSimulation = {
   enemyKnockedDown: boolean;
   /** Target is Snared before the activation (−1 DEF). */
   enemySnared: boolean;
+  /** Target has Resilience: the first attack of the activation is wholly ignored. */
+  enemyResilience: boolean;
   startingMomentum: number;
   /** Extra attack dice from Ganging Up (added to TAC). */
   gangingUp: number;
@@ -42,6 +44,20 @@ export type MeatGrinderSimulation = {
   bonusTimeByAttack: boolean[];
   wrapPicks: WrapPick[][];
   characterPlayPicks: CharacterPlayPickSlot[][];
+  /**
+   * Wrap picks as the engine sees them once Resilience is applied: identical to
+   * `wrapPicks` unless the target is Resilient, in which case the ignored first
+   * swing's row is blanked. Use these for damage / momentum / odds math; use the
+   * raw `wrapPicks` only to render each swing's chosen lines.
+   */
+  effectiveWrapPicks: WrapPick[][];
+  /** Bonus-Time flags with the Resilience-ignored swing forced off. */
+  effectiveBonusTimeByAttack: boolean[];
+  /**
+   * Display index into `attacks` of the swing ignored by Resilience (always 0
+   * when active), or -1 when the target is not Resilient / has no attacks.
+   */
+  ignoredAttackIndex: number;
   attacks: AttackRollContext[];
   /**
    * Display index into `attacks` of the swing that drops the target to 0 HP in

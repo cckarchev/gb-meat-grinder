@@ -88,6 +88,7 @@ function stateForAttacker(
     enemyDefensiveStance: prev?.enemyDefensiveStance ?? false,
     enemyKnockedDown: prev?.enemyKnockedDown ?? false,
     enemySnared: prev?.enemySnared ?? false,
+    enemyResilience: prev?.enemyResilience ?? false,
     startingMomentum: clamp(
       prev?.startingMomentum ?? 0,
       attacker.startingMomentum.min,
@@ -218,6 +219,10 @@ export function meatGrinderReducer(
         attackPlan: clampPlan(next, state.attackPlan),
       };
     }
+    case 'enemyResilience':
+      // Resilience only changes which swings are *ignored* downstream; it never
+      // alters the editable plan's validity, so no re-clamp is needed.
+      return { ...state, enemyResilience: action.value };
     case 'startingMomentum':
       return { ...state, startingMomentum: action.value };
     case 'gangingUpRaw': {

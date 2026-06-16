@@ -10,6 +10,12 @@ import {
 } from '@/core/playbook';
 import { killingBlowDisplayIndex } from '@/core/killingBlow';
 import {
+  effectiveBonusTimeForResilience,
+  effectiveCharacterPlayPicksForResilience,
+  effectiveWrapPicksForResilience,
+  resilienceIgnoredAttackIndex,
+} from '@/core/resilience';
+import {
   createInitialMeatGrinderState,
   meatGrinderReducer,
 } from '@/gbMeatGrinder/meatGrinderReducer';
@@ -41,6 +47,36 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
   );
   const initialTacModifier = state.gangingUp - state.crowdingOut;
 
+  // The swing a Resilient target ignores, plus plan copies with that swing
+  // blanked so every downstream calculation treats it as if it never happened.
+  const ignoredAttackIndex = resilienceIgnoredAttackIndex(
+    attacker,
+    wrapPicks,
+    state.damageMods,
+    activeBaseCount,
+    state.enemyResilience,
+  );
+  const effectiveWrapPicks = useMemo(
+    () => effectiveWrapPicksForResilience(wrapPicks, ignoredAttackIndex),
+    [wrapPicks, ignoredAttackIndex],
+  );
+  const effectiveCharacterPlayPicks = useMemo(
+    () =>
+      effectiveCharacterPlayPicksForResilience(
+        characterPlayPicks,
+        ignoredAttackIndex,
+      ),
+    [characterPlayPicks, ignoredAttackIndex],
+  );
+  const effectiveBonusTimeByAttack = useMemo(
+    () =>
+      effectiveBonusTimeForResilience(
+        state.bonusTimeByAttack,
+        ignoredAttackIndex,
+      ),
+    [state.bonusTimeByAttack, ignoredAttackIndex],
+  );
+
   useEffect(() => {
     queueMicrotask(() => {
       dispatch({ type: 'sanitizeBonusTime' });
@@ -53,13 +89,13 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
         attacker,
         enemyDef,
         armor,
-        wrapPicks,
-        characterPlayPicks,
+        effectiveWrapPicks,
+        effectiveCharacterPlayPicks,
         effectiveChargeAttackIndex,
         state.enemyHasCover,
         state.enemyDefensiveStance,
         state.damageMods,
-        state.bonusTimeByAttack,
+        effectiveBonusTimeByAttack,
         initialTacModifier,
         activeBaseCount,
       ),
@@ -67,17 +103,21 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       attacker,
       enemyDef,
       armor,
-      wrapPicks,
-      characterPlayPicks,
+      effectiveWrapPicks,
+      effectiveCharacterPlayPicks,
       effectiveChargeAttackIndex,
       state.enemyHasCover,
       state.enemyDefensiveStance,
       state.damageMods,
-      state.bonusTimeByAttack,
+      effectiveBonusTimeByAttack,
       initialTacModifier,
       activeBaseCount,
     ],
   );
+
+  // Display index of the ignored swing: it is always first in activation order.
+  const ignoredDisplayIndex =
+    ignoredAttackIndex >= 0 && attacks.length > 0 ? 0 : -1;
 
   const killingBlowIndex = useMemo(
     () =>
@@ -85,7 +125,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
         attacks,
         damageIfAllHitsWrap(
           attacker,
-          wrapPicks,
+          effectiveWrapPicks,
           state.damageMods,
           activeBaseCount,
         ),
@@ -95,7 +135,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
     [
       attacks,
       attacker,
-      wrapPicks,
+      effectiveWrapPicks,
       state.damageMods,
       activeBaseCount,
       state.specialAbilities,
@@ -119,6 +159,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       enemyDefensiveStance: state.enemyDefensiveStance,
       enemyKnockedDown: state.enemyKnockedDown,
       enemySnared: state.enemySnared,
+      enemyResilience: state.enemyResilience,
       startingMomentum: state.startingMomentum,
       gangingUp: state.gangingUp,
       crowdingOut: state.crowdingOut,
@@ -127,6 +168,9 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       bonusTimeByAttack: state.bonusTimeByAttack,
       wrapPicks,
       characterPlayPicks,
+      effectiveWrapPicks,
+      effectiveBonusTimeByAttack,
+      ignoredAttackIndex: ignoredDisplayIndex,
       attacks,
       killingBlowIndex,
       dispatch,
@@ -137,6 +181,9 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       armor,
       wrapPicks,
       characterPlayPicks,
+      effectiveWrapPicks,
+      effectiveBonusTimeByAttack,
+      ignoredDisplayIndex,
       attacks,
       killingBlowIndex,
       activeBaseCount,

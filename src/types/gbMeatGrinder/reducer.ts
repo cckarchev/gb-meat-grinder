@@ -23,6 +23,12 @@ export type MeatGrinderState = {
   enemyKnockedDown: boolean;
   /** Target is Snared before the activation (−1 DEF). */
   enemySnared: boolean;
+  /**
+   * Target has Resilience: the first attack of the activation is wholly ignored
+   * (no damage, effects, wraps, momentum, or Berserker trigger). It is shown but
+   * disabled, and no longer carries anything over to later attacks.
+   */
+  enemyResilience: boolean;
   startingMomentum: number;
   /** Extra attack dice from Ganging Up (added to TAC). */
   gangingUp: number;
@@ -48,6 +54,7 @@ export type MeatGrinderAction =
   | { type: 'enemyDefensiveStance'; value: boolean }
   | { type: 'enemyKnockedDown'; value: boolean }
   | { type: 'enemySnared'; value: boolean }
+  | { type: 'enemyResilience'; value: boolean }
   | { type: 'startingMomentum'; value: number }
   | { type: 'gangingUpRaw'; value: number }
   | { type: 'crowdingOutRaw'; value: number }

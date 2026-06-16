@@ -25,9 +25,11 @@ export function AttacksPanel() {
     chargeAttackIndex,
     activeBaseCount,
     startingMomentum,
-    bonusTimeByAttack,
     wrapPicks,
     characterPlayPicks,
+    effectiveWrapPicks,
+    effectiveBonusTimeByAttack,
+    ignoredAttackIndex,
     damageMods,
     specialAbilities,
     attacks,
@@ -49,8 +51,14 @@ export function AttacksPanel() {
   };
 
   const rowDamageIfHit = useMemo(
-    () => damageIfAllHitsWrap(attacker, wrapPicks, damageMods, activeBaseCount),
-    [attacker, wrapPicks, damageMods, activeBaseCount],
+    () =>
+      damageIfAllHitsWrap(
+        attacker,
+        effectiveWrapPicks,
+        damageMods,
+        activeBaseCount,
+      ),
+    [attacker, effectiveWrapPicks, damageMods, activeBaseCount],
   );
   const remainingHpAfterSwing = useMemo(() => {
     const out: number[] = [];
@@ -68,11 +76,11 @@ export function AttacksPanel() {
     const base = attacks.map((ctx) =>
       momentumAfterAttackInclusive(
         attacker,
-        wrapPicks,
+        effectiveWrapPicks,
         damageMods,
         ctx.attackIndex,
         startingMomentum,
-        bonusTimeByAttack,
+        effectiveBonusTimeByAttack,
         activeBaseCount,
       ),
     );
@@ -84,10 +92,10 @@ export function AttacksPanel() {
   }, [
     attacker,
     attacks,
-    wrapPicks,
+    effectiveWrapPicks,
     damageMods,
     startingMomentum,
-    bonusTimeByAttack,
+    effectiveBonusTimeByAttack,
     activeBaseCount,
     killingBlowIndex,
   ]);
@@ -97,21 +105,21 @@ export function AttacksPanel() {
       attacks.map((ctx) =>
         momentumPoolBeforeBonusTime(
           attacker,
-          wrapPicks,
+          effectiveWrapPicks,
           damageMods,
           ctx.attackIndex,
           startingMomentum,
-          bonusTimeByAttack,
+          effectiveBonusTimeByAttack,
           activeBaseCount,
         ),
       ),
     [
       attacker,
       attacks,
-      wrapPicks,
+      effectiveWrapPicks,
       damageMods,
       startingMomentum,
-      bonusTimeByAttack,
+      effectiveBonusTimeByAttack,
       activeBaseCount,
     ],
   );
@@ -123,7 +131,10 @@ export function AttacksPanel() {
           key={a.attackIndex}
           attack={a}
           displayIdx={displayIdx}
-          disabled={killingBlowIndex >= 0 && displayIdx > killingBlowIndex}
+          disabled={
+            displayIdx === ignoredAttackIndex ||
+            (killingBlowIndex >= 0 && displayIdx > killingBlowIndex)
+          }
           isKillingBlow={displayIdx === killingBlowIndex}
           armor={a.armor}
           charging={charging}
@@ -134,7 +145,7 @@ export function AttacksPanel() {
           damageMods={damageMods}
           remainingHpIfHit={remainingHpAfterSwing[displayIdx]}
           momentum={momentumAfterSwing[displayIdx]}
-          bonusTime={bonusTimeByAttack[a.attackIndex] === true}
+          bonusTime={effectiveBonusTimeByAttack[a.attackIndex] === true}
           bonusTimeMomentumPool={bonusTimePoolBeforeSwing[displayIdx]}
           onBonusTimeChange={(attackIndex, value) =>
             dispatch({ type: 'bonusTime', attackIndex, value })

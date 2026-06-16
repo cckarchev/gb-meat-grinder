@@ -89,8 +89,9 @@ export function AttacksPanelSummary() {
     chargeAttackIndex,
     activeBaseCount,
     startingMomentum,
-    bonusTimeByAttack,
-    wrapPicks,
+    effectiveBonusTimeByAttack,
+    effectiveWrapPicks,
+    ignoredAttackIndex,
     damageMods,
     specialAbilities,
     attacks,
@@ -99,17 +100,24 @@ export function AttacksPanelSummary() {
 
   const effectiveChargeAttackIndex = charging ? chargeAttackIndex : -1;
 
-  // The activation ends on the killing blow, so every total/odds below counts
-  // only the swings that actually happen (through that swing inclusive).
-  const activeAttacks = useMemo(
-    () =>
-      killingBlowIndex >= 0 ? attacks.slice(0, killingBlowIndex + 1) : attacks,
-    [attacks, killingBlowIndex],
-  );
+  // A Resilient target ignores the first swing entirely, and the activation ends
+  // on the killing blow, so every total/odds below counts only the swings that
+  // actually happen: from after any ignored lead swing through the killing blow.
+  const activeAttacks = useMemo(() => {
+    const start = ignoredAttackIndex >= 0 ? ignoredAttackIndex + 1 : 0;
+    const end = killingBlowIndex >= 0 ? killingBlowIndex + 1 : attacks.length;
+    return attacks.slice(start, end);
+  }, [attacks, ignoredAttackIndex, killingBlowIndex]);
 
   const rowDamageIfHit = useMemo(
-    () => damageIfAllHitsWrap(attacker, wrapPicks, damageMods, activeBaseCount),
-    [attacker, wrapPicks, damageMods, activeBaseCount],
+    () =>
+      damageIfAllHitsWrap(
+        attacker,
+        effectiveWrapPicks,
+        damageMods,
+        activeBaseCount,
+      ),
+    [attacker, effectiveWrapPicks, damageMods, activeBaseCount],
   );
 
   const flatDamage = useMemo(
@@ -127,18 +135,19 @@ export function AttacksPanelSummary() {
   const momentousMomentumIfAllHit = useMemo(() => {
     let m = 0;
     for (const ctx of activeAttacks) {
-      for (const id of wrapPicks[ctx.attackIndex] ?? []) {
+      for (const id of effectiveWrapPicks[ctx.attackIndex] ?? []) {
         if (id != null && pickGeneratesMomentum(attacker, id, damageMods))
           m += 1;
       }
     }
     return m;
-  }, [attacker, activeAttacks, wrapPicks, damageMods]);
+  }, [attacker, activeAttacks, effectiveWrapPicks, damageMods]);
 
   const bonusTimeSpendsInActivation = useMemo(
     () =>
-      activeAttacks.filter((ctx) => bonusTimeByAttack[ctx.attackIndex]).length,
-    [activeAttacks, bonusTimeByAttack],
+      activeAttacks.filter((ctx) => effectiveBonusTimeByAttack[ctx.attackIndex])
+        .length,
+    [activeAttacks, effectiveBonusTimeByAttack],
   );
 
   const killingBlowMomentum = killingBlowIndex >= 0 ? KILLING_BLOW_MOMENTUM : 0;
@@ -148,21 +157,21 @@ export function AttacksPanelSummary() {
     const lastIdx = activeAttacks[activeAttacks.length - 1].attackIndex;
     const end = momentumAfterAttackInclusive(
       attacker,
-      wrapPicks,
+      effectiveWrapPicks,
       damageMods,
       lastIdx,
       startingMomentum,
-      bonusTimeByAttack,
+      effectiveBonusTimeByAttack,
       activeBaseCount,
     );
     return end + killingBlowMomentum - startingMomentum;
   }, [
     attacker,
     activeAttacks,
-    wrapPicks,
+    effectiveWrapPicks,
     damageMods,
     startingMomentum,
-    bonusTimeByAttack,
+    effectiveBonusTimeByAttack,
     activeBaseCount,
     killingBlowMomentum,
   ]);
@@ -191,7 +200,7 @@ export function AttacksPanelSummary() {
   const damageDealtTooltip = useMemo(() => {
     const b = damageModifierBreakdownWrap(
       attacker,
-      wrapPicks,
+      effectiveWrapPicks,
       damageMods,
       activeBaseCount,
     );
@@ -214,7 +223,7 @@ export function AttacksPanelSummary() {
     return t;
   }, [
     attacker,
-    wrapPicks,
+    effectiveWrapPicks,
     damageMods,
     activeBaseCount,
     flatDamage,
@@ -231,7 +240,7 @@ export function AttacksPanelSummary() {
       const outcome = planDamageOutcome(
         attacker,
         activeAttacks,
-        wrapPicks,
+        effectiveWrapPicks,
         damageMods,
         flatDamage,
         targetHp,
@@ -243,7 +252,14 @@ export function AttacksPanelSummary() {
           high: damageQuantile(outcome.damageDistribution, 0.9),
         },
       };
-    }, [attacker, activeAttacks, wrapPicks, damageMods, flatDamage, targetHp]);
+    }, [
+      attacker,
+      activeAttacks,
+      effectiveWrapPicks,
+      damageMods,
+      flatDamage,
+      targetHp,
+    ]);
 
   return (
     <Summary as="section" aria-label="Per-swing hit odds">
@@ -261,13 +277,13 @@ export function AttacksPanelSummary() {
             <SelectionPicksInline>
               {formatWrapRowSelectionLabel(
                 attacker,
-                wrapPicks[a.attackIndex] ?? [],
+                effectiveWrapPicks[a.attackIndex] ?? [],
                 damageMods,
               )}
             </SelectionPicksInline>
           </SelectionLine>
           <Mono>
-            {swingHasWrapSelection(wrapPicks[a.attackIndex])
+            {swingHasWrapSelection(effectiveWrapPicks[a.attackIndex])
               ? formatPercent(a.prob)
               : '-'}
           </Mono>
