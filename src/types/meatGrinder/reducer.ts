@@ -9,6 +9,11 @@ export type MeatGrinderState = {
   enemyDef: number;
   armor: number;
   hp: number;
+  /** Influence allocated to the attacker this activation (0…attacker INF cap). */
+  influence: number;
+  /** Whether the attacker charges (costs influence unless Furious). */
+  charging: boolean;
+  /** Which base attack is the charge, when charging. */
   chargeAttackIndex: number;
   enemyHasCover: boolean;
   enemyDefensiveStance: boolean;
@@ -23,6 +28,8 @@ export type MeatGrinderAction =
   | { type: 'enemyDef'; value: number }
   | { type: 'armor'; value: number }
   | { type: 'hp'; value: number }
+  | { type: 'influence'; value: number }
+  | { type: 'charging'; value: boolean }
   | { type: 'chargeAttackIndex'; value: number }
   | { type: 'enemyHasCover'; value: boolean }
   | { type: 'enemyDefensiveStance'; value: boolean }

@@ -1,6 +1,6 @@
 import { AttacksPanel } from '@/components/AttacksPanel';
 import { EnemyPanel } from '@/components/EnemyPanel';
-import { VBoarPanel } from '@/components/VBoarPanel';
+import { AttackerPanel } from '@/components/AttackerPanel';
 import { TargetPanelsRow } from '@/components/TargetPanelsRow';
 import { MeatGrinderSimulationContext } from '@/meatGrinder/useMeatGrinderSimulation';
 import { useMeatGrinderSimulationState } from '@/meatGrinder/useMeatGrinderSimulationState';
@@ -10,7 +10,7 @@ export function MeatGrinderRoot() {
   return (
     <MeatGrinderSimulationContext.Provider value={value}>
       <TargetPanelsRow>
-        <VBoarPanel />
+        <AttackerPanel />
         <EnemyPanel />
       </TargetPanelsRow>
       <AttacksPanel />

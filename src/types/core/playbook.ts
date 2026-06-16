@@ -1,4 +1,4 @@
-/** Playbook and wrap / character-play selection types (Veteran Boar card). */
+/** Playbook and wrap / character-play selection types (attacker card). */
 
 export type PlaybookChoiceId =
   | 'push'
@@ -47,10 +47,12 @@ export type PlaybookColumn = {
 export type PlaybookDamageMods = {
   /** Enemy Tough Hide: −1 to each **selected** playbook line that has card damage. */
   toughHide: boolean;
-  /** +1 to each **selected** damage pip only (same scope as Tough Hide). */
-  tooledUp: boolean;
-  /** +1 to each **selected** damage pip only (same scope as Tough Hide). */
-  theOwner: boolean;
+  /**
+   * Attacker damage buffs by id, toggled on/off. These are external (teammate /
+   * guild-granted) and defined per attacker in its data file, so the keys are
+   * not fixed. Each active buff adds its `damageBonus` to selected damage pips.
+   */
+  buffs: Record<string, boolean>;
 };
 
 /** Playbook line button look for momentous damage pips (after Tough Hide / buffs). */
@@ -59,11 +61,17 @@ export type MomentousLineStyle = 'heat' | 'zeroed' | 'none';
 /** Per-pick character play slot; `null` when that pick is not GB / 1GB. */
 export type CharacterPlayPickSlot = CharacterPlayPick | null;
 
-/** How much selected damage pips contribute, split by Tough Hide vs Boar buffs. */
+/** Per-buff damage contribution, in the attacker's buff order. */
+export type DamageBuffBonus = {
+  id: string;
+  label: string;
+  bonus: number;
+};
+
+/** How much selected damage pips contribute, split by Tough Hide vs attacker buffs. */
 export type DamageModifierBreakdown = {
   rawCardDamage: number;
   toughHideReduction: number;
-  tooledUpBonus: number;
-  theOwnerBonus: number;
+  buffBonuses: DamageBuffBonus[];
   totalEffective: number;
 };

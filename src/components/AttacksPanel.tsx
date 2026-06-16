@@ -19,7 +19,9 @@ export function AttacksPanel() {
   const {
     hp: targetHp,
     armor,
+    charging,
     chargeAttackIndex,
+    activeBaseCount,
     startingMomentum,
     bonusTimeByAttack,
     wrapPicks,
@@ -28,6 +30,8 @@ export function AttacksPanel() {
     attacks,
     dispatch,
   } = useMeatGrinderSimulation();
+
+  const effectiveChargeAttackIndex = charging ? chargeAttackIndex : -1;
 
   const [wrapExpanded, setWrapExpanded] = useState(() => new Set<number>());
 
@@ -41,8 +45,8 @@ export function AttacksPanel() {
   };
 
   const rowDamageIfHit = useMemo(
-    () => damageIfAllHitsWrap(wrapPicks, damageMods),
-    [wrapPicks, damageMods],
+    () => damageIfAllHitsWrap(wrapPicks, damageMods, activeBaseCount),
+    [wrapPicks, damageMods, activeBaseCount],
   );
   const remainingHpAfterSwing = useMemo(() => {
     const out: number[] = [];
@@ -63,9 +67,17 @@ export function AttacksPanel() {
           ctx.attackIndex,
           startingMomentum,
           bonusTimeByAttack,
+          activeBaseCount,
         ),
       ),
-    [attacks, wrapPicks, damageMods, startingMomentum, bonusTimeByAttack],
+    [
+      attacks,
+      wrapPicks,
+      damageMods,
+      startingMomentum,
+      bonusTimeByAttack,
+      activeBaseCount,
+    ],
   );
 
   const bonusTimePoolBeforeSwing = useMemo(
@@ -77,9 +89,17 @@ export function AttacksPanel() {
           ctx.attackIndex,
           startingMomentum,
           bonusTimeByAttack,
+          activeBaseCount,
         ),
       ),
-    [attacks, wrapPicks, damageMods, startingMomentum, bonusTimeByAttack],
+    [
+      attacks,
+      wrapPicks,
+      damageMods,
+      startingMomentum,
+      bonusTimeByAttack,
+      activeBaseCount,
+    ],
   );
 
   return (
@@ -90,7 +110,9 @@ export function AttacksPanel() {
           attack={a}
           displayIdx={displayIdx}
           armor={armor}
-          chargeAttackIndex={chargeAttackIndex}
+          charging={charging}
+          chargeAttackIndex={effectiveChargeAttackIndex}
+          activeBaseCount={activeBaseCount}
           wrapPicks={wrapPicks}
           characterPlayPicks={characterPlayPicks}
           damageMods={damageMods}

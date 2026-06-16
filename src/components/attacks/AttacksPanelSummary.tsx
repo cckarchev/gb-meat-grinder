@@ -80,7 +80,9 @@ function swingHasWrapSelection(
 
 export function AttacksPanelSummary() {
   const {
+    charging,
     chargeAttackIndex,
+    activeBaseCount,
     startingMomentum,
     bonusTimeByAttack,
     wrapPicks,
@@ -88,9 +90,11 @@ export function AttacksPanelSummary() {
     attacks,
   } = useMeatGrinderSimulation();
 
+  const effectiveChargeAttackIndex = charging ? chargeAttackIndex : -1;
+
   const rowDamageIfHit = useMemo(
-    () => damageIfAllHitsWrap(wrapPicks, damageMods),
-    [wrapPicks, damageMods],
+    () => damageIfAllHitsWrap(wrapPicks, damageMods, activeBaseCount),
+    [wrapPicks, damageMods, activeBaseCount],
   );
 
   const totalDamageIfAllHit = useMemo(
@@ -122,9 +126,17 @@ export function AttacksPanelSummary() {
       lastIdx,
       startingMomentum,
       bonusTimeByAttack,
+      activeBaseCount,
     );
     return end - startingMomentum;
-  }, [attacks, wrapPicks, damageMods, startingMomentum, bonusTimeByAttack]);
+  }, [
+    attacks,
+    wrapPicks,
+    damageMods,
+    startingMomentum,
+    bonusTimeByAttack,
+    activeBaseCount,
+  ]);
 
   const netMomentumTooltip = useMemo(() => {
     let t = `+${momentousMomentumIfAllHit} from momentous results`;
@@ -135,7 +147,7 @@ export function AttacksPanelSummary() {
   }, [momentousMomentumIfAllHit, bonusTimeSpendsInActivation]);
 
   const damageDealtTooltip = useMemo(() => {
-    const b = damageModifierBreakdownWrap(wrapPicks, damageMods);
+    const b = damageModifierBreakdownWrap(wrapPicks, damageMods, activeBaseCount);
     if (b.rawCardDamage === 0 && b.totalEffective === 0) {
       return 'No selected playbook lines deal card damage to HP (after Tough Hide).';
     }
@@ -143,15 +155,14 @@ export function AttacksPanelSummary() {
     if (b.toughHideReduction > 0) {
       t += `; -${b.toughHideReduction} Tough Hide`;
     }
-    if (b.tooledUpBonus > 0) {
-      t += `; +${b.tooledUpBonus} Tooled Up`;
-    }
-    if (b.theOwnerBonus > 0) {
-      t += `; +${b.theOwnerBonus} The Owner`;
+    for (const bb of b.buffBonuses) {
+      if (bb.bonus > 0) {
+        t += `; +${bb.bonus} ${bb.label}`;
+      }
     }
     t += ` = ${b.totalEffective}.`;
     return t;
-  }, [wrapPicks, damageMods]);
+  }, [wrapPicks, damageMods, activeBaseCount]);
 
   const { geometricMeanLineHitProb, roughestRollProb } = useMemo(() => {
     const probs = attacks
@@ -183,7 +194,7 @@ export function AttacksPanelSummary() {
         <ProbabilityRow key={a.attackIndex}>
           <SelectionLine>
             <Mono>{displayIdx + 1}</Mono>.{' '}
-            {attackKindLabel(a.attackIndex, chargeAttackIndex)}
+            {attackKindLabel(a.attackIndex, effectiveChargeAttackIndex)}
             {' -> '}
             <SelectionPicksInline>
               {formatWrapRowSelectionLabel(

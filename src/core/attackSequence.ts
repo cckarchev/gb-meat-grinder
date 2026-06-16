@@ -1,10 +1,5 @@
-import {
-  BASE_ATTACK_COUNT,
-  BONUS_TIME_TAC_BONUS,
-  DEF_MAX,
-  DEF_MIN,
-  VBOAR_TAC,
-} from '@/core/constants';
+import { activeAttacker } from '@/attackers/activeAttacker';
+import { BONUS_TIME_TAC_BONUS, DEF_MAX, DEF_MIN } from '@/core/constants';
 import {
   MAX_PLAYBOOK_NET,
   PLAYBOOK,
@@ -41,10 +36,11 @@ export function enemyDefBaseForAttackRow(
   attackIndex: number,
   chargeAttackIndex: number,
   enemyDefensiveStance: boolean,
+  activeBaseCount: number,
 ): number {
   const stanceBonus =
     enemyDefensiveStance &&
-    attackIndex < BASE_ATTACK_COUNT &&
+    attackIndex < activeBaseCount &&
     attackIndex === chargeAttackIndex
       ? 1
       : 0;
@@ -60,11 +56,12 @@ export function coverTacPenaltyForAttack(
   enemyHasCover: boolean,
   wrapPicks: WrapPick[][],
   attackIndex: number,
+  activeBaseCount: number,
 ): number {
   if (!enemyHasCover) return 0;
   /* Use fixed base → berserker clock so > / >> are never skipped when a berserker
    * row is omitted from `activationAttackIndices` (damage-gated). */
-  const clock = coverSwingClockIndices();
+  const clock = coverSwingClockIndices(activeBaseCount);
   const pos = clock.indexOf(attackIndex);
   if (pos < 0) return 1;
   for (let p = 0; p < pos; p++) {
@@ -91,8 +88,9 @@ export function modifiersBeforeAttack(
   characterPlayPicks: CharacterPlayPickSlot[][],
   attackIndex: number,
   damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
 ): { tacBonus: number; defReduction: number } {
-  const order = activationAttackIndices(wrapPicks, damageMods);
+  const order = activationAttackIndices(wrapPicks, damageMods, activeBaseCount);
   const targetPos = order.indexOf(attackIndex);
   if (targetPos < 0) return { tacBonus: 0, defReduction: 0 };
 
@@ -108,6 +106,7 @@ export function modifiersBeforeAttack(
         j,
         k,
         damageMods,
+        activeBaseCount,
       );
       tacBonus += m.tacBonusForLater;
       defReduction += m.defReductionForLater;
@@ -125,7 +124,7 @@ export function effectiveDefMinRoll(
 
 /**
  * Enemy DEF cannot be reduced below `DEF_MIN` on the dice. Each point of DEF
- * reduction beyond that cap becomes +1 TAC for Veteran Boar on later swings.
+ * reduction beyond that cap becomes +1 TAC for the attacker on later swings.
  */
 export function tacBonusFromDefReductionCap(
   baseDef: number,
@@ -139,16 +138,17 @@ export function tacForAttack(
   attackIndex: number,
   chargeAttackIndex: number,
   tacBonusFromSingledOut: number,
+  activeBaseCount: number,
   coverTacPenalty = 0,
   bonusTimeTacBonus = 0,
   initialTacModifier = 0,
 ): number {
   const charge =
-    attackIndex < BASE_ATTACK_COUNT && attackIndex === chargeAttackIndex
+    attackIndex < activeBaseCount && attackIndex === chargeAttackIndex
       ? CHARGE_TAC_BONUS
       : 0;
   return (
-    VBOAR_TAC +
+    activeAttacker.tac +
     charge +
     tacBonusFromSingledOut -
     coverTacPenalty +
@@ -168,24 +168,28 @@ export function tacForAttackRow(
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
+  activeBaseCount: number,
 ): number {
   const { tacBonus, defReduction } = modifiersBeforeAttack(
     wrapPicks,
     characterPlayPicks,
     attackIndex,
     damageMods,
+    activeBaseCount,
   );
   const defForRow = enemyDefBaseForAttackRow(
     baseDef,
     attackIndex,
     chargeAttackIndex,
     enemyDefensiveStance,
+    activeBaseCount,
   );
   const tacFromDefCap = tacBonusFromDefReductionCap(defForRow, defReduction);
   const coverPen = coverTacPenaltyForAttack(
     enemyHasCover,
     wrapPicks,
     attackIndex,
+    activeBaseCount,
   );
   const bonusTimeTac =
     bonusTimeByAttack[attackIndex] === true ? BONUS_TIME_TAC_BONUS : 0;
@@ -193,6 +197,7 @@ export function tacForAttackRow(
     attackIndex,
     chargeAttackIndex,
     tacBonus + tacFromDefCap,
+    activeBaseCount,
     coverPen,
     bonusTimeTac,
     initialTacModifier,
@@ -212,6 +217,7 @@ export function maxPlaybookColumnForRow(
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
+  activeBaseCount: number,
 ): number {
   const tac = tacForAttackRow(
     wrapPicks,
@@ -224,6 +230,7 @@ export function maxPlaybookColumnForRow(
     baseDef,
     bonusTimeByAttack,
     initialTacModifier,
+    activeBaseCount,
   );
   return maxNetSuccessesForRoll(tac, armor);
 }
@@ -261,10 +268,11 @@ function stripDuplicateKd(
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
+  activeBaseCount: number,
 ): boolean {
   let changed = false;
   let kdSeen = false;
-  for (const i of activationAttackIndices(next, damageMods)) {
+  for (const i of activationAttackIndices(next, damageMods, activeBaseCount)) {
     const maxNet = maxPlaybookColumnForRow(
       next,
       nextCharacterPlay,
@@ -277,6 +285,7 @@ function stripDuplicateKd(
       baseDef,
       bonusTimeByAttack,
       initialTacModifier,
+      activeBaseCount,
     );
     for (let k = 0; k < next[i].length; k++) {
       const id = next[i][k];
@@ -373,7 +382,8 @@ function characterPlay2dEqual(
 
 /**
  * Keeps each attack’s wrap within TAC − ARM: drop tail picks until valid, then
- * sanitize character-play picks after GB / 1GB.
+ * sanitize character-play picks after GB / 1GB. Inactive rows (base rows beyond
+ * the allocated influence, or damage-less berserkers) are emptied.
  */
 export function clampAttackPlan(
   wrapPicks: WrapPick[][],
@@ -386,6 +396,7 @@ export function clampAttackPlan(
   baseDef: number,
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
+  activeBaseCount: number,
 ): { wrapPicks: WrapPick[][]; characterPlayPicks: CharacterPlayPickSlot[][] } {
   const next = clone2d(wrapPicks);
   let nextCharacterPlay = clone2d(characterPlayPicks);
@@ -401,22 +412,16 @@ export function clampAttackPlan(
         nextCharacterPlay[i].push(null);
         passChanged = true;
       }
-      if (!attackRowIsActive(next, i, damageMods)) {
-        if (
-          i >= BASE_ATTACK_COUNT &&
-          (next[i].length > 0 || nextCharacterPlay[i].length > 0)
-        ) {
+      const active = attackRowIsActive(next, i, damageMods, activeBaseCount);
+      if (!active) {
+        if (next[i].length > 0 || nextCharacterPlay[i].length > 0) {
           next[i] = [];
           nextCharacterPlay[i] = [];
           passChanged = true;
         }
         continue;
       }
-      if (
-        i >= BASE_ATTACK_COUNT &&
-        attackRowIsActive(next, i, damageMods) &&
-        next[i].length === 0
-      ) {
+      if (next[i].length === 0) {
         next[i] = [null];
         nextCharacterPlay[i] = [null];
         passChanged = true;
@@ -433,6 +438,7 @@ export function clampAttackPlan(
         baseDef,
         bonusTimeByAttack,
         initialTacModifier,
+        activeBaseCount,
       );
       const r = clampRowPicks(next[i], nextCharacterPlay[i], maxNet);
       const rowSame =
@@ -458,12 +464,18 @@ export function clampAttackPlan(
         baseDef,
         bonusTimeByAttack,
         initialTacModifier,
+        activeBaseCount,
       )
     ) {
       passChanged = true;
     }
     const { characterPlayPicks: sanitized, changed: cpSan } =
-      sanitizeCharacterPlayPicksWrap(next, nextCharacterPlay, damageMods);
+      sanitizeCharacterPlayPicksWrap(
+        next,
+        nextCharacterPlay,
+        damageMods,
+        activeBaseCount,
+      );
     if (cpSan) {
       nextCharacterPlay = sanitized;
       passChanged = true;
@@ -491,31 +503,44 @@ export function computeAttackSequence(
   damageMods: PlaybookDamageMods,
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
+  activeBaseCount: number,
 ): { attacks: AttackRollContext[] } {
   const attacks: AttackRollContext[] = [];
 
-  for (const i of activationAttackIndices(wrapPicks, damageMods)) {
+  for (const i of activationAttackIndices(
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+  )) {
     const { tacBonus, defReduction } = modifiersBeforeAttack(
       wrapPicks,
       characterPlayPicks,
       i,
       damageMods,
+      activeBaseCount,
     );
     const defForRow = enemyDefBaseForAttackRow(
       baseDef,
       i,
       chargeAttackIndex,
       enemyDefensiveStance,
+      activeBaseCount,
     );
     const tacFromDefCap = tacBonusFromDefReductionCap(defForRow, defReduction);
     const defMin = effectiveDefMinRoll(defForRow, defReduction);
-    const coverPen = coverTacPenaltyForAttack(enemyHasCover, wrapPicks, i);
+    const coverPen = coverTacPenaltyForAttack(
+      enemyHasCover,
+      wrapPicks,
+      i,
+      activeBaseCount,
+    );
     const bonusTimeTac =
       bonusTimeByAttack[i] === true ? BONUS_TIME_TAC_BONUS : 0;
     const tac = tacForAttack(
       i,
       chargeAttackIndex,
       tacBonus + tacFromDefCap,
+      activeBaseCount,
       coverPen,
       bonusTimeTac,
       initialTacModifier,

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useReducer } from 'react';
 import { computeAttackSequence } from '@/core/attackSequence';
+import { activeBaseAttackCount } from '@/core/attackStructure';
 import {
   createInitialMeatGrinderState,
   meatGrinderReducer,
@@ -15,11 +16,16 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
 
   const { wrapPicks, characterPlayPicks } = state.attackPlan;
 
+  const activeBaseCount = activeBaseAttackCount(state.influence, state.charging);
+  const effectiveChargeAttackIndex = state.charging
+    ? state.chargeAttackIndex
+    : -1;
+
   useEffect(() => {
     queueMicrotask(() => {
       dispatch({ type: 'sanitizeBonusTime' });
     });
-  }, [wrapPicks, state.damageMods, state.startingMomentum]);
+  }, [wrapPicks, state.damageMods, state.startingMomentum, activeBaseCount]);
 
   const { attacks } = useMemo(
     () =>
@@ -28,24 +34,26 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
         state.armor,
         wrapPicks,
         characterPlayPicks,
-        state.chargeAttackIndex,
+        effectiveChargeAttackIndex,
         state.enemyHasCover,
         state.enemyDefensiveStance,
         state.damageMods,
         state.bonusTimeByAttack,
         state.initialTacModifier,
+        activeBaseCount,
       ),
     [
       state.enemyDef,
       state.armor,
       wrapPicks,
       characterPlayPicks,
-      state.chargeAttackIndex,
+      effectiveChargeAttackIndex,
       state.enemyHasCover,
       state.enemyDefensiveStance,
       state.damageMods,
       state.bonusTimeByAttack,
       state.initialTacModifier,
+      activeBaseCount,
     ],
   );
 
@@ -54,7 +62,10 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       enemyDef: state.enemyDef,
       armor: state.armor,
       hp: state.hp,
+      influence: state.influence,
+      charging: state.charging,
       chargeAttackIndex: state.chargeAttackIndex,
+      activeBaseCount,
       enemyHasCover: state.enemyHasCover,
       enemyDefensiveStance: state.enemyDefensiveStance,
       startingMomentum: state.startingMomentum,
@@ -66,6 +77,6 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       attacks,
       dispatch,
     }),
-    [state, wrapPicks, characterPlayPicks, attacks, dispatch],
+    [state, wrapPicks, characterPlayPicks, attacks, activeBaseCount, dispatch],
   );
 }

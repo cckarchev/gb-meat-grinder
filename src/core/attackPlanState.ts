@@ -1,5 +1,5 @@
 import { clampAttackPlan } from '@/core/attackSequence';
-import { MAX_ATTACK_COUNT } from '@/core/constants';
+import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
 import {
   choiceUsesCharacterPlay,
   DEFAULT_PLAYBOOK_DAMAGE_MODS,
@@ -18,14 +18,17 @@ import type {
   PlaybookDamageMods,
 } from '@/types/core/playbook';
 
-export function createInitialAttackPlan(): AttackPlan {
+export function createInitialAttackPlan(
+  influence: number,
+  charging: boolean,
+): AttackPlan {
   const wp = defaultWrapPicks();
   const cp = defaultCharacterPlayPicksWrap();
-  const noBonus = Array.from({ length: MAX_ATTACK_COUNT }, () => false);
+  const noBonus = Array.from({ length: attackArraySize() }, () => false);
   const r = clampAttackPlan(
     wp,
     cp,
-    0,
+    charging ? 0 : -1,
     1,
     false,
     false,
@@ -33,6 +36,7 @@ export function createInitialAttackPlan(): AttackPlan {
     4,
     noBonus,
     0,
+    activeBaseAttackCount(influence, charging),
   );
   return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
 }
@@ -52,6 +56,7 @@ export function clampAttackPlanState(
     params.enemyDef,
     params.bonusTimeByAttack,
     params.initialTacModifier,
+    params.activeBaseCount,
   );
   if (
     r.wrapPicks === prev.wrapPicks &&
@@ -119,6 +124,7 @@ export function nextPlanAfterCharacterPlayPick(
   pickIndex: number,
   pick: CharacterPlayPick,
   damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
 ): AttackPlan | null {
   if (prev.characterPlayPicks[attackIndex]?.[pickIndex] === pick) return null;
 
@@ -132,6 +138,7 @@ export function nextPlanAfterCharacterPlayPick(
     prev.wrapPicks,
     nextCharacterPlay,
     damageMods,
+    activeBaseCount,
   );
   return { wrapPicks: prev.wrapPicks, characterPlayPicks: sanitized };
 }

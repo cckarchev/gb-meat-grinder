@@ -1,10 +1,9 @@
+import { activeAttacker } from '@/attackers/activeAttacker';
+import { HP_DEFAULT } from '@/core/constants';
 import {
-  BASE_ATTACK_COUNT,
-  HP_DEFAULT,
-  INITIAL_TAC_MODIFIER_MAX,
-  INITIAL_TAC_MODIFIER_MIN,
-  MAX_ATTACK_COUNT,
-} from '@/core/constants';
+  activeBaseAttackCount,
+  attackArraySize,
+} from '@/core/attackStructure';
 import {
   clampAttackPlanState,
   createInitialAttackPlan,
@@ -23,9 +22,19 @@ import type {
 } from '@/types/core/attackPlan';
 import type { MeatGrinderAction, MeatGrinderState } from '@/types/meatGrinder/reducer';
 
+/** Active base attacks for the current influence / charge choice. */
+function activeBaseCountOf(s: MeatGrinderState): number {
+  return activeBaseAttackCount(s.influence, s.charging);
+}
+
+/** Charge row the engine should use: the chosen base, or -1 when not charging. */
+function effectiveChargeIndex(s: MeatGrinderState): number {
+  return s.charging ? s.chargeAttackIndex : -1;
+}
+
 function clampParams(s: MeatGrinderState): AttackPlanClampParams {
   return {
-    chargeAttackIndex: s.chargeAttackIndex,
+    chargeAttackIndex: effectiveChargeIndex(s),
     armor: s.armor,
     enemyHasCover: s.enemyHasCover,
     enemyDefensiveStance: s.enemyDefensiveStance,
@@ -33,6 +42,7 @@ function clampParams(s: MeatGrinderState): AttackPlanClampParams {
     enemyDef: s.enemyDef,
     bonusTimeByAttack: s.bonusTimeByAttack,
     initialTacModifier: s.initialTacModifier,
+    activeBaseCount: activeBaseCountOf(s),
   };
 }
 
@@ -46,18 +56,22 @@ function bonusTimeEqual(a: readonly boolean[], b: readonly boolean[]): boolean {
 }
 
 export function createInitialMeatGrinderState(): MeatGrinderState {
+  const influence = Math.min(2, activeAttacker.inf);
+  const charging = true;
   return {
     enemyDef: 4,
     armor: 1,
     hp: HP_DEFAULT,
+    influence,
+    charging,
     chargeAttackIndex: 0,
     enemyHasCover: false,
     enemyDefensiveStance: false,
     startingMomentum: 0,
     initialTacModifier: 0,
-    bonusTimeByAttack: Array.from({ length: MAX_ATTACK_COUNT }, () => false),
+    bonusTimeByAttack: Array.from({ length: attackArraySize() }, () => false),
     damageMods: DEFAULT_PLAYBOOK_DAMAGE_MODS,
-    attackPlan: createInitialAttackPlan(),
+    attackPlan: createInitialAttackPlan(influence, charging),
   };
 }
 
@@ -82,10 +96,43 @@ export function meatGrinderReducer(
     }
     case 'hp':
       return { ...state, hp: action.value };
+    case 'influence': {
+      const influence = Math.max(
+        0,
+        Math.min(activeAttacker.inf, action.value),
+      );
+      const withInfluence = { ...state, influence };
+      const baseCount = activeBaseCountOf(withInfluence);
+      const next = {
+        ...withInfluence,
+        chargeAttackIndex: withInfluence.charging
+          ? Math.max(0, Math.min(baseCount - 1, withInfluence.chargeAttackIndex))
+          : withInfluence.chargeAttackIndex,
+      };
+      return {
+        ...next,
+        attackPlan: clampPlan(next, state.attackPlan),
+      };
+    }
+    case 'charging': {
+      const withCharging = { ...state, charging: action.value };
+      const baseCount = activeBaseCountOf(withCharging);
+      const next = {
+        ...withCharging,
+        chargeAttackIndex: action.value
+          ? Math.max(0, Math.min(baseCount - 1, withCharging.chargeAttackIndex))
+          : withCharging.chargeAttackIndex,
+      };
+      return {
+        ...next,
+        attackPlan: clampPlan(next, state.attackPlan),
+      };
+    }
     case 'chargeAttackIndex': {
+      const baseCount = activeBaseCountOf(state);
       const chargeAttackIndex = Math.max(
         0,
-        Math.min(BASE_ATTACK_COUNT - 1, action.value),
+        Math.min(baseCount - 1, action.value),
       );
       const next = { ...state, chargeAttackIndex };
       return {
@@ -111,8 +158,8 @@ export function meatGrinderReducer(
       return { ...state, startingMomentum: action.value };
     case 'initialTacModifierRaw': {
       const initialTacModifier = Math.max(
-        INITIAL_TAC_MODIFIER_MIN,
-        Math.min(INITIAL_TAC_MODIFIER_MAX, action.value),
+        activeAttacker.initialTacModifier.min,
+        Math.min(activeAttacker.initialTacModifier.max, action.value),
       );
       const next = { ...state, initialTacModifier };
       return {
@@ -129,6 +176,7 @@ export function meatGrinderReducer(
     }
     case 'bonusTime': {
       const { attackIndex, value } = action;
+      const activeBaseCount = activeBaseCountOf(state);
       if (value) {
         const pool = momentumPoolBeforeBonusTime(
           state.attackPlan.wrapPicks,
@@ -136,6 +184,7 @@ export function meatGrinderReducer(
           attackIndex,
           state.startingMomentum,
           state.bonusTimeByAttack,
+          activeBaseCount,
         );
         if (pool < 1) return state;
       }
@@ -146,6 +195,7 @@ export function meatGrinderReducer(
         state.damageMods,
         state.startingMomentum,
         nextFlags,
+        activeBaseCount,
       );
       return { ...state, bonusTimeByAttack: sanitized };
     }
@@ -155,6 +205,7 @@ export function meatGrinderReducer(
         state.damageMods,
         state.startingMomentum,
         state.bonusTimeByAttack,
+        activeBaseCountOf(state),
       );
       if (bonusTimeEqual(sanitized, state.bonusTimeByAttack)) return state;
       return { ...state, bonusTimeByAttack: sanitized };
@@ -190,6 +241,7 @@ export function meatGrinderReducer(
         action.pickIndex,
         action.pick,
         state.damageMods,
+        activeBaseCountOf(state),
       );
       if (merged == null) return state;
       return {

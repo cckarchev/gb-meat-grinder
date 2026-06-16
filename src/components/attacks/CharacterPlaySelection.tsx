@@ -61,6 +61,7 @@ export function CharacterPlaySelection({
   damageMods,
   attackIndex,
   displayIdx,
+  activeBaseCount,
   onCharacterPlayPickChange,
 }: {
   slots: CharacterPlaySlotRef[];
@@ -69,6 +70,7 @@ export function CharacterPlaySelection({
   damageMods: AttacksPanelProps['damageMods'];
   attackIndex: number;
   displayIdx: number;
+  activeBaseCount: number;
   onCharacterPlayPickChange: AttacksPanelProps['onCharacterPlayPickChange'];
 }) {
   const i = attackIndex;
@@ -79,6 +81,7 @@ export function CharacterPlaySelection({
       i,
       pickIndex,
       damageMods,
+      activeBaseCount,
     );
     return !cpAvail.depleted && (cpAvail.canPickSo || cpAvail.canPickStagger);
   });
@@ -93,6 +96,7 @@ export function CharacterPlaySelection({
           i,
           pickIndex,
           damageMods,
+          activeBaseCount,
         );
         const pick = characterPlayPicks[i]?.[pickIndex];
         const pickOrdinal = pickIndex + 1;

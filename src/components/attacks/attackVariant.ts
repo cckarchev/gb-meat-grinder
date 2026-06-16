@@ -1,4 +1,3 @@
-import { BASE_ATTACK_COUNT } from '@/core/constants';
 import { attackRowIsBerserker } from '@/core/playbook';
 import type { AttackBlockVariant } from '@/types/components/attacks';
 
@@ -7,7 +6,7 @@ export function attackBlockVariant(
   chargeAttackIndex: number,
 ): AttackBlockVariant {
   if (attackRowIsBerserker(attackIndex)) return 'berserker';
-  if (attackIndex < BASE_ATTACK_COUNT && attackIndex === chargeAttackIndex) {
+  if (attackIndex === chargeAttackIndex) {
     return 'charge';
   }
   return 'base';

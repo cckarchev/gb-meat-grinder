@@ -1,9 +1,12 @@
 /**
- * Veteran Boar playbook: columns in card order. Each column needs `netSuccesses`
- * after ARM; `results` has 1–2 lines (a `|` on the card = two entries here).
+ * Playbook + wrap / character-play helpers. The playbook columns and damage
+ * buffs come from the active attacker's data; attack-row layout and activation
+ * order are derived from the attacker's traits plus the influence allocated
+ * (`activeBaseCount`), not from fixed constants.
  */
 
-import { BASE_ATTACK_COUNT, MAX_ATTACK_COUNT } from '@/core/constants';
+import { activeAttacker } from '@/attackers/activeAttacker';
+import { attackArraySize, berserkerRowOffset } from '@/core/attackStructure';
 import type {
   CharacterPlayPick,
   CharacterPlayPickSlot,
@@ -17,127 +20,8 @@ import type {
   WrapPick,
 } from '@/types/core/playbook';
 
-export const PLAYBOOK: readonly PlaybookColumn[] = [
-  {
-    netSuccesses: 1,
-    results: [
-      {
-        id: 'push',
-        label: '>',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
-        damage: 0,
-      },
-      {
-        id: 'dmg1',
-        label: '1',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
-        damage: 1,
-        momentum: true,
-      },
-    ],
-  },
-  {
-    netSuccesses: 2,
-    results: [
-      {
-        id: 'gb',
-        label: 'GB',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
-        damage: 0,
-        picksCharacterPlay: true,
-      },
-      {
-        id: 'dmg2',
-        label: '2',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
-        damage: 2,
-        momentum: true,
-      },
-    ],
-  },
-  {
-    netSuccesses: 3,
-    results: [
-      {
-        id: 'kd',
-        label: 'KD',
-        tacBonusForLater: 0,
-        defReductionForLater: 1,
-        damage: 0,
-      },
-    ],
-  },
-  {
-    netSuccesses: 4,
-    results: [
-      {
-        id: 'push_push',
-        label: '>>',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
-        damage: 0,
-      },
-      {
-        id: 'dmg3',
-        label: '3',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
-        damage: 3,
-        momentum: true,
-      },
-    ],
-  },
-  {
-    netSuccesses: 5,
-    results: [
-      {
-        id: 'one_gb',
-        label: '1GB',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
-        damage: 1,
-        picksCharacterPlay: true,
-      },
-      {
-        id: 'tackle',
-        label: 'T',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
-        damage: 0,
-      },
-    ],
-  },
-  {
-    netSuccesses: 6,
-    results: [
-      {
-        id: 'dmg5',
-        label: '5',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
-        damage: 5,
-        momentum: true,
-      },
-    ],
-  },
-  {
-    netSuccesses: 7,
-    results: [
-      {
-        id: 'dmg6',
-        label: '6',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
-        damage: 6,
-        momentum: true,
-      },
-    ],
-  },
-] as const;
+/** The active attacker's playbook, in card order. */
+export const PLAYBOOK: readonly PlaybookColumn[] = activeAttacker.playbook;
 
 /** Largest column cost on the card; wrap reserves this much net per “full” step. */
 export const MAX_PLAYBOOK_NET = Math.max(
@@ -159,12 +43,16 @@ export function getPlaybookResult(id: PlaybookChoiceId): PlaybookResult {
 
 export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
   toughHide: false,
-  tooledUp: false,
-  theOwner: false,
+  buffs: {},
 };
 
+/** Sum of the active attacker's damage buffs that are currently selected. */
 export function playbookDamageBonusSum(mods: PlaybookDamageMods): number {
-  return (mods.tooledUp ? 1 : 0) + (mods.theOwner ? 1 : 0);
+  let sum = 0;
+  for (const buff of activeAttacker.damageBuffs) {
+    if (mods.buffs[buff.id]) sum += buff.damageBonus;
+  }
+  return sum;
 }
 
 export function effectivePlaybookDamage(
@@ -223,8 +111,9 @@ export function momentumPoolBeforeBonusTime(
   attackIndex: number,
   startingMomentum: number,
   bonusTimeByAttack: readonly boolean[],
+  activeBaseCount: number,
 ): number {
-  const order = activationAttackIndices(wrapPicks, damageMods);
+  const order = activationAttackIndices(wrapPicks, damageMods, activeBaseCount);
   const pos = order.indexOf(attackIndex);
   if (pos < 0) return startingMomentum;
   let total = startingMomentum;
@@ -252,8 +141,9 @@ export function momentumAfterAttackInclusive(
   attackIndex: number,
   startingMomentum: number,
   bonusTimeByAttack: readonly boolean[],
+  activeBaseCount: number,
 ): number {
-  const order = activationAttackIndices(wrapPicks, damageMods);
+  const order = activationAttackIndices(wrapPicks, damageMods, activeBaseCount);
   const pos = order.indexOf(attackIndex);
   if (pos < 0) return startingMomentum;
   let total = startingMomentum;
@@ -276,8 +166,9 @@ export function sanitizeBonusTimeFlags(
   damageMods: PlaybookDamageMods,
   startingMomentum: number,
   bonusTimeByAttack: readonly boolean[],
+  activeBaseCount: number,
 ): boolean[] {
-  const order = activationAttackIndices(wrapPicks, damageMods);
+  const order = activationAttackIndices(wrapPicks, damageMods, activeBaseCount);
   const next = bonusTimeByAttack.map((b) => b);
   for (let iter = 0; iter < order.length + 2; iter++) {
     let changed = false;
@@ -289,6 +180,7 @@ export function sanitizeBonusTimeFlags(
         i,
         startingMomentum,
         next,
+        activeBaseCount,
       );
       if (pool < 1) {
         next[i] = false;
@@ -308,10 +200,12 @@ export function wrapPickClearsCover(id: WrapPick | null | undefined): boolean {
  * Fixed GB swing order for cover: each base then its berserker, regardless of
  * whether the berserker row is “active” for damage (so > / >> are never skipped).
  */
-export function coverSwingClockIndices(): number[] {
+export function coverSwingClockIndices(activeBaseCount: number): number[] {
   const out: number[] = [];
-  for (let b = 0; b < BASE_ATTACK_COUNT; b++) {
-    out.push(b, BASE_ATTACK_COUNT + b);
+  const offset = berserkerRowOffset();
+  for (let b = 0; b < activeBaseCount; b++) {
+    out.push(b);
+    if (activeAttacker.berserker) out.push(offset + b);
   }
   return out;
 }
@@ -351,13 +245,13 @@ export function formatWrapRowSelectionLabel(
   return labels.length > 0 ? labels.join(' → ') : '-';
 }
 
-/** Rows 0–2: charge + two bought attacks. Rows 3–5: berserkers for bases 0–2. */
+/** Rows below the berserker offset are base attacks; at/above it are berserkers. */
 export function attackRowIsBerserker(attackIndex: number): boolean {
-  return attackIndex >= BASE_ATTACK_COUNT;
+  return attackIndex >= berserkerRowOffset();
 }
 
 export function berserkerSourceBaseIndex(attackIndex: number): number {
-  return attackIndex - BASE_ATTACK_COUNT;
+  return attackIndex - berserkerRowOffset();
 }
 
 /** True if this base attack includes any non-null wrap line with modified playbook damage > 0. */
@@ -370,30 +264,45 @@ export function baseAttackDealtDamage(
   );
 }
 
-/** Berserker rows are active only when their source base dealt damage; bases always active. */
+/**
+ * Base rows are active while their index is within the allocated base count;
+ * berserker rows are active only for Berserker models when their source base is
+ * active and dealt damage.
+ */
 export function attackRowIsActive(
   wrapPicks: WrapPick[][],
   attackIndex: number,
   damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
 ): boolean {
-  if (attackIndex < BASE_ATTACK_COUNT) return true;
+  const offset = berserkerRowOffset();
+  if (attackIndex < offset) {
+    return attackIndex < activeBaseCount;
+  }
+  if (!activeAttacker.berserker) return false;
   const b = berserkerSourceBaseIndex(attackIndex);
+  if (b < 0 || b >= activeBaseCount) return false;
   return baseAttackDealtDamage(wrapPicks[b] ?? [], damageMods);
 }
 
 /**
- * Swing order: each base, then its berserker (if any) before the next base.
+ * Swing order: each active base, then its berserker (if any) before the next base.
  * Berserkers cannot be banked; they always resolve immediately after the base that earned them.
  */
 export function activationAttackIndices(
   wrapPicks: WrapPick[][],
   damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
 ): number[] {
   const out: number[] = [];
-  for (let b = 0; b < BASE_ATTACK_COUNT; b++) {
+  const offset = berserkerRowOffset();
+  for (let b = 0; b < activeBaseCount; b++) {
     out.push(b);
-    const ber = BASE_ATTACK_COUNT + b;
-    if (attackRowIsActive(wrapPicks, ber, damageMods)) out.push(ber);
+    if (!activeAttacker.berserker) continue;
+    const ber = offset + b;
+    if (attackRowIsActive(wrapPicks, ber, damageMods, activeBaseCount)) {
+      out.push(ber);
+    }
   }
   return out;
 }
@@ -421,10 +330,11 @@ export function characterPlayUsageBeforePick(
   attackIndex: number,
   pickIndex: number,
   damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
 ): CharacterPlayUsage {
   let so = false;
   let stagger = false;
-  const order = activationAttackIndices(wrapPicks, damageMods);
+  const order = activationAttackIndices(wrapPicks, damageMods, activeBaseCount);
   const targetPos = order.indexOf(attackIndex);
   if (targetPos < 0) return { so, stagger };
 
@@ -448,8 +358,9 @@ export function kdAlreadyTakenBeforePick(
   attackIndex: number,
   pickIndex: number,
   damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
 ): boolean {
-  const order = activationAttackIndices(wrapPicks, damageMods);
+  const order = activationAttackIndices(wrapPicks, damageMods, activeBaseCount);
   const targetPos = order.indexOf(attackIndex);
   if (targetPos < 0) return false;
 
@@ -473,6 +384,7 @@ export function rowEffectsForPick(
   attackIndex: number,
   pickIndex: number,
   damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
 ): { tacBonusForLater: number; defReductionForLater: number } {
   const id = wrapPicks[attackIndex][pickIndex];
   if (id == null) {
@@ -480,7 +392,13 @@ export function rowEffectsForPick(
   }
   if (
     id === 'kd' &&
-    kdAlreadyTakenBeforePick(wrapPicks, attackIndex, pickIndex, damageMods)
+    kdAlreadyTakenBeforePick(
+      wrapPicks,
+      attackIndex,
+      pickIndex,
+      damageMods,
+      activeBaseCount,
+    )
   ) {
     return { tacBonusForLater: 0, defReductionForLater: 0 };
   }
@@ -497,6 +415,7 @@ export function rowEffectsForPick(
     attackIndex,
     pickIndex,
     damageMods,
+    activeBaseCount,
   );
   if (u.so && u.stagger) {
     return { tacBonusForLater: 0, defReductionForLater: 0 };
@@ -518,6 +437,7 @@ export function characterPlayAvailabilityForPick(
   attackIndex: number,
   pickIndex: number,
   damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
 ): { canPickSo: boolean; canPickStagger: boolean; depleted: boolean } {
   const u = characterPlayUsageBeforePick(
     wrapPicks,
@@ -525,6 +445,7 @@ export function characterPlayAvailabilityForPick(
     attackIndex,
     pickIndex,
     damageMods,
+    activeBaseCount,
   );
   if (u.so && u.stagger) {
     return { canPickSo: false, canPickStagger: false, depleted: true };
@@ -541,6 +462,7 @@ export function sanitizeCharacterPlayPicksWrap(
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],
   damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
 ): { characterPlayPicks: CharacterPlayPickSlot[][]; changed: boolean } {
   const next: CharacterPlayPickSlot[][] = characterPlayPicks.map((row) => [
     ...row,
@@ -558,7 +480,14 @@ export function sanitizeCharacterPlayPicksWrap(
         }
         continue;
       }
-      const u = characterPlayUsageBeforePick(wrapPicks, next, i, k, damageMods);
+      const u = characterPlayUsageBeforePick(
+        wrapPicks,
+        next,
+        i,
+        k,
+        damageMods,
+        activeBaseCount,
+      );
       if (u.so && u.stagger) continue;
       let f = next[i][k] ?? 'so';
       if (u.stagger && f === 'stagger') {
@@ -627,29 +556,34 @@ export function wrapNetThresholdAllHits(picks: readonly WrapPick[]): number {
 }
 
 export function defaultCharacterPlayPicksWrap(): CharacterPlayPickSlot[][] {
-  return Array.from({ length: MAX_ATTACK_COUNT }, () => [null]);
+  return Array.from({ length: attackArraySize() }, () => [null]);
 }
 
 export function defaultWrapPicks(): WrapPick[][] {
-  return Array.from({ length: MAX_ATTACK_COUNT }, () => [null]);
+  return Array.from({ length: attackArraySize() }, () => [null]);
 }
 
 /**
- * Sums card pip damage and marginal effects of Tough Hide, Tooled Up, and The
- * Owner across all active rows (same scope as {@link damageIfAllHitsWrap}).
+ * Sums card pip damage and the marginal effects of Tough Hide and each of the
+ * attacker's damage buffs across all active rows (same scope as
+ * {@link damageIfAllHitsWrap}).
  */
 export function damageModifierBreakdownWrap(
   wrapPicks: WrapPick[][],
   damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
 ): DamageModifierBreakdown {
   let rawCardDamage = 0;
   let toughHideReduction = 0;
-  let tooledUpBonus = 0;
-  let theOwnerBonus = 0;
   let totalEffective = 0;
+  const buffBonuses = activeAttacker.damageBuffs.map((buff) => ({
+    id: buff.id,
+    label: buff.label,
+    bonus: 0,
+  }));
 
   for (let i = 0; i < wrapPicks.length; i++) {
-    if (!attackRowIsActive(wrapPicks, i, damageMods)) continue;
+    if (!attackRowIsActive(wrapPicks, i, damageMods, activeBaseCount)) continue;
     for (const id of wrapPicks[i]) {
       if (id == null) continue;
       const card = getPlaybookResult(id).damage;
@@ -660,18 +594,20 @@ export function damageModifierBreakdownWrap(
       toughHideReduction +=
         effectiveDamageForChoice(id, { ...damageMods, toughHide: false }) -
         full;
-      tooledUpBonus +=
-        full - effectiveDamageForChoice(id, { ...damageMods, tooledUp: false });
-      theOwnerBonus +=
-        full - effectiveDamageForChoice(id, { ...damageMods, theOwner: false });
+      for (const bb of buffBonuses) {
+        const without: PlaybookDamageMods = {
+          ...damageMods,
+          buffs: { ...damageMods.buffs, [bb.id]: false },
+        };
+        bb.bonus += full - effectiveDamageForChoice(id, without);
+      }
     }
   }
 
   return {
     rawCardDamage,
     toughHideReduction,
-    tooledUpBonus,
-    theOwnerBonus,
+    buffBonuses,
     totalEffective,
   };
 }
@@ -680,9 +616,10 @@ export function damageModifierBreakdownWrap(
 export function damageIfAllHitsWrap(
   wrapPicks: WrapPick[][],
   damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
 ): number[] {
   return wrapPicks.map((picks, i) =>
-    attackRowIsActive(wrapPicks, i, damageMods)
+    attackRowIsActive(wrapPicks, i, damageMods, activeBaseCount)
       ? picks.reduce(
           (s, id) =>
             s + (id == null ? 0 : effectiveDamageForChoice(id, damageMods)),

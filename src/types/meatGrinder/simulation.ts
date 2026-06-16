@@ -12,7 +12,11 @@ export type MeatGrinderSimulation = {
   enemyDef: number;
   armor: number;
   hp: number;
+  influence: number;
+  charging: boolean;
   chargeAttackIndex: number;
+  /** Active base attacks this activation (derived from traits + influence). */
+  activeBaseCount: number;
   enemyHasCover: boolean;
   enemyDefensiveStance: boolean;
   startingMomentum: number;

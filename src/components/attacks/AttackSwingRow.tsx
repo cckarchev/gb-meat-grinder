@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import type { AttackRollContext } from '@/types/core/attackSequence';
-import { BASE_ATTACK_COUNT } from '@/core/constants';
-import { choiceUsesCharacterPlay } from '@/core/playbook';
+import { attackRowIsBerserker, choiceUsesCharacterPlay } from '@/core/playbook';
 import { maxNetSuccessesForRoll } from '@/core/probability';
 import {
   attackBlockVariant,
@@ -204,7 +203,9 @@ export function AttackSwingRow({
   attack,
   displayIdx,
   armor,
+  charging,
   chargeAttackIndex,
+  activeBaseCount,
   wrapPicks,
   characterPlayPicks,
   damageMods,
@@ -223,7 +224,9 @@ export function AttackSwingRow({
   attack: AttackRollContext;
   displayIdx: number;
   armor: number;
+  charging: boolean;
   chargeAttackIndex: number;
+  activeBaseCount: number;
   wrapPicks: AttacksPanelProps['wrapPicks'];
   characterPlayPicks: AttacksPanelProps['characterPlayPicks'];
   damageMods: AttacksPanelProps['damageMods'];
@@ -258,7 +261,7 @@ export function AttackSwingRow({
           <AttackHeading>{attackKindLabel(i, chargeAttackIndex)}</AttackHeading>
           <DicePoolStrip aria-label="Dice pool for this attack">
             <PoolCluster>
-              {i < BASE_ATTACK_COUNT ? (
+              {charging && !attackRowIsBerserker(i) ? (
                 <ChargeWrap>
                   <input
                     type="radio"
@@ -321,6 +324,7 @@ export function AttackSwingRow({
                   maxNet={maxNet}
                   wrapPicks={wrapPicks}
                   damageMods={damageMods}
+                  activeBaseCount={activeBaseCount}
                   firstSlotInSection
                   onChoiceChange={onChoiceChange}
                 />
@@ -345,6 +349,7 @@ export function AttackSwingRow({
                         maxNet={maxNet}
                         wrapPicks={wrapPicks}
                         damageMods={damageMods}
+                        activeBaseCount={activeBaseCount}
                         firstSlotInSection={pickIndex === 1}
                         onChoiceChange={onChoiceChange}
                       />
@@ -359,6 +364,7 @@ export function AttackSwingRow({
                 damageMods={damageMods}
                 attackIndex={i}
                 displayIdx={displayIdx}
+                activeBaseCount={activeBaseCount}
                 onCharacterPlayPickChange={onCharacterPlayPickChange}
               />
             </>

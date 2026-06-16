@@ -213,6 +213,7 @@ export function WrapSlotPickGrid({
   maxNet,
   wrapPicks,
   damageMods,
+  activeBaseCount,
   firstSlotInSection,
   onChoiceChange,
 }: {
@@ -224,6 +225,7 @@ export function WrapSlotPickGrid({
   maxNet: number;
   wrapPicks: WrapPick[][];
   damageMods: PlaybookDamageMods;
+  activeBaseCount: number;
   firstSlotInSection: boolean;
   onChoiceChange: AttacksPanelProps['onChoiceChange'];
 }) {
@@ -251,6 +253,7 @@ export function WrapSlotPickGrid({
                       i,
                       pickIndex,
                       damageMods,
+                      activeBaseCount,
                     );
                   return (
                     <LineButton
