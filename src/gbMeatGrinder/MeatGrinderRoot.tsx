@@ -4,14 +4,13 @@ import { EnemyPanel } from '@/components/EnemyPanel';
 import { AttackerPanel } from '@/components/AttackerPanel';
 import { TargetPanelsRow } from '@/components/TargetPanelsRow';
 import { ToggleButton } from '@/components/controls';
-import { SectionLabel } from '@/components/ui/SectionLabel';
 import { narrowViewport } from '@/styles/breakpoints';
 import { MeatGrinderSimulationContext } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { useMeatGrinderSimulationState } from '@/gbMeatGrinder/useMeatGrinderSimulationState';
 
 const Header = styled.header`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1.5rem;
@@ -20,13 +19,6 @@ const Header = styled.header`
     margin-bottom: 0.85rem;
     gap: 0.5rem;
   }
-`;
-
-const TitleBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  min-width: 0;
 `;
 
 const TitleGroup = styled.div`
@@ -76,13 +68,10 @@ export function MeatGrinderRoot() {
   return (
     <MeatGrinderSimulationContext.Provider value={value}>
       <Header>
-        <TitleBlock>
-          <SectionLabel label="Guild Ball // Meat Grinder" />
-          <TitleGroup>
-            <TitleIcon src="/favicon.svg" alt="" aria-hidden="true" />
-            <Title>GB Meat Grinder</Title>
-          </TitleGroup>
-        </TitleBlock>
+        <TitleGroup>
+          <TitleIcon src="/favicon.svg" alt="" aria-hidden="true" />
+          <Title>GB Meat Grinder</Title>
+        </TitleGroup>
         <ResetButton
           type="button"
           onClick={() => value.dispatch({ type: 'reset' })}
