@@ -61,22 +61,18 @@ const AttackBlock = styled.div<{
   `
       : ''}
 
+  /* Focused (charge/berserker) attacks read via a crisp 1px accent border plus
+     the corner brackets — no heavy halo, which clashed with the brackets. */
   ${(p) =>
     p.$variant === 'charge'
       ? `
-    border: 2px solid var(--accent-charge);
-    background: color-mix(in srgb, var(--accent-charge-soft) 24%, var(--panel));
-    box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, var(--accent-charge) 38%, transparent),
-      0 0 0 1px color-mix(in srgb, var(--accent-charge-soft) 40%, transparent);
+    border-color: var(--accent-charge);
+    background: color-mix(in srgb, var(--accent-charge-soft) 16%, var(--panel));
   `
       : p.$variant === 'berserker'
         ? `
-    border: 2px solid var(--accent-berserker);
-    background: color-mix(in srgb, var(--accent-berserker-soft) 24%, var(--panel));
-    box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, var(--accent-berserker) 38%, transparent),
-      0 0 0 1px color-mix(in srgb, var(--accent-berserker-soft) 40%, transparent);
+    border-color: var(--accent-berserker);
+    background: color-mix(in srgb, var(--accent-berserker-soft) 16%, var(--panel));
   `
         : ''}
 
