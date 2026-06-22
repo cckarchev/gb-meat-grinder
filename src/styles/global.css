@@ -17,6 +17,9 @@
   --bg: #0a1a22;
   --bg-deep: #070e12;
   --panel: rgba(13, 26, 31, 0.6);
+  /** Opaque, slightly-elevated surface for floating popovers/tooltips so dense
+      content behind them never bleeds through. */
+  --popover-bg: #15303a;
   --border: rgba(255, 255, 255, 0.22);
   --border-divider: rgba(255, 255, 255, 0.14);
   --border-hover: rgba(255, 255, 255, 0.34);
