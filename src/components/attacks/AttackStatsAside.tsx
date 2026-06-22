@@ -35,14 +35,15 @@ const StatRow = styled.div`
 
 const AttackStatCaption = styled.span`
   flex-shrink: 0;
-  font-size: 0.68em;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.64em;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--tracking-label);
   color: var(--muted);
 
   ${narrowViewport} {
-    letter-spacing: 0.03em;
+    letter-spacing: 0.08em;
   }
 `;
 

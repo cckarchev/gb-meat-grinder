@@ -23,7 +23,7 @@ const Trigger = styled.button`
   ${focusRing}
 
   &:focus-visible {
-    border-radius: 2px;
+    border-radius: 0;
   }
 `;
 
@@ -37,9 +37,9 @@ const Bubble = styled.span`
   padding: 0.5rem 0.6rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background: var(--panel);
+  background: var(--popover-bg);
   color: var(--text);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
   font-size: 0.78rem;
   font-weight: 400;
   line-height: 1.4;

@@ -10,6 +10,7 @@ import {
 } from '@/components/attacks/attackVariant';
 import type { AttackBlockVariant } from '@/types/components/attacks';
 import { Mono } from '@/components/ui';
+import { CornerBrackets } from '@/components/ui/CornerBrackets';
 import { InfoTip } from '@/components/InfoTip';
 import { AttackStatsAside } from '@/components/attacks/AttackStatsAside';
 import { CharacterPlaySelection } from '@/components/attacks/CharacterPlaySelection';
@@ -45,6 +46,7 @@ const AttackBlock = styled.div<{
   $variant: AttackBlockVariant;
   $disabled?: boolean;
 }>`
+  position: relative;
   ${PLAYBOOK_COLUMN_WIDTH_VAR}: ${PLAYBOOK_COLUMN_TRACK};
   border-radius: var(--radius-lg);
   padding: 0.65rem 0.75rem 0.85rem;
@@ -59,22 +61,18 @@ const AttackBlock = styled.div<{
   `
       : ''}
 
+  /* Focused (charge/berserker) attacks read via a crisp 1px accent border plus
+     the corner brackets — no heavy halo, which clashed with the brackets. */
   ${(p) =>
     p.$variant === 'charge'
       ? `
-    border: 2px solid var(--accent-charge);
-    background: color-mix(in srgb, var(--accent-charge-soft) 24%, var(--panel));
-    box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, var(--accent-charge) 38%, transparent),
-      0 0 0 1px color-mix(in srgb, var(--accent-charge-soft) 40%, transparent);
+    border-color: var(--accent-charge);
+    background: color-mix(in srgb, var(--accent-charge-soft) 16%, var(--panel));
   `
       : p.$variant === 'berserker'
         ? `
-    border: 2px solid var(--accent-berserker);
-    background: color-mix(in srgb, var(--accent-berserker-soft) 24%, var(--panel));
-    box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, var(--accent-berserker) 38%, transparent),
-      0 0 0 1px color-mix(in srgb, var(--accent-berserker-soft) 40%, transparent);
+    border-color: var(--accent-berserker);
+    background: color-mix(in srgb, var(--accent-berserker-soft) 16%, var(--panel));
   `
         : ''}
 
@@ -95,13 +93,16 @@ const AttackHeading = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  font-size: 0.88rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--text);
   margin-bottom: 0.45rem;
 
   ${narrowViewport} {
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     margin-bottom: 0.35rem;
   }
 `;
@@ -167,10 +168,11 @@ const TacPoolBadge = styled.div`
 `;
 
 const TacPoolLabel = styled.span`
-  font-size: 0.68rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--tracking-label);
   color: var(--muted);
 `;
 
@@ -215,7 +217,7 @@ const KillingBlowBadge = styled.span`
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--panel);
+  color: var(--accent-ink);
   background: var(--accent-berserker);
   white-space: nowrap;
 `;
@@ -284,6 +286,11 @@ export function AttackSwingRow({
     <AttackRow>
       <AttackMain>
         <AttackBlock $variant={variant} $disabled={disabled} inert={disabled}>
+          {variant === 'charge' ? (
+            <CornerBrackets accent="var(--accent-charge)" size={16} />
+          ) : variant === 'berserker' ? (
+            <CornerBrackets accent="var(--accent-berserker)" size={16} />
+          ) : null}
           <AttackHeading>
             {attackKindLabel(attacker, i, chargeAttackIndex)}
             {isKillingBlow ? (
