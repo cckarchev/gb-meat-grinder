@@ -109,7 +109,7 @@ const Bubble = styled.span`
   border-radius: var(--radius-md);
   background: var(--panel);
   color: var(--text);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
   font-size: 0.74rem;
   font-weight: 400;
   line-height: 1.4;

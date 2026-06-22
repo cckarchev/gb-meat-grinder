@@ -70,7 +70,7 @@ const ColumnBlock = styled.div`
   min-width: 0;
   height: 100%;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   background: var(--input-bg);
 `;

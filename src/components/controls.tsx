@@ -7,23 +7,30 @@ import { focusRing } from '@/styles/mixins';
  * control. `$active` renders the filled (selected) state.
  */
 export const ToggleButton = styled.button<{ $active?: boolean }>`
-  font: inherit;
-  font-size: 0.9rem;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-button);
   padding: 0.5rem 1rem;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
   cursor: pointer;
   white-space: nowrap;
-  background: ${(p) => (p.$active ? 'var(--text)' : 'var(--input-bg)')};
-  color: ${(p) => (p.$active ? 'var(--bg)' : 'var(--text)')};
+  /* Active = accent fill (CCK primary); inactive = teal-outline ghost. */
+  background: ${(p) => (p.$active ? 'var(--accent)' : 'transparent')};
+  color: ${(p) => (p.$active ? 'var(--accent-ink)' : 'var(--teal-bright)')};
+  border: 1px solid
+    ${(p) => (p.$active ? 'transparent' : 'var(--ghost-border)')};
   transition:
-    background 0.12s ease,
-    border-color 0.12s ease;
+    opacity 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
 
-  &:hover {
-    filter: brightness(1.05);
-    border-color: var(--muted);
+  &:hover:not(:disabled) {
+    ${(p) =>
+      p.$active
+        ? 'opacity: 0.9;'
+        : 'border-color: var(--ghost-border-hover); background: var(--ghost-bg);'}
   }
 
   ${focusRing}
@@ -31,12 +38,10 @@ export const ToggleButton = styled.button<{ $active?: boolean }>`
   &:disabled {
     opacity: 0.4;
     cursor: not-allowed;
-    filter: none;
   }
 
   ${narrowViewport} {
-    font-size: 0.8rem;
-    padding: 0.38rem 0.55rem;
-    border-radius: var(--radius-xs);
+    font-size: 0.78rem;
+    padding: 0.4rem 0.6rem;
   }
 `;

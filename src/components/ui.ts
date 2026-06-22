@@ -7,6 +7,11 @@ export const Panel = styled.section`
   padding: 1rem 1.1rem;
   margin-bottom: 1rem;
   background: var(--panel);
+  transition: border-color 0.15s ease;
+
+  &:hover {
+    border-color: var(--border-hover);
+  }
 
   ${narrowViewport} {
     padding: 0.65rem 0.55rem;
@@ -16,11 +21,12 @@ export const Panel = styled.section`
 `;
 
 export const PanelTitle = styled.h2`
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
+  letter-spacing: var(--tracking-label);
+  color: var(--accent);
   margin: 0 0 0.75rem;
 
   ${narrowViewport} {
