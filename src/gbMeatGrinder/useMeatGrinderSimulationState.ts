@@ -3,6 +3,8 @@ import { attackerById, ATTACKERS } from '@/attackers/registry';
 import { computeAttackSequence } from '@/core/attackSequence';
 import { activeBaseAttackCount } from '@/core/attackStructure';
 import {
+  buffsTacBonusSum,
+  chargeFlatDamageSwingIndex,
   damageIfAllHitsWrap,
   effectiveArmor,
   effectiveEnemyDef,
@@ -45,7 +47,19 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
     state.enemyKnockedDown,
     state.enemySnared,
   );
-  const initialTacModifier = state.gangingUp - state.crowdingOut;
+  const initialTacModifier =
+    state.gangingUp -
+    state.crowdingOut +
+    buffsTacBonusSum(attacker, state.damageMods);
+  // The charge swing where Sweeping Charge lands its flat damage, or -1. That
+  // damage is alongside the charge attack, so it triggers e.g. the attacker's
+  // Searing Strike for later swings.
+  const chargeFlatDamageIndex = chargeFlatDamageSwingIndex(
+    attacker,
+    state.specialAbilities,
+    state.charging,
+    effectiveChargeAttackIndex,
+  );
 
   // The swing a Resilient target ignores, plus plan copies with that swing
   // blanked so every downstream calculation treats it as if it never happened.
@@ -98,6 +112,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
         effectiveBonusTimeByAttack,
         initialTacModifier,
         activeBaseCount,
+        chargeFlatDamageIndex,
       ),
     [
       attacker,
@@ -112,6 +127,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       effectiveBonusTimeByAttack,
       initialTacModifier,
       activeBaseCount,
+      chargeFlatDamageIndex,
     ],
   );
 
@@ -126,19 +142,28 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
         damageIfAllHitsWrap(
           attacker,
           effectiveWrapPicks,
+          effectiveCharacterPlayPicks,
           state.damageMods,
           activeBaseCount,
+          chargeFlatDamageIndex,
         ),
-        specialAbilityFlatDamage(attacker, state.specialAbilities),
+        specialAbilityFlatDamage(
+          attacker,
+          state.specialAbilities,
+          state.charging,
+        ),
         state.hp,
       ),
     [
       attacks,
       attacker,
       effectiveWrapPicks,
+      effectiveCharacterPlayPicks,
       state.damageMods,
       activeBaseCount,
+      chargeFlatDamageIndex,
       state.specialAbilities,
+      state.charging,
       state.hp,
     ],
   );
@@ -169,6 +194,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       wrapPicks,
       characterPlayPicks,
       effectiveWrapPicks,
+      effectiveCharacterPlayPicks,
       effectiveBonusTimeByAttack,
       ignoredAttackIndex: ignoredDisplayIndex,
       attacks,
@@ -182,6 +208,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       wrapPicks,
       characterPlayPicks,
       effectiveWrapPicks,
+      effectiveCharacterPlayPicks,
       effectiveBonusTimeByAttack,
       ignoredDisplayIndex,
       attacks,

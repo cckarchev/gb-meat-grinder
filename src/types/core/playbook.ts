@@ -23,12 +23,18 @@ export type CharacterPlay = {
   /** −enemy ARM on later attacks (e.g. They Ain't Tough!). A condition; caps at 1. */
   armorReduction?: number;
   /**
-   * When omitted/false (the default), the play is Once Per Turn: picking it on
-   * one swing removes it from later swings this activation, and its effect does
-   * not re-apply ("effects from the same source do not stack"). Set true for
-   * plays that may be taken on multiple swings and stack each time.
+   * Flat, unmodified damage dealt when this play is triggered off a GB result
+   * (e.g. Impale = 3). Ignores ARM / Tough Hide / buffs; conditional on the
+   * triggering swing reaching the GB line, and respecting {@link oncePerTurn}.
    */
-  repeatable?: boolean;
+  flatDamage?: number;
+  /**
+   * When true, the play is Once Per Turn: picking it on one swing removes it
+   * from later swings this activation, and its effect does not re-apply
+   * ("effects from the same source do not stack"). When false, the play may be
+   * taken on multiple swings and stacks each time. Required on every play.
+   */
+  oncePerTurn: boolean;
 };
 
 /** A chosen character play, keyed by {@link CharacterPlay.id}. */
@@ -40,10 +46,13 @@ export type CharacterPlayUsage = ReadonlySet<string>;
 export type PlaybookResult = {
   id: PlaybookChoiceId;
   label: string;
-  /** +TAC on later attacks (Singled Out); from character play when using GB / 1GB. */
-  tacBonusForLater: number;
-  /** −enemy DEF on later attacks (KD / Stagger). */
-  defReductionForLater: number;
+  /**
+   * +TAC on later attacks (Singled Out); from character play when using GB / 1GB.
+   * Defaults to 0.
+   */
+  tacBonusForLater?: number;
+  /** −enemy DEF on later attacks (KD / Stagger). Defaults to 0. */
+  defReductionForLater?: number;
   /** Damage to enemy HP when this attack hits with this line. */
   damage: number;
   /** True if this line generates momentum (momentous). */
@@ -77,6 +86,12 @@ export type PlaybookDamageMods = {
    * not fixed. Each active buff adds its `damageBonus` to selected damage pips.
    */
   buffs: Record<string, boolean>;
+  /**
+   * Engine-injected, per-swing bonus added to each damaging playbook line (e.g.
+   * Burning Passion on a swing where the target is already Burning). Not user
+   * state: the damage helpers compute it per swing and inject a copy of the mods.
+   */
+  extraDamageBonus?: number;
 };
 
 /** Playbook line button look for momentous damage pips (after Tough Hide / buffs). */

@@ -1,5 +1,7 @@
+import { cast } from '@/attackers/cast';
 import { thresher } from '@/attackers/thresher';
 import { veteranBoar } from '@/attackers/veteranBoar';
+import { veteranCinder } from '@/attackers/veteranCinder';
 import { windle } from '@/attackers/windle';
 import type { AttackerData } from '@/types/core/attacker';
 
@@ -8,6 +10,8 @@ export const ATTACKERS: readonly AttackerData[] = [
   veteranBoar,
   windle,
   thresher,
+  cast,
+  veteranCinder,
 ];
 
 /** Fallback model when an id can't be resolved. */

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import {
+  chargeFlatDamageSwingIndex,
   damageIfAllHitsWrap,
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
@@ -28,6 +29,7 @@ export function AttacksPanel() {
     wrapPicks,
     characterPlayPicks,
     effectiveWrapPicks,
+    effectiveCharacterPlayPicks,
     effectiveBonusTimeByAttack,
     ignoredAttackIndex,
     damageMods,
@@ -38,6 +40,12 @@ export function AttacksPanel() {
   } = useMeatGrinderSimulation();
 
   const effectiveChargeAttackIndex = charging ? chargeAttackIndex : -1;
+  const chargeFlatDamageIndex = chargeFlatDamageSwingIndex(
+    attacker,
+    specialAbilities,
+    charging,
+    effectiveChargeAttackIndex,
+  );
 
   const [wrapExpanded, setWrapExpanded] = useState(() => new Set<number>());
 
@@ -55,22 +63,31 @@ export function AttacksPanel() {
       damageIfAllHitsWrap(
         attacker,
         effectiveWrapPicks,
+        effectiveCharacterPlayPicks,
         damageMods,
         activeBaseCount,
+        chargeFlatDamageIndex,
       ),
-    [attacker, effectiveWrapPicks, damageMods, activeBaseCount],
+    [
+      attacker,
+      effectiveWrapPicks,
+      effectiveCharacterPlayPicks,
+      damageMods,
+      activeBaseCount,
+      chargeFlatDamageIndex,
+    ],
   );
   const remainingHpAfterSwing = useMemo(() => {
     const out: number[] = [];
     // Special-ability damage is guaranteed and untied to a swing, so apply it
     // up front as a baseline before the per-swing chip damage.
-    let dealt = specialAbilityFlatDamage(attacker, specialAbilities);
+    let dealt = specialAbilityFlatDamage(attacker, specialAbilities, charging);
     for (const ctx of attacks) {
       dealt += rowDamageIfHit[ctx.attackIndex];
       out.push(Math.max(0, targetHp - dealt));
     }
     return out;
-  }, [attacker, specialAbilities, attacks, rowDamageIfHit, targetHp]);
+  }, [attacker, specialAbilities, charging, attacks, rowDamageIfHit, targetHp]);
 
   const momentumAfterSwing = useMemo(() => {
     const base = attacks.map((ctx) =>

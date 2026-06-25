@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { guildAttackerBuffs } from '@/core/playbook';
 import { StepControl } from '@/components/StepControl';
 import { CheckOption } from '@/components/targetPanelPrimitives';
 import { InfoTip } from '@/components/InfoTip';
@@ -177,7 +178,7 @@ export function AttackerPanel() {
             Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}
           </InfoTip>
         </CheckOption>
-        {attacker.guild.buffs.map((buff) => {
+        {guildAttackerBuffs(attacker).map((buff) => {
           const disabled =
             attacker.excludedGuildBuffs?.includes(buff.id) ?? false;
           return (
@@ -211,24 +212,29 @@ export function AttackerPanel() {
             </CheckOption>
           );
         })}
-        {(attacker.specialAbilities ?? []).map((ability) => (
-          <CheckOption key={ability.id}>
-            <input
-              type="checkbox"
-              checked={specialAbilities[ability.id] === true}
-              onChange={(e) =>
-                dispatch({
-                  type: 'specialAbility',
-                  id: ability.id,
-                  value: e.target.checked,
-                })
-              }
-            />
-            <InfoTip content={ability.tooltip}>
-              {ability.label} (+{ability.flatDamage})
-            </InfoTip>
-          </CheckOption>
-        ))}
+        {/* Always-active abilities (e.g. Sweeping Charge) are intrinsic like
+            Burning Passion — not listed; the math and damage breakdown still
+            account for them. Only user-toggleable abilities render here. */}
+        {(attacker.specialAbilities ?? [])
+          .filter((ability) => ability.alwaysActive !== true)
+          .map((ability) => (
+            <CheckOption key={ability.id}>
+              <input
+                type="checkbox"
+                checked={specialAbilities[ability.id] === true}
+                onChange={(e) =>
+                  dispatch({
+                    type: 'specialAbility',
+                    id: ability.id,
+                    value: e.target.checked,
+                  })
+                }
+              />
+              <InfoTip content={ability.tooltip}>
+                {ability.label} (+{ability.flatDamage})
+              </InfoTip>
+            </CheckOption>
+          ))}
       </PreAttackSection>
     </Panel>
   );

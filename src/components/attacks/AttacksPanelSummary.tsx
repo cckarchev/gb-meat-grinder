@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import {
+  characterPlayFlatSources,
+  chargeFlatDamageSwingIndex,
   damageIfAllHitsWrap,
   damageModifierBreakdownWrap,
   formatWrapRowSelectionLabel,
@@ -91,6 +93,7 @@ export function AttacksPanelSummary() {
     startingMomentum,
     effectiveBonusTimeByAttack,
     effectiveWrapPicks,
+    effectiveCharacterPlayPicks,
     ignoredAttackIndex,
     damageMods,
     specialAbilities,
@@ -99,6 +102,12 @@ export function AttacksPanelSummary() {
   } = useMeatGrinderSimulation();
 
   const effectiveChargeAttackIndex = charging ? chargeAttackIndex : -1;
+  const chargeFlatDamageIndex = chargeFlatDamageSwingIndex(
+    attacker,
+    specialAbilities,
+    charging,
+    effectiveChargeAttackIndex,
+  );
 
   // A Resilient target ignores the first swing entirely, and the activation ends
   // on the killing blow, so every total/odds below counts only the swings that
@@ -114,15 +123,24 @@ export function AttacksPanelSummary() {
       damageIfAllHitsWrap(
         attacker,
         effectiveWrapPicks,
+        effectiveCharacterPlayPicks,
         damageMods,
         activeBaseCount,
+        chargeFlatDamageIndex,
       ),
-    [attacker, effectiveWrapPicks, damageMods, activeBaseCount],
+    [
+      attacker,
+      effectiveWrapPicks,
+      effectiveCharacterPlayPicks,
+      damageMods,
+      activeBaseCount,
+      chargeFlatDamageIndex,
+    ],
   );
 
   const flatDamage = useMemo(
-    () => specialAbilityFlatDamage(attacker, specialAbilities),
-    [attacker, specialAbilities],
+    () => specialAbilityFlatDamage(attacker, specialAbilities, charging),
+    [attacker, specialAbilities, charging],
   );
 
   const totalDamageIfAllHit = useMemo(
@@ -136,12 +154,11 @@ export function AttacksPanelSummary() {
     let m = 0;
     for (const ctx of activeAttacks) {
       for (const id of effectiveWrapPicks[ctx.attackIndex] ?? []) {
-        if (id != null && pickGeneratesMomentum(attacker, id, damageMods))
-          m += 1;
+        if (id != null && pickGeneratesMomentum(attacker, id)) m += 1;
       }
     }
     return m;
-  }, [attacker, activeAttacks, effectiveWrapPicks, damageMods]);
+  }, [attacker, activeAttacks, effectiveWrapPicks]);
 
   const bonusTimeSpendsInActivation = useMemo(
     () =>
@@ -193,18 +210,37 @@ export function AttacksPanelSummary() {
 
   const activeFlatAbilities = useMemo(
     () =>
-      (attacker.specialAbilities ?? []).filter((a) => specialAbilities[a.id]),
-    [attacker, specialAbilities],
+      (attacker.specialAbilities ?? []).filter(
+        (a) =>
+          (a.alwaysActive === true || specialAbilities[a.id]) &&
+          (a.requiresCharge !== true || charging),
+      ),
+    [attacker, specialAbilities, charging],
   );
 
   const damageDealtTooltip = useMemo(() => {
     const b = damageModifierBreakdownWrap(
       attacker,
       effectiveWrapPicks,
+      effectiveCharacterPlayPicks,
+      damageMods,
+      activeBaseCount,
+      chargeFlatDamageIndex,
+    );
+    const cpFlats = characterPlayFlatSources(
+      attacker,
+      effectiveWrapPicks,
+      effectiveCharacterPlayPicks,
       damageMods,
       activeBaseCount,
     );
-    if (b.rawCardDamage === 0 && b.totalEffective === 0 && flatDamage === 0) {
+    const cpFlatTotal = cpFlats.reduce((s, c) => s + c.amount, 0);
+    if (
+      b.rawCardDamage === 0 &&
+      b.totalEffective === 0 &&
+      flatDamage === 0 &&
+      cpFlatTotal === 0
+    ) {
       return 'No selected playbook lines deal card damage to HP (after Tough Hide).';
     }
     let t = `${b.rawCardDamage} from card pips`;
@@ -219,13 +255,18 @@ export function AttacksPanelSummary() {
     for (const a of activeFlatAbilities) {
       t += `; +${a.flatDamage} ${a.label}`;
     }
-    t += ` = ${b.totalEffective + flatDamage}.`;
+    for (const c of cpFlats) {
+      t += `; +${c.amount} ${c.label}`;
+    }
+    t += ` = ${b.totalEffective + flatDamage + cpFlatTotal}.`;
     return t;
   }, [
     attacker,
     effectiveWrapPicks,
+    effectiveCharacterPlayPicks,
     damageMods,
     activeBaseCount,
+    chargeFlatDamageIndex,
     flatDamage,
     activeFlatAbilities,
   ]);
@@ -241,9 +282,12 @@ export function AttacksPanelSummary() {
         attacker,
         activeAttacks,
         effectiveWrapPicks,
+        effectiveCharacterPlayPicks,
         damageMods,
         flatDamage,
         targetHp,
+        activeBaseCount,
+        chargeFlatDamageIndex,
       );
       return {
         ...outcome,
@@ -256,9 +300,12 @@ export function AttacksPanelSummary() {
       attacker,
       activeAttacks,
       effectiveWrapPicks,
+      effectiveCharacterPlayPicks,
       damageMods,
       flatDamage,
       targetHp,
+      activeBaseCount,
+      chargeFlatDamageIndex,
     ]);
 
   return (
