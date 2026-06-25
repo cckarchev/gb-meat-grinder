@@ -51,6 +51,8 @@ export type MeatGrinderSimulation = {
    * raw `wrapPicks` only to render each swing's chosen lines.
    */
   effectiveWrapPicks: WrapPick[][];
+  /** Character-play picks as the engine sees them once Resilience is applied. */
+  effectiveCharacterPlayPicks: CharacterPlayPickSlot[][];
   /** Bonus-Time flags with the Resilience-ignored swing forced off. */
   effectiveBonusTimeByAttack: boolean[];
   /**

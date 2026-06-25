@@ -13,6 +13,8 @@ import { StepControl } from '@/components/StepControl';
 import { CheckOption } from '@/components/targetPanelPrimitives';
 import { InfoTip } from '@/components/InfoTip';
 import { Panel, PanelTitle, Row } from '@/components/ui';
+import { SectionLabel } from '@/components/ui/SectionLabel';
+import { guildEnemyDebuffs } from '@/core/playbook';
 
 /** Stretch to the row height so the conditions can sit at the bottom. */
 const EnemyPanelBox = styled(Panel)`
@@ -60,11 +62,20 @@ const ConditionsColumn = styled.div`
   flex-direction: column;
 `;
 
+/** Guild-granted enemy debuffs (e.g. They Ain't Tough!), shown near the ARM stepper. */
+const GuildDebuffs = styled.div`
+  margin-top: 0.85rem;
+
+  ${narrowViewport} {
+    margin-top: 0.6rem;
+  }
+`;
+
 const TOOLTIP_COVER =
   'Terrain: attacks that still count as in cover take -1 TAC. An earlier > or >> in this activation can clear cover for later swings.';
 
 const TOOLTIP_DEFENSIVE_STANCE =
-  'On the charge attack only, the model counts as +1 DEF on its hit roll (still capped at the normal DEF maximum).';
+  'On the charge attack only, the model counts as +1 DEF on its hit roll.';
 
 const TOOLTIP_TOUGH_HIDE =
   '-1 to damage on each selected playbook line that has card damage (can reduce a pip to 0).';
@@ -79,6 +90,7 @@ const TOOLTIP_RESILIENCE =
 
 export function EnemyPanel() {
   const {
+    attacker,
     enemyDef,
     armor,
     hp,
@@ -90,6 +102,8 @@ export function EnemyPanel() {
     damageMods,
     dispatch,
   } = useMeatGrinderSimulation();
+
+  const enemyDebuffs = guildEnemyDebuffs(attacker);
 
   return (
     <EnemyPanelBox>
@@ -126,6 +140,45 @@ export function EnemyPanel() {
           incrementAriaLabel="Increase target HP"
         />
       </Row>
+      {enemyDebuffs.length > 0 && (
+        <GuildDebuffs>
+          <SectionLabel label="Guild debuffs" color={attacker.guild.color} />
+          {enemyDebuffs.map((debuff) => {
+            const disabled =
+              attacker.excludedGuildBuffs?.includes(debuff.id) ?? false;
+            return (
+              <CheckOption key={debuff.id} $disabled={disabled}>
+                <input
+                  type="checkbox"
+                  disabled={disabled}
+                  checked={!disabled && damageMods.buffs[debuff.id] === true}
+                  onChange={(e) =>
+                    dispatch({
+                      type: 'damageMods',
+                      value: {
+                        ...damageMods,
+                        buffs: {
+                          ...damageMods.buffs,
+                          [debuff.id]: e.target.checked,
+                        },
+                      },
+                    })
+                  }
+                />
+                <InfoTip
+                  content={
+                    disabled
+                      ? `${debuff.tooltip} (not available to ${attacker.name})`
+                      : debuff.tooltip
+                  }
+                >
+                  {debuff.label}
+                </InfoTip>
+              </CheckOption>
+            );
+          })}
+        </GuildDebuffs>
+      )}
       <ConditionsSection>
         <ConditionsGrid>
           <ConditionsColumn>

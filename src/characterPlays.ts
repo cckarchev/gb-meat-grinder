@@ -10,18 +10,21 @@ export const singledOut: CharacterPlay = {
   id: 'singledOut',
   label: 'Singled Out',
   tacBonusForLater: 2,
+  oncePerTurn: true,
 };
 
 export const stagger: CharacterPlay = {
   id: 'stagger',
   label: 'Stagger',
   defReductionForLater: 1,
+  oncePerTurn: true,
 };
 
 export const theyAintTough: CharacterPlay = {
   id: 'theyAintTough',
   label: "They Ain't Tough!",
   armorReduction: 1,
+  oncePerTurn: true,
 };
 
 /**
@@ -32,4 +35,31 @@ export const theyAintTough: CharacterPlay = {
 export const snackBreak: CharacterPlay = {
   id: 'snackBreak',
   label: 'Snack Break',
+  oncePerTurn: true,
+};
+
+/**
+ * Cast's Shield Glare. Targets an enemy for −1 TAC and −1 DEF; only the −1 DEF
+ * matters when Cast is the one attacking, so it carries as a DEF reduction.
+ * Marked once-per-turn: it is a single debuff source, and a −DEF debuff does not
+ * stack with itself, so re-triggering it on a later GB line adds nothing.
+ */
+export const shieldGlare: CharacterPlay = {
+  id: 'shieldGlare',
+  label: 'Shield Glare',
+  defReductionForLater: 1,
+  oncePerTurn: true,
+};
+
+/**
+ * Veteran Cinder's Impale. Triggered off her GB result (its `2/GB` cost), it
+ * deals 3 flat damage. It is modified like a playbook line — Tough Hide reduces
+ * it, a +DMG buff (Tooled Up) lifts it — but Burning Passion (playbook-only)
+ * does not apply.
+ */
+export const impale: CharacterPlay = {
+  id: 'impale',
+  label: 'Impale',
+  flatDamage: 3,
+  oncePerTurn: true,
 };

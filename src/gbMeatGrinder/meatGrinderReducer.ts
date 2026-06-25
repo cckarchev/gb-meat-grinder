@@ -9,6 +9,8 @@ import {
   nextPlanAfterWrapChoice,
 } from '@/core/attackPlanState';
 import {
+  buffsTacBonusSum,
+  chargeFlatDamageSwingIndex,
   effectiveArmor,
   effectiveEnemyDef,
   momentumPoolBeforeBonusTime,
@@ -48,9 +50,16 @@ function clampParams(s: MeatGrinderState): AttackPlanClampParams {
     damageMods: s.damageMods,
     enemyDef: effectiveEnemyDef(s.enemyDef, s.enemyKnockedDown, s.enemySnared),
     bonusTimeByAttack: s.bonusTimeByAttack,
-    initialTacModifier: s.gangingUp - s.crowdingOut,
+    initialTacModifier:
+      s.gangingUp - s.crowdingOut + buffsTacBonusSum(attackerOf(s), s.damageMods),
     enemyKnockedDown: s.enemyKnockedDown,
     activeBaseCount: activeBaseCountOf(s),
+    chargeFlatDamageIndex: chargeFlatDamageSwingIndex(
+      attackerOf(s),
+      s.specialAbilities,
+      s.charging,
+      effectiveChargeIndex(s),
+    ),
   };
 }
 

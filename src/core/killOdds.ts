@@ -1,12 +1,19 @@
 import {
+  burningPassionBonusByAttack,
+  characterPlayFlatBySlot,
   effectiveDamageForChoice,
   netSuccessesForChoice,
+  withExtraDamageBonus,
 } from '@/core/playbook';
 import { maxPlaybookNet } from '@/core/playbookIndex';
 import { binomialPmf } from '@/core/probability';
 import type { AttackerData } from '@/types/core/attacker';
 import type { AttackRollContext } from '@/types/core/attackSequence';
-import type { PlaybookDamageMods, WrapPick } from '@/types/core/playbook';
+import type {
+  CharacterPlayPickSlot,
+  PlaybookDamageMods,
+  WrapPick,
+} from '@/types/core/playbook';
 
 /** A discrete damage distribution: damage value -> probability. */
 type DamageDistribution = Map<number, number>;
@@ -43,6 +50,7 @@ export function pickedDamageForNet(
   mods: PlaybookDamageMods,
   picks: readonly WrapPick[],
   net: number,
+  flatBySlot: readonly number[] = [],
 ): number {
   if (net < 1) return 0;
   const maxNet = maxPlaybookNet(attacker);
@@ -53,10 +61,14 @@ export function pickedDamageForNet(
     const id = picks[slot];
     if (id == null) continue;
     const pickedCol = netSuccessesForChoice(attacker, id);
-    total +=
-      slotBudget >= pickedCol
-        ? effectiveDamageForChoice(attacker, id, mods)
-        : bestDamageWithinBudget(attacker, mods, slotBudget);
+    if (slotBudget >= pickedCol) {
+      // The picked line is reached: its (modified) card damage plus any
+      // unmodified character-play damage triggered off it (e.g. Impale).
+      total +=
+        effectiveDamageForChoice(attacker, id, mods) + (flatBySlot[slot] ?? 0);
+    } else {
+      total += bestDamageWithinBudget(attacker, mods, slotBudget);
+    }
   }
   return total;
 }
@@ -178,15 +190,36 @@ function activationOutcome(
   };
 }
 
-/** Each swing only deals the damage of the lines you actually picked. */
+/**
+ * Each swing only deals the damage of the lines you actually picked, plus any
+ * per-swing extras (e.g. Burning Passion).
+ */
 export function planDamageOutcome(
   attacker: AttackerData,
   attacks: readonly AttackRollContext[],
-  wrapPicks: readonly (readonly WrapPick[])[],
+  wrapPicks: WrapPick[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
   mods: PlaybookDamageMods,
   flatDamage: number,
   targetHp: number,
+  activeBaseCount: number,
+  chargeFlatDamageIndex: number,
 ): ActivationDamageOutcome {
+  const bonusByAttack = burningPassionBonusByAttack(
+    attacker,
+    wrapPicks,
+    characterPlayPicks,
+    mods,
+    activeBaseCount,
+    chargeFlatDamageIndex,
+  );
+  const flatBySlot = characterPlayFlatBySlot(
+    attacker,
+    wrapPicks,
+    characterPlayPicks,
+    mods,
+    activeBaseCount,
+  );
   return activationOutcome(
     attacks,
     flatDamage,
@@ -194,9 +227,10 @@ export function planDamageOutcome(
     (attack) => (net) =>
       pickedDamageForNet(
         attacker,
-        mods,
+        withExtraDamageBonus(mods, bonusByAttack[attack.attackIndex] ?? 0),
         wrapPicks[attack.attackIndex] ?? [],
         net,
+        flatBySlot[attack.attackIndex] ?? [],
       ),
   );
 }

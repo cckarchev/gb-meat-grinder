@@ -236,6 +236,7 @@ export function maxPlaybookColumnForRow(
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
   activeBaseCount: number,
+  chargeFlatDamageIndex: number,
 ): number {
   const tac = tacForAttackRow(
     attacker,
@@ -259,6 +260,7 @@ export function maxPlaybookColumnForRow(
     damageMods,
     attackIndex,
     activeBaseCount,
+    chargeFlatDamageIndex,
   );
   return maxNetSuccessesForRoll(tac, rowArmor);
 }
@@ -272,6 +274,7 @@ function armorForAttackRow(
   damageMods: PlaybookDamageMods,
   attackIndex: number,
   activeBaseCount: number,
+  chargeFlatDamageIndex: number,
 ): number {
   return Math.max(
     0,
@@ -283,6 +286,7 @@ function armorForAttackRow(
         damageMods,
         attackIndex,
         activeBaseCount,
+        chargeFlatDamageIndex,
       ),
   );
 }
@@ -331,6 +335,7 @@ function stripDuplicateKd(
   initialTacModifier: number,
   activeBaseCount: number,
   enemyKnockedDown: boolean,
+  chargeFlatDamageIndex: number,
 ): boolean {
   let changed = false;
   // A target that is already Knocked Down counts as the one allowed KD, so every
@@ -356,6 +361,7 @@ function stripDuplicateKd(
       bonusTimeByAttack,
       initialTacModifier,
       activeBaseCount,
+      chargeFlatDamageIndex,
     );
     for (let k = 0; k < next[i].length; k++) {
       const id = next[i][k];
@@ -476,6 +482,7 @@ export function clampAttackPlan(
   initialTacModifier: number,
   activeBaseCount: number,
   enemyKnockedDown: boolean,
+  chargeFlatDamageIndex: number,
 ): { wrapPicks: WrapPick[][]; characterPlayPicks: CharacterPlayPickSlot[][] } {
   const next = clone2d(wrapPicks);
   let nextCharacterPlay = clone2d(characterPlayPicks);
@@ -525,6 +532,7 @@ export function clampAttackPlan(
         bonusTimeByAttack,
         initialTacModifier,
         activeBaseCount,
+        chargeFlatDamageIndex,
       );
       const r = clampRowPicks(attacker, next[i], nextCharacterPlay[i], maxNet);
       const rowSame =
@@ -553,6 +561,7 @@ export function clampAttackPlan(
         initialTacModifier,
         activeBaseCount,
         enemyKnockedDown,
+        chargeFlatDamageIndex,
       )
     ) {
       passChanged = true;
@@ -594,6 +603,7 @@ export function computeAttackSequence(
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
   activeBaseCount: number,
+  chargeFlatDamageIndex: number,
 ): { attacks: AttackRollContext[] } {
   const attacks: AttackRollContext[] = [];
 
@@ -647,6 +657,7 @@ export function computeAttackSequence(
       damageMods,
       i,
       activeBaseCount,
+      chargeFlatDamageIndex,
     );
     const pHit = hitProbabilityPerDie(defMin);
     const need = wrapNetThresholdAllHits(attacker, wrapPicks[i]);

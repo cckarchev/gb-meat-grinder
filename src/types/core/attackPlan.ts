@@ -28,4 +28,10 @@ export type AttackPlanClampParams = {
   enemyKnockedDown: boolean;
   /** Active base attacks this activation (derived from traits + influence). */
   activeBaseCount: number;
+  /**
+   * Activation-order index of the swing that lands charge flat damage (Sweeping
+   * Charge), or -1. Effects on damage like Searing Strike trigger after swings
+   * (the charge attack itself stays at full ARM).
+   */
+  chargeFlatDamageIndex: number;
 };

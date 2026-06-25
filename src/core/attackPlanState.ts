@@ -5,6 +5,7 @@ import {
   DEFAULT_PLAYBOOK_DAMAGE_MODS,
   defaultCharacterPlayId,
   defaultCharacterPlayPicksWrap,
+  chargeFlatDamageSwingIndex,
   defaultWrapPicks,
   sanitizeCharacterPlayPicksWrap,
 } from '@/core/playbook';
@@ -45,6 +46,7 @@ export function createInitialAttackPlan(
     0,
     activeBaseAttackCount(attacker, influence, charging),
     false,
+    chargeFlatDamageSwingIndex(attacker, {}, charging, charging ? 0 : -1),
   );
   return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
 }
@@ -67,6 +69,7 @@ export function clampAttackPlanState(
     params.initialTacModifier,
     params.activeBaseCount,
     params.enemyKnockedDown,
+    params.chargeFlatDamageIndex,
   );
   if (
     r.wrapPicks === prev.wrapPicks &&

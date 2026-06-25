@@ -42,14 +42,12 @@ src/
   types/        shared type definitions
 ```
 
-Adding a beater means writing a file in `src/attackers/` and registering it in
-`src/attackers/registry.ts`. Guild buffs live in their own file under `src/guilds/`.
+Adding a beater means writing a file in `src/attackers/` and registering it in `src/attackers/registry.ts`. Guild buffs live in their own file under `src/guilds/`.
+
+See [MODELING.md](MODELING.md) for the game rules the calculator encodes before  modeling a new model or effect.
 
 ## Disclaimer
 
-This website is completely unofficial and in no way endorsed by Steamforged Games
-Limited. Guild Ball and all associated names, guilds, players, and game terms are
-trademarks of Steamforged Games Limited. No challenge to their status is intended. All
-such material is used without permission for non-commercial, fan use only.
+This website is completely unofficial and in no way endorsed by Steamforged Games Limited. Guild Ball and all associated names, guilds, players, and game terms are trademarks of Steamforged Games Limited. No challenge to their status is intended. All such material is used without permission for non-commercial, fan use only.
 
 See [NOTICE](NOTICE) for the full disclaimer.
