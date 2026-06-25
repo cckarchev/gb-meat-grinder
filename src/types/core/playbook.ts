@@ -107,10 +107,16 @@ export type DamageBuffBonus = {
   bonus: number;
 };
 
-/** How much selected damage pips contribute, split by Tough Hide vs attacker buffs. */
+/** How much selected damage contributes, split by Tough Hide vs attacker buffs. */
 export type DamageModifierBreakdown = {
+  /** Sum of raw card pips on selected lines (character-play damage is reported
+   *  separately, at its raw amount, by `characterPlayFlatSources`). */
   rawCardDamage: number;
+  /** Total Tough Hide reduction across card lines AND character-play damage. */
   toughHideReduction: number;
+  /** Per-buff lift across card lines AND character-play damage (e.g. Tooled Up). */
   buffBonuses: DamageBuffBonus[];
+  /** Effective damage from card lines AND character-play damage (excludes
+   *  special-ability flat damage, which is unmodified and tracked separately). */
   totalEffective: number;
 };

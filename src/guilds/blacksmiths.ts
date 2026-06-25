@@ -1,3 +1,4 @@
+import { tooledUp } from '@/guildBuffs';
 import type { Guild } from '@/types/core/guild';
 
 export const blacksmiths: Guild = {
@@ -13,12 +14,7 @@ export const blacksmiths: Guild = {
       tacBonus: 1,
       grantsSearingStrike: true,
     },
-    {
-      id: 'tooledUp',
-      label: 'Tooled Up',
-      tooltip: "+1 DMG on each of this model's damaging hits this activation.",
-      damageBonus: 1,
-    },
+    tooledUp,
     {
       id: 'searingStrike',
       label: 'Searing Strike',

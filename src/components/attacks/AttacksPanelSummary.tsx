@@ -258,7 +258,10 @@ export function AttacksPanelSummary() {
     for (const c of cpFlats) {
       t += `; +${c.amount} ${c.label}`;
     }
-    t += ` = ${b.totalEffective + flatDamage + cpFlatTotal}.`;
+    // Character-play damage is already in `b.totalEffective` (its modifiers were
+    // folded into the Tough Hide / buff lines); the raw `cpFlats` lines above are
+    // just attribution, so they must not be re-added here.
+    t += ` = ${b.totalEffective + flatDamage}.`;
     return t;
   }, [
     attacker,

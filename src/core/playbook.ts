@@ -685,14 +685,53 @@ export function characterPlayPickModifiers(
 }
 
 /**
- * Damage from each pick's GB-triggered character play (e.g. Impale), indexed by
- * [attackIndex][slot]. A play that deals damage is treated like a playbook line:
- * Tough Hide reduces it and a +DMG buff (Tooled Up) lifts it. Burning Passion is
- * playbook-only (injected per swing, never here), so it does not apply; and a
- * special ability's flat damage (Sweeping Charge) is handled separately and stays
- * fully unmodified. Non-zero only where a flat-damage play is *live*: a
- * Once-Per-Turn play counts on its first pick in activation order; a later
- * re-pick of the same play contributes nothing.
+ * Every *live* flat-damage character play in activation order, as
+ * `{ attackIndex, pickIndex, play }`. A Once-Per-Turn play counts on its first
+ * pick; a later re-pick of the same play contributes nothing. Plays that deal no
+ * flat damage (e.g. Shield Glare) are omitted. Shared by the damage total and
+ * the breakdown so both agree on which plays are live.
+ */
+function liveFlatPlays(
+  attacker: AttackerData,
+  wrapPicks: WrapPick[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
+  damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
+): { attackIndex: number; pickIndex: number; play: CharacterPlay }[] {
+  const order = activationAttackIndices(
+    attacker,
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+  );
+  const used = new Set<string>();
+  const out: { attackIndex: number; pickIndex: number; play: CharacterPlay }[] =
+    [];
+  for (const i of order) {
+    for (let k = 0; k < wrapPicks[i].length; k++) {
+      const id = wrapPicks[i][k];
+      if (id == null || !choiceUsesCharacterPlay(attacker, id)) continue;
+      const f = characterPlayPicks[i]?.[k] ?? defaultCharacterPlayId(attacker);
+      if (f == null) continue;
+      const cp = getCharacterPlay(attacker, f);
+      if (cp == null || (cp.flatDamage ?? 0) <= 0) continue;
+      if (cp.oncePerTurn) {
+        if (used.has(f)) continue;
+        used.add(f);
+      }
+      out.push({ attackIndex: i, pickIndex: k, play: cp });
+    }
+  }
+  return out;
+}
+
+/**
+ * Effective damage from each pick's GB-triggered character play (e.g. Impale),
+ * indexed by [attackIndex][slot]. A play that deals damage is treated like a
+ * playbook line: Tough Hide reduces it and a +DMG buff (Tooled Up) lifts it.
+ * Burning Passion is playbook-only (injected per swing, never here), so it does
+ * not apply; and a special ability's flat damage (Sweeping Charge) is handled
+ * separately and stays fully unmodified.
  */
 export function characterPlayFlatBySlot(
   attacker: AttackerData,
@@ -702,39 +741,29 @@ export function characterPlayFlatBySlot(
   activeBaseCount: number,
 ): number[][] {
   const out = wrapPicks.map((row) => row.map(() => 0));
-  const order = activationAttackIndices(
+  for (const { attackIndex, pickIndex, play } of liveFlatPlays(
     attacker,
     wrapPicks,
+    characterPlayPicks,
     damageMods,
     activeBaseCount,
-  );
-  // Character-play damage is modified like a playbook line — Tough Hide reduces
-  // it, Tooled Up lifts it — but never sees Burning Passion (that bonus is
-  // injected per swing onto card damage only, not into `damageMods`). A 0-damage
-  // play such as Shield Glare yields 0.
-  const dealtBy = (cp: CharacterPlay): number =>
-    effectivePlaybookDamage(attacker, cp.flatDamage ?? 0, damageMods);
-  const used = new Set<string>();
-  for (const i of order) {
-    for (let k = 0; k < wrapPicks[i].length; k++) {
-      const id = wrapPicks[i][k];
-      if (id == null || !choiceUsesCharacterPlay(attacker, id)) continue;
-      const f = characterPlayPicks[i]?.[k] ?? defaultCharacterPlayId(attacker);
-      if (f == null) continue;
-      const cp = getCharacterPlay(attacker, f);
-      if (cp == null) continue;
-      if (!cp.oncePerTurn) {
-        out[i][k] = dealtBy(cp);
-      } else if (!used.has(f)) {
-        out[i][k] = dealtBy(cp);
-        used.add(f);
-      }
-    }
+  )) {
+    out[attackIndex][pickIndex] = effectivePlaybookDamage(
+      attacker,
+      play.flatDamage ?? 0,
+      damageMods,
+    );
   }
   return out;
 }
 
-/** Live flat-damage character plays aggregated by play, for damage breakdowns. */
+/**
+ * Live flat-damage character plays aggregated by play, reporting each play's
+ * *raw* printed damage (e.g. Impale = 3). The modifiers on that damage (Tough
+ * Hide, Tooled Up) are attributed to their own lines by
+ * {@link damageModifierBreakdownWrap}, so the breakdown never folds a buff into a
+ * play's amount.
+ */
 export function characterPlayFlatSources(
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
@@ -742,24 +771,17 @@ export function characterPlayFlatSources(
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
 ): { label: string; amount: number }[] {
-  const flatBySlot = characterPlayFlatBySlot(
+  const byPlay = new Map<string, { label: string; amount: number }>();
+  for (const { play } of liveFlatPlays(
     attacker,
     wrapPicks,
     characterPlayPicks,
     damageMods,
     activeBaseCount,
-  );
-  const byPlay = new Map<string, { label: string; amount: number }>();
-  for (let i = 0; i < wrapPicks.length; i++) {
-    for (let k = 0; k < wrapPicks[i].length; k++) {
-      if (flatBySlot[i][k] <= 0) continue;
-      const f = characterPlayPicks[i]?.[k] ?? defaultCharacterPlayId(attacker);
-      const cp = f == null ? undefined : getCharacterPlay(attacker, f);
-      if (cp == null) continue;
-      const entry = byPlay.get(cp.id) ?? { label: cp.label, amount: 0 };
-      entry.amount += flatBySlot[i][k];
-      byPlay.set(cp.id, entry);
-    }
+  )) {
+    const entry = byPlay.get(play.id) ?? { label: play.label, amount: 0 };
+    entry.amount += play.flatDamage ?? 0;
+    byPlay.set(play.id, entry);
   }
   return [...byPlay.values()];
 }
@@ -1194,6 +1216,35 @@ export function damageModifierBreakdownWrap(
           ...rowMods,
           extraDamageBonus: 0,
         });
+    }
+  }
+
+  // Character-play damage (e.g. Impale) is modified like a card line — Tough
+  // Hide reduces it, +DMG buffs lift it — but never sees Burning Passion. Fold
+  // those deltas into the shared lines so each play is reported at its raw amount
+  // (by `characterPlayFlatSources`) and attributed correctly; its effective
+  // damage joins `totalEffective`.
+  for (const { play } of liveFlatPlays(
+    attacker,
+    wrapPicks,
+    characterPlayPicks,
+    damageMods,
+    activeBaseCount,
+  )) {
+    const raw = play.flatDamage ?? 0;
+    const full = effectivePlaybookDamage(attacker, raw, damageMods);
+    totalEffective += full;
+    toughHideReduction +=
+      effectivePlaybookDamage(attacker, raw, {
+        ...damageMods,
+        toughHide: false,
+      }) - full;
+    for (const bb of buffBonuses) {
+      const without: PlaybookDamageMods = {
+        ...damageMods,
+        buffs: { ...damageMods.buffs, [bb.id]: false },
+      };
+      bb.bonus += full - effectivePlaybookDamage(attacker, raw, without);
     }
   }
 

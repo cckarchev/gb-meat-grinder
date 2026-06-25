@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest';
 import {
   attackerHasSearingStrike,
   buffsTacBonusSum,
+  characterPlayFlatSources,
   damageIfAllHitsWrap,
+  damageModifierBreakdownWrap,
   effectiveArmor,
   enemyBurning,
   enemyHasStaticSearingStrike,
@@ -302,6 +304,40 @@ describe('Impale (Veteran Cinder): a character play that deals damage', () => {
     expect(
       impaleDamage(conditions({ toughHide: true, buffs: { tooledUp: true } })),
     ).toBe(3);
+  });
+});
+
+describe('Damage breakdown attributes a play’s modifiers to their own line', () => {
+  // An Impale-only plan (net-3 `gb`). The breakdown should report Impale at its
+  // raw 3 and put any Tough Hide / Tooled Up delta on those lines, so the
+  // tooltip never shows "+4 Impale".
+  const picks: WrapPick[][] = [['gb'], [], [], []];
+  const cps: CharacterPlayPickSlot[][] = [[null], [], [], []];
+  const breakdown = (m: PlaybookDamageMods) =>
+    damageModifierBreakdownWrap(veteranCinder, picks, cps, m, 1, -1);
+  const impaleAmount = (m: PlaybookDamageMods) =>
+    characterPlayFlatSources(veteranCinder, picks, cps, m, 1).find(
+      (c) => c.label === 'Impale',
+    )?.amount;
+  const buffBonus = (m: PlaybookDamageMods, label: string) =>
+    breakdown(m).buffBonuses.find((b) => b.label === label)?.bonus ?? 0;
+
+  it('reports Impale at its raw 3, with or without Tooled Up', () => {
+    expect(impaleAmount(conditions())).toBe(3);
+    expect(impaleAmount(conditions({ buffs: { tooledUp: true } }))).toBe(3);
+  });
+  it('Tooled Up’s lift on Impale lands on the Tooled Up line, not the Impale line', () => {
+    expect(buffBonus(conditions({ buffs: { tooledUp: true } }), 'Tooled Up')).toBe(
+      1,
+    );
+    expect(breakdown(conditions({ buffs: { tooledUp: true } })).totalEffective).toBe(
+      4,
+    );
+  });
+  it('Tough Hide’s reduction on Impale lands on the Tough Hide line', () => {
+    const b = breakdown(conditions({ toughHide: true }));
+    expect(b.toughHideReduction).toBe(1);
+    expect(b.totalEffective).toBe(2);
   });
 });
 
