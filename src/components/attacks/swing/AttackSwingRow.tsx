@@ -55,19 +55,19 @@ export const AttackSwingRow = ({
   onWrapContinuationCleared,
 }: AttackSwingRowProps) => {
   const { attacker } = useMeatGrinderSimulation();
-  const i = attack.attackIndex;
+  const attackIndex = attack.attackIndex;
   const armor = attack.armor;
   const maxNet = maxNetSuccessesForRoll(attack.tac, armor);
 
-  const hasWrapContinuation = wrapPicks[i].length > 1;
-  const variant = attackBlockVariant(attacker, i, chargeAttackIndex);
+  const hasWrapContinuation = wrapPicks[attackIndex].length > 1;
+  const variant = attackBlockVariant(attacker, attackIndex, chargeAttackIndex);
   const cornerAccent = CORNER_ACCENTS[variant];
   const bonusTimeDisabled =
     !bonusTime && bonusTimeMomentumPool < BONUS_TIME_MOMENTUM_COST;
 
   const handleWrapToggle = () => {
     if (wrapOpen) {
-      onWrapContinuationCleared(i);
+      onWrapContinuationCleared(attackIndex);
     }
 
     onToggleWrapExpansion();
@@ -81,7 +81,7 @@ export const AttackSwingRow = ({
             <CornerBrackets accent={cornerAccent} size={CORNER_BRACKET_SIZE} />
           ) : null}
           <AttackHeading>
-            {attackKindLabel(attacker, i, chargeAttackIndex)}
+            {attackKindLabel(attacker, attackIndex, chargeAttackIndex)}
             {isKillingBlow ? (
               <KillingBlowBadge>
                 Killing blow · +{KILLING_BLOW_MOMENTUM} MOM
@@ -89,14 +89,14 @@ export const AttackSwingRow = ({
             ) : null}
           </AttackHeading>
           <DicePoolStrip
-            attackIndex={i}
+            attackIndex={attackIndex}
             tac={attack.tac}
-            canCharge={charging && !attackRowIsBerserker(attacker, i)}
-            isCharge={chargeAttackIndex === i}
-            onCharge={() => onChargeAttackIndexChange(i)}
+            canCharge={charging && !attackRowIsBerserker(attacker, attackIndex)}
+            isCharge={chargeAttackIndex === attackIndex}
+            onCharge={() => onChargeAttackIndexChange(attackIndex)}
             bonusTime={bonusTime}
             bonusTimeDisabled={bonusTimeDisabled}
-            onBonusTimeChange={(value) => onBonusTimeChange(i, value)}
+            onBonusTimeChange={(value) => onBonusTimeChange(attackIndex, value)}
             canWrap={hasWrapContinuation && maxNet >= MIN_PLAYBOOK_NET}
             wrapOpen={wrapOpen}
             onWrapToggle={handleWrapToggle}

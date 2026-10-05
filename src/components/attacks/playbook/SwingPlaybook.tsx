@@ -1,6 +1,6 @@
 import type {
-  AttacksPanelProps,
   CharacterPlaySlotRef,
+  SwingPlanBindings,
 } from '@/components/attacks/attacks.types';
 import { WrapSlotPickGrid } from '@/components/attacks/playbook/WrapSlotPickGrid';
 import { CharacterPlaySelection } from '@/components/attacks/plays/CharacterPlaySelection';
@@ -19,12 +19,12 @@ type SwingPlaybookProps = {
   armor: number;
   maxNet: number;
   activeBaseCount: number;
-  wrapPicks: AttacksPanelProps['wrapPicks'];
-  characterPlayPicks: AttacksPanelProps['characterPlayPicks'];
-  damageMods: AttacksPanelProps['damageMods'];
+  wrapPicks: SwingPlanBindings['wrapPicks'];
+  characterPlayPicks: SwingPlanBindings['characterPlayPicks'];
+  damageMods: SwingPlanBindings['damageMods'];
   wrapOpen: boolean;
-  onChoiceChange: AttacksPanelProps['onChoiceChange'];
-  onCharacterPlayPickChange: AttacksPanelProps['onCharacterPlayPickChange'];
+  onChoiceChange: SwingPlanBindings['onChoiceChange'];
+  onCharacterPlayPickChange: SwingPlanBindings['onCharacterPlayPickChange'];
 };
 
 /** The swing's playbook picks: first slot, wrap slots and character plays. */
@@ -42,8 +42,8 @@ export const SwingPlaybook = ({
   onCharacterPlayPickChange,
 }: SwingPlaybookProps) => {
   const { attacker } = useMeatGrinderSimulation();
-  const i = attack.attackIndex;
-  const rowPicks = wrapPicks[i];
+  const attackIndex = attack.attackIndex;
+  const rowPicks = wrapPicks[attackIndex];
 
   if (maxNet < MIN_PLAYBOOK_NET) {
     return (
@@ -67,7 +67,7 @@ export const SwingPlaybook = ({
     return (
       <WrapSlotPickGrid
         key={pickIndex}
-        attackIndex={i}
+        attackIndex={attackIndex}
         pickIndex={pickIndex}
         tac={attack.tac}
         pHit={attack.pHit}
@@ -87,8 +87,8 @@ export const SwingPlaybook = ({
       <PlaybookPrimarySlot>{renderSlot(0, true)}</PlaybookPrimarySlot>
       {hasWrapContinuation ? (
         <section
-          id={`attack-wrap-${i}`}
-          aria-labelledby={`attack-wrap-trigger-${i}`}
+          id={`attack-wrap-${attackIndex}`}
+          aria-labelledby={`attack-wrap-trigger-${attackIndex}`}
           hidden={!wrapOpen}
         >
           {rowPicks.slice(1).map((_, slot) => {
@@ -103,7 +103,7 @@ export const SwingPlaybook = ({
         wrapPicks={wrapPicks}
         characterPlayPicks={characterPlayPicks}
         damageMods={damageMods}
-        attackIndex={i}
+        attackIndex={attackIndex}
         displayIdx={displayIdx}
         activeBaseCount={activeBaseCount}
         onCharacterPlayPickChange={onCharacterPlayPickChange}

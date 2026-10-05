@@ -1,6 +1,6 @@
 import type {
-  AttacksPanelProps,
   CharacterPlaySlotRef,
+  SwingPlanBindings,
 } from '@/components/attacks/attacks.types';
 import {
   Pills,
@@ -19,13 +19,13 @@ import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulati
 
 type CharacterPlaySelectionProps = {
   slots: CharacterPlaySlotRef[];
-  wrapPicks: AttacksPanelProps['wrapPicks'];
-  characterPlayPicks: AttacksPanelProps['characterPlayPicks'];
-  damageMods: AttacksPanelProps['damageMods'];
+  wrapPicks: SwingPlanBindings['wrapPicks'];
+  characterPlayPicks: SwingPlanBindings['characterPlayPicks'];
+  damageMods: SwingPlanBindings['damageMods'];
   attackIndex: number;
   displayIdx: number;
   activeBaseCount: number;
-  onCharacterPlayPickChange: AttacksPanelProps['onCharacterPlayPickChange'];
+  onCharacterPlayPickChange: SwingPlanBindings['onCharacterPlayPickChange'];
 };
 
 /** Character-play options offered after a GB / 1GB playbook result. */
@@ -40,7 +40,6 @@ export const CharacterPlaySelection = ({
   onCharacterPlayPickChange,
 }: CharacterPlaySelectionProps) => {
   const { attacker } = useMeatGrinderSimulation();
-  const i = attackIndex;
 
   const actionable = slots
     .map(({ pickIndex }) => ({
@@ -49,7 +48,7 @@ export const CharacterPlaySelection = ({
         attacker,
         wrapPicks,
         characterPlayPicks,
-        i,
+        attackIndex,
         pickIndex,
         damageMods,
         activeBaseCount,
@@ -68,7 +67,7 @@ export const CharacterPlaySelection = ({
     <Section aria-label={`Character play for attack ${attackOrdinal}`}>
       <SectionHeading>Character Play</SectionHeading>
       {actionable.map(({ pickIndex, available }, slotIdx) => {
-        const pick = characterPlayPicks[i]?.[pickIndex];
+        const pick = characterPlayPicks[attackIndex]?.[pickIndex];
         const slotOrdinal = slotIdx + 1;
         const slotSuffix = multipleSlots ? `, play ${slotOrdinal}` : '';
 
@@ -89,7 +88,7 @@ export const CharacterPlaySelection = ({
                     description={summary}
                     ariaLabel={`${cp.label} (${summary}) for attack ${attackOrdinal}${slotSuffix}`}
                     onClick={() =>
-                      onCharacterPlayPickChange(i, pickIndex, cp.id)
+                      onCharacterPlayPickChange(attackIndex, pickIndex, cp.id)
                     }
                   >
                     {cp.label}

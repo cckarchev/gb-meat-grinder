@@ -7,7 +7,7 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 
-export type AttacksPanelProps = {
+export type SwingPlanBindings = {
   onChargeAttackIndexChange: (index: number) => void;
   onBonusTimeChange: (attackIndex: number, value: boolean) => void;
   wrapPicks: WrapPick[][];
@@ -36,18 +36,18 @@ export type AttackSwingRowProps = {
   charging: boolean;
   chargeAttackIndex: number;
   activeBaseCount: number;
-  wrapPicks: AttacksPanelProps['wrapPicks'];
-  characterPlayPicks: AttacksPanelProps['characterPlayPicks'];
-  damageMods: AttacksPanelProps['damageMods'];
+  wrapPicks: SwingPlanBindings['wrapPicks'];
+  characterPlayPicks: SwingPlanBindings['characterPlayPicks'];
+  damageMods: SwingPlanBindings['damageMods'];
   remainingHpIfHit: number;
   momentum: number;
   bonusTime: boolean;
   bonusTimeMomentumPool: number;
-  onBonusTimeChange: AttacksPanelProps['onBonusTimeChange'];
+  onBonusTimeChange: SwingPlanBindings['onBonusTimeChange'];
   wrapOpen: boolean;
-  onChargeAttackIndexChange: AttacksPanelProps['onChargeAttackIndexChange'];
-  onChoiceChange: AttacksPanelProps['onChoiceChange'];
-  onCharacterPlayPickChange: AttacksPanelProps['onCharacterPlayPickChange'];
+  onChargeAttackIndexChange: SwingPlanBindings['onChargeAttackIndexChange'];
+  onChoiceChange: SwingPlanBindings['onChoiceChange'];
+  onCharacterPlayPickChange: SwingPlanBindings['onCharacterPlayPickChange'];
   onToggleWrapExpansion: () => void;
-  onWrapContinuationCleared: AttacksPanelProps['onWrapContinuationCleared'];
+  onWrapContinuationCleared: SwingPlanBindings['onWrapContinuationCleared'];
 };

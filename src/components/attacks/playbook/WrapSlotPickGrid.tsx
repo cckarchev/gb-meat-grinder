@@ -1,4 +1,4 @@
-import type { AttacksPanelProps } from '@/components/attacks/attacks.types';
+import type { SwingPlanBindings } from '@/components/attacks/attacks.types';
 import { PlaybookLineButton } from '@/components/attacks/playbook/PlaybookLineButton';
 import {
   ColumnBlock,
@@ -32,7 +32,7 @@ type WrapSlotPickGridProps = {
   damageMods: PlaybookDamageMods;
   activeBaseCount: number;
   firstSlotInSection: boolean;
-  onChoiceChange: AttacksPanelProps['onChoiceChange'];
+  onChoiceChange: SwingPlanBindings['onChoiceChange'];
 };
 
 /** The playbook columns one wrap slot can reach, with their hit chances. */
@@ -50,7 +50,6 @@ export const WrapSlotPickGrid = ({
   onChoiceChange,
 }: WrapSlotPickGridProps) => {
   const { attacker, enemyKnockedDown } = useMeatGrinderSimulation();
-  const i = attackIndex;
   const budget = wrapSlotBudget(attacker, maxNet, pickIndex);
 
   const visibleColumns = attacker.playbook.filter(
@@ -60,7 +59,7 @@ export const WrapSlotPickGrid = ({
   const kdTaken = kdAlreadyTakenBeforePick(
     attacker,
     wrapPicks,
-    i,
+    attackIndex,
     pickIndex,
     damageMods,
     activeBaseCount,
@@ -85,7 +84,8 @@ export const WrapSlotPickGrid = ({
               <ColumnHead $p={pCol}>{hitChanceLabel}</ColumnHead>
               <ColumnResults>
                 {col.results.map((result) => {
-                  const selected = wrapPicks[i][pickIndex] === result.id;
+                  const selected =
+                    wrapPicks[attackIndex][pickIndex] === result.id;
 
                   // Wrap slots can be cleared by clicking the pick again; the
                   // first slot always keeps a line.
@@ -101,7 +101,7 @@ export const WrapSlotPickGrid = ({
                       hitChanceLabel={hitChanceLabel}
                       onClick={() =>
                         onChoiceChange(
-                          i,
+                          attackIndex,
                           pickIndex,
                           clearsPick ? null : result.id,
                         )
