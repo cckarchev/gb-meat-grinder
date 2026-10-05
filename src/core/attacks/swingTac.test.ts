@@ -14,20 +14,30 @@ describe('sumSwingTac', () => {
     const expected =
       6 + CHARGE_TAC_BONUS + carriedBonus - cover + bonusTime + crowdedOut;
 
-    expect(
-      sumSwingTac(
-        attacker,
-        0,
-        0,
-        carriedBonus,
-        2,
-        cover,
-        bonusTime,
-        crowdedOut,
-      ),
-    ).toBe(expected);
+    const chargeSwing = {
+      attacker,
+      attackIndex: 0,
+      chargeAttackIndex: 0,
+      activeBaseCount: 2,
+      carriedTacBonus: carriedBonus,
+      coverTacPenalty: cover,
+      bonusTimeTacBonus: bonusTime,
+      initialTacModifier: crowdedOut,
+    };
 
-    expect(sumSwingTac(attacker, 1, 0, 0, 2, 0, 0, 0)).toBe(6);
+    const plainSwing = {
+      attacker,
+      attackIndex: 1,
+      chargeAttackIndex: 0,
+      activeBaseCount: 2,
+      carriedTacBonus: 0,
+      coverTacPenalty: 0,
+      bonusTimeTacBonus: 0,
+      initialTacModifier: 0,
+    };
+
+    expect(sumSwingTac(chargeSwing)).toBe(expected);
+    expect(sumSwingTac(plainSwing)).toBe(6);
   });
 });
 

@@ -18,17 +18,31 @@ import {
 } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
+/** The swing and every already computed TAC modifier that `sumSwingTac` adds up. */
+export type SwingTacTerms = {
+  attacker: AttackerData;
+  attackIndex: number;
+  chargeAttackIndex: number;
+  activeBaseCount: number;
+  carriedTacBonus: number;
+  coverTacPenalty: number;
+  bonusTimeTacBonus: number;
+  initialTacModifier: number;
+};
+
 /** A swing's base TAC plus the charge bonus and every already computed modifier. */
-export const sumSwingTac = (
-  attacker: AttackerData,
-  attackIndex: number,
-  chargeAttackIndex: number,
-  carriedTacBonus: number,
-  activeBaseCount: number,
-  coverTacPenalty: number,
-  bonusTimeTacBonus: number,
-  initialTacModifier: number,
-): number => {
+export const sumSwingTac = (terms: SwingTacTerms): number => {
+  const {
+    attacker,
+    attackIndex,
+    chargeAttackIndex,
+    activeBaseCount,
+    carriedTacBonus,
+    coverTacPenalty,
+    bonusTimeTacBonus,
+    initialTacModifier,
+  } = terms;
+
   const charge = isChargeSwing(attackIndex, chargeAttackIndex, activeBaseCount)
     ? CHARGE_TAC_BONUS
     : 0;
@@ -100,16 +114,16 @@ export const swingTacAndDef = (
   const bonusTimeTac =
     bonusTimeByAttack[attackIndex] === true ? BONUS_TIME_TAC_BONUS : 0;
 
-  const tac = sumSwingTac(
+  const tac = sumSwingTac({
     attacker,
     attackIndex,
     chargeAttackIndex,
-    tacBonus + tacFromDefCap,
     activeBaseCount,
-    coverPenalty,
-    bonusTimeTac,
+    carriedTacBonus: tacBonus + tacFromDefCap,
+    coverTacPenalty: coverPenalty,
+    bonusTimeTacBonus: bonusTimeTac,
     initialTacModifier,
-  );
+  });
 
   return { tac, defMinRoll };
 };
