@@ -16,7 +16,7 @@ import {
 } from '@/components/attacks/summary/attacksSummaryStyles';
 import { SummaryStat } from '@/components/attacks/summary/SummaryStat';
 import { Mono, Summary } from '@/components/ui/ui';
-import { summarizeActivation } from '@/core/activation/activationSummary';
+import { summarizeActivation } from '@/core/activation/summary/activationSummary';
 import { attackKindLabel } from '@/core/attacks/attackVariant';
 import { formatPercent } from '@/core/damage/probability';
 import type { WrapPick } from '@/core/playbook/playbook.types';

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
-  type ActivationSummaryInput,
   activeSwings,
   summarizeActivation,
-} from '@/core/activation/activationSummary';
+} from '@/core/activation/summary/activationSummary';
+import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
 

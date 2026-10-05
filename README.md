@@ -48,7 +48,7 @@ src/
     attacks/      attack rows, sequencing, swing modifiers and projections
     playbook/     playbook lookups, labels, wrap slots, row effects
     damage/       damage, kill odds, killing blow, resilience, probability
-    activation/   momentum, activation summary, simulation
+    activation/   momentum, simulation, summary/ (activation totals and tooltips)
     shared/       constants and small helpers
   data/
     attackers/    beater definitions + registry.ts (the simulatable models)
