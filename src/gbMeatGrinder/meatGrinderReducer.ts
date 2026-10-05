@@ -1,18 +1,21 @@
-import { attackerById, randomAttacker } from '@/attackers/registry';
+import { attackerById } from '@/attackers/registry';
 import {
   clampAttackPlanState,
-  createInitialAttackPlan,
   nextPlanAfterCharacterPlayPick,
   nextPlanAfterClearWrapContinuation,
   nextPlanAfterWrapChoice,
 } from '@/core/attackPlanState';
-import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
-import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from '@/core/constants';
+import {
+  activeBaseAttackCount,
+  clampChargeAttackIndex,
+} from '@/core/attackStructure';
+import { clamp } from '@/core/clamp';
 import { effectiveArmor, effectiveEnemyDef } from '@/core/damage';
 import {
   momentumPoolBeforeBonusTime,
   sanitizeBonusTimeFlags,
 } from '@/core/momentum';
+import { stateForAttacker } from '@/gbMeatGrinder/meatGrinderInitialState';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
   AttackPlan,
@@ -57,6 +60,50 @@ const clampPlan = (s: MeatGrinderState, plan: AttackPlan): AttackPlan => {
   return clampAttackPlanState(plan, clampParams(s));
 };
 
+/** Apply `patch`, then re-clamp the existing plan against the patched state. */
+const withReclampedPlan = (
+  state: MeatGrinderState,
+  patch: Partial<MeatGrinderState>,
+): MeatGrinderState => {
+  const next = { ...state, ...patch };
+
+  return { ...next, attackPlan: clampPlan(next, state.attackPlan) };
+};
+
+/**
+ * Like `withReclampedPlan`, but first pulls the charge row back onto an active
+ * base attack when the patch leaves the model charging.
+ */
+const withReclampedCharge = (
+  state: MeatGrinderState,
+  patch: Partial<MeatGrinderState>,
+): MeatGrinderState => {
+  const patched = { ...state, ...patch };
+
+  if (!patched.charging) {
+    return withReclampedPlan(state, patch);
+  }
+
+  const chargeAttackIndex = clampChargeAttackIndex(
+    patched.chargeAttackIndex,
+    activeBaseCountOf(patched),
+  );
+
+  return withReclampedPlan(state, { ...patch, chargeAttackIndex });
+};
+
+/** Adopt an edited plan (re-clamped), or keep the state when the edit was a no-op. */
+const applyPlanEdit = (
+  state: MeatGrinderState,
+  edited: AttackPlan | null | undefined,
+): MeatGrinderState => {
+  if (edited == null) {
+    return state;
+  }
+
+  return { ...state, attackPlan: clampPlan(state, edited) };
+};
+
 const bonusTimeEqual = (
   a: readonly boolean[],
   b: readonly boolean[],
@@ -68,60 +115,56 @@ const bonusTimeEqual = (
   return a.every((v, i) => v === b[i]);
 };
 
-const clamp = (value: number, min: number, max: number): number => {
-  return Math.max(min, Math.min(max, value));
+const sanitizedBonusTime = (
+  state: MeatGrinderState,
+  flags: boolean[],
+): boolean[] => {
+  return sanitizeBonusTimeFlags(
+    attackerOf(state),
+    state.attackPlan.wrapPicks,
+    state.damageMods,
+    state.startingMomentum,
+    flags,
+    activeBaseCountOf(state),
+  );
 };
 
-/** Fresh attacker-side state for a model, preserving enemy stats from `prev`. */
-const stateForAttacker = (
-  attacker: AttackerData,
-  prev?: Partial<MeatGrinderState>,
+const toggleBonusTime = (
+  state: MeatGrinderState,
+  attackIndex: number,
+  value: boolean,
 ): MeatGrinderState => {
-  const influence = attacker.inf;
-  // Models with a free charge (Furious) default to charging; otherwise carry
-  // over the prior toggle (or off for a fresh state).
-  const charging = attacker.furious ? true : (prev?.charging ?? false);
+  if (value) {
+    const pool = momentumPoolBeforeBonusTime(
+      attackerOf(state),
+      state.attackPlan.wrapPicks,
+      state.damageMods,
+      attackIndex,
+      state.startingMomentum,
+      state.bonusTimeByAttack,
+      activeBaseCountOf(state),
+    );
 
-  return {
-    attackerId: attacker.id,
-    enemyDef: prev?.enemyDef ?? DEF_DEFAULT,
-    armor: prev?.armor ?? ARM_DEFAULT,
-    hp: prev?.hp ?? HP_DEFAULT,
-    influence,
-    charging,
-    chargeAttackIndex: 0,
-    enemyHasCover: prev?.enemyHasCover ?? false,
-    enemyDefensiveStance: prev?.enemyDefensiveStance ?? false,
-    enemyKnockedDown: prev?.enemyKnockedDown ?? false,
-    enemySnared: prev?.enemySnared ?? false,
-    enemyResilience: prev?.enemyResilience ?? false,
-    startingMomentum: clamp(
-      prev?.startingMomentum ?? 0,
-      attacker.startingMomentum.min,
-      attacker.startingMomentum.max,
-    ),
-    gangingUp: clamp(
-      prev?.gangingUp ?? 0,
-      attacker.gangingUp.min,
-      attacker.gangingUp.max,
-    ),
-    crowdingOut: clamp(
-      prev?.crowdingOut ?? 0,
-      attacker.crowdingOut.min,
-      attacker.crowdingOut.max,
-    ),
-    bonusTimeByAttack: Array.from(
-      { length: attackArraySize(attacker) },
-      () => false,
-    ),
-    damageMods: { toughHide: prev?.damageMods?.toughHide ?? false, buffs: {} },
-    specialAbilities: {},
-    attackPlan: createInitialAttackPlan(attacker, influence, charging),
-  };
+    if (pool < 1) {
+      return state;
+    }
+  }
+
+  const nextFlags = [...state.bonusTimeByAttack];
+
+  nextFlags[attackIndex] = value;
+
+  return { ...state, bonusTimeByAttack: sanitizedBonusTime(state, nextFlags) };
 };
 
-export const createInitialMeatGrinderState = (): MeatGrinderState => {
-  return stateForAttacker(randomAttacker());
+const resanitizeBonusTime = (state: MeatGrinderState): MeatGrinderState => {
+  const sanitized = sanitizedBonusTime(state, state.bonusTimeByAttack);
+
+  if (bonusTimeEqual(sanitized, state.bonusTimeByAttack)) {
+    return state;
+  }
+
+  return { ...state, bonusTimeByAttack: sanitized };
 };
 
 export const meatGrinderReducer = (
@@ -129,214 +172,93 @@ export const meatGrinderReducer = (
   action: MeatGrinderAction,
 ): MeatGrinderState => {
   switch (action.type) {
-    case 'reset':
+    case 'reset': {
       // Reset everything to defaults but keep the currently selected model.
       return stateForAttacker(attackerOf(state));
+    }
     case 'selectAttacker': {
       if (action.id === state.attackerId) {
         return state;
       }
 
-      const attacker = attackerById(action.id);
-
-      return stateForAttacker(attacker, state);
+      return stateForAttacker(attackerById(action.id), state);
     }
     case 'enemyDef': {
-      const next = { ...state, enemyDef: action.value };
-
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedPlan(state, { enemyDef: action.value });
     }
     case 'armor': {
-      const next = { ...state, armor: action.value };
-
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedPlan(state, { armor: action.value });
     }
-    case 'hp':
+    case 'hp': {
       return { ...state, hp: action.value };
+    }
     case 'influence': {
       const influence = clamp(action.value, 0, attackerOf(state).inf);
-      const withInfluence = { ...state, influence };
-      const baseCount = activeBaseCountOf(withInfluence);
 
-      const next = {
-        ...withInfluence,
-        chargeAttackIndex: withInfluence.charging
-          ? Math.max(
-              0,
-              Math.min(baseCount - 1, withInfluence.chargeAttackIndex),
-            )
-          : withInfluence.chargeAttackIndex,
-      };
-
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedCharge(state, { influence });
     }
     case 'charging': {
-      const withCharging = { ...state, charging: action.value };
-      const baseCount = activeBaseCountOf(withCharging);
-
-      const next = {
-        ...withCharging,
-        chargeAttackIndex: action.value
-          ? Math.max(0, Math.min(baseCount - 1, withCharging.chargeAttackIndex))
-          : withCharging.chargeAttackIndex,
-      };
-
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedCharge(state, { charging: action.value });
     }
     case 'chargeAttackIndex': {
-      const baseCount = activeBaseCountOf(state);
-
-      const chargeAttackIndex = Math.max(
-        0,
-        Math.min(baseCount - 1, action.value),
+      const chargeAttackIndex = clampChargeAttackIndex(
+        action.value,
+        activeBaseCountOf(state),
       );
 
-      const next = { ...state, chargeAttackIndex };
-
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedPlan(state, { chargeAttackIndex });
     }
     case 'enemyHasCover': {
-      const next = { ...state, enemyHasCover: action.value };
-
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedPlan(state, { enemyHasCover: action.value });
     }
     case 'enemyDefensiveStance': {
-      const next = { ...state, enemyDefensiveStance: action.value };
-
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedPlan(state, { enemyDefensiveStance: action.value });
     }
     case 'enemyKnockedDown': {
-      const next = { ...state, enemyKnockedDown: action.value };
-
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedPlan(state, { enemyKnockedDown: action.value });
     }
     case 'enemySnared': {
-      const next = { ...state, enemySnared: action.value };
-
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedPlan(state, { enemySnared: action.value });
     }
-    case 'enemyResilience':
+    case 'enemyResilience': {
       // Resilience only changes which swings are *ignored* downstream; it never
       // alters the editable plan's validity, so no re-clamp is needed.
       return { ...state, enemyResilience: action.value };
-    case 'startingMomentum':
+    }
+    case 'startingMomentum': {
       return { ...state, startingMomentum: action.value };
+    }
     case 'gangingUpRaw': {
       const range = attackerOf(state).gangingUp;
       const gangingUp = clamp(action.value, range.min, range.max);
-      const next = { ...state, gangingUp };
 
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedPlan(state, { gangingUp });
     }
     case 'crowdingOutRaw': {
       const range = attackerOf(state).crowdingOut;
       const crowdingOut = clamp(action.value, range.min, range.max);
-      const next = { ...state, crowdingOut };
 
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedPlan(state, { crowdingOut });
     }
     case 'damageMods': {
-      const next = { ...state, damageMods: action.value };
-
-      return {
-        ...next,
-        attackPlan: clampPlan(next, state.attackPlan),
-      };
+      return withReclampedPlan(state, { damageMods: action.value });
     }
-    case 'specialAbility':
-      return {
-        ...state,
-        specialAbilities: {
-          ...state.specialAbilities,
-          [action.id]: action.value,
-        },
+    case 'specialAbility': {
+      const specialAbilities = {
+        ...state.specialAbilities,
+        [action.id]: action.value,
       };
+
+      return { ...state, specialAbilities };
+    }
     case 'bonusTime': {
-      const { attackIndex, value } = action;
-      const activeBaseCount = activeBaseCountOf(state);
-
-      if (value) {
-        const pool = momentumPoolBeforeBonusTime(
-          attackerOf(state),
-          state.attackPlan.wrapPicks,
-          state.damageMods,
-          attackIndex,
-          state.startingMomentum,
-          state.bonusTimeByAttack,
-          activeBaseCount,
-        );
-
-        if (pool < 1) {
-          return state;
-        }
-      }
-
-      const nextFlags = [...state.bonusTimeByAttack];
-
-      nextFlags[attackIndex] = value;
-
-      const sanitized = sanitizeBonusTimeFlags(
-        attackerOf(state),
-        state.attackPlan.wrapPicks,
-        state.damageMods,
-        state.startingMomentum,
-        nextFlags,
-        activeBaseCount,
-      );
-
-      return { ...state, bonusTimeByAttack: sanitized };
+      return toggleBonusTime(state, action.attackIndex, action.value);
     }
     case 'sanitizeBonusTime': {
-      const sanitized = sanitizeBonusTimeFlags(
-        attackerOf(state),
-        state.attackPlan.wrapPicks,
-        state.damageMods,
-        state.startingMomentum,
-        state.bonusTimeByAttack,
-        activeBaseCountOf(state),
-      );
-
-      if (bonusTimeEqual(sanitized, state.bonusTimeByAttack)) {
-        return state;
-      }
-
-      return { ...state, bonusTimeByAttack: sanitized };
+      return resanitizeBonusTime(state);
     }
     case 'wrapChoice': {
-      const merged = nextPlanAfterWrapChoice(
+      const edited = nextPlanAfterWrapChoice(
         attackerOf(state),
         state.attackPlan,
         action.attackIndex,
@@ -344,33 +266,19 @@ export const meatGrinderReducer = (
         action.id,
       );
 
-      if (merged == null) {
-        return state;
-      }
-
-      return {
-        ...state,
-        attackPlan: clampPlan(state, merged),
-      };
+      return applyPlanEdit(state, edited);
     }
     case 'clearWrapContinuation': {
-      const merged = nextPlanAfterClearWrapContinuation(
+      const edited = nextPlanAfterClearWrapContinuation(
         attackerOf(state),
         state.attackPlan,
         action.attackIndex,
       );
 
-      if (merged == null) {
-        return state;
-      }
-
-      return {
-        ...state,
-        attackPlan: clampPlan(state, merged),
-      };
+      return applyPlanEdit(state, edited);
     }
     case 'characterPlayPick': {
-      const merged = nextPlanAfterCharacterPlayPick(
+      const edited = nextPlanAfterCharacterPlayPick(
         attackerOf(state),
         state.attackPlan,
         action.attackIndex,
@@ -380,14 +288,7 @@ export const meatGrinderReducer = (
         activeBaseCountOf(state),
       );
 
-      if (merged == null) {
-        return state;
-      }
-
-      return {
-        ...state,
-        attackPlan: clampPlan(state, merged),
-      };
+      return applyPlanEdit(state, edited);
     }
     default: {
       const _exhaustive: never = action;

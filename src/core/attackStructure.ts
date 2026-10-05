@@ -1,3 +1,4 @@
+import { clamp } from '@/core/clamp';
 import { CHARGE_INFLUENCE_COST } from '@/core/constants';
 import type { AttackerData } from '@/types/core/attacker';
 
@@ -32,6 +33,16 @@ export const activeBaseAttackCount = (
   );
 
   return (charging ? 1 : 0) + bought + (attacker.feral ? 1 : 0);
+};
+
+/** Keep the chosen charge row on one of the active base attacks (row 0 at least). */
+export const clampChargeAttackIndex = (
+  index: number,
+  activeBaseCount: number,
+): number => {
+  const lastBaseIndex = activeBaseCount - 1;
+
+  return clamp(index, 0, lastBaseIndex);
 };
 
 /**

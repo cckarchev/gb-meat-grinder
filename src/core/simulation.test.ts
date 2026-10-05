@@ -4,10 +4,8 @@ import { computeAttackSequence } from '@/core/attackSequence';
 import { activeBaseAttackCount } from '@/core/attackStructure';
 import { HP_MIN } from '@/core/constants';
 import { deriveSimulation } from '@/core/simulation';
-import {
-  createInitialMeatGrinderState,
-  meatGrinderReducer,
-} from '@/gbMeatGrinder/meatGrinderReducer';
+import { createInitialMeatGrinderState } from '@/gbMeatGrinder/meatGrinderInitialState';
+import { meatGrinderReducer } from '@/gbMeatGrinder/meatGrinderReducer';
 import type {
   MeatGrinderAction,
   MeatGrinderState,

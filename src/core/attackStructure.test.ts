@@ -4,6 +4,7 @@ import {
   attackArraySize,
   berserkerRowOffset,
   chargeInfluenceCost,
+  clampChargeAttackIndex,
   maxBaseAttackCount,
 } from '@/core/attackStructure';
 import { makeAttacker } from '@/core/testing/fixtures';
@@ -61,5 +62,20 @@ describe('array layout', () => {
     const attacker = makeAttacker({ inf: 3, berserker: true });
 
     expect(attackArraySize(attacker)).toBe(6);
+  });
+});
+
+describe('clampChargeAttackIndex', () => {
+  it('keeps an index inside the active base attacks', () => {
+    expect(clampChargeAttackIndex(1, 3)).toBe(1);
+  });
+
+  it('pulls an index past the last base attack back onto it', () => {
+    expect(clampChargeAttackIndex(4, 2)).toBe(1);
+  });
+
+  it('never goes below the first attack, even with no base attacks', () => {
+    expect(clampChargeAttackIndex(-1, 3)).toBe(0);
+    expect(clampChargeAttackIndex(2, 0)).toBe(0);
   });
 });

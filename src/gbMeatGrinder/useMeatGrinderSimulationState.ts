@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useReducer } from 'react';
 import { ATTACKERS, attackerById } from '@/attackers/registry';
 import { deriveSimulation } from '@/core/simulation';
-import {
-  createInitialMeatGrinderState,
-  meatGrinderReducer,
-} from '@/gbMeatGrinder/meatGrinderReducer';
+import { createInitialMeatGrinderState } from '@/gbMeatGrinder/meatGrinderInitialState';
+import { meatGrinderReducer } from '@/gbMeatGrinder/meatGrinderReducer';
 import type { MeatGrinderSimulation } from '@/types/gbMeatGrinder/simulation';
 
 export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {

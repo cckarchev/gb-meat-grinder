@@ -3,10 +3,8 @@ import { thresher } from '@/attackers/thresher';
 import { veteranBoar } from '@/attackers/veteranBoar';
 import { createInitialAttackPlan } from '@/core/attackPlanState';
 import { HP_DEFAULT } from '@/core/constants';
-import {
-  createInitialMeatGrinderState,
-  meatGrinderReducer,
-} from '@/gbMeatGrinder/meatGrinderReducer';
+import { createInitialMeatGrinderState } from '@/gbMeatGrinder/meatGrinderInitialState';
+import { meatGrinderReducer } from '@/gbMeatGrinder/meatGrinderReducer';
 import type {
   MeatGrinderAction,
   MeatGrinderState,
