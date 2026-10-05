@@ -24,7 +24,7 @@ export const tacForAttack = (
   attacker: AttackerData,
   attackIndex: number,
   chargeAttackIndex: number,
-  tacBonusFromSingledOut: number,
+  carriedTacBonus: number,
   activeBaseCount: number,
   coverTacPenalty: number,
   bonusTimeTacBonus: number,
@@ -37,7 +37,7 @@ export const tacForAttack = (
   return (
     attacker.tac +
     charge +
-    tacBonusFromSingledOut -
+    carriedTacBonus -
     coverTacPenalty +
     bonusTimeTacBonus +
     initialTacModifier
