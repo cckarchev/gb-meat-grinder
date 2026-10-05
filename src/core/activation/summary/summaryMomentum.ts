@@ -1,11 +1,10 @@
 /** Momentum the activation nets when every active swing hits. */
 
-import {
-  momentumAfterAttackInclusive,
-  pickGeneratesMomentum,
-} from '@/core/activation/momentum';
+import { pickGeneratesMomentum } from '@/core/activation/momentousLines';
+import { momentumAfterAttackInclusive } from '@/core/activation/momentum';
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+import { MOMENTOUS_PICK_MOMENTUM } from '@/core/shared/constants';
 
 /** Momentous picks across the active swings, one momentum each. */
 export const momentousPicksIfAllHit = (
@@ -21,7 +20,7 @@ export const momentousPicksIfAllHit = (
         pickGeneratesMomentum(input.attacker, id, input.damageMods);
 
       if (momentous) {
-        momentum += 1;
+        momentum += MOMENTOUS_PICK_MOMENTUM;
       }
     }
   }

@@ -7,10 +7,8 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import {
-  momentumAfterAttackInclusive,
-  sanitizeBonusTimeFlags,
-} from '@/core/activation/momentum';
+import { sanitizeBonusTimeFlags } from '@/core/activation/bonusTimeFlags';
+import { momentumAfterAttackInclusive } from '@/core/activation/momentum';
 import { deriveSimulation } from '@/core/activation/simulation';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
 import {

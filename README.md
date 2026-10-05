@@ -49,7 +49,7 @@ src/
     playbook/     playbook lookups, labels, wrap slots, row effects, cover, Knock Down
     characterPlays/  character play lookup, effects, Once Per Turn usage
     damage/       damage, kill odds, killing blow, resilience, probability
-    activation/   momentum, simulation, summary/ (activation totals and tooltips)
+    activation/   momentum, Bonus Time, simulation, summary/ (activation totals and tooltips)
     shared/       constants and small helpers
   data/
     attackers/    beater definitions + registry.ts (the simulatable models)

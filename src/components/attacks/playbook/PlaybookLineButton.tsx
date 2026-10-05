@@ -2,7 +2,7 @@ import {
   LineButton,
   LineLabelStack,
 } from '@/components/attacks/playbook/playbookLineStyles';
-import { momentousLineStyle } from '@/core/activation/momentum';
+import { momentousLineStyle } from '@/core/activation/momentousLines';
 import type {
   PlaybookChoiceId,
   PlaybookDamageMods,

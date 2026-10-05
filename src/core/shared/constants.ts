@@ -18,6 +18,9 @@ export const ARM_DEFAULT = 1;
 /** Momentum gained for taking the target out (killing blow). */
 export const KILLING_BLOW_MOMENTUM = 1;
 
+/** Momentum each momentous line that deals damage earns on a hit. */
+export const MOMENTOUS_PICK_MOMENTUM = 1;
+
 /** Influence a non-Furious model spends to charge. */
 export const CHARGE_INFLUENCE_COST = 2;
 

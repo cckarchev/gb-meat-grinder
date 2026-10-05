@@ -1,9 +1,7 @@
 /** Bonus Time spends: toggling one and dropping spends the momentum can no longer pay. */
 
-import {
-  momentumPoolBeforeBonusTime,
-  sanitizeBonusTimeFlags,
-} from '@/core/activation/momentum';
+import { sanitizeBonusTimeFlags } from '@/core/activation/bonusTimeFlags';
+import { momentumPoolBeforeBonusTime } from '@/core/activation/momentum';
 import { BONUS_TIME_MOMENTUM_COST } from '@/core/shared/constants';
 import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
 import {
