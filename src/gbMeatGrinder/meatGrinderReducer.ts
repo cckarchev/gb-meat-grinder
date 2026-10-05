@@ -1,6 +1,5 @@
 import { attackerById } from '@/attackers/registry';
 import {
-  clampAttackPlanState,
   nextPlanAfterCharacterPlayPick,
   nextPlanAfterClearWrapContinuation,
   nextPlanAfterWrapChoice,
@@ -10,6 +9,7 @@ import {
   clampChargeAttackIndex,
 } from '@/core/attackStructure';
 import { clamp } from '@/core/clamp';
+import { clampAttackPlan } from '@/core/clampAttackPlan';
 import { effectiveArmor, effectiveEnemyDef } from '@/core/damage';
 import {
   momentumPoolBeforeBonusTime,
@@ -57,7 +57,7 @@ const clampParams = (s: MeatGrinderState): AttackPlanClampParams => {
 };
 
 const clampPlan = (s: MeatGrinderState, plan: AttackPlan): AttackPlan => {
-  return clampAttackPlanState(plan, clampParams(s));
+  return clampAttackPlan(plan, clampParams(s));
 };
 
 /** Apply `patch`, then re-clamp the existing plan against the patched state. */

@@ -12,10 +12,7 @@ import {
   defaultWrapPicks,
 } from '@/core/wrapSlots';
 import type { AttackerData } from '@/types/core/attacker';
-import type {
-  AttackPlan,
-  AttackPlanClampParams,
-} from '@/types/core/attackPlan';
+import type { AttackPlan } from '@/types/core/attackPlan';
 import type {
   CharacterPlayPick,
   CharacterPlayPickSlot,
@@ -36,53 +33,21 @@ export const createInitialAttackPlan = (
     () => false,
   );
 
-  const r = clampAttackPlan(
+  const unclamped: AttackPlan = { wrapPicks: wp, characterPlayPicks: cp };
+
+  return clampAttackPlan(unclamped, {
     attacker,
-    wp,
-    cp,
-    charging ? 0 : -1,
-    ARM_DEFAULT,
-    false,
-    false,
-    DEFAULT_PLAYBOOK_DAMAGE_MODS,
-    DEF_DEFAULT,
-    noBonus,
-    0,
-    activeBaseAttackCount(attacker, influence, charging),
-    false,
-  );
-
-  return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
-};
-
-export const clampAttackPlanState = (
-  prev: AttackPlan,
-  params: AttackPlanClampParams,
-): AttackPlan => {
-  const r = clampAttackPlan(
-    params.attacker,
-    prev.wrapPicks,
-    prev.characterPlayPicks,
-    params.chargeAttackIndex,
-    params.armor,
-    params.enemyHasCover,
-    params.enemyDefensiveStance,
-    params.damageMods,
-    params.enemyDef,
-    params.bonusTimeByAttack,
-    params.initialTacModifier,
-    params.activeBaseCount,
-    params.enemyKnockedDown,
-  );
-
-  if (
-    r.wrapPicks === prev.wrapPicks &&
-    r.characterPlayPicks === prev.characterPlayPicks
-  ) {
-    return prev;
-  }
-
-  return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
+    chargeAttackIndex: charging ? 0 : -1,
+    armor: ARM_DEFAULT,
+    enemyHasCover: false,
+    enemyDefensiveStance: false,
+    damageMods: DEFAULT_PLAYBOOK_DAMAGE_MODS,
+    enemyDef: DEF_DEFAULT,
+    bonusTimeByAttack: noBonus,
+    initialTacModifier: 0,
+    enemyKnockedDown: false,
+    activeBaseCount: activeBaseAttackCount(attacker, influence, charging),
+  });
 };
 
 /** Returns `null` when the choice is a no-op. */

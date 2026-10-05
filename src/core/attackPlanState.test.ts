@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import {
-  clampAttackPlanState,
   createInitialAttackPlan,
   nextPlanAfterCharacterPlayPick,
   nextPlanAfterClearWrapContinuation,
@@ -107,28 +106,6 @@ describe('nextPlanAfterCharacterPlayPick', () => {
   });
 });
 
-describe('clampAttackPlanState', () => {
-  it('returns the previous plan object when clamping changes nothing', () => {
-    const prev = plan([['one'], ['two']], [[null], [null]]);
-
-    const result = clampAttackPlanState(prev, {
-      attacker: makeAttacker({ tac: 4 }),
-      chargeAttackIndex: -1,
-      armor: 0,
-      enemyHasCover: false,
-      enemyDefensiveStance: false,
-      damageMods: NO_MODS,
-      enemyDef: 4,
-      bonusTimeByAttack: [false, false],
-      initialTacModifier: 0,
-      enemyKnockedDown: false,
-      activeBaseCount: 2,
-    });
-
-    expect(result).toBe(prev);
-  });
-});
-
 describe('plan edge cases', () => {
   it('starts a charging plan with only the charge row', () => {
     // 2 INF all spent on the charge; TAC 6 + 4 vs ARM 1 = 9 net, three slots.
@@ -152,26 +129,5 @@ describe('plan edge cases', () => {
     expect(nextPlanAfterClearWrapContinuation(attacker, prev, 0)).toEqual(
       plan([['one']], [[null]]),
     );
-  });
-
-  it('returns a new plan when clamping changes it', () => {
-    const prev = plan([['four'], ['two']], [[null], [null]]);
-
-    const result = clampAttackPlanState(prev, {
-      attacker: makeAttacker({ tac: 2 }),
-      chargeAttackIndex: -1,
-      armor: 0,
-      enemyHasCover: false,
-      enemyDefensiveStance: false,
-      damageMods: NO_MODS,
-      enemyDef: 4,
-      bonusTimeByAttack: [false, false],
-      initialTacModifier: 0,
-      enemyKnockedDown: false,
-      activeBaseCount: 2,
-    });
-
-    expect(result).not.toBe(prev);
-    expect(result.wrapPicks).toEqual([['push'], ['two']]);
   });
 });

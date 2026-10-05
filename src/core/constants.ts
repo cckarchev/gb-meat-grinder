@@ -20,3 +20,6 @@ export const KILLING_BLOW_MOMENTUM = 1;
 
 /** Influence a non-Furious model spends to charge. */
 export const CHARGE_INFLUENCE_COST = 2;
+
+/** Fewest net successes that reach a playbook column (and so open a wrap). */
+export const MIN_PLAYBOOK_NET = 1;

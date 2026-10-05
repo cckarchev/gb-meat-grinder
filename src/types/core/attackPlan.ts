@@ -10,7 +10,7 @@ export type AttackPlan = {
   characterPlayPicks: CharacterPlayPickSlot[][];
 };
 
-/** Inputs to `clampAttackPlan` bundled for reuse with `clampAttackPlanState`. */
+/** Inputs that bound a legal attack plan; see `clampAttackPlan`. */
 export type AttackPlanClampParams = {
   /** The model being clamped. */
   attacker: AttackerData;

@@ -245,19 +245,20 @@ const runScenario = (
 
   const clamp = () => {
     const clamped = clampAttackPlan(
-      attacker,
-      wrapPicks,
-      characterPlayPicks,
-      chargeAttackIndex,
-      armor,
-      scenario.enemyHasCover,
-      scenario.enemyDefensiveStance,
-      damageMods,
-      enemyDef,
-      requestedBonusTime,
-      scenario.initialTacModifier,
-      activeBaseCount,
-      scenario.enemyKnockedDown,
+      { wrapPicks, characterPlayPicks },
+      {
+        attacker,
+        chargeAttackIndex,
+        armor,
+        enemyHasCover: scenario.enemyHasCover,
+        enemyDefensiveStance: scenario.enemyDefensiveStance,
+        damageMods,
+        enemyDef,
+        bonusTimeByAttack: requestedBonusTime,
+        initialTacModifier: scenario.initialTacModifier,
+        enemyKnockedDown: scenario.enemyKnockedDown,
+        activeBaseCount,
+      },
     );
 
     wrapPicks = clamped.wrapPicks;

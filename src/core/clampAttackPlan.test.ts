@@ -15,6 +15,10 @@ const NO_BONUS_TIME = [false, false];
 
 const ENEMY_KNOCKED_DOWN = true;
 
+const ENEMY_DEF = 4;
+
+const NO_TAC_MODIFIER = 0;
+
 describe('clampAttackPlan', () => {
   type ClampOptions = {
     attacker?: AttackerData;
@@ -41,19 +45,20 @@ describe('clampAttackPlan', () => {
       characterPlayPicks ?? wrapPicks.map((row) => row.map(() => null));
 
     return clampAttackPlan(
-      model,
-      wrapPicks,
-      plays,
-      NO_CHARGE,
-      armor,
-      !COVER,
-      !STANCE,
-      NO_MODS,
-      4,
-      NO_BONUS_TIME,
-      0,
-      activeBaseCount,
-      enemyKnockedDown,
+      { wrapPicks, characterPlayPicks: plays },
+      {
+        attacker: model,
+        chargeAttackIndex: NO_CHARGE,
+        armor,
+        enemyHasCover: !COVER,
+        enemyDefensiveStance: !STANCE,
+        damageMods: NO_MODS,
+        enemyDef: ENEMY_DEF,
+        bonusTimeByAttack: NO_BONUS_TIME,
+        initialTacModifier: NO_TAC_MODIFIER,
+        enemyKnockedDown,
+        activeBaseCount,
+      },
     );
   };
 
@@ -199,12 +204,50 @@ describe('clampAttackPlan', () => {
     ).toEqual([['kd'], ['kd']]);
   });
 
-  it('returns the same arrays when nothing changes', () => {
-    const wrapPicks = [['one'], ['two']];
-    const characterPlayPicks = [[null], [null]];
-    const result = clamp({ wrapPicks, characterPlayPicks, activeBaseCount: 2 });
+  it('returns the same plan object when nothing changes', () => {
+    const plan = {
+      wrapPicks: [['one'], ['two']],
+      characterPlayPicks: [[null], [null]],
+    };
 
-    expect(result.wrapPicks).toBe(wrapPicks);
-    expect(result.characterPlayPicks).toBe(characterPlayPicks);
+    const result = clampAttackPlan(plan, {
+      attacker: makeAttacker({ tac: 4 }),
+      chargeAttackIndex: NO_CHARGE,
+      armor: 0,
+      enemyHasCover: !COVER,
+      enemyDefensiveStance: !STANCE,
+      damageMods: NO_MODS,
+      enemyDef: ENEMY_DEF,
+      bonusTimeByAttack: NO_BONUS_TIME,
+      initialTacModifier: NO_TAC_MODIFIER,
+      enemyKnockedDown: false,
+      activeBaseCount: 2,
+    });
+
+    expect(result).toBe(plan);
+  });
+
+  it('returns a new plan when clamping changes it', () => {
+    const plan = {
+      wrapPicks: [['four'], ['two']],
+      characterPlayPicks: [[null], [null]],
+    };
+
+    const result = clampAttackPlan(plan, {
+      attacker: makeAttacker({ tac: 2 }),
+      chargeAttackIndex: NO_CHARGE,
+      armor: 0,
+      enemyHasCover: !COVER,
+      enemyDefensiveStance: !STANCE,
+      damageMods: NO_MODS,
+      enemyDef: ENEMY_DEF,
+      bonusTimeByAttack: NO_BONUS_TIME,
+      initialTacModifier: NO_TAC_MODIFIER,
+      enemyKnockedDown: false,
+      activeBaseCount: 2,
+    });
+
+    expect(result).not.toBe(plan);
+    expect(result.wrapPicks).toEqual([['push'], ['two']]);
   });
 });
