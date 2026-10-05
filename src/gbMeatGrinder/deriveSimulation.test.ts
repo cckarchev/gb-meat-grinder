@@ -83,8 +83,8 @@ describe('deriveSimulation', () => {
 
   it('nets ganging up against crowding out', () => {
     const state = boarState(
-      { type: 'gangingUpRaw', value: 2 },
-      { type: 'crowdingOutRaw', value: 1 },
+      { type: 'gangingUp', value: 2 },
+      { type: 'crowdingOut', value: 1 },
     );
 
     expect(deriveSimulation(veteranBoar, state).initialTacModifier).toBe(1);

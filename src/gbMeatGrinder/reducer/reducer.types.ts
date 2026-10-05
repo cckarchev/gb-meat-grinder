@@ -27,8 +27,8 @@ export type MeatGrinderAction =
   | { type: 'enemySnared'; value: boolean }
   | { type: 'enemyResilience'; value: boolean }
   | { type: 'startingMomentum'; value: number }
-  | { type: 'gangingUpRaw'; value: number }
-  | { type: 'crowdingOutRaw'; value: number }
+  | { type: 'gangingUp'; value: number }
+  | { type: 'crowdingOut'; value: number }
   | { type: 'damageMods'; value: PlaybookDamageMods }
   | { type: 'specialAbility'; id: string; value: boolean }
   | { type: 'bonusTime'; attackIndex: number; value: boolean }

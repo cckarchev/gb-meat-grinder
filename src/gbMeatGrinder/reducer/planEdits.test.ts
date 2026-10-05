@@ -37,7 +37,7 @@ describe('plan edits', () => {
   it('clears a wrap continuation but keeps the slot open', () => {
     const wrapped = reduce(
       initialState(PICK_THRESHER),
-      { type: 'gangingUpRaw', value: 5 },
+      { type: 'gangingUp', value: 5 },
       pick(0, 'm4'),
       pick(0, 'm2', 1),
     );

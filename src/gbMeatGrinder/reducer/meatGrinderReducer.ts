@@ -93,13 +93,13 @@ const transition = (
     case 'startingMomentum': {
       return { ...state, startingMomentum: action.value };
     }
-    case 'gangingUpRaw': {
+    case 'gangingUp': {
       const range = attackerOf(state).gangingUp;
       const gangingUp = clamp(action.value, range.min, range.max);
 
       return withReclampedPlan(state, { gangingUp });
     }
-    case 'crowdingOutRaw': {
+    case 'crowdingOut': {
       const range = attackerOf(state).crowdingOut;
       const crowdingOut = clamp(action.value, range.min, range.max);
 

@@ -79,7 +79,7 @@ export const AttackerPanel = () => {
           value={gangingUp}
           min={attacker.gangingUp.min}
           max={attacker.gangingUp.max}
-          onChange={(value) => dispatch({ type: 'gangingUpRaw', value })}
+          onChange={(value) => dispatch({ type: 'gangingUp', value })}
           valueLabel={gangingUpLabel}
           ariaSubject="Ganging Up"
         />
@@ -88,7 +88,7 @@ export const AttackerPanel = () => {
           value={crowdingOut}
           min={attacker.crowdingOut.min}
           max={attacker.crowdingOut.max}
-          onChange={(value) => dispatch({ type: 'crowdingOutRaw', value })}
+          onChange={(value) => dispatch({ type: 'crowdingOut', value })}
           valueLabel={crowdingOutLabel}
           ariaSubject="Crowding Out"
         />

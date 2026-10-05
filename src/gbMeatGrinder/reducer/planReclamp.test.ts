@@ -30,8 +30,8 @@ describe('re-clamping the plan', () => {
   });
 
   it('downgrades picks when Crowding Out costs dice, clamped to its range', () => {
-    const crowded = reduce(withM4(), { type: 'crowdingOutRaw', value: 3 });
-    const negative = reduce(withM4(), { type: 'crowdingOutRaw', value: -3 });
+    const crowded = reduce(withM4(), { type: 'crowdingOut', value: 3 });
+    const negative = reduce(withM4(), { type: 'crowdingOut', value: -3 });
 
     expect(crowded.crowdingOut).toBe(3);
     // TAC 4 vs ARM 1 reaches 3 net: the first net-3 line, with its play.
@@ -41,7 +41,7 @@ describe('re-clamping the plan', () => {
   });
 
   it('opens a wrap slot when Ganging Up adds dice, clamped to its range', () => {
-    const state = reduce(withM4(), { type: 'gangingUpRaw', value: 9 });
+    const state = reduce(withM4(), { type: 'gangingUp', value: 9 });
 
     expect(state.gangingUp).toBe(thresher.gangingUp.max);
     expect(state.attackPlan.wrapPicks[0]).toEqual(['m4', null]);
