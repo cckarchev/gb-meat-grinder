@@ -7,7 +7,7 @@ import {
   WrapSlotBlock,
 } from '@/components/attacks/playbook/playbookGridStyles';
 import { formatPercent, probAttackSucceeds } from '@/core/damage/probability';
-import { kdAlreadyTakenBeforePick } from '@/core/playbook/knockDown';
+import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
 import {
   wrapExtendedNetNeeded,
   wrapSlotBudget,
@@ -51,7 +51,7 @@ export const WrapSlotPickGrid = ({
     (column) => column.netSuccesses <= budget,
   );
 
-  const kdTaken = kdAlreadyTakenBeforePick(
+  const knockDownTaken = knockDownTakenBeforePick(
     attacker,
     wrapPicks,
     attackIndex,
@@ -99,7 +99,9 @@ export const WrapSlotPickGrid = ({
                       key={result.id}
                       id={result.id}
                       selected={selected}
-                      kdLocked={result.appliesKnockDown === true && kdTaken}
+                      kdLocked={
+                        result.appliesKnockDown === true && knockDownTaken
+                      }
                       hitChanceLabel={hitChanceLabel}
                       onClick={() =>
                         dispatch({

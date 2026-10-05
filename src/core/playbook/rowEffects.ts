@@ -4,7 +4,7 @@ import { activationAttackIndices } from '@/core/attacks/attackRows';
 import { characterPlayPickModifiers } from '@/core/characterPlays/characterPlayEffects';
 import { defaultCharacterPlayId } from '@/core/characterPlays/characterPlayLookup';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
-import { kdAlreadyTakenBeforePick } from '@/core/playbook/knockDown';
+import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
 import type {
   CharacterPlayPickSlot,
   PickEffects,
@@ -47,7 +47,7 @@ export const rowEffectsForPick = (
 
   const redundantKnockDown =
     result.appliesKnockDown &&
-    kdAlreadyTakenBeforePick(
+    knockDownTakenBeforePick(
       attacker,
       wrapPicks,
       attackIndex,

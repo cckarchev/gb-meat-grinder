@@ -12,7 +12,7 @@ import {
 } from '@/core/attacks/attackRows';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
 import { coverSwingClockIndices } from '@/core/playbook/coverClearing';
-import { kdAlreadyTakenBeforePick } from '@/core/playbook/knockDown';
+import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
 import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
 import {
   armorReductionBeforeAttack,
@@ -126,7 +126,7 @@ describe('rows outside the activation', () => {
     ).toBe(0);
 
     expect(
-      kdAlreadyTakenBeforePick(
+      knockDownTakenBeforePick(
         attacker,
         wrapPicks,
         inactiveRow,

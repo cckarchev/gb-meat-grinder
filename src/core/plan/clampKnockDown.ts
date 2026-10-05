@@ -57,7 +57,7 @@ export const stripDuplicateKnockDown = (
   let changed = false;
   // A target that is already Knocked Down counts as the one allowed KD, so every
   // playbook KD pick is redundant and gets replaced.
-  let kdSeen = params.enemyKnockedDown;
+  let knockDownSeen = params.enemyKnockedDown;
 
   const activationOrder = activationAttackIndices(
     attacker,
@@ -77,8 +77,8 @@ export const stripDuplicateKnockDown = (
         continue;
       }
 
-      if (!kdSeen) {
-        kdSeen = true;
+      if (!knockDownSeen) {
+        knockDownSeen = true;
         continue;
       }
 

@@ -13,7 +13,7 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
  * Knocked Down before the activation, or KD was taken on a strictly earlier wrap
  * pick (activation order). Only one KD can ever apply.
  */
-export const kdAlreadyTakenBeforePick = (
+export const knockDownTakenBeforePick = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   attackIndex: number,
