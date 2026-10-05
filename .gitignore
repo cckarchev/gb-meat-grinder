@@ -25,3 +25,6 @@ docs
 *.njsproj
 *.sln
 *.sw?
+
+# Test coverage
+coverage

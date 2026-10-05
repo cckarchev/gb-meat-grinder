@@ -29,6 +29,7 @@ npm run build     # type-check + bundle
 npm run preview   # serve the built dist/ locally
 npm test          # run the core test suite once
 npm run test:watch
+npm run test:coverage
 npm run check     # Biome lint + format check
 npm run lint
 npm run format

@@ -127,3 +127,49 @@ describe('clampAttackPlanState', () => {
     expect(result).toBe(prev);
   });
 });
+
+describe('plan edge cases', () => {
+  it('starts a charging plan with only the charge row', () => {
+    // 2 INF all spent on the charge; TAC 6 + 4 vs ARM 1 = 9 net, three slots.
+    expect(createInitialAttackPlan(attacker, 2, true).wrapPicks).toEqual([
+      [null, null, null],
+      [],
+    ]);
+  });
+
+  it('pads the play row when picking a later wrap slot', () => {
+    const prev = plan([['four', null]], [[null]]);
+
+    expect(nextPlanAfterWrapChoice(attacker, prev, 0, 1, 'gb')).toEqual(
+      plan([['four', 'gb']], [[null, 'playTac']]),
+    );
+  });
+
+  it('drops a stale play when the kept first pick is not GB', () => {
+    const prev = plan([['one', 'two']], [['playTac', null]]);
+
+    expect(nextPlanAfterClearWrapContinuation(attacker, prev, 0)).toEqual(
+      plan([['one']], [[null]]),
+    );
+  });
+
+  it('returns a new plan when clamping changes it', () => {
+    const prev = plan([['four'], ['two']], [[null], [null]]);
+    const result = clampAttackPlanState(prev, {
+      attacker: makeAttacker({ tac: 2 }),
+      chargeAttackIndex: -1,
+      armor: 0,
+      enemyHasCover: false,
+      enemyDefensiveStance: false,
+      damageMods: NO_MODS,
+      enemyDef: 4,
+      bonusTimeByAttack: [false, false],
+      initialTacModifier: 0,
+      enemyKnockedDown: false,
+      activeBaseCount: 2,
+    });
+
+    expect(result).not.toBe(prev);
+    expect(result.wrapPicks).toEqual([['push'], ['two']]);
+  });
+});

@@ -513,3 +513,101 @@ describe('wrap slots', () => {
     expect(wrapPickClearsCover(attacker, null)).toBe(false);
   });
 });
+
+describe('rows outside the activation', () => {
+  const attacker = makeAttacker();
+  const wrapPicks = [['kd'], ['one']];
+  const plays = [[null], [null]];
+  const inactiveRow = 1;
+  const activeBaseCount = 1;
+
+  it('fall back to neutral values', () => {
+    expect(
+      momentumPoolBeforeBonusTime(
+        attacker,
+        wrapPicks,
+        NO_MODS,
+        inactiveRow,
+        3,
+        [false, false],
+        activeBaseCount,
+      ),
+    ).toBe(3);
+    expect(
+      momentumAfterAttackInclusive(
+        attacker,
+        wrapPicks,
+        NO_MODS,
+        inactiveRow,
+        3,
+        [false, false],
+        activeBaseCount,
+      ),
+    ).toBe(3);
+    expect(
+      armorReductionBeforeAttack(
+        attacker,
+        wrapPicks,
+        plays,
+        NO_MODS,
+        inactiveRow,
+        activeBaseCount,
+      ),
+    ).toBe(0);
+    expect(
+      characterPlayUsageBeforePick(
+        attacker,
+        wrapPicks,
+        plays,
+        inactiveRow,
+        0,
+        NO_MODS,
+        activeBaseCount,
+      ).size,
+    ).toBe(0);
+    expect(
+      kdAlreadyTakenBeforePick(
+        attacker,
+        wrapPicks,
+        inactiveRow,
+        0,
+        NO_MODS,
+        activeBaseCount,
+      ),
+    ).toBe(false);
+  });
+
+  it('give no effects for an empty pick', () => {
+    expect(
+      rowEffectsForPick(attacker, [[null]], [[null]], 0, 0, NO_MODS, 1),
+    ).toEqual(NO_EFFECTS);
+  });
+});
+
+describe('character play edge cases', () => {
+  it('treats a model without plays as having none', () => {
+    const playless = makeAttacker({ characterPlays: undefined });
+
+    expect(getCharacterPlay(playless, 'playTac')).toBeUndefined();
+    expect(defaultCharacterPlayId(playless)).toBeNull();
+  });
+
+  it('describes DEF, ARM and combined effects', () => {
+    const combined: CharacterPlay = {
+      id: 'combo',
+      label: 'Combo',
+      tacBonusForLater: 1,
+      armorReduction: 1,
+    };
+
+    expect(characterPlayEffectSummary(PLAY_DEF)).toBe(
+      '−1 enemy DEF on later attacks. Once per turn.',
+    );
+    expect(characterPlayEffectSummary(PLAY_ARM)).toBe(
+      '−1 enemy ARM on later attacks. Once per turn.',
+    );
+    expect(characterPlayEffectSummary(combined)).toBe(
+      '+1 TAC on later attacks; −1 enemy ARM on later attacks. Once per turn.',
+    );
+  });
+});
