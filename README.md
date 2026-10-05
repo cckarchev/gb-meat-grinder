@@ -27,9 +27,16 @@ npm run dev
 ```bash
 npm run build     # type-check + bundle
 npm run preview   # serve the built dist/ locally
+npm test          # run the core test suite once
+npm run test:watch
+npm run check     # Biome lint + format check
 npm run lint
 npm run format
 ```
+
+`src/core/engine.golden.test.ts` snapshots the whole engine against the real
+attacker data. If a rules change is intended, review the snapshot diff and
+update it with `npx vitest run -u`.
 
 ## Project layout
 
