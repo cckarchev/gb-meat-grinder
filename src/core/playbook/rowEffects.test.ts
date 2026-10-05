@@ -12,6 +12,31 @@ const NO_EFFECTS = {
   armorReduction: 0,
 };
 
+describe('plain playbook lines', () => {
+  it('treat omitted later-swing bonuses as none', () => {
+    const attacker = makeAttacker({
+      playbook: [
+        {
+          netSuccesses: 1,
+          results: [{ id: 'bare', label: '1', damage: 1 }],
+        },
+      ],
+    });
+
+    expect(
+      pickEffectsForLaterSwings(
+        attacker,
+        [['bare']],
+        [[null]],
+        0,
+        0,
+        NO_MODS,
+        1,
+      ),
+    ).toEqual(NO_EFFECTS);
+  });
+});
+
 describe('Knock Down', () => {
   const attacker = makeAttacker();
   const wrapPicks = [['kd'], ['kd']];

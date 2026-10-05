@@ -48,10 +48,10 @@ export type PickEffects = {
 export type PlaybookResult = {
   id: PlaybookChoiceId;
   label: string;
-  /** +TAC on later attacks (Singled Out); from character play when using GB / 1GB. */
-  tacBonusForLater: number;
-  /** −enemy DEF on later attacks (KD / Stagger). */
-  defReductionForLater: number;
+  /** +TAC on later attacks. Omitted means none. */
+  tacBonusForLater?: number;
+  /** −enemy DEF on later attacks (KD). Omitted means none. */
+  defReductionForLater?: number;
   /** Damage to enemy HP when this attack hits with this line. */
   damage: number;
   /** True if this line generates momentum (momentous). */

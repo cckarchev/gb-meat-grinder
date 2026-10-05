@@ -28,8 +28,6 @@ const result = (
   overrides: Partial<PlaybookResult> & Pick<PlaybookResult, 'id' | 'label'>,
 ): PlaybookResult => {
   return {
-    tacBonusForLater: 0,
-    defReductionForLater: 0,
     damage: 0,
     ...overrides,
   };

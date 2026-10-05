@@ -20,15 +20,11 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'dodge',
         label: '<',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 0,
       },
       {
         id: 'm2',
         label: '2',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 2,
         momentum: true,
       },
@@ -40,8 +36,6 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'tackle',
         label: 'T',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 0,
       },
     ],
@@ -52,15 +46,12 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'three_gb',
         label: '3GB',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 3,
         picksCharacterPlay: true,
       },
       {
         id: 'kd_dodge',
         label: 'KD',
-        tacBonusForLater: 0,
         defReductionForLater: 1,
         damage: 0,
         appliesKnockDown: true,
@@ -74,8 +65,6 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'm3_dodge',
         label: '3',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 3,
         momentum: true,
         dodge: true,
@@ -88,7 +77,6 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'm3_kd',
         label: '3KD',
-        tacBonusForLater: 0,
         defReductionForLater: 1,
         damage: 3,
         momentum: true,
@@ -102,8 +90,6 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'm4',
         label: '4',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 4,
         momentum: true,
       },

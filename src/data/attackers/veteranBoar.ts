@@ -19,16 +19,12 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'push',
         label: '>',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 0,
         clearsCover: true,
       },
       {
         id: 'dmg1',
         label: '1',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 1,
         momentum: true,
       },
@@ -40,16 +36,12 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'gb',
         label: 'GB',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 0,
         picksCharacterPlay: true,
       },
       {
         id: 'dmg2',
         label: '2',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 2,
         momentum: true,
       },
@@ -61,7 +53,6 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'kd',
         label: 'KD',
-        tacBonusForLater: 0,
         defReductionForLater: 1,
         damage: 0,
         appliesKnockDown: true,
@@ -74,16 +65,12 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'push_push',
         label: '>>',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 0,
         clearsCover: true,
       },
       {
         id: 'dmg3',
         label: '3',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 3,
         momentum: true,
       },
@@ -95,16 +82,12 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'one_gb',
         label: '1GB',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 1,
         picksCharacterPlay: true,
       },
       {
         id: 'tackle',
         label: 'T',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 0,
       },
     ],
@@ -115,8 +98,6 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'dmg5',
         label: '5',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 5,
         momentum: true,
       },
@@ -128,8 +109,6 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'dmg6',
         label: '6',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 6,
         momentum: true,
       },

@@ -21,16 +21,12 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'push',
         label: '>',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 0,
         clearsCover: true,
       },
       {
         id: 'm2',
         label: '2',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 2,
         momentum: true,
       },
@@ -42,7 +38,6 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'kd',
         label: 'KD',
-        tacBonusForLater: 0,
         defReductionForLater: 1,
         damage: 0,
         appliesKnockDown: true,
@@ -50,8 +45,6 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'm3',
         label: '3',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 3,
         momentum: true,
       },
@@ -63,16 +56,12 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'push_push',
         label: '>>',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 0,
         clearsCover: true,
       },
       {
         id: 'm2_gb',
         label: '2',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 2,
         momentum: true,
         picksCharacterPlay: true,
@@ -85,8 +74,6 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'm4',
         label: '4',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 4,
         momentum: true,
       },
@@ -98,8 +85,6 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       {
         id: 'm5',
         label: '5',
-        tacBonusForLater: 0,
-        defReductionForLater: 0,
         damage: 5,
         momentum: true,
       },

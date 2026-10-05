@@ -62,8 +62,8 @@ export const pickEffectsForLaterSwings = (
 
   if (!choiceUsesCharacterPlay(attacker, id)) {
     return {
-      tacBonusForLater: result.tacBonusForLater,
-      defReductionForLater: result.defReductionForLater,
+      tacBonusForLater: result.tacBonusForLater ?? 0,
+      defReductionForLater: result.defReductionForLater ?? 0,
       armorReduction: 0,
     };
   }
