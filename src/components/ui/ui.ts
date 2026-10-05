@@ -71,13 +71,3 @@ export const Mono = styled.span`
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 `;
-
-export const Summary = styled.div`
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  font-size: 0.95rem;
-`;

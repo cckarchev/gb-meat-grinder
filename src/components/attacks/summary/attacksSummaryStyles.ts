@@ -1,6 +1,16 @@
 import styled from 'styled-components';
 import { PanelTitle } from '@/components/ui/ui';
 
+export const Summary = styled.div`
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+`;
+
 export const SummarySectionTitle = styled(PanelTitle)`
   margin-bottom: 0.5rem;
 `;

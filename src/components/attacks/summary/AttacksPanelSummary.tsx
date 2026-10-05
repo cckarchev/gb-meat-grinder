@@ -10,13 +10,14 @@ import {
   OddsAggregateBlock,
   SelectionLine,
   SelectionPicksInline,
+  Summary,
   SummaryRow,
   SummarySectionTitle,
   TotalsSectionTitle,
 } from '@/components/attacks/summary/attacksSummaryStyles';
 import { SummaryStat } from '@/components/attacks/summary/SummaryStat';
 import { useActivationInput } from '@/components/attacks/useActivationInput';
-import { Mono, Summary } from '@/components/ui/ui';
+import { Mono } from '@/components/ui/ui';
 import { summarizeActivation } from '@/core/activation/summary/activationSummary';
 import { attackKindLabel } from '@/core/attacks/attackVariant';
 import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
