@@ -4,24 +4,23 @@ import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import { activeBaseAttackCount } from '@/core/attacks/attackStructure';
 import { HP_MIN } from '@/core/shared/constants';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
-import { createInitialMeatGrinderState } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
-import { meatGrinderReducer } from '@/gbMeatGrinder/reducer/meatGrinderReducer';
 import type {
   MeatGrinderAction,
   MeatGrinderState,
 } from '@/gbMeatGrinder/reducer/reducer.types';
-
-/** `Math.random` value that makes `randomAttacker` pick the Veteran Boar. */
-const PICK_VETERAN_BOAR = 0;
+import {
+  initialState,
+  PICK_VETERAN_BOAR,
+  pick,
+  reduce,
+} from '@/gbMeatGrinder/reducer/reducerTestHelpers';
 
 const boarState = (...actions: MeatGrinderAction[]): MeatGrinderState => {
-  vi.spyOn(Math, 'random').mockReturnValue(PICK_VETERAN_BOAR);
-
-  return actions.reduce(meatGrinderReducer, createInitialMeatGrinderState());
+  return reduce(initialState(PICK_VETERAN_BOAR), ...actions);
 };
 
 const pickDamage = (attackIndex: number): MeatGrinderAction => {
-  return { type: 'wrapChoice', attackIndex, pickIndex: 0, id: 'dmg1' };
+  return pick(attackIndex, 'dmg1');
 };
 
 afterEach(() => {
