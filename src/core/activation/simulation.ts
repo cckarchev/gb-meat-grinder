@@ -1,4 +1,7 @@
-import type { DerivedSimulation } from '@/core/activation/simulation.types';
+import type {
+  ActivationScenario,
+  DerivedSimulation,
+} from '@/core/activation/simulation.types';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import {
   activeBaseAttackCount,
@@ -19,44 +22,43 @@ import {
 import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
-import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
 
-/** Run the whole engine pipeline for one editable state. */
+/** Run the whole engine pipeline for one activation scenario. */
 export const deriveSimulation = (
   attacker: AttackerData,
-  state: MeatGrinderState,
+  scenario: ActivationScenario,
 ): DerivedSimulation => {
-  const { wrapPicks, characterPlayPicks } = state.attackPlan;
+  const { wrapPicks, characterPlayPicks } = scenario.attackPlan;
 
   const activeBaseCount = activeBaseAttackCount(
     attacker,
-    state.influence,
-    state.charging,
+    scenario.influence,
+    scenario.charging,
   );
 
   const effectiveChargeAttackIndex = effectiveChargeIndex(
-    state.charging,
-    state.chargeAttackIndex,
+    scenario.charging,
+    scenario.chargeAttackIndex,
   );
 
-  const armor = effectiveArmor(attacker, state.armor, state.damageMods);
+  const armor = effectiveArmor(attacker, scenario.armor, scenario.damageMods);
 
   const enemyDef = effectiveEnemyDef(
-    state.enemyDef,
-    state.enemyKnockedDown,
-    state.enemySnared,
+    scenario.enemyDef,
+    scenario.enemyKnockedDown,
+    scenario.enemySnared,
   );
 
-  const initialTacModifier = state.gangingUp - state.crowdingOut;
+  const initialTacModifier = scenario.gangingUp - scenario.crowdingOut;
 
   // The swing a Resilient target ignores, plus plan copies with that swing
   // blanked so every downstream calculation treats it as if it never happened.
   const ignoredAttackIndex = resilienceIgnoredAttackIndex(
     attacker,
     wrapPicks,
-    state.damageMods,
+    scenario.damageMods,
     activeBaseCount,
-    state.enemyResilience,
+    scenario.enemyResilience,
   );
 
   const effectiveWrapPicks = effectiveWrapPicksForResilience(
@@ -70,7 +72,7 @@ export const deriveSimulation = (
   );
 
   const effectiveBonusTimeByAttack = effectiveBonusTimeForResilience(
-    state.bonusTimeByAttack,
+    scenario.bonusTimeByAttack,
     ignoredAttackIndex,
   );
 
@@ -81,9 +83,9 @@ export const deriveSimulation = (
     effectiveWrapPicks,
     effectiveCharacterPlayPicks,
     effectiveChargeAttackIndex,
-    state.enemyHasCover,
-    state.enemyDefensiveStance,
-    state.damageMods,
+    scenario.enemyHasCover,
+    scenario.enemyDefensiveStance,
+    scenario.damageMods,
     effectiveBonusTimeByAttack,
     initialTacModifier,
     activeBaseCount,
@@ -96,17 +98,20 @@ export const deriveSimulation = (
   const rowDamageIfHit = damageIfAllHitsWrap(
     attacker,
     effectiveWrapPicks,
-    state.damageMods,
+    scenario.damageMods,
     activeBaseCount,
   );
 
-  const flatDamage = specialAbilityFlatDamage(attacker, state.specialAbilities);
+  const flatDamage = specialAbilityFlatDamage(
+    attacker,
+    scenario.specialAbilities,
+  );
 
   const killingBlowIndex = killingBlowDisplayIndex(
     attacks,
     rowDamageIfHit,
     flatDamage,
-    state.hp,
+    scenario.hp,
   );
 
   return {

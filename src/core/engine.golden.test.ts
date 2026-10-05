@@ -10,6 +10,7 @@ import { describe, expect, it } from 'vitest';
 import { sanitizeBonusTimeFlags } from '@/core/activation/bonusTimeFlags';
 import { momentumAfterAttackInclusive } from '@/core/activation/momentum';
 import { deriveSimulation } from '@/core/activation/simulation';
+import type { ActivationScenario } from '@/core/activation/simulation.types';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
 import {
   activeBaseAttackCount,
@@ -48,7 +49,6 @@ import {
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 import { ATTACKERS } from '@/data/attackers/registry';
-import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
 
 const ROUNDING_DIGITS = 6;
 const PLAN_SETTLE_PASSES = 6;
@@ -333,8 +333,7 @@ const runScenario = (
     activeBaseCount,
   );
 
-  const state: MeatGrinderState = {
-    attackerId: attacker.id,
+  const activation: ActivationScenario = {
     enemyDef: scenario.enemyDef,
     armor: scenario.armor,
     hp: scenario.hp,
@@ -346,7 +345,6 @@ const runScenario = (
     enemyKnockedDown: scenario.enemyKnockedDown,
     enemySnared: scenario.enemySnared,
     enemyResilience: scenario.enemyResilience,
-    startingMomentum: scenario.startingMomentum,
     gangingUp: scenario.initialTacModifier,
     crowdingOut: 0,
     bonusTimeByAttack,
@@ -356,7 +354,7 @@ const runScenario = (
   };
 
   const { ignoredAttackIndex, effectiveWrapPicks, attacks, killingBlowIndex } =
-    deriveSimulation(attacker, state);
+    deriveSimulation(attacker, activation);
 
   const flatDamage = specialAbilityFlatDamage(attacker, specialAbilities);
 
