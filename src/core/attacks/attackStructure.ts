@@ -4,6 +4,7 @@ import {
   CHARGE_ATTACK_COUNT,
   CHARGE_INFLUENCE_COST,
   FERAL_ATTACK_COUNT,
+  NO_ATTACK_INDEX,
 } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
@@ -51,6 +52,14 @@ export const clampChargeAttackIndex = (
   const lastBaseIndex = activeBaseCount - 1;
 
   return clamp(index, 0, lastBaseIndex);
+};
+
+/** Charge row the engine uses: the chosen base, or none when not charging. */
+export const effectiveChargeIndex = (
+  charging: boolean,
+  chargeAttackIndex: number,
+): number => {
+  return charging ? chargeAttackIndex : NO_ATTACK_INDEX;
 };
 
 /**

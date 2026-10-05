@@ -17,7 +17,7 @@ const AttacksList = styled.div`
 export const AttacksPanel = () => {
   const {
     effectiveBonusTimeByAttack,
-    ignoredAttackIndex,
+    ignoredDisplayIndex,
     attacks,
     killingBlowIndex,
   } = useMeatGrinderSimulation();
@@ -35,7 +35,7 @@ export const AttacksPanel = () => {
           displayIdx={displayIdx}
           disabled={swingIsSkipped(
             displayIdx,
-            ignoredAttackIndex,
+            ignoredDisplayIndex,
             killingBlowIndex,
           )}
           isKillingBlow={displayIdx === killingBlowIndex}

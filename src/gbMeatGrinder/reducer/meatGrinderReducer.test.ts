@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createInitialAttackPlan } from '@/core/plan/initialAttackPlan';
-import { HP_DEFAULT } from '@/core/shared/constants';
+import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from '@/core/shared/constants';
 import { thresher } from '@/data/attackers/thresher';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
 import {
@@ -23,8 +23,8 @@ describe('initial state', () => {
       influence: thresher.inf,
       charging: false,
       chargeAttackIndex: 0,
-      enemyDef: 4,
-      armor: 1,
+      enemyDef: DEF_DEFAULT,
+      armor: ARM_DEFAULT,
       hp: HP_DEFAULT,
       startingMomentum: 0,
       bonusTimeByAttack: [false, false, false, false, false],

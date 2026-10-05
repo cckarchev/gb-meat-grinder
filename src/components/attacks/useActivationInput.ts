@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 /**
@@ -11,28 +10,23 @@ export const useActivationInput = () => {
   const {
     attacker,
     hp: targetHp,
-    charging,
-    chargeAttackIndex,
+    effectiveChargeAttackIndex,
     activeBaseCount,
     startingMomentum,
     effectiveWrapPicks,
     effectiveBonusTimeByAttack,
-    ignoredAttackIndex,
+    ignoredDisplayIndex,
     damageMods,
     specialAbilities,
     attacks,
     killingBlowIndex,
   } = useMeatGrinderSimulation();
 
-  const effectiveChargeAttackIndex = charging
-    ? chargeAttackIndex
-    : NO_ATTACK_INDEX;
-
   const input = useMemo<ActivationSummaryInput>(
     () => ({
       attacker,
       attacks,
-      ignoredAttackIndex,
+      ignoredAttackIndex: ignoredDisplayIndex,
       killingBlowIndex,
       wrapPicks: effectiveWrapPicks,
       bonusTimeByAttack: effectiveBonusTimeByAttack,
@@ -45,7 +39,7 @@ export const useActivationInput = () => {
     [
       attacker,
       attacks,
-      ignoredAttackIndex,
+      ignoredDisplayIndex,
       killingBlowIndex,
       effectiveWrapPicks,
       effectiveBonusTimeByAttack,

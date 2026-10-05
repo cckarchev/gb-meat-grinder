@@ -5,8 +5,10 @@ import {
   berserkerRowOffset,
   chargeInfluenceCost,
   clampChargeAttackIndex,
+  effectiveChargeIndex,
   maxBaseAttackCount,
 } from '@/core/attacks/attackStructure';
+import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { makeAttacker } from '@/core/testing/fixtures';
 
 const CHARGING = true;
@@ -77,5 +79,15 @@ describe('clampChargeAttackIndex', () => {
   it('never goes below the first attack, even with no base attacks', () => {
     expect(clampChargeAttackIndex(-1, 3)).toBe(0);
     expect(clampChargeAttackIndex(2, 0)).toBe(0);
+  });
+});
+
+describe('effectiveChargeIndex', () => {
+  it('uses the chosen charge row while charging', () => {
+    expect(effectiveChargeIndex(CHARGING, 2)).toBe(2);
+  });
+
+  it('has no charge row when not charging', () => {
+    expect(effectiveChargeIndex(NOT_CHARGING, 2)).toBe(NO_ATTACK_INDEX);
   });
 });

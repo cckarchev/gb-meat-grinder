@@ -1,6 +1,9 @@
 import type { DerivedSimulation } from '@/core/activation/simulation.types';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
-import { activeBaseAttackCount } from '@/core/attacks/attackStructure';
+import {
+  activeBaseAttackCount,
+  effectiveChargeIndex,
+} from '@/core/attacks/attackStructure';
 import {
   effectiveArmor,
   effectiveEnemyDef,
@@ -31,9 +34,10 @@ export const deriveSimulation = (
     state.charging,
   );
 
-  const effectiveChargeAttackIndex = state.charging
-    ? state.chargeAttackIndex
-    : NO_ATTACK_INDEX;
+  const effectiveChargeAttackIndex = effectiveChargeIndex(
+    state.charging,
+    state.chargeAttackIndex,
+  );
 
   const armor = effectiveArmor(attacker, state.armor, state.damageMods);
 

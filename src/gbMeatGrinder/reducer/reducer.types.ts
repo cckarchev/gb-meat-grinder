@@ -9,6 +9,7 @@ export type MeatGrinderState = {
   /** Id of the selected attacker model (see attacker registry). */
   attackerId: string;
   enemyDef: number;
+  /** Enemy's printed ARM (what the stepper edits); buffs apply downstream. */
   armor: number;
   hp: number;
   /** Influence allocated to the attacker this activation (0…attacker INF cap). */

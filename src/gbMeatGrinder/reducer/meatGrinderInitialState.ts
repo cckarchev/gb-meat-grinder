@@ -9,7 +9,7 @@ import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
 /** Fresh attacker-side state for a model, preserving enemy stats from `prev`. */
 export const stateForAttacker = (
   attacker: AttackerData,
-  prev?: Partial<MeatGrinderState>,
+  prev?: MeatGrinderState,
 ): MeatGrinderState => {
   const influence = attacker.inf;
   // Models with a free charge (Furious) default to charging; otherwise carry
@@ -56,7 +56,7 @@ export const stateForAttacker = (
     gangingUp,
     crowdingOut,
     bonusTimeByAttack,
-    damageMods: { toughHide: prev?.damageMods?.toughHide ?? false, buffs: {} },
+    damageMods: { toughHide: prev?.damageMods.toughHide ?? false, buffs: {} },
     specialAbilities: {},
     attackPlan: createInitialAttackPlan(attacker, influence, charging),
   };

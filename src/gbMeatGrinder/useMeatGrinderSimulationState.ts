@@ -19,7 +19,7 @@ export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
     [attacker, state],
   );
 
-  const { wrapPicks, characterPlayPicks } = state.attackPlan;
+  const { wrapPicks } = state.attackPlan;
   const { activeBaseCount } = derived;
 
   useEffect(() => {
@@ -28,38 +28,24 @@ export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
     });
   }, [wrapPicks, state.damageMods, state.startingMomentum, activeBaseCount]);
 
-  return useMemo(
-    () => ({
+  return useMemo(() => {
+    const { attackerId, attackPlan, bonusTimeByAttack, ...exposedState } =
+      state;
+
+    return {
+      ...exposedState,
       attacker,
       availableAttackers: ATTACKERS,
-      enemyDef: state.enemyDef,
-      armor: state.armor,
-      effectiveArmor: derived.effectiveArmor,
-      hp: state.hp,
-      influence: state.influence,
-      charging: state.charging,
-      chargeAttackIndex: state.chargeAttackIndex,
-      activeBaseCount,
-      enemyHasCover: state.enemyHasCover,
-      enemyDefensiveStance: state.enemyDefensiveStance,
-      enemyKnockedDown: state.enemyKnockedDown,
-      enemySnared: state.enemySnared,
-      enemyResilience: state.enemyResilience,
-      startingMomentum: state.startingMomentum,
-      gangingUp: state.gangingUp,
-      crowdingOut: state.crowdingOut,
-      damageMods: state.damageMods,
-      specialAbilities: state.specialAbilities,
-      bonusTimeByAttack: state.bonusTimeByAttack,
-      wrapPicks,
-      characterPlayPicks,
+      activeBaseCount: derived.activeBaseCount,
+      effectiveChargeAttackIndex: derived.effectiveChargeAttackIndex,
+      wrapPicks: attackPlan.wrapPicks,
+      characterPlayPicks: attackPlan.characterPlayPicks,
       effectiveWrapPicks: derived.effectiveWrapPicks,
       effectiveBonusTimeByAttack: derived.effectiveBonusTimeByAttack,
-      ignoredAttackIndex: derived.ignoredDisplayIndex,
+      ignoredDisplayIndex: derived.ignoredDisplayIndex,
       attacks: derived.attacks,
       killingBlowIndex: derived.killingBlowIndex,
       dispatch,
-    }),
-    [attacker, state, derived, wrapPicks, characterPlayPicks, activeBaseCount],
-  );
+    };
+  }, [attacker, state, derived]);
 };

@@ -1,6 +1,7 @@
 /** Shared setup for the reducer tests: a seeded initial state and action shorthands. */
 
 import { vi } from 'vitest';
+import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
 import { createInitialMeatGrinderState } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
 import { meatGrinderReducer } from '@/gbMeatGrinder/reducer/meatGrinderReducer';
 import type {
@@ -27,7 +28,7 @@ export const reduce = (
 
 export const pick = (
   attackIndex: number,
-  id: string | null,
+  id: PlaybookChoiceId | null,
   pickIndex = 0,
 ): MeatGrinderAction => {
   return { type: 'wrapChoice', attackIndex, pickIndex, id };

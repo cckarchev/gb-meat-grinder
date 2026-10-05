@@ -2,46 +2,30 @@ import type { Dispatch } from 'react';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import type {
   CharacterPlayPickSlot,
-  PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import type { AttackerData } from '@/data/attackers/attacker.types';
-import type { MeatGrinderAction } from '@/gbMeatGrinder/reducer/reducer.types';
+import type {
+  MeatGrinderAction,
+  MeatGrinderState,
+} from '@/gbMeatGrinder/reducer/reducer.types';
+
+/** Editable state the components read as is. */
+type ExposedState = Omit<
+  MeatGrinderState,
+  'attackerId' | 'attackPlan' | 'bonusTimeByAttack'
+>;
 
 /** React hook + context value for the Meat Grinder simulation. */
-export type MeatGrinderSimulation = {
+export type MeatGrinderSimulation = ExposedState & {
   /** The selected attacker model. */
   attacker: AttackerData;
   /** Every model that can be selected. */
   availableAttackers: readonly AttackerData[];
-  enemyDef: number;
-  /** Enemy's printed ARM (what the stepper edits). */
-  armor: number;
-  /** ARM after attacker buffs (e.g. They Ain't Tough!); used in the rolls. */
-  effectiveArmor: number;
-  hp: number;
-  influence: number;
-  charging: boolean;
-  chargeAttackIndex: number;
   /** Active base attacks this activation (derived from traits + influence). */
   activeBaseCount: number;
-  enemyHasCover: boolean;
-  enemyDefensiveStance: boolean;
-  /** Target is Knocked Down before the activation (−1 DEF; disables playbook KD). */
-  enemyKnockedDown: boolean;
-  /** Target is Snared before the activation (−1 DEF). */
-  enemySnared: boolean;
-  /** Target has Resilience: the first attack of the activation is wholly ignored. */
-  enemyResilience: boolean;
-  startingMomentum: number;
-  /** Extra attack dice from Ganging Up (added to TAC). */
-  gangingUp: number;
-  /** Attack dice lost to Crowding Out (subtracted from TAC). */
-  crowdingOut: number;
-  damageMods: PlaybookDamageMods;
-  /** Toggled model-specific flat-damage abilities, by ability id. */
-  specialAbilities: Record<string, boolean>;
-  bonusTimeByAttack: boolean[];
+  /** Charge row the engine uses: `chargeAttackIndex` while charging, else -1. */
+  effectiveChargeAttackIndex: number;
   wrapPicks: WrapPick[][];
   characterPlayPicks: CharacterPlayPickSlot[][];
   /**
@@ -57,7 +41,7 @@ export type MeatGrinderSimulation = {
    * Display index into `attacks` of the swing ignored by Resilience (always 0
    * when active), or -1 when the target is not Resilient / has no attacks.
    */
-  ignoredAttackIndex: number;
+  ignoredDisplayIndex: number;
   attacks: AttackRollContext[];
   /**
    * Display index into `attacks` of the swing that drops the target to 0 HP in
