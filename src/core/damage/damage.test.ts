@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
   availableBuffs,
-  effectiveArmor,
   effectiveEnemyDef,
   effectivePlaybookDamage,
   guildBuffIsExcluded,
@@ -61,13 +60,6 @@ describe('buffs and damage', () => {
     });
 
     expect(effectivePlaybookDamage(attacker, 2, conditionMods)).toBe(2);
-  });
-
-  it('reduces ARM by active buffs, floored at 0', () => {
-    const sunder = modsWith({ buffs: { sunder: true } });
-
-    expect(effectiveArmor(attacker, 2, sunder)).toBe(1);
-    expect(effectiveArmor(attacker, 0, sunder)).toBe(0);
   });
 
   it('lowers DEF for Knocked Down and Snared without a floor', () => {

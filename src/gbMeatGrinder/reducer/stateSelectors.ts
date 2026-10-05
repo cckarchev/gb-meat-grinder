@@ -27,7 +27,7 @@ export const clampParams = (state: MeatGrinderState): AttackPlanClampParams => {
   return {
     attacker,
     chargeAttackIndex: stats.effectiveChargeAttackIndex,
-    armor: stats.effectiveArmor,
+    armor: state.armor,
     enemyHasCover: state.enemyHasCover,
     enemyDefensiveStance: state.enemyDefensiveStance,
     damageMods: state.damageMods,

@@ -14,6 +14,7 @@ import {
   choiceUsesCharacterPlay,
   getPlaybookResult,
 } from '@/core/playbook/playbookIndex';
+import { KNOCKED_DOWN_EFFECT } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 const NO_EFFECTS: PickEffects = {
@@ -88,4 +89,40 @@ export const pickEffectsForLaterSwings = (
   }
 
   return characterPlayPickEffects(attacker, play);
+};
+
+/**
+ * The name a pick's carried effect goes by, for the "same name does not stack"
+ * rule: the play's id when the pick triggers one, the shared Knock Down name for
+ * a KD, otherwise the playbook result's id.
+ */
+export const pickEffectName = (
+  attacker: AttackerData,
+  wrapPicks: WrapPick[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
+  attackIndex: number,
+  pickIndex: number,
+): string => {
+  const id = wrapPicks[attackIndex][pickIndex];
+
+  if (id == null) {
+    return '';
+  }
+
+  if (choiceUsesCharacterPlay(attacker, id)) {
+    const play = effectivePlayForPick(
+      attacker,
+      characterPlayPicks,
+      attackIndex,
+      pickIndex,
+    );
+
+    return play ?? id;
+  }
+
+  if (getPlaybookResult(attacker, id).appliesKnockDown) {
+    return KNOCKED_DOWN_EFFECT;
+  }
+
+  return id;
 };

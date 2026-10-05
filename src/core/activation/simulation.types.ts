@@ -50,8 +50,6 @@ export type DerivedSimulation = {
    * `NO_ATTACK_INDEX`.
    */
   effectiveChargeAttackIndex: number;
-  /** Enemy ARM after attacker buffs (e.g. They Ain't Tough!). */
-  effectiveArmor: number;
   /** Enemy DEF after Knocked Down and Snared. */
   effectiveEnemyDef: number;
   /** Ganging Up minus Crowding Out, applied to the first swing's TAC. */

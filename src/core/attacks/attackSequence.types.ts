@@ -11,6 +11,7 @@ export type ActivationRollParams = {
    * charging.
    */
   chargeAttackIndex: number;
+  /** Enemy's printed ARM; every reduction comes from the timeline. */
   armor: number;
   enemyHasCover: boolean;
   /** +1 enemy DEF only on the attack that has the charge. */
@@ -26,7 +27,7 @@ export type ActivationRollParams = {
 export type AttackRollContext = {
   attackIndex: number;
   tac: number;
-  /** Enemy ARM for this swing (guild buffs minus any earlier GB They Ain't Tough). */
+  /** Enemy ARM for this swing after every named reduction before it. */
   armor: number;
   defMinRoll: number;
   pHit: number;

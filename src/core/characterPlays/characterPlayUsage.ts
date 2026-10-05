@@ -53,9 +53,11 @@ export const characterPlayUsageBeforePick = (
       earlier.pickIndex,
     );
 
-    // Repeatable plays may be taken again and stack, so they never count as
-    // "used up": they stay available and keep applying on later swings.
-    if (play != null && getCharacterPlay(attacker, play)?.repeatable !== true) {
+    // Plays that are not Once Per Turn may be picked again, so they never count
+    // as used up. Their effect still applies once (same name, see the timeline).
+    const oncePerTurn = getCharacterPlay(attacker, play)?.oncePerTurn === true;
+
+    if (play != null && oncePerTurn) {
       used.add(play);
     }
   }

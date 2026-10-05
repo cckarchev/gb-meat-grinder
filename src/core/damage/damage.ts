@@ -8,7 +8,6 @@ import type {
 } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import {
-  ARM_MIN,
   DEF_MAX,
   KNOCKED_DOWN_DEF_PENALTY,
   SNARED_DEF_PENALTY,
@@ -39,7 +38,10 @@ export const availableBuffs = (attacker: AttackerData) => {
 };
 
 /** The attacker's available buffs that are currently toggled on. */
-const activeBuffs = (attacker: AttackerData, mods: PlaybookDamageMods) => {
+export const activeBuffs = (
+  attacker: AttackerData,
+  mods: PlaybookDamageMods,
+) => {
   return availableBuffs(attacker).filter((buff) => mods.buffs[buff.id]);
 };
 
@@ -98,20 +100,6 @@ export const effectiveEnemyDef = (
   const reduction = knockedDownPenalty + snaredPenalty;
 
   return Math.min(DEF_MAX, enemyDef - reduction);
-};
-
-/** Enemy ARM after the selected buffs' reductions (floored at 0). */
-export const effectiveArmor = (
-  attacker: AttackerData,
-  baseArmor: number,
-  mods: PlaybookDamageMods,
-): number => {
-  const reduction = activeBuffs(attacker, mods).reduce(
-    (sum, buff) => sum + (buff.armorReduction ?? 0),
-    0,
-  );
-
-  return Math.max(ARM_MIN, baseArmor - reduction);
 };
 
 export const effectivePlaybookDamage = (

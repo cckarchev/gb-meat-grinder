@@ -87,30 +87,34 @@ export const PLAY_TAC: CharacterPlay = {
   id: 'playTac',
   label: 'Play TAC',
   tacBonusForLater: 2,
+  oncePerTurn: true,
 };
 
 export const PLAY_DEF: CharacterPlay = {
   id: 'playDef',
   label: 'Play DEF',
   defReductionForLater: 1,
+  oncePerTurn: true,
 };
 
 export const PLAY_ARM: CharacterPlay = {
   id: 'playArm',
   label: 'Play ARM',
   armorReduction: 1,
+  oncePerTurn: true,
 };
 
 export const PLAY_REPEATABLE: CharacterPlay = {
   id: 'playRepeatable',
   label: 'Play Repeatable',
   tacBonusForLater: 1,
-  repeatable: true,
+  oncePerTurn: false,
 };
 
 export const PLAY_NOOP: CharacterPlay = {
   id: 'playNoop',
   label: 'Play Noop',
+  oncePerTurn: true,
 };
 
 export const makeAttacker = (

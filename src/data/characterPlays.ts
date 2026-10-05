@@ -10,18 +10,21 @@ export const singledOut: CharacterPlay = {
   id: 'singledOut',
   label: 'Singled Out',
   tacBonusForLater: 2,
+  oncePerTurn: false,
 };
 
 export const stagger: CharacterPlay = {
   id: 'stagger',
   label: 'Stagger',
   defReductionForLater: 1,
+  oncePerTurn: false,
 };
 
 export const theyAintTough: CharacterPlay = {
   id: 'theyAintTough',
   label: "They Ain't Tough!",
   armorReduction: 1,
+  oncePerTurn: false,
 };
 
 /**
@@ -32,4 +35,5 @@ export const theyAintTough: CharacterPlay = {
 export const snackBreak: CharacterPlay = {
   id: 'snackBreak',
   label: 'Snack Break',
+  oncePerTurn: true,
 };

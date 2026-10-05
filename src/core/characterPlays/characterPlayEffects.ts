@@ -48,7 +48,7 @@ export const characterPlayEffectSummary = (play: CharacterPlay): string => {
     ? `${effects.join('; ')}.`
     : 'No effect on the attack math.';
 
-  const cadence = play.repeatable ? 'Repeatable.' : 'Once per turn.';
+  const cadence = play.oncePerTurn ? ' Once per turn.' : '';
 
-  return `${effect} ${cadence}`;
+  return `${effect}${cadence}`;
 };

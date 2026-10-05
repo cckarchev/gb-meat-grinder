@@ -20,7 +20,6 @@ import { maxPlaybookColumnForRow } from '@/core/attacks/maxPlaybookColumn';
 import { characterPlayAvailabilityForPick } from '@/core/characterPlays/characterPlayUsage';
 import {
   availableBuffs,
-  effectiveArmor,
   effectiveDamageForChoice,
   effectiveEnemyDef,
 } from '@/core/damage/damage';
@@ -224,7 +223,7 @@ const runScenario = (
     ]),
   );
 
-  const armor = effectiveArmor(attacker, scenario.armor, damageMods);
+  const armor = scenario.armor;
 
   const enemyDef = effectiveEnemyDef(
     scenario.enemyDef,

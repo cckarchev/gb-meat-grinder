@@ -29,7 +29,6 @@ export const deriveSimulation = (
   const {
     activeBaseCount,
     effectiveChargeAttackIndex,
-    effectiveArmor,
     effectiveEnemyDef,
     initialTacModifier,
   } = stats;
@@ -67,7 +66,7 @@ export const deriveSimulation = (
   const { attacks } = computeAttackSequence(effectivePlan, {
     attacker,
     chargeAttackIndex: effectiveChargeAttackIndex,
-    armor: effectiveArmor,
+    armor: scenario.armor,
     enemyHasCover: scenario.enemyHasCover,
     enemyDefensiveStance: scenario.enemyDefensiveStance,
     damageMods: scenario.damageMods,

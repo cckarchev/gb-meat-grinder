@@ -29,7 +29,7 @@ describe('character play usage', () => {
     expect([...used]).toEqual(['playTac']);
   });
 
-  it('never uses up repeatable plays', () => {
+  it('never uses up plays that are not Once Per Turn', () => {
     const repeatable = makeAttacker({ characterPlays: [PLAY_REPEATABLE] });
 
     const used = characterPlayUsageBeforePick(

@@ -40,7 +40,7 @@ describe('character play effects', () => {
     );
 
     expect(characterPlayEffectSummary(PLAY_REPEATABLE)).toBe(
-      '+1 TAC on later attacks. Repeatable.',
+      '+1 TAC on later attacks.',
     );
 
     expect(characterPlayEffectSummary(PLAY_NOOP)).toBe(
@@ -54,6 +54,7 @@ describe('character play effects', () => {
       label: 'Combo',
       tacBonusForLater: 1,
       armorReduction: 1,
+      oncePerTurn: true,
     };
 
     expect(characterPlayEffectSummary(PLAY_DEF)).toBe(

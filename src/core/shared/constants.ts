@@ -51,8 +51,8 @@ export const SNARED_DEF_PENALTY = 1;
 /** Damage Tough Hide removes from each playbook line with card damage. */
 export const TOUGH_HIDE_DAMAGE_PENALTY = 1;
 
-/** Most ARM a whole activation's playbook lines can strip. */
-export const MAX_ARMOR_REDUCTION = 1;
+/** Effect name every playbook Knock Down shares, so only one ever applies. */
+export const KNOCKED_DOWN_EFFECT = 'knockedDown';
 
 /** TAC a swing gains for being the charge. */
 export const CHARGE_TAC_BONUS = 4;

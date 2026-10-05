@@ -24,12 +24,11 @@ export type CharacterPlay = {
   /** −enemy ARM on later attacks (e.g. They Ain't Tough!). A condition; caps at 1. */
   armorReduction?: number;
   /**
-   * When omitted/false (the default), the play is Once Per Turn: picking it on
-   * one swing removes it from later swings this activation, and its effect does
-   * not re-apply ("effects from the same source do not stack"). Set true for
-   * plays that may be taken on multiple swings and stack each time.
+   * Once Per Turn, copied from the card: picking it on one swing removes it from
+   * later swings. It only limits availability; effects of the same name never
+   * stack either way (see MODELING.md, "Stacking").
    */
-  repeatable?: boolean;
+  oncePerTurn: boolean;
 };
 
 /** A chosen character play, keyed by {@link CharacterPlay.id}. */
@@ -56,7 +55,7 @@ export type PlaybookResult = {
   damage: number;
   /** True if this line generates momentum (momentous). */
   momentum?: boolean;
-  /** After GB / 1GB, pick a character play (Once Per Turn unless `repeatable`). */
+  /** After GB / 1GB, pick a character play. */
   picksCharacterPlay?: boolean;
   /** `>` / `>>`: removes the enemy's cover for later swings this activation. */
   clearsCover?: boolean;

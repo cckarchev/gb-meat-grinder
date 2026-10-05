@@ -9,9 +9,11 @@ import type { CharacterPlay } from '@/core/playbook/playbook.types';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import {
   makeAttacker,
+  modsWith,
   NO_MODS,
   PLAY_ARM,
   PLAY_DEF,
+  PLAY_REPEATABLE,
   PLAY_TAC,
 } from '@/core/testing/fixtures';
 
@@ -75,9 +77,9 @@ describe('activationTimeline carried effects', () => {
     expect(timeline[2].effectsBefore.armorReduction).toBe(1);
   });
 
-  it('caps ARM reduction from earlier plays at 1', () => {
-    const repeatableArm: CharacterPlay = { ...PLAY_ARM, repeatable: true };
-    const attacker = makeAttacker({ inf: 3, characterPlays: [repeatableArm] });
+  it('applies an ARM play picked twice only once', () => {
+    const anyTurnArm: CharacterPlay = { ...PLAY_ARM, oncePerTurn: false };
+    const attacker = makeAttacker({ inf: 3, characterPlays: [anyTurnArm] });
 
     const plan: AttackPlan = {
       wrapPicks: [['gb'], ['gb'], ['one']],
@@ -111,5 +113,58 @@ describe('activationTimeline carried effects', () => {
     const timeline = activationTimeline(plan, params({ activeBaseCount: 1 }));
 
     expect(swingStateAt(timeline, 5).effectsBefore).toEqual(NONE);
+  });
+});
+
+describe('named effects do not stack', () => {
+  it('applies a pre-applied guild ARM debuff from the first swing', () => {
+    const plan: AttackPlan = {
+      wrapPicks: [['one'], ['one']],
+      characterPlayPicks: [[null], [null]],
+    };
+
+    const timeline = activationTimeline(
+      plan,
+      params({
+        activeBaseCount: 2,
+        damageMods: modsWith({ buffs: { sunder: true } }),
+      }),
+    );
+
+    expect(timeline[0].effectsBefore.armorReduction).toBe(1);
+    expect(timeline[1].effectsBefore.armorReduction).toBe(1);
+  });
+
+  it('stacks effects with different names', () => {
+    const plan: AttackPlan = {
+      wrapPicks: [['gb'], ['one']],
+      characterPlayPicks: [['playArm'], [null]],
+    };
+
+    const timeline = activationTimeline(
+      plan,
+      params({
+        activeBaseCount: 2,
+        damageMods: modsWith({ buffs: { sunder: true } }),
+      }),
+    );
+
+    expect(timeline[1].effectsBefore.armorReduction).toBe(2);
+  });
+
+  it('applies a play that is not Once Per Turn only once', () => {
+    const attacker = makeAttacker({
+      inf: 3,
+      characterPlays: [PLAY_REPEATABLE],
+    });
+
+    const plan: AttackPlan = {
+      wrapPicks: [['gb'], ['gb'], ['one']],
+      characterPlayPicks: [['playRepeatable'], ['playRepeatable'], [null]],
+    };
+
+    const timeline = activationTimeline(plan, params({ attacker }));
+
+    expect(timeline[2].effectsBefore.tacBonus).toBe(1);
   });
 });

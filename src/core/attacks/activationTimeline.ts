@@ -7,9 +7,12 @@ import type {
   TimelineParams,
 } from '@/core/attacks/activationTimeline.types';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
+import { activeBuffs } from '@/core/damage/damage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
-import { pickEffectsForLaterSwings } from '@/core/playbook/rowEffects';
-import { MAX_ARMOR_REDUCTION } from '@/core/shared/constants';
+import {
+  pickEffectName,
+  pickEffectsForLaterSwings,
+} from '@/core/playbook/rowEffects';
 
 const NO_CARRIED_EFFECTS: CarriedEffects = {
   tacBonus: 0,
@@ -27,6 +30,51 @@ export const swingStateAt = (
   return timeline[attackIndex] ?? EMPTY_SWING_STATE;
 };
 
+const hasAnyEffect = (effects: CarriedEffects): boolean => {
+  return (
+    effects.tacBonus !== 0 ||
+    effects.defReduction !== 0 ||
+    effects.armorReduction !== 0
+  );
+};
+
+/** Named effects present before any swing: the toggled guild buffs and debuffs. */
+const preAppliedEffects = (
+  params: TimelineParams,
+): Map<string, CarriedEffects> => {
+  const named = new Map<string, CarriedEffects>();
+
+  for (const buff of activeBuffs(params.attacker, params.damageMods)) {
+    const effects: CarriedEffects = {
+      ...NO_CARRIED_EFFECTS,
+      armorReduction: buff.armorReduction ?? 0,
+    };
+
+    if (hasAnyEffect(effects)) {
+      named.set(buff.id, effects);
+    }
+  }
+
+  return named;
+};
+
+/** The total of every named effect, each counted once. */
+const sumEffects = (
+  named: ReadonlyMap<string, CarriedEffects>,
+): CarriedEffects => {
+  let tacBonus = 0;
+  let defReduction = 0;
+  let armorReduction = 0;
+
+  for (const effects of named.values()) {
+    tacBonus += effects.tacBonus;
+    defReduction += effects.defReduction;
+    armorReduction += effects.armorReduction;
+  }
+
+  return { tacBonus, defReduction, armorReduction };
+};
+
 export const activationTimeline = (
   plan: AttackPlan,
   params: TimelineParams,
@@ -34,7 +82,11 @@ export const activationTimeline = (
   const { wrapPicks, characterPlayPicks } = plan;
   const { attacker, damageMods, activeBaseCount } = params;
 
-  const states: SwingState[] = wrapPicks.map(() => EMPTY_SWING_STATE);
+  // Effects of the same name never stack, so each name keeps its first value.
+  const named = preAppliedEffects(params);
+  const preAppliedState: SwingState = { effectsBefore: sumEffects(named) };
+
+  const states: SwingState[] = wrapPicks.map(() => preAppliedState);
 
   const order = activationAttackIndices(
     attacker,
@@ -43,23 +95,13 @@ export const activationTimeline = (
     activeBaseCount,
   );
 
-  let tacBonus = 0;
-  let defReduction = 0;
-  let armorReduction = 0;
-
   for (const attackIndex of order) {
-    states[attackIndex] = {
-      effectsBefore: {
-        tacBonus,
-        defReduction,
-        armorReduction: Math.min(MAX_ARMOR_REDUCTION, armorReduction),
-      },
-    };
+    states[attackIndex] = { effectsBefore: sumEffects(named) };
 
     const row = wrapPicks[attackIndex] ?? [];
 
     for (let pickIndex = 0; pickIndex < row.length; pickIndex++) {
-      const effects = pickEffectsForLaterSwings(
+      const pickEffects = pickEffectsForLaterSwings(
         attacker,
         wrapPicks,
         characterPlayPicks,
@@ -69,9 +111,25 @@ export const activationTimeline = (
         activeBaseCount,
       );
 
-      tacBonus += effects.tacBonusForLater;
-      defReduction += effects.defReductionForLater;
-      armorReduction += effects.armorReduction;
+      const effects: CarriedEffects = {
+        tacBonus: pickEffects.tacBonusForLater,
+        defReduction: pickEffects.defReductionForLater,
+        armorReduction: pickEffects.armorReduction,
+      };
+
+      const name = pickEffectName(
+        attacker,
+        wrapPicks,
+        characterPlayPicks,
+        attackIndex,
+        pickIndex,
+      );
+
+      const alreadyApplied = named.has(name);
+
+      if (hasAnyEffect(effects) && !alreadyApplied) {
+        named.set(name, effects);
+      }
     }
   }
 
