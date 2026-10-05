@@ -1,5 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { MeatGrinderAction } from '@/gbMeatGrinder/reducer/reducer.types';
+import type {
+  MeatGrinderAction,
+  MeatGrinderState,
+} from '@/gbMeatGrinder/reducer/reducer.types';
 import {
   initialState,
   PICK_THRESHER,
@@ -74,5 +77,67 @@ describe('Bonus Time', () => {
     );
 
     expect(unpicked.bonusTimeByAttack.slice(0, 2)).toEqual([true, false]);
+  });
+
+  describe('a line only the Bonus Time die reaches', () => {
+    // TAC 7 vs ARM 4 tops out at net 3, a column with no momentous line; the
+    // Bonus Time die reaches the momentous `m3_dodge` (net 4).
+    const ARMOR_CAPPING_NET_3 = 4;
+    const BONUS_TIME_LINE = 'm3_dodge';
+
+    const reachedWithBonusTime = (): MeatGrinderState => {
+      return reduce(
+        initialState(PICK_THRESHER),
+        { type: 'armor', value: ARMOR_CAPPING_NET_3 },
+        { type: 'startingMomentum', value: 1 },
+        spend(0),
+        pick(0, BONUS_TIME_LINE),
+      );
+    };
+
+    it('is out of reach without the spend', () => {
+      const state = reduce(
+        initialState(PICK_THRESHER),
+        { type: 'armor', value: ARMOR_CAPPING_NET_3 },
+        pick(0, BONUS_TIME_LINE),
+      );
+
+      expect(state.attackPlan.wrapPicks[0]).not.toContain(BONUS_TIME_LINE);
+    });
+
+    it('is reachable while the spend is on', () => {
+      expect(reachedWithBonusTime().attackPlan.wrapPicks[0]).toEqual([
+        BONUS_TIME_LINE,
+      ]);
+    });
+
+    it('drops when the spend is turned off', () => {
+      const off = reduce(reachedWithBonusTime(), {
+        type: 'bonusTime',
+        attackIndex: 0,
+        value: false,
+      });
+
+      expect(off.attackPlan.wrapPicks[0]).not.toContain(BONUS_TIME_LINE);
+    });
+
+    it('drops when the spend can no longer be paid', () => {
+      const broke = reduce(reachedWithBonusTime(), {
+        type: 'startingMomentum',
+        value: 0,
+      });
+
+      expect(broke.bonusTimeByAttack[0]).toBe(false);
+      expect(broke.attackPlan.wrapPicks[0]).not.toContain(BONUS_TIME_LINE);
+    });
+
+    it('also clears the later spend its momentum paid for', () => {
+      const broke = reduce(reachedWithBonusTime(), spend(1), {
+        type: 'startingMomentum',
+        value: 0,
+      });
+
+      expect(broke.bonusTimeByAttack.slice(0, 2)).toEqual([false, false]);
+    });
   });
 });

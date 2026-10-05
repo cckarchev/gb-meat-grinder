@@ -1,8 +1,12 @@
-/** Bonus Time spends: toggling one and dropping spends the momentum can no longer pay. */
+/**
+ * Bonus Time spends: toggling one and dropping spends the momentum can no longer
+ * pay. The spend adds a TAC die, so every flag change re-clamps the plan.
+ */
 
 import { sanitizeBonusTimeFlags } from '@/core/activation/bonusTimeFlags';
 import { momentumPoolBeforeBonusTime } from '@/core/activation/momentum';
 import { BONUS_TIME_MOMENTUM_COST } from '@/core/shared/constants';
+import { withReclampedPlan } from '@/gbMeatGrinder/reducer/planReclamp';
 import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
 import {
   activeBaseCountOf,
@@ -59,10 +63,15 @@ export const toggleBonusTime = (
 
   nextFlags[attackIndex] = value;
 
-  return { ...state, bonusTimeByAttack: nextFlags };
+  return withReclampedPlan(state, { bonusTimeByAttack: nextFlags });
 };
 
-/** Drop the spends the state can no longer pay for, keeping the same state when none drop. */
+/**
+ * Drop the spends the state can no longer pay for, keeping the same state when
+ * none drop. Losing a die can drop a momentous line from the plan and unpay a
+ * later spend, so it repeats until nothing drops; spends only ever turn off, so
+ * it ends.
+ */
 export const resanitizeBonusTime = (
   state: MeatGrinderState,
 ): MeatGrinderState => {
@@ -72,5 +81,7 @@ export const resanitizeBonusTime = (
     return state;
   }
 
-  return { ...state, bonusTimeByAttack: sanitized };
+  const reclamped = withReclampedPlan(state, { bonusTimeByAttack: sanitized });
+
+  return resanitizeBonusTime(reclamped);
 };
