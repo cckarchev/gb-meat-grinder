@@ -135,20 +135,18 @@ const transition = (
     }
     case 'wrapChoice': {
       const edited = nextPlanAfterWrapChoice(
-        attackerOf(state),
         state.attackPlan,
-        action.attackIndex,
-        action.pickIndex,
-        action.id,
+        action,
+        attackerOf(state),
       );
 
       return applyPlanEdit(state, edited);
     }
     case 'clearWrapContinuation': {
       const edited = nextPlanAfterClearWrapContinuation(
-        attackerOf(state),
         state.attackPlan,
         action.attackIndex,
+        attackerOf(state),
       );
 
       return applyPlanEdit(state, edited);

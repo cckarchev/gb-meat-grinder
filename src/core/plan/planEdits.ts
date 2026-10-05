@@ -6,11 +6,9 @@ import type {
   AttackPlan,
   CharacterPlayEditParams,
   CharacterPlayPickEdit,
+  WrapChoiceEdit,
 } from '@/core/plan/attackPlan.types';
-import type {
-  CharacterPlayPickSlot,
-  PlaybookChoiceId,
-} from '@/core/playbook/playbook.types';
+import type { CharacterPlayPickSlot } from '@/core/playbook/playbook.types';
 import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
 import { rowHasWrapContinuation } from '@/core/playbook/wrapSlots';
 import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
@@ -29,12 +27,11 @@ const withRowReplaced = <T>(
 
 /** Returns `null` when the choice is a no-op. */
 export const nextPlanAfterWrapChoice = (
-  attacker: AttackerData,
   prev: AttackPlan,
-  attackIndex: number,
-  pickIndex: number,
-  id: PlaybookChoiceId | null,
+  edit: WrapChoiceEdit,
+  attacker: AttackerData,
 ): AttackPlan | null => {
+  const { attackIndex, pickIndex, id } = edit;
   const clearsFirstSlot = pickIndex === PRIMARY_PICK_INDEX && id === null;
   const unchanged = prev.wrapPicks[attackIndex][pickIndex] === id;
 
@@ -69,9 +66,9 @@ export const nextPlanAfterWrapChoice = (
 
 /** Returns `null` when there is no continuation to clear. */
 export const nextPlanAfterClearWrapContinuation = (
-  attacker: AttackerData,
   prev: AttackPlan,
   attackIndex: number,
+  attacker: AttackerData,
 ): AttackPlan | null => {
   const row = prev.wrapPicks[attackIndex];
 
