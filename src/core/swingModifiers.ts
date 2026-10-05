@@ -1,7 +1,13 @@
 /** Per-swing TAC, DEF and ARM after everything earlier swings carried over. */
 
 import { activationAttackIndices } from '@/core/attackRows';
-import { BONUS_TIME_TAC_BONUS, DEF_MAX, DEF_MIN } from '@/core/constants';
+import {
+  BONUS_TIME_TAC_BONUS,
+  COVER_TAC_PENALTY,
+  DEF_MAX,
+  DEF_MIN,
+  DEFENSIVE_STANCE_DEF_BONUS,
+} from '@/core/constants';
 import { maxNetSuccessesForRoll } from '@/core/probability';
 import {
   armorReductionBeforeAttack,
@@ -34,7 +40,7 @@ export const enemyDefBaseForAttackRow = (
     enemyDefensiveStance &&
     attackIndex < activeBaseCount &&
     attackIndex === chargeAttackIndex
-      ? 1
+      ? DEFENSIVE_STANCE_DEF_BONUS
       : 0;
 
   return Math.min(DEF_MAX, enemyDef + stanceBonus);
@@ -62,7 +68,7 @@ export const coverTacPenaltyForAttack = (
   const pos = clock.indexOf(attackIndex);
 
   if (pos < 0) {
-    return 1;
+    return COVER_TAC_PENALTY;
   }
 
   for (let p = 0; p < pos; p++) {
@@ -80,7 +86,7 @@ export const coverTacPenaltyForAttack = (
     }
   }
 
-  return 1;
+  return COVER_TAC_PENALTY;
 };
 
 /**

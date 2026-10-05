@@ -2,7 +2,12 @@
  * Guild buffs, enemy stat modifiers and the effective damage of a playbook line.
  */
 
-import { DEF_MAX } from '@/core/constants';
+import {
+  DEF_MAX,
+  KNOCKED_DOWN_DEF_PENALTY,
+  SNARED_DEF_PENALTY,
+  TOUGH_HIDE_DAMAGE_PENALTY,
+} from '@/core/constants';
 import { getPlaybookResult } from '@/core/wrapSlots';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
@@ -75,7 +80,9 @@ export const effectiveEnemyDef = (
   knockedDown: boolean,
   snared: boolean,
 ): number => {
-  const reduction = (knockedDown ? 1 : 0) + (snared ? 1 : 0);
+  const knockedDownPenalty = knockedDown ? KNOCKED_DOWN_DEF_PENALTY : 0;
+  const snaredPenalty = snared ? SNARED_DEF_PENALTY : 0;
+  const reduction = knockedDownPenalty + snaredPenalty;
 
   return Math.min(DEF_MAX, enemyDef - reduction);
 };
@@ -103,7 +110,9 @@ export const effectivePlaybookDamage = (
     return 0;
   }
 
-  const pen = mods.toughHide && !buffsIgnoreToughHide(attacker, mods) ? 1 : 0;
+  const toughHideApplies =
+    mods.toughHide && !buffsIgnoreToughHide(attacker, mods);
+  const pen = toughHideApplies ? TOUGH_HIDE_DAMAGE_PENALTY : 0;
 
   return Math.max(0, cardDamage - pen + playbookDamageBonusSum(attacker, mods));
 };

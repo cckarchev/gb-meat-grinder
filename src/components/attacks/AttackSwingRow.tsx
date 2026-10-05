@@ -11,7 +11,11 @@ import { SwingPlaybook } from '@/components/attacks/SwingPlaybook';
 import { CornerBrackets } from '@/components/ui/CornerBrackets';
 import { attackRowIsBerserker } from '@/core/attackRows';
 import { attackBlockVariant, attackKindLabel } from '@/core/attackVariant';
-import { KILLING_BLOW_MOMENTUM } from '@/core/constants';
+import {
+  BONUS_TIME_MOMENTUM_COST,
+  KILLING_BLOW_MOMENTUM,
+  MIN_PLAYBOOK_NET,
+} from '@/core/constants';
 import { maxNetSuccessesForRoll } from '@/core/probability';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import type { AttackSwingRowProps } from '@/types/components/attacks';
@@ -55,7 +59,8 @@ export const AttackSwingRow = ({
   const hasWrapContinuation = wrapPicks[i].length > 1;
   const variant = attackBlockVariant(attacker, i, chargeAttackIndex);
   const cornerAccent = CORNER_ACCENTS[variant];
-  const bonusTimeDisabled = !bonusTime && bonusTimeMomentumPool < 1;
+  const bonusTimeDisabled =
+    !bonusTime && bonusTimeMomentumPool < BONUS_TIME_MOMENTUM_COST;
 
   const handleWrapToggle = () => {
     if (wrapOpen) {
@@ -89,7 +94,7 @@ export const AttackSwingRow = ({
             bonusTime={bonusTime}
             bonusTimeDisabled={bonusTimeDisabled}
             onBonusTimeChange={(value) => onBonusTimeChange(i, value)}
-            canWrap={hasWrapContinuation && maxNet >= 1}
+            canWrap={hasWrapContinuation && maxNet >= MIN_PLAYBOOK_NET}
             wrapOpen={wrapOpen}
             onWrapToggle={handleWrapToggle}
           />

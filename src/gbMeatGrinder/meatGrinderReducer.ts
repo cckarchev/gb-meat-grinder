@@ -10,6 +10,7 @@ import {
 } from '@/core/attackStructure';
 import { clamp } from '@/core/clamp';
 import { clampAttackPlan } from '@/core/clampAttackPlan';
+import { BONUS_TIME_MOMENTUM_COST, NO_ATTACK_INDEX } from '@/core/constants';
 import { effectiveArmor, effectiveEnemyDef } from '@/core/damage';
 import {
   momentumPoolBeforeBonusTime,
@@ -37,7 +38,7 @@ const activeBaseCountOf = (s: MeatGrinderState): number => {
 
 /** Charge row the engine should use: the chosen base, or -1 when not charging. */
 const effectiveChargeIndex = (s: MeatGrinderState): number => {
-  return s.charging ? s.chargeAttackIndex : -1;
+  return s.charging ? s.chargeAttackIndex : NO_ATTACK_INDEX;
 };
 
 const clampParams = (s: MeatGrinderState): AttackPlanClampParams => {
@@ -145,7 +146,7 @@ const toggleBonusTime = (
       activeBaseCountOf(state),
     );
 
-    if (pool < 1) {
+    if (pool < BONUS_TIME_MOMENTUM_COST) {
       return state;
     }
   }

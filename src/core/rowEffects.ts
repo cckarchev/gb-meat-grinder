@@ -9,6 +9,7 @@ import {
   characterPlayUsageBeforePick,
   defaultCharacterPlayId,
 } from '@/core/characterPlayPicks';
+import { MAX_ARMOR_REDUCTION } from '@/core/constants';
 import { choiceUsesCharacterPlay, getPlaybookResult } from '@/core/wrapSlots';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
@@ -77,7 +78,7 @@ export const armorReductionBeforeAttack = (
     }
   }
 
-  return Math.min(1, reduction);
+  return Math.min(MAX_ARMOR_REDUCTION, reduction);
 };
 
 /**

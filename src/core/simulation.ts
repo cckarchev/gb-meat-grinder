@@ -1,5 +1,6 @@
 import { computeAttackSequence } from '@/core/attackSequence';
 import { activeBaseAttackCount } from '@/core/attackStructure';
+import { NO_ATTACK_INDEX } from '@/core/constants';
 import {
   effectiveArmor,
   effectiveEnemyDef,
@@ -32,7 +33,7 @@ export const deriveSimulation = (
 
   const effectiveChargeAttackIndex = state.charging
     ? state.chargeAttackIndex
-    : -1;
+    : NO_ATTACK_INDEX;
 
   const armor = effectiveArmor(attacker, state.armor, state.damageMods);
 
@@ -86,7 +87,7 @@ export const deriveSimulation = (
 
   // The ignored swing is always first in activation order.
   const hasIgnoredSwing = ignoredAttackIndex >= 0 && attacks.length > 0;
-  const ignoredDisplayIndex = hasIgnoredSwing ? 0 : -1;
+  const ignoredDisplayIndex = hasIgnoredSwing ? 0 : NO_ATTACK_INDEX;
 
   const rowDamageIfHit = damageIfAllHitsWrap(
     attacker,

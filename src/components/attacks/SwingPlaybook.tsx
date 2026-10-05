@@ -4,6 +4,7 @@ import {
 } from '@/components/attacks/attackSwingRowStyles';
 import { CharacterPlaySelection } from '@/components/attacks/CharacterPlaySelection';
 import { WrapSlotPickGrid } from '@/components/attacks/WrapSlotPickGrid';
+import { MIN_PLAYBOOK_NET } from '@/core/constants';
 import { choiceUsesCharacterPlay } from '@/core/wrapSlots';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import type {
@@ -44,7 +45,7 @@ export const SwingPlaybook = ({
   const i = attack.attackIndex;
   const rowPicks = wrapPicks[i];
 
-  if (maxNet < 1) {
+  if (maxNet < MIN_PLAYBOOK_NET) {
     return (
       <UnreachableNote>
         No playbook column reachable: TAC − ARM is {maxNet}. Raise TAC (charge,

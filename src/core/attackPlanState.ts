@@ -4,7 +4,7 @@ import {
   sanitizeCharacterPlayPicksWrap,
 } from '@/core/characterPlayPicks';
 import { clampAttackPlan } from '@/core/clampAttackPlan';
-import { ARM_DEFAULT, DEF_DEFAULT } from '@/core/constants';
+import { ARM_DEFAULT, DEF_DEFAULT, NO_ATTACK_INDEX } from '@/core/constants';
 import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from '@/core/damage';
 import {
   choiceUsesCharacterPlay,
@@ -37,7 +37,7 @@ export const createInitialAttackPlan = (
 
   return clampAttackPlan(unclamped, {
     attacker,
-    chargeAttackIndex: charging ? 0 : -1,
+    chargeAttackIndex: charging ? 0 : NO_ATTACK_INDEX,
     armor: ARM_DEFAULT,
     enemyHasCover: false,
     enemyDefensiveStance: false,

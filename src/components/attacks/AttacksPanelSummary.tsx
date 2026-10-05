@@ -18,6 +18,7 @@ import { SummaryStat } from '@/components/attacks/SummaryStat';
 import { Mono, Summary } from '@/components/ui';
 import { summarizeActivation } from '@/core/activationSummary';
 import { attackKindLabel } from '@/core/attackVariant';
+import { NO_ATTACK_INDEX } from '@/core/constants';
 import { formatWrapRowSelectionLabel } from '@/core/playbookLabels';
 import { formatPercent } from '@/core/probability';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
@@ -56,7 +57,9 @@ export const AttacksPanelSummary = () => {
     killingBlowIndex,
   } = useMeatGrinderSimulation();
 
-  const effectiveChargeAttackIndex = charging ? chargeAttackIndex : -1;
+  const effectiveChargeAttackIndex = charging
+    ? chargeAttackIndex
+    : NO_ATTACK_INDEX;
 
   const summary = useMemo(
     () =>

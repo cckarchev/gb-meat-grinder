@@ -1,3 +1,4 @@
+import { MIN_PLAYBOOK_NET } from '@/core/constants';
 import { effectiveDamageForChoice } from '@/core/damage';
 import { maxPlaybookNet } from '@/core/playbookIndex';
 import { binomialPmf } from '@/core/probability';
@@ -21,7 +22,7 @@ const bestDamageWithinBudget = (
   let best = 0;
 
   for (const col of attacker.playbook) {
-    if (col.netSuccesses < 1 || col.netSuccesses > budget) {
+    if (col.netSuccesses < MIN_PLAYBOOK_NET || col.netSuccesses > budget) {
       continue;
     }
 
@@ -49,7 +50,7 @@ export const pickedDamageForNet = (
   picks: readonly WrapPick[],
   net: number,
 ): number => {
-  if (net < 1) {
+  if (net < MIN_PLAYBOOK_NET) {
     return 0;
   }
 
@@ -59,7 +60,7 @@ export const pickedDamageForNet = (
   for (let slot = 0; slot < picks.length; slot++) {
     const slotBudget = Math.min(maxNet, net - slot * maxNet);
 
-    if (slotBudget < 1) {
+    if (slotBudget < MIN_PLAYBOOK_NET) {
       break;
     }
 

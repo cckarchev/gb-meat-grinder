@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { AttackSwingRow } from '@/components/attacks/AttackSwingRow';
 import { AttacksPanelSummary } from '@/components/attacks/AttacksPanelSummary';
 import { useWrapExpansion } from '@/components/attacks/useWrapExpansion';
+import { NO_ATTACK_INDEX } from '@/core/constants';
 import { projectSwings } from '@/core/swingProjections';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
@@ -32,7 +33,9 @@ export const AttacksPanel = () => {
     dispatch,
   } = useMeatGrinderSimulation();
 
-  const effectiveChargeAttackIndex = charging ? chargeAttackIndex : -1;
+  const effectiveChargeAttackIndex = charging
+    ? chargeAttackIndex
+    : NO_ATTACK_INDEX;
   const wrapExpansion = useWrapExpansion();
 
   const projection = useMemo(

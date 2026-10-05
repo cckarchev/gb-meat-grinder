@@ -4,6 +4,7 @@
  * id strings.
  */
 
+import { MIN_PLAYBOOK_NET, MIN_WRAP_SLOTS } from '@/core/constants';
 import { maxPlaybookNet, playbookIndex } from '@/core/playbookIndex';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
@@ -55,8 +56,8 @@ export const wrapSlotCount = (
   attacker: AttackerData,
   maxNet: number,
 ): number => {
-  if (maxNet < 1) {
-    return 1;
+  if (maxNet < MIN_PLAYBOOK_NET) {
+    return MIN_WRAP_SLOTS;
   }
 
   return Math.ceil(maxNet / maxPlaybookNet(attacker));
@@ -74,7 +75,7 @@ export const wrapSlotBudget = (
 ): number => {
   const raw = maxNet - slotIndex * maxPlaybookNet(attacker);
 
-  if (raw < 1) {
+  if (raw < MIN_PLAYBOOK_NET) {
     return 0;
   }
 

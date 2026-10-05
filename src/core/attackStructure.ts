@@ -1,5 +1,10 @@
 import { clamp } from '@/core/clamp';
-import { CHARGE_INFLUENCE_COST } from '@/core/constants';
+import {
+  BERSERKER_ROWS_PER_BASE,
+  CHARGE_ATTACK_COUNT,
+  CHARGE_INFLUENCE_COST,
+  FERAL_ATTACK_COUNT,
+} from '@/core/constants';
 import type { AttackerData } from '@/types/core/attacker';
 
 /**
@@ -32,7 +37,10 @@ export const activeBaseAttackCount = (
     influence - chargeInfluenceCost(attacker, charging),
   );
 
-  return (charging ? 1 : 0) + bought + (attacker.feral ? 1 : 0);
+  const chargeAttacks = charging ? CHARGE_ATTACK_COUNT : 0;
+  const feralAttacks = attacker.feral ? FERAL_ATTACK_COUNT : 0;
+
+  return chargeAttacks + bought + feralAttacks;
 };
 
 /** Keep the chosen charge row on one of the active base attacks (row 0 at least). */
@@ -51,7 +59,10 @@ export const clampChargeAttackIndex = (
  * allocated influence changes.
  */
 export const maxBaseAttackCount = (attacker: AttackerData): number => {
-  return attacker.inf + (attacker.furious ? 1 : 0) + (attacker.feral ? 1 : 0);
+  const furiousAttacks = attacker.furious ? CHARGE_ATTACK_COUNT : 0;
+  const feralAttacks = attacker.feral ? FERAL_ATTACK_COUNT : 0;
+
+  return attacker.inf + furiousAttacks + feralAttacks;
 };
 
 /** Berserker rows live at `maxBaseAttackCount + baseIndex`, so this is the offset. */
@@ -63,5 +74,9 @@ export const berserkerRowOffset = (attacker: AttackerData): number => {
 export const attackArraySize = (attacker: AttackerData): number => {
   const base = maxBaseAttackCount(attacker);
 
-  return attacker.berserker ? base * 2 : base;
+  if (!attacker.berserker) {
+    return base;
+  }
+
+  return base + base * BERSERKER_ROWS_PER_BASE;
 };

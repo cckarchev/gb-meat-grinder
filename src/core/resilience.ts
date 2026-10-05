@@ -10,6 +10,7 @@
  */
 
 import { activationAttackIndices } from '@/core/attackRows';
+import { NO_ATTACK_INDEX } from '@/core/constants';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
   CharacterPlayPickSlot,
@@ -30,7 +31,7 @@ export const resilienceIgnoredAttackIndex = (
   enemyResilience: boolean,
 ): number => {
   if (!enemyResilience) {
-    return -1;
+    return NO_ATTACK_INDEX;
   }
 
   const order = activationAttackIndices(

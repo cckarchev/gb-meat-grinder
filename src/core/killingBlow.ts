@@ -1,3 +1,4 @@
+import { NO_ATTACK_INDEX } from '@/core/constants';
 import type { AttackRollContext } from '@/types/core/attackSequence';
 
 /**
@@ -22,5 +23,5 @@ export const killingBlowDisplayIndex = (
     }
   }
 
-  return -1;
+  return NO_ATTACK_INDEX;
 };
