@@ -20,9 +20,9 @@ import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /**
- * Attack-array index of the swing a Resilient target ignores: the first swing in
- * activation order (always base attack 0). Returns -1 when the target is not
- * Resilient or there are no attacks this activation.
+ * Attack-array index of the swing a Resilient target ignores: the first swing
+ * in activation order (always base attack 0). Returns `NO_ATTACK_INDEX` when
+ * the target is not Resilient or there are no attacks this activation.
  */
 export const resilienceIgnoredAttackIndex = (
   attacker: AttackerData,

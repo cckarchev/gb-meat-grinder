@@ -56,7 +56,10 @@ export type DerivedSimulation = {
   effectiveEnemyDef: number;
   /** Ganging Up minus Crowding Out, applied to the first swing's TAC. */
   initialTacModifier: number;
-  /** Attack-array index of the swing a Resilient target ignores, or -1. */
+  /**
+   * Attack-array index of the swing a Resilient target ignores, or
+   * `NO_ATTACK_INDEX`.
+   */
   ignoredAttackIndex: number;
   /**
    * Display index into `attacks` of the swing ignored by Resilience (always 0

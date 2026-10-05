@@ -8,9 +8,9 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
 export type ActivationSummaryInput = {
   attacker: AttackerData;
   attacks: readonly AttackRollContext[];
-  /** Display index of the swing Resilience ignores, or -1. */
+  /** Display index of the swing Resilience ignores, or `NO_ATTACK_INDEX`. */
   ignoredDisplayIndex: number;
-  /** Display index of the all-hit killing blow, or -1. */
+  /** Display index of the all-hit killing blow, or `NO_ATTACK_INDEX`. */
   killingBlowIndex: number;
   /** Effective (Resilience-applied) wrap picks. */
   wrapPicks: WrapPick[][];
