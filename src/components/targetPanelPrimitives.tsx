@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { narrowViewport } from '@/styles/breakpoints';
 
+const DISABLED_INPUT_OPACITY = 0.5;
+
 /** Shared checkbox row used across the attacker and enemy panels. */
 export const CheckOption = styled.label<{ $disabled?: boolean }>`
   display: flex;
@@ -17,7 +19,7 @@ export const CheckOption = styled.label<{ $disabled?: boolean }>`
   input {
     margin-top: 0.2rem;
     flex-shrink: 0;
-    opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
+    opacity: ${({ $disabled }) => ($disabled ? DISABLED_INPUT_OPACITY : 1)};
   }
 
   ${narrowViewport} {

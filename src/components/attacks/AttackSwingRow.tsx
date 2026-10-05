@@ -222,7 +222,7 @@ const KillingBlowBadge = styled.span`
   white-space: nowrap;
 `;
 
-export function AttackSwingRow({
+export const AttackSwingRow = ({
   attack,
   displayIdx,
   disabled = false,
@@ -268,7 +268,7 @@ export function AttackSwingRow({
   onCharacterPlayPickChange: AttacksPanelProps['onCharacterPlayPickChange'];
   onToggleWrapExpansion: () => void;
   onWrapContinuationCleared: AttacksPanelProps['onWrapContinuationCleared'];
-}) {
+}) => {
   const { attacker } = useMeatGrinderSimulation();
   const i = attack.attackIndex;
   const maxNet = maxNetSuccessesForRoll(attack.tac, armor);
@@ -334,7 +334,9 @@ export function AttackSwingRow({
                   attackIndex={i}
                   wrapOpen={wrapOpen}
                   onClick={() => {
-                    if (wrapOpen) onWrapContinuationCleared(i);
+                    if (wrapOpen) {
+                      onWrapContinuationCleared(i);
+                    }
                     onToggleWrapExpansion();
                   }}
                 />
@@ -417,4 +419,4 @@ export function AttackSwingRow({
       />
     </AttackRow>
   );
-}
+};

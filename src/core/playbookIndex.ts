@@ -9,24 +9,28 @@ type PlaybookIndex = {
 
 const cache = new WeakMap<AttackerData, PlaybookIndex>();
 
-function buildIndex(attacker: AttackerData): PlaybookIndex {
+const buildIndex = (attacker: AttackerData): PlaybookIndex => {
   const byId = new Map<PlaybookChoiceId, PlaybookResult>();
   for (const col of attacker.playbook) {
-    for (const r of col.results) byId.set(r.id, r);
+    for (const r of col.results) {
+      byId.set(r.id, r);
+    }
   }
   const maxNet = Math.max(...attacker.playbook.map((c) => c.netSuccesses));
   return { byId, maxNet };
-}
+};
 
 /** Cached lookup table + widest column for an attacker's playbook. */
-export function playbookIndex(attacker: AttackerData): PlaybookIndex {
+export const playbookIndex = (attacker: AttackerData): PlaybookIndex => {
   const cached = cache.get(attacker);
-  if (cached) return cached;
+  if (cached) {
+    return cached;
+  }
   const idx = buildIndex(attacker);
   cache.set(attacker, idx);
   return idx;
-}
+};
 
-export function maxPlaybookNet(attacker: AttackerData): number {
+export const maxPlaybookNet = (attacker: AttackerData): number => {
   return playbookIndex(attacker).maxNet;
-}
+};

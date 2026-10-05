@@ -29,7 +29,25 @@
       "react": "recommended"
     },
     "rules": {
-      "preset": "recommended"
+      "preset": "recommended",
+      "complexity": {
+        "useArrowFunction": "error"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off"
+      },
+      "style": {
+        "useBlockStatements": "error",
+        "noMagicNumbers": "error"
+      },
+      "nursery": {
+        "useConsistentFunctionStyle": {
+          "level": "error",
+          "options": {
+            "style": "expression"
+          }
+        }
+      }
     }
   },
   "assist": {
@@ -44,5 +62,17 @@
     "formatter": {
       "quoteStyle": "single"
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.test.ts", "**/testing/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noMagicNumbers": "off"
+          }
+        }
+      }
+    }
+  ]
 }

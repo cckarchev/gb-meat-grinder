@@ -21,6 +21,6 @@ const Row = styled.div`
   }
 `;
 
-export function TargetPanelsRow({ children }: TargetPanelsRowProps) {
+export const TargetPanelsRow = ({ children }: TargetPanelsRowProps) => {
   return <Row>{children}</Row>;
-}
+};

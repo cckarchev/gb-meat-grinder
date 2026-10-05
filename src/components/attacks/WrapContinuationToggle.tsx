@@ -48,13 +48,15 @@ const WrapToggleButton = styled.button`
   }
 `;
 
+const CARET_CLOSED_ROTATION_DEG = -90;
+
 const ChevronCaret = styled.span<{ $open: boolean }>`
   flex-shrink: 0;
   font-size: 0.55rem;
   line-height: 1;
   color: var(--muted);
   transition: transform 0.18s ease;
-  transform: rotate(${({ $open }) => ($open ? 0 : -90)}deg);
+  transform: rotate(${({ $open }) => ($open ? 0 : CARET_CLOSED_ROTATION_DEG)}deg);
 
   &::before {
     content: '▼';
@@ -66,7 +68,7 @@ const ChevronCaret = styled.span<{ $open: boolean }>`
 `;
 
 /** Opens / closes extra wrap slots (shown next to TAC in the dice pool strip). */
-export function WrapContinuationToggle({
+export const WrapContinuationToggle = ({
   attackIndex,
   wrapOpen,
   onClick,
@@ -74,7 +76,7 @@ export function WrapContinuationToggle({
   attackIndex: number;
   wrapOpen: boolean;
   onClick: () => void;
-}) {
+}) => {
   return (
     <WrapToggleButton
       type="button"
@@ -92,4 +94,4 @@ export function WrapContinuationToggle({
       <ChevronCaret $open={wrapOpen} aria-hidden />
     </WrapToggleButton>
   );
-}
+};

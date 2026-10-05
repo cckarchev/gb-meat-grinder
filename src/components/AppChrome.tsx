@@ -15,6 +15,6 @@ const Shell = styled.div`
   }
 `;
 
-export function AppChrome({ children }: AppChromeProps) {
+export const AppChrome = ({ children }: AppChromeProps) => {
   return <Shell>{children}</Shell>;
-}
+};

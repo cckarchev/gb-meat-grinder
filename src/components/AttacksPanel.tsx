@@ -17,7 +17,7 @@ const AttacksList = styled.div`
   gap: 1rem;
 `;
 
-export function AttacksPanel() {
+export const AttacksPanel = () => {
   const {
     attacker,
     hp: targetHp,
@@ -44,8 +44,11 @@ export function AttacksPanel() {
   const toggleWrapExpanded = (attackIndex: number) => {
     setWrapExpanded((prev) => {
       const next = new Set(prev);
-      if (next.has(attackIndex)) next.delete(attackIndex);
-      else next.add(attackIndex);
+      if (next.has(attackIndex)) {
+        next.delete(attackIndex);
+      } else {
+        next.add(attackIndex);
+      }
       return next;
     });
   };
@@ -84,7 +87,9 @@ export function AttacksPanel() {
         activeBaseCount,
       ),
     );
-    if (killingBlowIndex < 0) return base;
+    if (killingBlowIndex < 0) {
+      return base;
+    }
     // The activation ends on the killing blow: that swing earns +1 momentum and
     // later (disabled) swings freeze at the post-kill total.
     const afterKill = base[killingBlowIndex] + KILLING_BLOW_MOMENTUM;
@@ -174,4 +179,4 @@ export function AttacksPanel() {
       <AttacksPanelSummary />
     </AttacksList>
   );
-}
+};

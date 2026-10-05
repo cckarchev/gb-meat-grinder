@@ -56,6 +56,10 @@ const OddsAggregateBlock = styled.div`
   border-top: 1px solid var(--border);
 `;
 
+/** The damage range shown is the 10th to 90th percentile of outcomes. */
+const DAMAGE_RANGE_LOW_QUANTILE = 0.1;
+const DAMAGE_RANGE_HIGH_QUANTILE = 0.9;
+
 const TOOLTIP_KILL =
   'Chance this activation drops the target: P(total damage >= remaining HP) using the lines you actually picked. Each swing deals its picked damage when the roll reaches it, or the best lower column it does reach; each swing rolls its own dice pool. Guaranteed special-ability damage is included, and the swings shown are assumed to happen.';
 
@@ -75,13 +79,13 @@ const TotalsSectionTitle = styled(ProbabilitySummaryTitle)`
   margin-top: 1rem;
 `;
 
-function swingHasWrapSelection(
+const swingHasWrapSelection = (
   picks: readonly WrapPick[] | undefined,
-): boolean {
+): boolean => {
   return (picks ?? []).some((id) => id != null);
-}
+};
 
-export function AttacksPanelSummary() {
+export const AttacksPanelSummary = () => {
   const {
     attacker,
     hp: targetHp,
@@ -136,8 +140,9 @@ export function AttacksPanelSummary() {
     let m = 0;
     for (const ctx of activeAttacks) {
       for (const id of effectiveWrapPicks[ctx.attackIndex] ?? []) {
-        if (id != null && pickGeneratesMomentum(attacker, id, damageMods))
+        if (id != null && pickGeneratesMomentum(attacker, id, damageMods)) {
           m += 1;
+        }
       }
     }
     return m;
@@ -153,7 +158,9 @@ export function AttacksPanelSummary() {
   const killingBlowMomentum = killingBlowIndex >= 0 ? KILLING_BLOW_MOMENTUM : 0;
 
   const netMomentumIfAllHit = useMemo(() => {
-    if (activeAttacks.length === 0) return killingBlowMomentum;
+    if (activeAttacks.length === 0) {
+      return killingBlowMomentum;
+    }
     const lastIdx = activeAttacks[activeAttacks.length - 1].attackIndex;
     const end = momentumAfterAttackInclusive(
       attacker,
@@ -248,8 +255,14 @@ export function AttacksPanelSummary() {
       return {
         ...outcome,
         damageRange: {
-          low: damageQuantile(outcome.damageDistribution, 0.1),
-          high: damageQuantile(outcome.damageDistribution, 0.9),
+          low: damageQuantile(
+            outcome.damageDistribution,
+            DAMAGE_RANGE_LOW_QUANTILE,
+          ),
+          high: damageQuantile(
+            outcome.damageDistribution,
+            DAMAGE_RANGE_HIGH_QUANTILE,
+          ),
         },
       };
     }, [
@@ -329,4 +342,4 @@ export function AttacksPanelSummary() {
       </ProbabilityRow>
     </Summary>
   );
-}
+};

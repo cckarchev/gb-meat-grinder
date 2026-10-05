@@ -6,16 +6,18 @@ import type { AttackRollContext } from '@/types/core/attackSequence';
  * survives the whole activation. `flatDamage` is guaranteed special-ability
  * damage applied before any swing; `rowDamageIfHit` is indexed by attackIndex.
  */
-export function killingBlowDisplayIndex(
+export const killingBlowDisplayIndex = (
   attacks: readonly AttackRollContext[],
   rowDamageIfHit: readonly number[],
   flatDamage: number,
   targetHp: number,
-): number {
+): number => {
   let dealt = flatDamage;
   for (let idx = 0; idx < attacks.length; idx++) {
     dealt += rowDamageIfHit[attacks[idx].attackIndex] ?? 0;
-    if (dealt >= targetHp) return idx;
+    if (dealt >= targetHp) {
+      return idx;
+    }
   }
   return -1;
-}
+};

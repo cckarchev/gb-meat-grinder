@@ -15,22 +15,28 @@ type DamageDistribution = Map<number, number>;
 type DamageForNet = (net: number) => number;
 
 /** Most card damage reachable in a single playbook column within `budget` net. */
-function bestDamageWithinBudget(
+const bestDamageWithinBudget = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
   budget: number,
-): number {
-  if (budget < 1) return 0;
+): number => {
+  if (budget < 1) {
+    return 0;
+  }
   let best = 0;
   for (const col of attacker.playbook) {
-    if (col.netSuccesses < 1 || col.netSuccesses > budget) continue;
+    if (col.netSuccesses < 1 || col.netSuccesses > budget) {
+      continue;
+    }
     for (const r of col.results) {
       const d = effectiveDamageForChoice(attacker, r.id, mods);
-      if (d > best) best = d;
+      if (d > best) {
+        best = d;
+      }
     }
   }
   return best;
-}
+};
 
 /**
  * Damage a roll of `net` net successes deals if you stick to the lines you
@@ -38,20 +44,26 @@ function bestDamageWithinBudget(
  * reaches it, otherwise the best lower column that slot can reach. Over-rolls
  * give nothing extra (you committed to these picks, not max damage).
  */
-export function pickedDamageForNet(
+export const pickedDamageForNet = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
   picks: readonly WrapPick[],
   net: number,
-): number {
-  if (net < 1) return 0;
+): number => {
+  if (net < 1) {
+    return 0;
+  }
   const maxNet = maxPlaybookNet(attacker);
   let total = 0;
   for (let slot = 0; slot < picks.length; slot++) {
     const slotBudget = Math.min(maxNet, net - slot * maxNet);
-    if (slotBudget < 1) break;
+    if (slotBudget < 1) {
+      break;
+    }
     const id = picks[slot];
-    if (id == null) continue;
+    if (id == null) {
+      continue;
+    }
     const pickedCol = netSuccessesForChoice(attacker, id);
     total +=
       slotBudget >= pickedCol
@@ -59,16 +71,16 @@ export function pickedDamageForNet(
         : bestDamageWithinBudget(attacker, mods, slotBudget);
   }
   return total;
-}
+};
 
 /**
  * Distribution of damage from one swing. Net successes are `max(0, hits - ARM)`
  * with hits ~ Binomial(tac, pHit); each net level maps to damage via `damageForNet`.
  */
-function swingDamageDistribution(
+const swingDamageDistribution = (
   attack: AttackRollContext,
   damageForNet: DamageForNet,
-): DamageDistribution {
+): DamageDistribution => {
   const { tac, armor, pHit } = attack;
   const maxNet = Math.max(0, tac - armor);
   const dist: DamageDistribution = new Map();
@@ -76,21 +88,25 @@ function swingDamageDistribution(
     let prob: number;
     if (net === 0) {
       prob = 0;
-      for (let h = 0; h <= armor; h++) prob += binomialPmf(tac, pHit, h);
+      for (let h = 0; h <= armor; h++) {
+        prob += binomialPmf(tac, pHit, h);
+      }
     } else {
       prob = binomialPmf(tac, pHit, net + armor);
     }
-    if (prob <= 0) continue;
+    if (prob <= 0) {
+      continue;
+    }
     const dmg = damageForNet(net);
     dist.set(dmg, (dist.get(dmg) ?? 0) + prob);
   }
   return dist;
-}
+};
 
-function convolve(
+const convolve = (
   a: DamageDistribution,
   b: DamageDistribution,
-): DamageDistribution {
+): DamageDistribution => {
   const out: DamageDistribution = new Map();
   for (const [da, pa] of a) {
     for (const [db, pb] of b) {
@@ -99,7 +115,7 @@ function convolve(
     }
   }
   return out;
-}
+};
 
 export type ActivationDamageOutcome = {
   /** P(total damage >= target HP). */
@@ -117,19 +133,23 @@ export type ActivationDamageOutcome = {
  * Used for "likely damage" ranges (e.g. 10th/90th percentile) from a discrete
  * damage distribution. Returns 0 for an empty distribution.
  */
-export function damageQuantile(
+export const damageQuantile = (
   distribution: ReadonlyMap<number, number>,
   quantile: number,
-): number {
+): number => {
   const damages = [...distribution.keys()].sort((a, b) => a - b);
-  if (damages.length === 0) return 0;
+  if (damages.length === 0) {
+    return 0;
+  }
   let cumulative = 0;
   for (const dmg of damages) {
     cumulative += distribution.get(dmg) ?? 0;
-    if (cumulative >= quantile) return dmg;
+    if (cumulative >= quantile) {
+      return dmg;
+    }
   }
   return damages[damages.length - 1];
-}
+};
 
 /**
  * Convolves every swing's damage distribution, then reports the chance the
@@ -137,12 +157,12 @@ export function damageQuantile(
  * selects the per-swing damage model (play-to-kill vs. sticking to picks).
  * `flatDamage` is guaranteed (special abilities) and applied as a baseline.
  */
-function activationOutcome(
+const activationOutcome = (
   attacks: readonly AttackRollContext[],
   flatDamage: number,
   targetHp: number,
   damageForNetOf: (attack: AttackRollContext) => DamageForNet,
-): ActivationDamageOutcome {
+): ActivationDamageOutcome => {
   let total: DamageDistribution = new Map([[0, 1]]);
   for (const attack of attacks) {
     total = convolve(
@@ -168,7 +188,9 @@ function activationOutcome(
   for (const [dmg, prob] of damageDistribution) {
     expectedDamage += dmg * prob;
     expectedHpRemaining += Math.max(0, targetHp - dmg) * prob;
-    if (dmg >= targetHp) killProbability += prob;
+    if (dmg >= targetHp) {
+      killProbability += prob;
+    }
   }
   return {
     killProbability,
@@ -176,17 +198,17 @@ function activationOutcome(
     expectedHpRemaining,
     damageDistribution,
   };
-}
+};
 
 /** Each swing only deals the damage of the lines you actually picked. */
-export function planDamageOutcome(
+export const planDamageOutcome = (
   attacker: AttackerData,
   attacks: readonly AttackRollContext[],
   wrapPicks: readonly (readonly WrapPick[])[],
   mods: PlaybookDamageMods,
   flatDamage: number,
   targetHp: number,
-): ActivationDamageOutcome {
+): ActivationDamageOutcome => {
   return activationOutcome(
     attacks,
     flatDamage,
@@ -199,4 +221,4 @@ export function planDamageOutcome(
         net,
       ),
   );
-}
+};

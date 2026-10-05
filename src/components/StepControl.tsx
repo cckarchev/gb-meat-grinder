@@ -83,7 +83,7 @@ const Hint = styled.span`
   color: var(--muted);
 `;
 
-export function StepControl({
+export const StepControl = ({
   label,
   value,
   min,
@@ -93,7 +93,7 @@ export function StepControl({
   hint,
   decrementAriaLabel,
   incrementAriaLabel,
-}: StepControlProps) {
+}: StepControlProps) => {
   const uid = useId();
   const labelId = `${uid}-label`;
   const hintId = `${uid}-hint`;
@@ -129,4 +129,4 @@ export function StepControl({
       {hint ? <Hint id={hintId}>{hint}</Hint> : null}
     </Wrap>
   );
-}
+};

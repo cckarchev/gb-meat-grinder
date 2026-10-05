@@ -119,7 +119,7 @@ const Bubble = styled.span`
   text-transform: none;
 `;
 
-function PlayPill({
+const PlayPill = ({
   active,
   muted,
   description,
@@ -133,7 +133,7 @@ function PlayPill({
   ariaLabel: string;
   onClick: () => void;
   children: ReactNode;
-}) {
+}) => {
   const [open, setOpen] = useState(false);
   const tooltipId = useId();
 
@@ -161,10 +161,10 @@ function PlayPill({
       ) : null}
     </PillWrap>
   );
-}
+};
 
 /** Character-play options offered after a GB / 1GB playbook result. */
-export function CharacterPlaySelection({
+export const CharacterPlaySelection = ({
   slots,
   wrapPicks,
   characterPlayPicks,
@@ -182,7 +182,7 @@ export function CharacterPlaySelection({
   displayIdx: number;
   activeBaseCount: number;
   onCharacterPlayPickChange: AttacksPanelProps['onCharacterPlayPickChange'];
-}) {
+}) => {
   const { attacker } = useMeatGrinderSimulation();
   const i = attackIndex;
   const actionable = slots.filter(({ pickIndex }) => {
@@ -197,7 +197,9 @@ export function CharacterPlaySelection({
     );
     return !cpAvail.depleted;
   });
-  if (actionable.length === 0) return null;
+  if (actionable.length === 0) {
+    return null;
+  }
 
   const multipleSlots = actionable.length > 1;
   const attackOrdinal = displayIdx + 1;
@@ -248,4 +250,4 @@ export function CharacterPlaySelection({
       })}
     </Section>
   );
-}
+};

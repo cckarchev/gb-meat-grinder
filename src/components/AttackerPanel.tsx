@@ -58,7 +58,7 @@ const PreAttackSection = styled.div`
   }
 `;
 
-export function AttackerPanel() {
+export const AttackerPanel = () => {
   const {
     attacker,
     availableAttackers,
@@ -232,4 +232,4 @@ export function AttackerPanel() {
       </PreAttackSection>
     </Panel>
   );
-}
+};

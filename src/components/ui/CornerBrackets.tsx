@@ -12,12 +12,12 @@ interface CornerBracketsProps {
  * Four L-shaped corner brackets framing an active/selected element. Renders
  * inside a `position: relative` parent and is purely decorative.
  */
-export function CornerBrackets({
+export const CornerBrackets = ({
   accent = 'var(--teal-bright)',
   size = 14,
   thickness = 2,
   inset = -1,
-}: CornerBracketsProps) {
+}: CornerBracketsProps) => {
   const base: CSSProperties = {
     position: 'absolute',
     width: size,
@@ -69,4 +69,4 @@ export function CornerBrackets({
       />
     </>
   );
-}
+};

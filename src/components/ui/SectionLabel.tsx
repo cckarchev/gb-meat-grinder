@@ -23,12 +23,12 @@ const Label = styled.div`
 `;
 
 /** Mono uppercase eyebrow with a leading chevron — the CCK section marker. */
-export function SectionLabel({
+export const SectionLabel = ({
   label,
   number,
   color = 'var(--accent)',
   className,
-}: SectionLabelProps) {
+}: SectionLabelProps) => {
   const text = number ? `${number}: ${label}` : label;
   return (
     <Label className={className} style={{ color }}>
@@ -36,4 +36,4 @@ export function SectionLabel({
       <span>{text}</span>
     </Label>
   );
-}
+};

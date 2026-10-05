@@ -63,7 +63,7 @@ const ResetButton = styled(ToggleButton)`
   padding: 0.38rem 0.75rem;
 `;
 
-export function MeatGrinderRoot() {
+export const MeatGrinderRoot = () => {
   const value = useMeatGrinderSimulationState();
   return (
     <MeatGrinderSimulationContext.Provider value={value}>
@@ -86,4 +86,4 @@ export function MeatGrinderRoot() {
       <AttacksPanel />
     </MeatGrinderSimulationContext.Provider>
   );
-}
+};

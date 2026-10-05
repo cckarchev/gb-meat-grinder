@@ -10,3 +10,7 @@ export const ARM_MAX = 6;
 export const HP_MIN = 1;
 export const HP_MAX = 30;
 export const HP_DEFAULT = 14;
+
+/** Enemy stats a fresh calculator starts with. */
+export const DEF_DEFAULT = 4;
+export const ARM_DEFAULT = 1;

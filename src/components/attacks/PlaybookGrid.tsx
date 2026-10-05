@@ -219,7 +219,7 @@ const LineLabelStack = styled.span`
   gap: 0.12em;
 `;
 
-export function WrapSlotPickGrid({
+export const WrapSlotPickGrid = ({
   attackIndex,
   pickIndex,
   tac,
@@ -243,7 +243,7 @@ export function WrapSlotPickGrid({
   activeBaseCount: number;
   firstSlotInSection: boolean;
   onChoiceChange: AttacksPanelProps['onChoiceChange'];
-}) {
+}) => {
   const { attacker, enemyKnockedDown } = useMeatGrinderSimulation();
   const i = attackIndex;
   const budget = wrapSlotBudget(attacker, maxNet, pickIndex);
@@ -330,4 +330,4 @@ export function WrapSlotPickGrid({
       </ColumnGrid>
     </WrapSlotBlock>
   );
-}
+};

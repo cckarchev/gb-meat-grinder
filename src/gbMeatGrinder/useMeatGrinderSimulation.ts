@@ -4,7 +4,7 @@ import type { MeatGrinderSimulation } from '@/types/gbMeatGrinder/simulation';
 export const MeatGrinderSimulationContext =
   createContext<MeatGrinderSimulation | null>(null);
 
-export function useMeatGrinderSimulation(): MeatGrinderSimulation {
+export const useMeatGrinderSimulation = (): MeatGrinderSimulation => {
   const ctx = useContext(MeatGrinderSimulationContext);
   if (ctx == null) {
     throw new Error(
@@ -12,4 +12,4 @@ export function useMeatGrinderSimulation(): MeatGrinderSimulation {
     );
   }
   return ctx;
-}
+};

@@ -22,35 +22,39 @@ import type {
 } from '@/types/core/playbook';
 
 /** Character plays this attacker's GB / 1GB results can trigger (from the catalog). */
-export function characterPlaysForAttacker(
+export const characterPlaysForAttacker = (
   attacker: AttackerData,
-): readonly CharacterPlay[] {
+): readonly CharacterPlay[] => {
   return attacker.characterPlays ?? [];
-}
+};
 
-export function getCharacterPlay(
+export const getCharacterPlay = (
   attacker: AttackerData,
   id: CharacterPlayPick | null,
-): CharacterPlay | undefined {
-  if (id == null) return undefined;
+): CharacterPlay | undefined => {
+  if (id == null) {
+    return undefined;
+  }
   return characterPlaysForAttacker(attacker).find((c) => c.id === id);
-}
+};
 
 /** Play picked by default when a GB result is chosen: the first guild play. */
-export function defaultCharacterPlayId(
+export const defaultCharacterPlayId = (
   attacker: AttackerData,
-): CharacterPlayPick | null {
+): CharacterPlayPick | null => {
   return characterPlaysForAttacker(attacker)[0]?.id ?? null;
-}
+};
 
-export function getPlaybookResult(
+export const getPlaybookResult = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
-): PlaybookResult {
+): PlaybookResult => {
   const r = playbookIndex(attacker).byId.get(id);
-  if (!r) throw new Error(`Unknown playbook id: ${id}`);
+  if (!r) {
+    throw new Error(`Unknown playbook id: ${id}`);
+  }
   return r;
-}
+};
 
 export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
   toughHide: false,
@@ -58,47 +62,52 @@ export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
 };
 
 /** Guild buffs this model can receive (excludes buffs it is the source of). */
-export function availableBuffs(attacker: AttackerData) {
+export const availableBuffs = (attacker: AttackerData) => {
   const excluded = attacker.excludedGuildBuffs ?? [];
   return attacker.guild.buffs.filter((b) => !excluded.includes(b.id));
-}
+};
 
 /** The attacker's available buffs that are currently toggled on. */
-export function activeBuffs(attacker: AttackerData, mods: PlaybookDamageMods) {
+export const activeBuffs = (
+  attacker: AttackerData,
+  mods: PlaybookDamageMods,
+) => {
   return availableBuffs(attacker).filter((b) => mods.buffs[b.id]);
-}
+};
 
 /**
  * Flat, unmodified damage from the model's toggled special abilities (e.g.
  * Thresher's Don't Fear The Reaper). Independent of attack rolls and ARM /
  * Tough Hide / buffs, so it is simply added to the activation's damage.
  */
-export function specialAbilityFlatDamage(
+export const specialAbilityFlatDamage = (
   attacker: AttackerData,
   toggled: Record<string, boolean>,
-): number {
+): number => {
   return (attacker.specialAbilities ?? [])
     .filter((a) => toggled[a.id])
     .reduce((sum, a) => sum + a.flatDamage, 0);
-}
+};
 
 /** Sum of the +damage from selected buffs. */
-export function playbookDamageBonusSum(
+export const playbookDamageBonusSum = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
-): number {
+): number => {
   let sum = 0;
-  for (const buff of activeBuffs(attacker, mods)) sum += buff.damageBonus ?? 0;
+  for (const buff of activeBuffs(attacker, mods)) {
+    sum += buff.damageBonus ?? 0;
+  }
   return sum;
-}
+};
 
 /** True if a selected buff turns playbook damage into Tough-Hide-ignoring Condition Damage. */
-export function buffsIgnoreToughHide(
+export const buffsIgnoreToughHide = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
-): boolean {
+): boolean => {
   return activeBuffs(attacker, mods).some((b) => b.ignoresToughHide === true);
-}
+};
 
 /**
  * Enemy DEF after pre-attack conditions. Knocked Down and Snared each give the
@@ -107,87 +116,91 @@ export function buffsIgnoreToughHide(
  * reduction past that floor is surfaced here so the engine can convert the
  * surplus into bonus attack dice (see `tacBonusFromDefReductionCap`).
  */
-export function effectiveEnemyDef(
+export const effectiveEnemyDef = (
   enemyDef: number,
   knockedDown: boolean,
   snared: boolean,
-): number {
+): number => {
   const reduction = (knockedDown ? 1 : 0) + (snared ? 1 : 0);
   return Math.min(DEF_MAX, enemyDef - reduction);
-}
+};
 
 /** Enemy ARM after the selected buffs' reductions (floored at 0). */
-export function effectiveArmor(
+export const effectiveArmor = (
   attacker: AttackerData,
   baseArmor: number,
   mods: PlaybookDamageMods,
-): number {
+): number => {
   const reduction = activeBuffs(attacker, mods).reduce(
     (s, b) => s + (b.armorReduction ?? 0),
     0,
   );
   return Math.max(0, baseArmor - reduction);
-}
+};
 
-export function effectivePlaybookDamage(
+export const effectivePlaybookDamage = (
   attacker: AttackerData,
   cardDamage: number,
   mods: PlaybookDamageMods,
-): number {
+): number => {
   if (cardDamage <= 0) {
     return 0;
   }
   const pen = mods.toughHide && !buffsIgnoreToughHide(attacker, mods) ? 1 : 0;
   return Math.max(0, cardDamage - pen + playbookDamageBonusSum(attacker, mods));
-}
+};
 
-export function effectiveDamageForChoice(
+export const effectiveDamageForChoice = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
-): number {
+): number => {
   return effectivePlaybookDamage(
     attacker,
     getPlaybookResult(attacker, id).damage,
     mods,
   );
-}
+};
 
-export function momentousLineStyle(
+export const momentousLineStyle = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
-): MomentousLineStyle {
+): MomentousLineStyle => {
   const r = getPlaybookResult(attacker, id);
-  if (r.momentum !== true) return 'none';
+  if (r.momentum !== true) {
+    return 'none';
+  }
   return effectiveDamageForChoice(attacker, id, mods) > 0 ? 'heat' : 'zeroed';
-}
+};
 
 /**
  * True when this pick earns momentum on a hit: momentous on the card **and**
  * effective damage greater than 0 (same rule as the red playbook chip; Tough Hide can zero it out).
  */
-export function pickGeneratesMomentum(
+export const pickGeneratesMomentum = (
   attacker: AttackerData,
   id: WrapPick | null | undefined,
   mods: PlaybookDamageMods,
-): boolean {
-  if (id == null) return false;
+): boolean => {
+  if (id == null) {
+    return false;
+  }
   return momentousLineStyle(attacker, id, mods) === 'heat';
-}
+};
 
-function bonusTimeSpent(
+const bonusTimeSpent = (
   attackIndex: number,
   bonusTimeByAttack: readonly boolean[],
-): boolean {
+): boolean => {
   return bonusTimeByAttack[attackIndex] === true;
-}
+};
 
 /**
  * Momentum available **before** this attack’s roll (after prior attacks’ heat
  * picks and their Bonus Time spends, not including this attack’s wrap or spend).
  */
-export function momentumPoolBeforeBonusTime(
+export const momentumPoolBeforeBonusTime = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   damageMods: PlaybookDamageMods,
@@ -195,7 +208,7 @@ export function momentumPoolBeforeBonusTime(
   startingMomentum: number,
   bonusTimeByAttack: readonly boolean[],
   activeBaseCount: number,
-): number {
+): number => {
   const order = activationAttackIndices(
     attacker,
     wrapPicks,
@@ -203,27 +216,33 @@ export function momentumPoolBeforeBonusTime(
     activeBaseCount,
   );
   const pos = order.indexOf(attackIndex);
-  if (pos < 0) return startingMomentum;
+  if (pos < 0) {
+    return startingMomentum;
+  }
   let total = startingMomentum;
   for (let oi = 0; oi < pos; oi++) {
     const j = order[oi];
     const row = wrapPicks[j];
     if (row?.length) {
       for (const id of row) {
-        if (pickGeneratesMomentum(attacker, id, damageMods)) total += 1;
+        if (pickGeneratesMomentum(attacker, id, damageMods)) {
+          total += 1;
+        }
       }
     }
-    if (bonusTimeSpent(j, bonusTimeByAttack)) total -= 1;
+    if (bonusTimeSpent(j, bonusTimeByAttack)) {
+      total -= 1;
+    }
   }
   return total;
-}
+};
 
 /**
  * Total momentum after this attack in activation order: starting momentum,
  * plus heat picks through this attack, minus Bonus Time spends through this attack.
  * Earned momentum is not capped at 20.
  */
-export function momentumAfterAttackInclusive(
+export const momentumAfterAttackInclusive = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   damageMods: PlaybookDamageMods,
@@ -231,7 +250,7 @@ export function momentumAfterAttackInclusive(
   startingMomentum: number,
   bonusTimeByAttack: readonly boolean[],
   activeBaseCount: number,
-): number {
+): number => {
   const order = activationAttackIndices(
     attacker,
     wrapPicks,
@@ -239,30 +258,36 @@ export function momentumAfterAttackInclusive(
     activeBaseCount,
   );
   const pos = order.indexOf(attackIndex);
-  if (pos < 0) return startingMomentum;
+  if (pos < 0) {
+    return startingMomentum;
+  }
   let total = startingMomentum;
   for (let oi = 0; oi <= pos; oi++) {
     const j = order[oi];
     const row = wrapPicks[j];
     if (row?.length) {
       for (const id of row) {
-        if (pickGeneratesMomentum(attacker, id, damageMods)) total += 1;
+        if (pickGeneratesMomentum(attacker, id, damageMods)) {
+          total += 1;
+        }
       }
     }
-    if (bonusTimeSpent(j, bonusTimeByAttack)) total -= 1;
+    if (bonusTimeSpent(j, bonusTimeByAttack)) {
+      total -= 1;
+    }
   }
   return total;
-}
+};
 
 /** Clears Bonus Time flags that can no longer be paid (pool less than 1 before that swing). */
-export function sanitizeBonusTimeFlags(
+export const sanitizeBonusTimeFlags = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   damageMods: PlaybookDamageMods,
   startingMomentum: number,
   bonusTimeByAttack: readonly boolean[],
   activeBaseCount: number,
-): boolean[] {
+): boolean[] => {
   const order = activationAttackIndices(
     attacker,
     wrapPicks,
@@ -273,7 +298,9 @@ export function sanitizeBonusTimeFlags(
   for (let iter = 0; iter < order.length + 2; iter++) {
     let changed = false;
     for (const i of order) {
-      if (!next[i]) continue;
+      if (!next[i]) {
+        continue;
+      }
       const pool = momentumPoolBeforeBonusTime(
         attacker,
         wrapPicks,
@@ -288,33 +315,37 @@ export function sanitizeBonusTimeFlags(
         changed = true;
       }
     }
-    if (!changed) break;
+    if (!changed) {
+      break;
+    }
   }
   return next;
-}
+};
 
 /** True if this pick removes the enemy's cover (a push / double push result). */
-export function wrapPickClearsCover(
+export const wrapPickClearsCover = (
   attacker: AttackerData,
   id: WrapPick | null | undefined,
-): boolean {
-  if (id == null) return false;
+): boolean => {
+  if (id == null) {
+    return false;
+  }
   return getPlaybookResult(attacker, id).clearsCover === true;
-}
+};
 
 /**
  * −1 ARM on this swing if an earlier swing's GB triggered a character play that
  * reduces ARM (e.g. They Ain't Tough!), in activation order (strictly earlier).
  * A condition, so it never stacks past 1.
  */
-export function armorReductionBeforeAttack(
+export const armorReductionBeforeAttack = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],
   damageMods: PlaybookDamageMods,
   attackIndex: number,
   activeBaseCount: number,
-): number {
+): number => {
   const order = activationAttackIndices(
     attacker,
     wrapPicks,
@@ -322,12 +353,16 @@ export function armorReductionBeforeAttack(
     activeBaseCount,
   );
   const pos = order.indexOf(attackIndex);
-  if (pos < 0) return 0;
+  if (pos < 0) {
+    return 0;
+  }
   let reduction = 0;
   for (let oi = 0; oi < pos; oi++) {
     const j = order[oi];
     for (let k = 0; k < wrapPicks[j].length; k++) {
-      if (wrapPicks[j][k] == null) continue;
+      if (wrapPicks[j][k] == null) {
+        continue;
+      }
       reduction += rowEffectsForPick(
         attacker,
         wrapPicks,
@@ -340,35 +375,37 @@ export function armorReductionBeforeAttack(
     }
   }
   return Math.min(1, reduction);
-}
+};
 
 /**
  * Fixed GB swing order for cover: each base then its berserker, regardless of
  * whether the berserker row is “active” for damage (so > / >> are never skipped).
  */
-export function coverSwingClockIndices(
+export const coverSwingClockIndices = (
   attacker: AttackerData,
   activeBaseCount: number,
-): number[] {
+): number[] => {
   const out: number[] = [];
   const offset = berserkerRowOffset(attacker);
   for (let b = 0; b < activeBaseCount; b++) {
     out.push(b);
-    if (attacker.berserker) out.push(offset + b);
+    if (attacker.berserker) {
+      out.push(offset + b);
+    }
   }
   return out;
-}
+};
 
 /**
  * Playbook button text: plain numeric pips (label matches damage) show the
  * **effective** value; a character-play line whose label ends in “GB” shows the
  * effective damage prefix (e.g. **0GB**, **1GB**) when it also deals damage.
  */
-export function playbookLineDisplayLabel(
+export const playbookLineDisplayLabel = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
-): string {
+): string => {
   const r = getPlaybookResult(attacker, id);
   const dodge = r.dodge ? '<' : '';
   if (r.picksCharacterPlay && r.damage > 0) {
@@ -378,100 +415,108 @@ export function playbookLineDisplayLabel(
     return `${effectiveDamageForChoice(attacker, id, mods)}${dodge}`;
   }
   return r.label + dodge;
-}
+};
 
 /**
  * {@link playbookLineDisplayLabel} split into stackable rows so a multi-effect
  * line can render one effect per line in the playbook circle (e.g. `3GB` →
  * `3` / `GB`, `KD<` → `KD` / `<`). Single-effect lines return one segment.
  */
-export function playbookLineDisplaySegments(
+export const playbookLineDisplaySegments = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
-): string[] {
+): string[] => {
   const label = playbookLineDisplayLabel(attacker, id, mods);
   return label.match(/\d+|<|[A-Za-z]+/g) ?? [label];
-}
+};
 
 /** Selected playbook lines on one attack row, for summaries (e.g. `> → 2 → GB`). */
-export function formatWrapRowSelectionLabel(
+export const formatWrapRowSelectionLabel = (
   attacker: AttackerData,
   picks: readonly WrapPick[],
   damageMods: PlaybookDamageMods,
-): string {
+): string => {
   const labels: string[] = [];
   for (const id of picks) {
-    if (id == null) continue;
+    if (id == null) {
+      continue;
+    }
     labels.push(playbookLineDisplayLabel(attacker, id, damageMods));
   }
   return labels.length > 0 ? labels.join(' → ') : '-';
-}
+};
 
 /** Rows below the berserker offset are base attacks; at/above it are berserkers. */
-export function attackRowIsBerserker(
+export const attackRowIsBerserker = (
   attacker: AttackerData,
   attackIndex: number,
-): boolean {
+): boolean => {
   return attackIndex >= berserkerRowOffset(attacker);
-}
+};
 
-export function berserkerSourceBaseIndex(
+export const berserkerSourceBaseIndex = (
   attacker: AttackerData,
   attackIndex: number,
-): number {
+): number => {
   return attackIndex - berserkerRowOffset(attacker);
-}
+};
 
 /** True if this base attack includes any non-null wrap line with modified playbook damage > 0. */
-export function baseAttackDealtDamage(
+export const baseAttackDealtDamage = (
   attacker: AttackerData,
   picks: WrapPick[],
   damageMods: PlaybookDamageMods,
-): boolean {
+): boolean => {
   return picks.some(
     (id) =>
       id != null && effectiveDamageForChoice(attacker, id, damageMods) > 0,
   );
-}
+};
 
 /**
  * Base rows are active while their index is within the allocated base count;
  * berserker rows are active only for Berserker models when their source base is
  * active and dealt damage.
  */
-export function attackRowIsActive(
+export const attackRowIsActive = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   attackIndex: number,
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
-): boolean {
+): boolean => {
   const offset = berserkerRowOffset(attacker);
   if (attackIndex < offset) {
     return attackIndex < activeBaseCount;
   }
-  if (!attacker.berserker) return false;
+  if (!attacker.berserker) {
+    return false;
+  }
   const b = berserkerSourceBaseIndex(attacker, attackIndex);
-  if (b < 0 || b >= activeBaseCount) return false;
+  if (b < 0 || b >= activeBaseCount) {
+    return false;
+  }
   return baseAttackDealtDamage(attacker, wrapPicks[b] ?? [], damageMods);
-}
+};
 
 /**
  * Swing order: each active base, then its berserker (if any) before the next base.
  * Berserkers cannot be banked; they always resolve immediately after the base that earned them.
  */
-export function activationAttackIndices(
+export const activationAttackIndices = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
-): number[] {
+): number[] => {
   const out: number[] = [];
   const offset = berserkerRowOffset(attacker);
   for (let b = 0; b < activeBaseCount; b++) {
     out.push(b);
-    if (!attacker.berserker) continue;
+    if (!attacker.berserker) {
+      continue;
+    }
     const ber = offset + b;
     if (
       attackRowIsActive(attacker, wrapPicks, ber, damageMods, activeBaseCount)
@@ -480,41 +525,43 @@ export function activationAttackIndices(
     }
   }
   return out;
-}
+};
 
-export function choiceUsesCharacterPlay(
+export const choiceUsesCharacterPlay = (
   attacker: AttackerData,
   id: WrapPick,
-): id is PlaybookChoiceId {
-  if (id == null) return false;
+): id is PlaybookChoiceId => {
+  if (id == null) {
+    return false;
+  }
   return getPlaybookResult(attacker, id).picksCharacterPlay === true;
-}
+};
 
-export function characterPlayPickModifiers(
+export const characterPlayPickModifiers = (
   attacker: AttackerData,
   pick: CharacterPlayPick,
 ): {
   tacBonusForLater: number;
   defReductionForLater: number;
   armorReduction: number;
-} {
+} => {
   const cp = getCharacterPlay(attacker, pick);
   return {
     tacBonusForLater: cp?.tacBonusForLater ?? 0,
     defReductionForLater: cp?.defReductionForLater ?? 0,
     armorReduction: cp?.armorReduction ?? 0,
   };
-}
+};
 
 /** True when this play changes the attack math (so a no-op like Snack Break is false). */
-export function characterPlayHasEffect(cp: CharacterPlay): boolean {
+export const characterPlayHasEffect = (cp: CharacterPlay): boolean => {
   return Boolean(
     cp.tacBonusForLater || cp.defReductionForLater || cp.armorReduction,
   );
-}
+};
 
 /** Human-readable effect + cadence, used for the selector tooltip / aria-label. */
-export function characterPlayEffectSummary(cp: CharacterPlay): string {
+export const characterPlayEffectSummary = (cp: CharacterPlay): string => {
   const effects: string[] = [];
   if (cp.tacBonusForLater) {
     effects.push(`+${cp.tacBonusForLater} TAC on later attacks`);
@@ -530,13 +577,13 @@ export function characterPlayEffectSummary(cp: CharacterPlay): string {
     : 'No effect on the attack math.';
   const cadence = cp.repeatable ? 'Repeatable.' : 'Once per turn.';
   return `${effect} ${cadence}`;
-}
+};
 
 /**
  * Character plays already taken on picks strictly before `(attackIndex,
  * pickIndex)` in activation order (base then its berserker, then next base, …).
  */
-export function characterPlayUsageBeforePick(
+export const characterPlayUsageBeforePick = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],
@@ -544,7 +591,7 @@ export function characterPlayUsageBeforePick(
   pickIndex: number,
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
-): CharacterPlayUsage {
+): CharacterPlayUsage => {
   const used = new Set<string>();
   const order = activationAttackIndices(
     attacker,
@@ -553,14 +600,18 @@ export function characterPlayUsageBeforePick(
     activeBaseCount,
   );
   const targetPos = order.indexOf(attackIndex);
-  if (targetPos < 0) return used;
+  if (targetPos < 0) {
+    return used;
+  }
 
   for (let oi = 0; oi <= targetPos; oi++) {
     const j = order[oi];
     const kLimit = j === attackIndex ? pickIndex : wrapPicks[j].length;
     for (let k = 0; k < kLimit; k++) {
       const id = wrapPicks[j][k];
-      if (id == null || !choiceUsesCharacterPlay(attacker, id)) continue;
+      if (id == null || !choiceUsesCharacterPlay(attacker, id)) {
+        continue;
+      }
       const f = characterPlayPicks[j]?.[k] ?? defaultCharacterPlayId(attacker);
       // Repeatable plays may be taken again and stack, so they never count as
       // "used up" — they stay available and keep applying on later swings.
@@ -570,14 +621,14 @@ export function characterPlayUsageBeforePick(
     }
   }
   return used;
-}
+};
 
 /**
  * True if Knock Down is unavailable for this pick: either the target is already
  * Knocked Down before the activation, or KD was taken on a strictly earlier wrap
  * pick (activation order). Only one KD can ever apply.
  */
-export function kdAlreadyTakenBeforePick(
+export const kdAlreadyTakenBeforePick = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   attackIndex: number,
@@ -585,8 +636,10 @@ export function kdAlreadyTakenBeforePick(
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
   enemyKnockedDown = false,
-): boolean {
-  if (enemyKnockedDown) return true;
+): boolean => {
+  if (enemyKnockedDown) {
+    return true;
+  }
   const order = activationAttackIndices(
     attacker,
     wrapPicks,
@@ -594,7 +647,9 @@ export function kdAlreadyTakenBeforePick(
     activeBaseCount,
   );
   const targetPos = order.indexOf(attackIndex);
-  if (targetPos < 0) return false;
+  if (targetPos < 0) {
+    return false;
+  }
 
   for (let oi = 0; oi <= targetPos; oi++) {
     const j = order[oi];
@@ -607,13 +662,13 @@ export function kdAlreadyTakenBeforePick(
     }
   }
   return false;
-}
+};
 
 /**
  * Modifiers this pick adds to later swings (SO/Stagger each once; after both,
  * further GB / 1GB lines have no character-play effect).
  */
-export function rowEffectsForPick(
+export const rowEffectsForPick = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],
@@ -625,14 +680,16 @@ export function rowEffectsForPick(
   tacBonusForLater: number;
   defReductionForLater: number;
   armorReduction: number;
-} {
+} => {
   const none = {
     tacBonusForLater: 0,
     defReductionForLater: 0,
     armorReduction: 0,
   };
   const id = wrapPicks[attackIndex][pickIndex];
-  if (id == null) return none;
+  if (id == null) {
+    return none;
+  }
   const result = getPlaybookResult(attacker, id);
   if (
     result.appliesKnockDown &&
@@ -666,12 +723,14 @@ export function rowEffectsForPick(
   const f =
     characterPlayPicks[attackIndex]?.[pickIndex] ??
     defaultCharacterPlayId(attacker);
-  if (f == null || used.has(f)) return none;
+  if (f == null || used.has(f)) {
+    return none;
+  }
   return characterPlayPickModifiers(attacker, f);
-}
+};
 
 /** Character plays still choosable on this pick (those not used by earlier picks). */
-export function characterPlayAvailabilityForPick(
+export const characterPlayAvailabilityForPick = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],
@@ -679,7 +738,7 @@ export function characterPlayAvailabilityForPick(
   pickIndex: number,
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
-): { available: readonly CharacterPlay[]; depleted: boolean } {
+): { available: readonly CharacterPlay[]; depleted: boolean } => {
   const used = characterPlayUsageBeforePick(
     attacker,
     wrapPicks,
@@ -693,16 +752,16 @@ export function characterPlayAvailabilityForPick(
     (cp) => !used.has(cp.id),
   );
   return { available, depleted: available.length === 0 };
-}
+};
 
 /** Fix illegal character-play rows when earlier picks consumed SO or Stagger. */
-export function sanitizeCharacterPlayPicksWrap(
+export const sanitizeCharacterPlayPicksWrap = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
-): { characterPlayPicks: CharacterPlayPickSlot[][]; changed: boolean } {
+): { characterPlayPicks: CharacterPlayPickSlot[][]; changed: boolean } => {
   const next: CharacterPlayPickSlot[][] = characterPlayPicks.map((row) => [
     ...row,
   ]);
@@ -731,7 +790,9 @@ export function sanitizeCharacterPlayPicksWrap(
       const available = characterPlaysForAttacker(attacker).filter(
         (cp) => !used.has(cp.id),
       );
-      if (available.length === 0) continue;
+      if (available.length === 0) {
+        continue;
+      }
       const f = next[i][k];
       if (f == null || !available.some((cp) => cp.id === f)) {
         next[i][k] = available[0].id;
@@ -740,94 +801,107 @@ export function sanitizeCharacterPlayPicksWrap(
     }
   }
   return { characterPlayPicks: next, changed };
-}
+};
 
-export function netSuccessesForChoice(
+export const netSuccessesForChoice = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
-): number {
+): number => {
   const col = attacker.playbook.find((c) => c.results.some((r) => r.id === id));
-  if (!col) throw new Error(`No column for id ${id}`);
+  if (!col) {
+    throw new Error(`No column for id ${id}`);
+  }
   return col.netSuccesses;
-}
+};
 
 /** How many playbook results this attack can resolve (ceil(maxNet / card cap)). */
-export function wrapSlotCount(attacker: AttackerData, maxNet: number): number {
-  if (maxNet < 1) return 1;
+export const wrapSlotCount = (
+  attacker: AttackerData,
+  maxNet: number,
+): number => {
+  if (maxNet < 1) {
+    return 1;
+  }
   return Math.ceil(maxNet / maxPlaybookNet(attacker));
-}
+};
 
 /**
  * Max net for slot `slotIndex` (0-based): each full card-width step consumes
  * the widest column; leftover is the cap for the next result, not based on
  * what you picked in the previous slot.
  */
-export function wrapSlotBudget(
+export const wrapSlotBudget = (
   attacker: AttackerData,
   maxNet: number,
   slotIndex: number,
-): number {
+): number => {
   const raw = maxNet - slotIndex * maxPlaybookNet(attacker);
-  if (raw < 1) return 0;
+  if (raw < 1) {
+    return 0;
+  }
   return Math.min(maxPlaybookNet(attacker), raw);
-}
+};
 
 /**
  * Total net successes needed on the roll for this slot’s column, treating later
  * wrap slots as continuing past the card’s widest column (8th, 9th, …).
  */
-export function wrapExtendedNetNeeded(
+export const wrapExtendedNetNeeded = (
   attacker: AttackerData,
   slotIndex: number,
   columnNet: number,
-): number {
+): number => {
   return slotIndex * maxPlaybookNet(attacker) + columnNet;
-}
+};
 
 /**
  * Net successes the pool must reach so every non-null wrap pick resolves,
  * using the same extended indexing as the playbook UI. Not a naive sum of
  * column costs: later wrap slots count past the card width.
  */
-export function wrapNetThresholdAllHits(
+export const wrapNetThresholdAllHits = (
   attacker: AttackerData,
   picks: readonly WrapPick[],
-): number {
+): number => {
   let maxNeed = 0;
   for (let k = 0; k < picks.length; k++) {
     const id = picks[k];
-    if (id == null) continue;
+    if (id == null) {
+      continue;
+    }
     const need = wrapExtendedNetNeeded(
       attacker,
       k,
       netSuccessesForChoice(attacker, id),
     );
-    if (need > maxNeed) maxNeed = need;
+    if (need > maxNeed) {
+      maxNeed = need;
+    }
   }
   return maxNeed;
-}
+};
 
-export function defaultCharacterPlayPicksWrap(
+export const defaultCharacterPlayPicksWrap = (
   size: number,
-): CharacterPlayPickSlot[][] {
+): CharacterPlayPickSlot[][] => {
   return Array.from({ length: size }, () => [null]);
-}
+};
 
-export function defaultWrapPicks(size: number): WrapPick[][] {
+export const defaultWrapPicks = (size: number): WrapPick[][] => {
   return Array.from({ length: size }, () => [null]);
-}
+};
 
 /**
  * Sums card pip damage and the marginal effects of Tough Hide and each of the
  * attacker's damage buffs across all active rows (same scope as
  * {@link damageIfAllHitsWrap}).
  */
-export function damageModifierBreakdownWrap(
+export const damageModifierBreakdownWrap = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
-): DamageModifierBreakdown {
+): DamageModifierBreakdown => {
   let rawCardDamage = 0;
   let toughHideReduction = 0;
   let totalEffective = 0;
@@ -844,9 +918,13 @@ export function damageModifierBreakdownWrap(
       continue;
     }
     for (const id of wrapPicks[i]) {
-      if (id == null) continue;
+      if (id == null) {
+        continue;
+      }
       const card = getPlaybookResult(attacker, id).damage;
-      if (card <= 0) continue;
+      if (card <= 0) {
+        continue;
+      }
       rawCardDamage += card;
       const full = effectiveDamageForChoice(attacker, id, damageMods);
       totalEffective += full;
@@ -871,15 +949,15 @@ export function damageModifierBreakdownWrap(
     buffBonuses,
     totalEffective,
   };
-}
+};
 
 /** Damage per attack if every pick on that attack hits (playbook modifiers applied). */
-export function damageIfAllHitsWrap(
+export const damageIfAllHitsWrap = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
-): number[] {
+): number[] => {
   return wrapPicks.map((picks, i) =>
     attackRowIsActive(attacker, wrapPicks, i, damageMods, activeBaseCount)
       ? picks.reduce(
@@ -892,4 +970,4 @@ export function damageIfAllHitsWrap(
         )
       : 0,
   );
-}
+};

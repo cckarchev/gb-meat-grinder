@@ -7,7 +7,7 @@ import {
   nextPlanAfterWrapChoice,
 } from '@/core/attackPlanState';
 import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
-import { HP_DEFAULT } from '@/core/constants';
+import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from '@/core/constants';
 import {
   effectiveArmor,
   effectiveEnemyDef,
@@ -24,21 +24,21 @@ import type {
   MeatGrinderState,
 } from '@/types/gbMeatGrinder/reducer';
 
-function attackerOf(s: MeatGrinderState): AttackerData {
+const attackerOf = (s: MeatGrinderState): AttackerData => {
   return attackerById(s.attackerId);
-}
+};
 
 /** Active base attacks for the current influence / charge choice. */
-function activeBaseCountOf(s: MeatGrinderState): number {
+const activeBaseCountOf = (s: MeatGrinderState): number => {
   return activeBaseAttackCount(attackerOf(s), s.influence, s.charging);
-}
+};
 
 /** Charge row the engine should use: the chosen base, or -1 when not charging. */
-function effectiveChargeIndex(s: MeatGrinderState): number {
+const effectiveChargeIndex = (s: MeatGrinderState): number => {
   return s.charging ? s.chargeAttackIndex : -1;
-}
+};
 
-function clampParams(s: MeatGrinderState): AttackPlanClampParams {
+const clampParams = (s: MeatGrinderState): AttackPlanClampParams => {
   return {
     attacker: attackerOf(s),
     chargeAttackIndex: effectiveChargeIndex(s),
@@ -52,34 +52,39 @@ function clampParams(s: MeatGrinderState): AttackPlanClampParams {
     enemyKnockedDown: s.enemyKnockedDown,
     activeBaseCount: activeBaseCountOf(s),
   };
-}
+};
 
-function clampPlan(s: MeatGrinderState, plan: AttackPlan): AttackPlan {
+const clampPlan = (s: MeatGrinderState, plan: AttackPlan): AttackPlan => {
   return clampAttackPlanState(plan, clampParams(s));
-}
+};
 
-function bonusTimeEqual(a: readonly boolean[], b: readonly boolean[]): boolean {
-  if (a.length !== b.length) return false;
+const bonusTimeEqual = (
+  a: readonly boolean[],
+  b: readonly boolean[],
+): boolean => {
+  if (a.length !== b.length) {
+    return false;
+  }
   return a.every((v, i) => v === b[i]);
-}
+};
 
-function clamp(value: number, min: number, max: number): number {
+const clamp = (value: number, min: number, max: number): number => {
   return Math.max(min, Math.min(max, value));
-}
+};
 
 /** Fresh attacker-side state for a model, preserving enemy stats from `prev`. */
-function stateForAttacker(
+const stateForAttacker = (
   attacker: AttackerData,
   prev?: Partial<MeatGrinderState>,
-): MeatGrinderState {
+): MeatGrinderState => {
   const influence = attacker.inf;
   // Models with a free charge (Furious) default to charging; otherwise carry
   // over the prior toggle (or off for a fresh state).
   const charging = attacker.furious ? true : (prev?.charging ?? false);
   return {
     attackerId: attacker.id,
-    enemyDef: prev?.enemyDef ?? 4,
-    armor: prev?.armor ?? 1,
+    enemyDef: prev?.enemyDef ?? DEF_DEFAULT,
+    armor: prev?.armor ?? ARM_DEFAULT,
     hp: prev?.hp ?? HP_DEFAULT,
     influence,
     charging,
@@ -112,22 +117,24 @@ function stateForAttacker(
     specialAbilities: {},
     attackPlan: createInitialAttackPlan(attacker, influence, charging),
   };
-}
+};
 
-export function createInitialMeatGrinderState(): MeatGrinderState {
+export const createInitialMeatGrinderState = (): MeatGrinderState => {
   return stateForAttacker(randomAttacker());
-}
+};
 
-export function meatGrinderReducer(
+export const meatGrinderReducer = (
   state: MeatGrinderState,
   action: MeatGrinderAction,
-): MeatGrinderState {
+): MeatGrinderState => {
   switch (action.type) {
     case 'reset':
       // Reset everything to defaults but keep the currently selected model.
       return stateForAttacker(attackerOf(state));
     case 'selectAttacker': {
-      if (action.id === state.attackerId) return state;
+      if (action.id === state.attackerId) {
+        return state;
+      }
       const attacker = attackerById(action.id);
       return stateForAttacker(attacker, state);
     }
@@ -271,7 +278,9 @@ export function meatGrinderReducer(
           state.bonusTimeByAttack,
           activeBaseCount,
         );
-        if (pool < 1) return state;
+        if (pool < 1) {
+          return state;
+        }
       }
       const nextFlags = [...state.bonusTimeByAttack];
       nextFlags[attackIndex] = value;
@@ -294,7 +303,9 @@ export function meatGrinderReducer(
         state.bonusTimeByAttack,
         activeBaseCountOf(state),
       );
-      if (bonusTimeEqual(sanitized, state.bonusTimeByAttack)) return state;
+      if (bonusTimeEqual(sanitized, state.bonusTimeByAttack)) {
+        return state;
+      }
       return { ...state, bonusTimeByAttack: sanitized };
     }
     case 'wrapChoice': {
@@ -305,7 +316,9 @@ export function meatGrinderReducer(
         action.pickIndex,
         action.id,
       );
-      if (merged == null) return state;
+      if (merged == null) {
+        return state;
+      }
       return {
         ...state,
         attackPlan: clampPlan(state, merged),
@@ -317,7 +330,9 @@ export function meatGrinderReducer(
         state.attackPlan,
         action.attackIndex,
       );
-      if (merged == null) return state;
+      if (merged == null) {
+        return state;
+      }
       return {
         ...state,
         attackPlan: clampPlan(state, merged),
@@ -333,7 +348,9 @@ export function meatGrinderReducer(
         state.damageMods,
         activeBaseCountOf(state),
       );
-      if (merged == null) return state;
+      if (merged == null) {
+        return state;
+      }
       return {
         ...state,
         attackPlan: clampPlan(state, merged),
@@ -344,4 +361,4 @@ export function meatGrinderReducer(
       return _exhaustive;
     }
   }
-}
+};

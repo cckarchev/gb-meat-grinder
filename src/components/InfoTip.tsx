@@ -55,7 +55,7 @@ const Bubble = styled.span`
  * blur, outside click, or Escape. Safe to nest inside a `<label>` because a
  * `<button>` is interactive content (clicking it does not toggle the control).
  */
-export function InfoTip({
+export const InfoTip = ({
   content,
   children,
   className,
@@ -63,17 +63,24 @@ export function InfoTip({
   content: string;
   children: ReactNode;
   className?: string;
-}) {
+}) => {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLSpanElement>(null);
   const tooltipId = useId();
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      return;
+    }
+
     const onPointerDown = (e: MouseEvent) => {
-      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
+      if (!wrapRef.current?.contains(e.target as Node)) {
+        setOpen(false);
+      }
     };
+
     document.addEventListener('mousedown', onPointerDown);
+    
     return () => document.removeEventListener('mousedown', onPointerDown);
   }, [open]);
 
@@ -95,7 +102,9 @@ export function InfoTip({
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}
         onKeyDown={(e) => {
-          if (e.key === 'Escape') setOpen(false);
+          if (e.key === 'Escape') {
+            setOpen(false);
+          }
         }}
       >
         {children}
@@ -107,4 +116,4 @@ export function InfoTip({
       ) : null}
     </Wrap>
   );
-}
+};

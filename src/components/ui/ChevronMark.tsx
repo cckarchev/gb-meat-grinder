@@ -7,12 +7,12 @@ interface ChevronMarkProps {
 }
 
 /** The CCK `›` chevron mark, rendered as an inline SVG. Decorative. */
-export function ChevronMark({
+export const ChevronMark = ({
   color = 'var(--teal-bright)',
   size = 14,
   strokeWidth = 2.4,
   className,
-}: ChevronMarkProps) {
+}: ChevronMarkProps) => {
   return (
     <svg
       className={className}
@@ -35,4 +35,4 @@ export function ChevronMark({
       />
     </svg>
   );
-}
+};

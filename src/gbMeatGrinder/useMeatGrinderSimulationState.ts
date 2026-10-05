@@ -21,7 +21,7 @@ import {
 } from '@/gbMeatGrinder/meatGrinderReducer';
 import type { MeatGrinderSimulation } from '@/types/gbMeatGrinder/simulation';
 
-export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
+export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
   const [state, dispatch] = useReducer(
     meatGrinderReducer,
     undefined,
@@ -77,7 +77,6 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
     [state.bonusTimeByAttack, ignoredAttackIndex],
   );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: these values are re-sanitization triggers, not values read inside the effect
   useEffect(() => {
     queueMicrotask(() => {
       dispatch({ type: 'sanitizeBonusTime' });
@@ -190,4 +189,4 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       activeBaseCount,
     ],
   );
-}
+};
