@@ -11,6 +11,10 @@ import {
 } from '@/core/rowEffects';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
+  AttackPlan,
+  AttackPlanClampParams,
+} from '@/types/core/attackPlan';
+import type {
   CharacterPlayPickSlot,
   PlaybookDamageMods,
   WrapPick,
@@ -300,5 +304,28 @@ export const armorForAttackRow = (
         attackIndex,
         activeBaseCount,
       ),
+  );
+};
+
+/** `maxPlaybookColumnForRow` for a plan, reading the bounds from clamp params. */
+export const maxPlaybookColumnForPlan = (
+  plan: AttackPlan,
+  attackIndex: number,
+  params: AttackPlanClampParams,
+): number => {
+  return maxPlaybookColumnForRow(
+    params.attacker,
+    plan.wrapPicks,
+    plan.characterPlayPicks,
+    attackIndex,
+    params.chargeAttackIndex,
+    params.armor,
+    params.enemyHasCover,
+    params.enemyDefensiveStance,
+    params.damageMods,
+    params.enemyDef,
+    params.bonusTimeByAttack,
+    params.initialTacModifier,
+    params.activeBaseCount,
   );
 };

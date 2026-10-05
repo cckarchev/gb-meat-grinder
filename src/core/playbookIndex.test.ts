@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { maxPlaybookNet, playbookIndex } from '@/core/playbookIndex';
+import {
+  cheapestChoiceId,
+  maxPlaybookNet,
+  playbookIndex,
+} from '@/core/playbookIndex';
 import { makeAttacker } from '@/core/testing/fixtures';
 
 describe('playbookIndex', () => {
@@ -18,5 +22,11 @@ describe('playbookIndex', () => {
 
     expect(playbookIndex(attacker)).toBe(playbookIndex(attacker));
     expect(maxPlaybookNet(attacker)).toBe(4);
+  });
+});
+
+describe('cheapestChoiceId', () => {
+  it('returns the first line of the first playbook column', () => {
+    expect(cheapestChoiceId(makeAttacker())).toBe('one');
   });
 });

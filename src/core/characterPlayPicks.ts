@@ -10,6 +10,7 @@ import type {
   CharacterPlayPick,
   CharacterPlayPickSlot,
   CharacterPlayUsage,
+  PlaybookChoiceId,
   PlaybookDamageMods,
   WrapPick,
 } from '@/types/core/playbook';
@@ -37,6 +38,18 @@ export const defaultCharacterPlayId = (
   attacker: AttackerData,
 ): CharacterPlayPick | null => {
   return characterPlaysForAttacker(attacker)[0]?.id ?? null;
+};
+
+/** Play slot a freshly placed pick starts with: the default play, if it uses one. */
+export const initialCharacterPlayFor = (
+  attacker: AttackerData,
+  id: PlaybookChoiceId,
+): CharacterPlayPickSlot => {
+  if (!choiceUsesCharacterPlay(attacker, id)) {
+    return null;
+  }
+
+  return defaultCharacterPlayId(attacker);
 };
 
 export const characterPlayPickModifiers = (

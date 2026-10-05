@@ -10,6 +10,12 @@ export type AttackPlan = {
   characterPlayPicks: CharacterPlayPickSlot[][];
 };
 
+/** One attack's wrap picks with the character-play slot for each pick. */
+export type AttackPlanRow = {
+  picks: WrapPick[];
+  plays: CharacterPlayPickSlot[];
+};
+
 /** Inputs that bound a legal attack plan; see `clampAttackPlan`. */
 export type AttackPlanClampParams = {
   /** The model being clamped. */

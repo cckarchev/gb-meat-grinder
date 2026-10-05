@@ -41,3 +41,8 @@ export const playbookIndex = (attacker: AttackerData): PlaybookIndex => {
 export const maxPlaybookNet = (attacker: AttackerData): number => {
   return playbookIndex(attacker).maxNet;
 };
+
+/** First line of the first playbook column: the fallback when nothing else fits. */
+export const cheapestChoiceId = (attacker: AttackerData): PlaybookChoiceId => {
+  return attacker.playbook[0].results[0].id;
+};

@@ -4,11 +4,13 @@ import {
   coverTacPenaltyForAttack,
   effectiveDefMinRoll,
   enemyDefBaseForAttackRow,
+  maxPlaybookColumnForPlan,
   modifiersBeforeAttack,
   tacBonusFromDefReductionCap,
   tacForAttack,
 } from '@/core/swingModifiers';
 import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+import type { AttackPlanClampParams } from '@/types/core/attackPlan';
 
 const COVER = true;
 
@@ -106,5 +108,34 @@ describe('rows outside the activation', () => {
     expect(
       modifiersBeforeAttack(attacker, [['gb']], [['playTac']], 5, NO_MODS, 1),
     ).toEqual({ tacBonus: 0, defReduction: 0 });
+  });
+});
+
+describe('maxPlaybookColumnForPlan', () => {
+  const params = (tac: number): AttackPlanClampParams => {
+    return {
+      attacker: makeAttacker({ tac }),
+      chargeAttackIndex: -1,
+      armor: 0,
+      enemyHasCover: !COVER,
+      enemyDefensiveStance: !STANCE,
+      damageMods: NO_MODS,
+      enemyDef: 4,
+      bonusTimeByAttack: [false, false],
+      initialTacModifier: 0,
+      enemyKnockedDown: false,
+      activeBaseCount: 2,
+    };
+  };
+
+  const emptyPlan = {
+    wrapPicks: [[null], [null]],
+    characterPlayPicks: [[null], [null]],
+  };
+
+  it('reads the clamp params to find the column a row reaches', () => {
+    // TAC vs ARM 0 with no other modifiers: the row reaches column TAC.
+    expect(maxPlaybookColumnForPlan(emptyPlan, 0, params(4))).toBe(4);
+    expect(maxPlaybookColumnForPlan(emptyPlan, 0, params(2))).toBe(2);
   });
 });

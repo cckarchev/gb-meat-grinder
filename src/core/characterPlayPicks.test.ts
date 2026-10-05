@@ -7,6 +7,7 @@ import {
   characterPlayUsageBeforePick,
   defaultCharacterPlayId,
   getCharacterPlay,
+  initialCharacterPlayFor,
   sanitizeCharacterPlayPicksWrap,
 } from '@/core/characterPlayPicks';
 import {
@@ -213,5 +214,19 @@ describe('character play edge cases', () => {
     expect(characterPlayEffectSummary(combined)).toBe(
       '+1 TAC on later attacks; −1 enemy ARM on later attacks. Once per turn.',
     );
+  });
+});
+
+describe('initialCharacterPlayFor', () => {
+  it('starts a character-play pick on the default play', () => {
+    const attacker = makeAttacker();
+
+    expect(initialCharacterPlayFor(attacker, 'gb')).toBe(
+      defaultCharacterPlayId(attacker),
+    );
+  });
+
+  it('leaves the slot empty for a pick without a character play', () => {
+    expect(initialCharacterPlayFor(makeAttacker(), 'one')).toBeNull();
   });
 });
