@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { InfoTip } from '@/components/InfoTip';
 import { StepControl } from '@/components/StepControl';
 import { CheckOption } from '@/components/targetPanelPrimitives';
-import { InfoTip } from '@/components/InfoTip';
 import { Panel, PanelTitle, Select } from '@/components/ui';
+import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import type { AttackerData } from '@/types/core/attacker';
 

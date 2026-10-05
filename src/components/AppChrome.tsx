@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import type { AppChromeProps } from '@/types/components/layout';
 import { narrowViewport } from '@/styles/breakpoints';
+import type { AppChromeProps } from '@/types/components/layout';
 
 const Shell = styled.div`
   box-sizing: border-box;

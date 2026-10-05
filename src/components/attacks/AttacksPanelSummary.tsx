@@ -1,5 +1,9 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
+import { attackKindLabel } from '@/components/attacks/attackVariant';
+import { InfoTip } from '@/components/InfoTip';
+import { Mono, PanelTitle, Summary } from '@/components/ui';
+import { damageQuantile, planDamageOutcome } from '@/core/killOdds';
 import {
   damageIfAllHitsWrap,
   damageModifierBreakdownWrap,
@@ -8,14 +12,10 @@ import {
   pickGeneratesMomentum,
   specialAbilityFlatDamage,
 } from '@/core/playbook';
-import type { WrapPick } from '@/types/core/playbook';
 import { formatPercent } from '@/core/probability';
-import { damageQuantile, planDamageOutcome } from '@/core/killOdds';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import type { WrapPick } from '@/types/core/playbook';
 import { KILLING_BLOW_MOMENTUM } from '@/types/gbMeatGrinder/simulation';
-import { Mono, PanelTitle, Summary } from '@/components/ui';
-import { InfoTip } from '@/components/InfoTip';
-import { attackKindLabel } from '@/components/attacks/attackVariant';
 
 const ProbabilitySummaryTitle = styled(PanelTitle)`
   margin-bottom: 0.5rem;

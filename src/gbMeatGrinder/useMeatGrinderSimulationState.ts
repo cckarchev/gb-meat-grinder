@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useReducer } from 'react';
-import { attackerById, ATTACKERS } from '@/attackers/registry';
+import { ATTACKERS, attackerById } from '@/attackers/registry';
 import { computeAttackSequence } from '@/core/attackSequence';
 import { activeBaseAttackCount } from '@/core/attackStructure';
+import { killingBlowDisplayIndex } from '@/core/killingBlow';
 import {
   damageIfAllHitsWrap,
   effectiveArmor,
   effectiveEnemyDef,
   specialAbilityFlatDamage,
 } from '@/core/playbook';
-import { killingBlowDisplayIndex } from '@/core/killingBlow';
 import {
   effectiveBonusTimeForResilience,
   effectiveCharacterPlayPicksForResilience,
@@ -77,6 +77,7 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
     [state.bonusTimeByAttack, ignoredAttackIndex],
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: these values are re-sanitization triggers, not values read inside the effect
   useEffect(() => {
     queueMicrotask(() => {
       dispatch({ type: 'sanitizeBonusTime' });
@@ -187,7 +188,6 @@ export function useMeatGrinderSimulationState(): MeatGrinderSimulation {
       attacks,
       killingBlowIndex,
       activeBaseCount,
-      dispatch,
     ],
   );
 }

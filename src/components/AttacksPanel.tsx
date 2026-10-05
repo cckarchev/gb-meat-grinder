@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
+import { AttackSwingRow } from '@/components/attacks/AttackSwingRow';
+import { AttacksPanelSummary } from '@/components/attacks/AttacksPanelSummary';
 import {
   damageIfAllHitsWrap,
   momentumAfterAttackInclusive,
@@ -8,8 +10,6 @@ import {
 } from '@/core/playbook';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { KILLING_BLOW_MOMENTUM } from '@/types/gbMeatGrinder/simulation';
-import { AttackSwingRow } from '@/components/attacks/AttackSwingRow';
-import { AttacksPanelSummary } from '@/components/attacks/AttacksPanelSummary';
 
 const AttacksList = styled.div`
   display: flex;

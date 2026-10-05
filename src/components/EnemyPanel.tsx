@@ -1,4 +1,8 @@
 import styled from 'styled-components';
+import { InfoTip } from '@/components/InfoTip';
+import { StepControl } from '@/components/StepControl';
+import { CheckOption } from '@/components/targetPanelPrimitives';
+import { Panel, PanelTitle, Row } from '@/components/ui';
 import {
   ARM_MAX,
   ARM_MIN,
@@ -9,10 +13,6 @@ import {
 } from '@/core/constants';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
-import { StepControl } from '@/components/StepControl';
-import { CheckOption } from '@/components/targetPanelPrimitives';
-import { InfoTip } from '@/components/InfoTip';
-import { Panel, PanelTitle, Row } from '@/components/ui';
 
 /** Stretch to the row height so the conditions can sit at the bottom. */
 const EnemyPanelBox = styled(Panel)`

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { AttacksPanel } from '@/components/AttacksPanel';
-import { EnemyPanel } from '@/components/EnemyPanel';
 import { AttackerPanel } from '@/components/AttackerPanel';
-import { TargetPanelsRow } from '@/components/TargetPanelsRow';
+import { AttacksPanel } from '@/components/AttacksPanel';
 import { ToggleButton } from '@/components/controls';
-import { narrowViewport } from '@/styles/breakpoints';
+import { EnemyPanel } from '@/components/EnemyPanel';
+import { TargetPanelsRow } from '@/components/TargetPanelsRow';
 import { MeatGrinderSimulationContext } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { useMeatGrinderSimulationState } from '@/gbMeatGrinder/useMeatGrinderSimulationState';
+import { narrowViewport } from '@/styles/breakpoints';
 
 const Header = styled.header`
   display: flex;

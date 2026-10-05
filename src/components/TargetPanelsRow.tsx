@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import type { TargetPanelsRowProps } from '@/types/components/layout';
-import { narrowViewport } from '@/styles/breakpoints';
 import { Panel } from '@/components/ui';
+import { narrowViewport } from '@/styles/breakpoints';
+import type { TargetPanelsRowProps } from '@/types/components/layout';
 
 const Row = styled.div`
   display: flex;

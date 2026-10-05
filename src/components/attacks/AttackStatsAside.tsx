@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { narrowViewport } from '@/styles/breakpoints';
 import { Mono } from '@/components/ui';
+import { narrowViewport } from '@/styles/breakpoints';
 
 const AttackStatsRail = styled.aside`
   flex: 0 0 auto;

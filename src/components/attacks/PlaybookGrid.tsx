@@ -1,6 +1,9 @@
 import styled from 'styled-components';
-import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
-import { focusRing } from '@/styles/mixins';
+import {
+  PLAYBOOK_COLUMN_TRACK,
+  PLAYBOOK_COLUMN_WIDTH_VAR,
+  PLAYBOOK_GRID_GAP,
+} from '@/components/attacks/playbookLayout';
 import {
   kdAlreadyTakenBeforePick,
   momentousLineStyle,
@@ -8,20 +11,17 @@ import {
   wrapExtendedNetNeeded,
   wrapSlotBudget,
 } from '@/core/playbook';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-import type { PlaybookDamageMods, WrapPick } from '@/types/core/playbook';
+import { formatPercent, probAttackSucceeds } from '@/core/probability';
 import {
   probHeatBackground,
   probHeatBorder,
   probHeatTextColor,
 } from '@/core/probStyle';
-import { formatPercent, probAttackSucceeds } from '@/core/probability';
+import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
+import { focusRing } from '@/styles/mixins';
 import type { AttacksPanelProps } from '@/types/components/attacks';
-import {
-  PLAYBOOK_COLUMN_TRACK,
-  PLAYBOOK_COLUMN_WIDTH_VAR,
-  PLAYBOOK_GRID_GAP,
-} from '@/components/attacks/playbookLayout';
+import type { PlaybookDamageMods, WrapPick } from '@/types/core/playbook';
 
 const WrapSlotBlock = styled.div<{ $first: boolean }>`
   margin-top: ${(p) => (p.$first ? 0 : '0.85rem')};
@@ -313,6 +313,7 @@ export function WrapSlotPickGrid({
                       {segments.length > 1 ? (
                         <LineLabelStack>
                           {segments.map((seg, idx) => (
+                            // biome-ignore lint/suspicious/noArrayIndexKey: label segments are static and may repeat
                             <span key={idx}>{seg}</span>
                           ))}
                         </LineLabelStack>

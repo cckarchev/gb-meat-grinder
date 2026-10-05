@@ -1,5 +1,4 @@
 import { BONUS_TIME_TAC_BONUS, DEF_MAX, DEF_MIN } from '@/core/constants';
-import { maxPlaybookNet } from '@/core/playbookIndex';
 import {
   activationAttackIndices,
   armorReductionBeforeAttack,
@@ -16,19 +15,20 @@ import {
   wrapSlotBudget,
   wrapSlotCount,
 } from '@/core/playbook';
+import { maxPlaybookNet } from '@/core/playbookIndex';
+import {
+  hitProbabilityPerDie,
+  maxNetSuccessesForRoll,
+  probAttackSucceeds,
+} from '@/core/probability';
 import type { AttackerData } from '@/types/core/attacker';
+import type { AttackRollContext } from '@/types/core/attackSequence';
 import type {
   CharacterPlayPickSlot,
   PlaybookChoiceId,
   PlaybookDamageMods,
   WrapPick,
 } from '@/types/core/playbook';
-import type { AttackRollContext } from '@/types/core/attackSequence';
-import {
-  hitProbabilityPerDie,
-  maxNetSuccessesForRoll,
-  probAttackSucceeds,
-} from '@/core/probability';
 
 export const CHARGE_TAC_BONUS = 4;
 

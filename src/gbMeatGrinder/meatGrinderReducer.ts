@@ -1,6 +1,4 @@
 import { attackerById, randomAttacker } from '@/attackers/registry';
-import { HP_DEFAULT } from '@/core/constants';
-import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
 import {
   clampAttackPlanState,
   createInitialAttackPlan,
@@ -8,6 +6,8 @@ import {
   nextPlanAfterClearWrapContinuation,
   nextPlanAfterWrapChoice,
 } from '@/core/attackPlanState';
+import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
+import { HP_DEFAULT } from '@/core/constants';
 import {
   effectiveArmor,
   effectiveEnemyDef,

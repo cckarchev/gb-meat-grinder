@@ -1,8 +1,8 @@
 import { useId } from 'react';
 import styled from 'styled-components';
-import type { StepControlProps } from '@/types/components/stepControl';
 import { narrowViewport } from '@/styles/breakpoints';
 import { focusRing } from '@/styles/mixins';
+import type { StepControlProps } from '@/types/components/stepControl';
 
 const Wrap = styled.div`
   display: flex;

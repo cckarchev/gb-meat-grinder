@@ -1,29 +1,29 @@
 import styled from 'styled-components';
-import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
-import type { AttackRollContext } from '@/types/core/attackSequence';
-import { attackRowIsBerserker, choiceUsesCharacterPlay } from '@/core/playbook';
-import { maxNetSuccessesForRoll } from '@/core/probability';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { AttackStatsAside } from '@/components/attacks/AttackStatsAside';
 import {
   attackBlockVariant,
   attackKindLabel,
 } from '@/components/attacks/attackVariant';
-import type { AttackBlockVariant } from '@/types/components/attacks';
-import { Mono } from '@/components/ui';
-import { CornerBrackets } from '@/components/ui/CornerBrackets';
-import { InfoTip } from '@/components/InfoTip';
-import { AttackStatsAside } from '@/components/attacks/AttackStatsAside';
 import { CharacterPlaySelection } from '@/components/attacks/CharacterPlaySelection';
 import { WrapSlotPickGrid } from '@/components/attacks/PlaybookGrid';
-import type {
-  AttacksPanelProps,
-  CharacterPlaySlotRef,
-} from '@/types/components/attacks';
 import {
   PLAYBOOK_COLUMN_TRACK,
   PLAYBOOK_COLUMN_WIDTH_VAR,
 } from '@/components/attacks/playbookLayout';
 import { WrapContinuationToggle } from '@/components/attacks/WrapContinuationToggle';
+import { InfoTip } from '@/components/InfoTip';
+import { Mono } from '@/components/ui';
+import { CornerBrackets } from '@/components/ui/CornerBrackets';
+import { attackRowIsBerserker, choiceUsesCharacterPlay } from '@/core/playbook';
+import { maxNetSuccessesForRoll } from '@/core/probability';
+import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
+import type {
+  AttackBlockVariant,
+  AttacksPanelProps,
+  CharacterPlaySlotRef,
+} from '@/types/components/attacks';
+import type { AttackRollContext } from '@/types/core/attackSequence';
 
 const AttackRow = styled.div`
   display: flex;
@@ -369,9 +369,8 @@ export function AttackSwingRow({
                 />
               </PlaybookPrimarySlot>
               {hasWrapContinuation ? (
-                <div
+                <section
                   id={`attack-wrap-${i}`}
-                  role="region"
                   aria-labelledby={`attack-wrap-trigger-${i}`}
                   hidden={!wrapOpen}
                 >
@@ -394,7 +393,7 @@ export function AttackSwingRow({
                       />
                     );
                   })}
-                </div>
+                </section>
               ) : null}
               <CharacterPlaySelection
                 slots={characterPlaySlots}
