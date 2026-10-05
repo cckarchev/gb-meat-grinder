@@ -28,7 +28,7 @@ const ControlsGrid = styled.div`
   }
 `;
 
-/** Visual break before the pre-attack toggles; no heading, just a rule. */
+/** A rule before the pre-attack toggles, which title their own groups. */
 const PreAttackSection = styled(PanelFooterSection)`
   margin-top: 1rem;
 

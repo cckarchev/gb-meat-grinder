@@ -26,4 +26,8 @@ export const TOOLTIP_BURNING =
 export const TOOLTIP_RESILIENCE =
   'Resilience: the activation’s first attack is wholly ignored (no damage, effects, wraps, momentum, or Berserker trigger) and carries nothing over to later attacks. That swing is shown but disabled.';
 
+export const LABEL_CONDITIONS = 'Conditions';
+
+export const LABEL_DEFENSES = 'Defenses';
+
 export const LABEL_GUILD_DEBUFFS = 'Guild debuffs';
