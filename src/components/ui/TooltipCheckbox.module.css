@@ -1,0 +1,35 @@
+@layer primitives {
+  /* Label row holding the checkbox and its tooltip-trigger text. */
+  .checkOption {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-top: var(--space-xs);
+    cursor: pointer;
+    font-size: var(--font-size-md);
+    color: var(--text);
+    line-height: var(--line-height-normal);
+  }
+
+  .checkOption input {
+    margin-top: var(--space-3xs);
+    flex-shrink: 0;
+  }
+
+  /* Dim the label text rather than the whole row, so a nested tooltip popover
+     (which lives inside this label) stays fully legible when disabled. */
+  .checkOption[data-disabled] {
+    cursor: not-allowed;
+    color: var(--muted);
+  }
+
+  .checkOption[data-disabled] input {
+    opacity: var(--opacity-disabled);
+  }
+
+  /* Plain label text (clicking it toggles the box), hinting at its tooltip. */
+  .labelText {
+    composes: tooltipHint from '../../styles/mixins.module.css';
+    position: relative;
+  }
+}

@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
+/* Cascade order for the CSS modules, lowest first. Composed mixins sit under
+   the `ui/` primitives, and component modules stay unlayered so they always
+   override both, whatever order the bundle emits them in.
+
+   Breakpoints: 720px (narrow) and 400px (extra narrow). Media queries reject
+   `var()`, so the modules repeat these `px` values literally. */
+@layer mixins, primitives;
+
 *,
 *::before,
 *::after {
@@ -19,8 +27,15 @@
   /** Opaque, slightly-elevated surface for floating popovers/tooltips so dense
       content behind them never bleeds through. */
   --popover-bg: #15303a;
+  --popover-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  --popover-z: 20;
   --border: rgba(255, 255, 255, 0.22);
   --border-hover: rgba(255, 255, 255, 0.34);
+  /** The hairline that frames panels and separates sections. Other colored
+      borders reuse its width. */
+  --rule-width: 1px;
+  --rule: var(--rule-width) solid var(--border);
+  --rule-dashed: var(--rule-width) dashed var(--border);
   --input-bg: #070e12;
 
   /* Brand */
@@ -36,16 +51,21 @@
   --playbook-line-nm-bg: #d5dce6;
   --playbook-line-nm-fg: #070a0f;
   --playbook-line-nm-border: #a8b3c2;
+  /** Momentous lines sit on the guild color, so their ink and selection ring
+      are fixed white in every theme. A zeroed momentous line is a white fill. */
+  --playbook-line-momentous-fg: #ffffff;
+  --playbook-line-momentous-ring: rgba(255, 255, 255, 0.92);
+  --playbook-line-zeroed-bg: #ffffff;
   /** Shared keyboard focus indicator (CCK teal). */
   --focus-ring: var(--teal-bright);
+  /** Outline geometry shared by the focus ring and the selected playbook line. */
+  --outline-width: 2px;
+  --outline-offset: 2px;
+  --focus-outline: var(--outline-width) solid var(--focus-ring);
   /** Subtle row hover wash (ties a label to its value while scanning). */
   --row-hover: rgba(255, 255, 255, 0.06);
-  /** Sharp corners everywhere to match CCK. Keys retained so existing
-      var(--radius-*) consumers keep working. */
-  --radius-lg: 0;
-  --radius-md: 0;
-  --radius-sm: 0;
-  --radius-xs: 0;
+  /** Sharp corners everywhere to match CCK. */
+  --radius: 0;
   /** Charge attack accent (CCK orange family). */
   --accent-charge: var(--accent);
   --accent-charge-soft: #f0905f;
@@ -53,17 +73,67 @@
   --accent-berserker: #e05555;
   --accent-berserker-soft: #f29090;
 
+  /** Default grid track for each playbook (net-success) column. Attack blocks
+      narrow it on small viewports through `--playbook-column-width`. */
+  --playbook-column-track: 3.65rem;
+
   /* ── Typography ── */
   --font-display: 'Oswald', system-ui, 'Segoe UI', sans-serif;
   --font-body: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
   --font-mono:
     'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
 
+  /* Type scale. Relative `em` sizes and fluid `clamp()` sizes stay inline. */
+  --font-size-3xs: 0.56rem;
+  --font-size-2xs: 0.62rem;
+  --font-size-xs: 0.7rem;
+  --font-size-sm: 0.78rem;
+  --font-size-md: 0.85rem;
+  --font-size-base: 0.95rem;
+  --font-size-lg: 1.1rem;
+  --font-size-xl: 1.35rem;
+  --font-size-2xl: 1.7rem;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.4;
+
   /* ── Letter-spacing tokens ── */
   --tracking-label: 0.2em;
   --tracking-button: 0.12em;
   --tracking-heading: 0.04em;
   --tracking-caps: 0.05em;
+  /** Slight open-up for tiny uppercase text on narrow screens. */
+  --tracking-snug: 0.02em;
+  /** Pulls large numerals and packed labels together. */
+  --tracking-tight: -0.02em;
+
+  /* Spacing scale for gaps, margins and paddings. Component dimensions
+     (widths, heights, icon sizes) stay inline. */
+  --space-4xs: 0.08rem;
+  --space-3xs: 0.15rem;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.35rem;
+  --space-sm: 0.45rem;
+  --space-md: 0.55rem;
+  --space-lg: 0.65rem;
+  --space-xl: 0.85rem;
+  --space-2xl: 1rem;
+  --space-3xl: 1.25rem;
+  --space-4xl: 1.5rem;
+
+  /* ── State and motion ── */
+  --opacity-disabled: 0.4;
+  /** Skipped swings: dimmed but still readable as part of the plan. */
+  --opacity-dimmed: 0.5;
+  --opacity-hover: 0.9;
+  --duration-fast: 0.12s;
+  --duration-base: 0.15s;
 
   font-family: var(--font-body);
   font-size: 16px;

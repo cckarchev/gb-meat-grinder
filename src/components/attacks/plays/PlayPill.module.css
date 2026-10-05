@@ -1,0 +1,19 @@
+.anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+.playToggleButton {
+  min-width: 8.5rem;
+}
+
+/* No-op plays (e.g. Snack Break) read as cosmetic via a dashed outline. */
+.playToggleButton[data-muted]:not([data-active]) {
+  border-style: dashed;
+}
+
+@media (max-width: 720px) {
+  .playToggleButton {
+    min-width: 6.75rem;
+  }
+}

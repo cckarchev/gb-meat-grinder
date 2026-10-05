@@ -1,41 +1,8 @@
 import type { FocusEvent, MouseEvent, ReactNode } from 'react';
-import styled from 'styled-components';
 import { TooltipBubble } from '@/components/ui/TooltipBubble';
+import styles from '@/components/ui/TooltipCheckbox.module.css';
 import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
-import { narrowViewport } from '@/styles/breakpoints';
-
-const DISABLED_INPUT_OPACITY = 0.5;
-
-/** Label row holding the checkbox and its tooltip-trigger text. */
-const CheckOption = styled.label<{ $disabled: boolean }>`
-  display: flex;
-  align-items: flex-start;
-  gap: 0.45rem;
-  margin-top: 0.35rem;
-  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
-  font-size: 0.88rem;
-  /* Dim the label text rather than the whole row, so a nested tooltip popover
-     (which lives inside this label) stays fully legible when disabled. */
-  color: ${({ $disabled }) => ($disabled ? 'var(--muted)' : 'var(--text)')};
-  line-height: 1.35;
-
-  input {
-    margin-top: 0.2rem;
-    flex-shrink: 0;
-    opacity: ${({ $disabled }) => ($disabled ? DISABLED_INPUT_OPACITY : 1)};
-  }
-
-  ${narrowViewport} {
-    font-size: 0.82rem;
-  }
-`;
-
-/** Plain label text (clicking it toggles the box), hinting at its tooltip. */
-const LabelText = styled.span`
-  position: relative;
-  text-decoration: underline dotted;
-  text-underline-offset: 0.12em;
-`;
+import { dataFlag } from '@/styles/dataFlag';
 
 type TooltipCheckboxProps = {
   checked: boolean;
@@ -74,7 +41,7 @@ export const TooltipCheckbox = ({
   };
 
   return (
-    <CheckOption $disabled={disabled}>
+    <label className={styles.checkOption} data-disabled={dataFlag(disabled)}>
       <input
         type="checkbox"
         checked={checked}
@@ -83,11 +50,11 @@ export const TooltipCheckbox = ({
         {...triggerProps}
         onFocus={openOnKeyboardFocus}
       />
-      <LabelText {...wrapperProps}>
+      <span className={styles.labelText} {...wrapperProps}>
         {children}
         {open ? (
           <TooltipBubble
-            $size="regular"
+            size="regular"
             id={tooltipId}
             role="tooltip"
             onClick={ignoreBubbleClick}
@@ -95,7 +62,7 @@ export const TooltipCheckbox = ({
             {tooltip}
           </TooltipBubble>
         ) : null}
-      </LabelText>
-    </CheckOption>
+      </span>
+    </label>
   );
 };

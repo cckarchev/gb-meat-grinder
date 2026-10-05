@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import styles from '@/components/attacks/summary/attacksSummary.module.css';
 import {
   TOOLTIP_DAMAGE_RANGE,
   TOOLTIP_EXPECTED_DAMAGE,
@@ -6,15 +7,10 @@ import {
   TOOLTIP_KILL,
   TOOLTIP_PLAN_FAILS,
 } from '@/components/attacks/summary/attacksSummaryCopy';
-import {
-  OddsAggregateBlock,
-  Summary,
-  SummarySectionTitle,
-  TotalsSectionTitle,
-} from '@/components/attacks/summary/attacksSummaryStyles';
 import { SummaryOddsRow } from '@/components/attacks/summary/SummaryOddsRow';
 import { SummaryStat } from '@/components/attacks/summary/SummaryStat';
 import { useActivationInput } from '@/components/attacks/useActivationInput';
+import { PanelTitle } from '@/components/ui/ui';
 import { summarizeActivation } from '@/core/activation/summary/activationSummary';
 import { formatPercent, formatRange, formatSigned } from '@/core/shared/format';
 
@@ -25,8 +21,8 @@ export const AttacksPanelSummary = () => {
   const summary = useMemo(() => summarizeActivation(input), [input]);
 
   return (
-    <Summary aria-label="Activation odds and totals">
-      <SummarySectionTitle>Odds</SummarySectionTitle>
+    <section className={styles.summary} aria-label="Activation odds and totals">
+      <PanelTitle className={styles.sectionTitle}>Odds</PanelTitle>
       {summary.activeAttacks.map((swing, displayIndex) => (
         <SummaryOddsRow
           key={swing.attackIndex}
@@ -35,7 +31,7 @@ export const AttacksPanelSummary = () => {
           prob={swing.prob}
         />
       ))}
-      <OddsAggregateBlock>
+      <div className={styles.oddsAggregateBlock}>
         <SummaryStat label="Kills the target" tooltip={TOOLTIP_KILL}>
           {formatPercent(summary.killProbability)}
         </SummaryStat>
@@ -51,14 +47,14 @@ export const AttacksPanelSummary = () => {
         <SummaryStat label="Likely damage" tooltip={TOOLTIP_DAMAGE_RANGE}>
           {formatRange(summary.damageRange)}
         </SummaryStat>
-      </OddsAggregateBlock>
-      <TotalsSectionTitle>Totals</TotalsSectionTitle>
+      </div>
+      <PanelTitle className={styles.totalsSectionTitle}>Totals</PanelTitle>
       <SummaryStat label="Damage dealt" tooltip={summary.damageDealtTooltip}>
         {summary.totalDamageIfAllHit}
       </SummaryStat>
       <SummaryStat label="Net momentum" tooltip={summary.netMomentumTooltip}>
         {formatSigned(summary.netMomentumIfAllHit)}
       </SummaryStat>
-    </Summary>
+    </section>
   );
 };

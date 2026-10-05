@@ -1,8 +1,4 @@
-import {
-  SelectionLine,
-  SelectionPicksInline,
-  SummaryRow,
-} from '@/components/attacks/summary/attacksSummaryStyles';
+import styles from '@/components/attacks/summary/attacksSummary.module.css';
 import { Mono } from '@/components/ui/ui';
 import { attackKindLabel } from '@/core/attacks/attackKind';
 import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
@@ -41,16 +37,16 @@ export const SummaryOddsRow = ({
     : EMPTY_VALUE_LABEL;
 
   return (
-    <SummaryRow>
-      <SelectionLine>
+    <div className={styles.summaryRow}>
+      <span className={styles.selectionLine}>
         <Mono>{attackOrdinal(displayIndex)}</Mono>.{' '}
         {attackKindLabel(attacker, attackIndex, effectiveChargeAttackIndex)}
         {' -> '}
-        <SelectionPicksInline>
+        <span className={styles.selectionPicksInline}>
           {formatWrapRowSelectionLabel(attacker, rowPicks ?? [], damageMods)}
-        </SelectionPicksInline>
-      </SelectionLine>
+        </span>
+      </span>
       <Mono>{probLabel}</Mono>
-    </SummaryRow>
+    </div>
   );
 };

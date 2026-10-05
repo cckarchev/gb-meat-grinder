@@ -1,26 +1,8 @@
 import { useMemo } from 'react';
-import styled from 'styled-components';
+import styles from '@/components/attacker/AttackerModelSelect.module.css';
 import { Select } from '@/components/ui/ui';
 import { groupAttackersByGuild } from '@/core/attackers/attackerGroups';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-
-const ModelField = styled.label`
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  grid-column: 1 / -1;
-`;
-
-const ModelFieldLabel = styled.span`
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-caps);
-  color: var(--muted);
-`;
-
-const ModelSelect = styled(Select)`
-  width: 100%;
-`;
 
 /** Model picker, grouped by guild. */
 export const AttackerModelSelect = () => {
@@ -32,9 +14,11 @@ export const AttackerModelSelect = () => {
   );
 
   return (
-    <ModelField>
-      <ModelFieldLabel>Model</ModelFieldLabel>
-      <ModelSelect
+    // biome-ignore lint/a11y/noLabelWithoutControl: `Select` renders a native <select>, which this label wraps.
+    <label className={styles.field}>
+      <span className={styles.fieldLabel}>Model</span>
+      <Select
+        className={styles.select}
         value={attacker.id}
         onChange={(event) =>
           dispatch({ type: 'selectAttacker', id: event.target.value })
@@ -50,7 +34,7 @@ export const AttackerModelSelect = () => {
             ))}
           </optgroup>
         ))}
-      </ModelSelect>
-    </ModelField>
+      </Select>
+    </label>
   );
 };

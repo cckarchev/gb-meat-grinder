@@ -1,33 +1,7 @@
 import type { ReactNode } from 'react';
-import styled from 'styled-components';
+import styles from '@/components/ui/InfoTip.module.css';
 import { TooltipBubble } from '@/components/ui/TooltipBubble';
 import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
-import { focusRing } from '@/styles/mixins';
-
-const InfoTipAnchor = styled.span`
-  position: relative;
-  display: inline;
-`;
-
-/** Inline text trigger, styled as plain text with a dotted underline hint. */
-const Trigger = styled.button`
-  font: inherit;
-  color: inherit;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  background: none;
-  cursor: help;
-  text-decoration: underline dotted;
-  text-underline-offset: 0.12em;
-  text-align: inherit;
-
-  ${focusRing}
-
-  &:focus-visible {
-    border-radius: 0;
-  }
-`;
 
 type InfoTipProps = {
   content: string;
@@ -45,8 +19,9 @@ export const InfoTip = ({ content, children }: InfoTipProps) => {
     useTooltipOpen<HTMLSpanElement>();
 
   return (
-    <InfoTipAnchor {...wrapperProps}>
-      <Trigger
+    <span className={styles.anchor} {...wrapperProps}>
+      <button
+        className={styles.trigger}
         type="button"
         {...triggerProps}
         aria-expanded={open}
@@ -56,12 +31,12 @@ export const InfoTip = ({ content, children }: InfoTipProps) => {
         }}
       >
         {children}
-      </Trigger>
+      </button>
       {open ? (
-        <TooltipBubble $size="regular" id={tooltipId} role="tooltip">
+        <TooltipBubble size="regular" id={tooltipId} role="tooltip">
           {content}
         </TooltipBubble>
       ) : null}
-    </InfoTipAnchor>
+    </span>
   );
 };

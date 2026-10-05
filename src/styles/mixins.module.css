@@ -1,0 +1,72 @@
+/* Shared style fragments, pulled in with `composes`.
+
+   Vite emits a composed file after the module composing it, so plain rules
+   here would win every override a component makes. The `mixins` layer (lowest
+   in the order `global.css` declares) makes them lose instead, whatever the
+   bundle order. */
+
+@layer mixins {
+  /* Shared keyboard focus indicator for interactive elements. */
+  .focusRing:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--outline-offset);
+  }
+
+  /* Small mono uppercase label set beside or above a value. */
+  .monoCapsLabel {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--muted);
+  }
+
+  /* Small uppercase body-font label: field captions and section headings. */
+  .capsLabel {
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+    color: var(--muted);
+  }
+
+  /* Display-font uppercase heading: the app title, swing headings, buttons. */
+  .displayHeading {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  /* Dotted underline hinting that the text opens a tooltip. */
+  .tooltipHint {
+    text-decoration: underline dotted;
+    text-underline-offset: 0.12em;
+  }
+
+  /* Bordered field surface shared by selects and input-style buttons. */
+  .inputSurface {
+    font: inherit;
+    border: var(--rule);
+    border-radius: var(--radius);
+    background: var(--input-bg);
+    color: var(--text);
+  }
+
+  /* Input-style button: the field surface plus hover lift and focus ring. */
+  .inputButton {
+    composes: inputSurface focusRing;
+    cursor: pointer;
+  }
+
+  .inputButton:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--input-bg) 88%, var(--text));
+    border-color: var(--muted);
+  }
+
+  /* Mono figures that line up in columns. Kept after `.inputSurface` on
+     purpose: composed together, its font must beat the surface's
+     `font: inherit`, and inside one layer the later rule wins. */
+  .tabularMono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}

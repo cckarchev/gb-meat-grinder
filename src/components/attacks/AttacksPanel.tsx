@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import styled from 'styled-components';
+import styles from '@/components/attacks/AttacksPanel.module.css';
 import { useWrapExpansion } from '@/components/attacks/playbook/useWrapExpansion';
 import { AttacksPanelSummary } from '@/components/attacks/summary/AttacksPanelSummary';
 import { AttackSwingRow } from '@/components/attacks/swing/AttackSwingRow';
@@ -7,12 +7,6 @@ import { useActivationInput } from '@/components/attacks/useActivationInput';
 import { swingIsSkipped } from '@/core/activation/summary/activationSummary';
 import { projectSwings } from '@/core/attacks/swingProjections';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-
-const AttacksList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
 
 export const AttacksPanel = () => {
   const {
@@ -28,7 +22,7 @@ export const AttacksPanel = () => {
   const projection = useMemo(() => projectSwings(input), [input]);
 
   return (
-    <AttacksList>
+    <div className={styles.attacksList}>
       {attacks.map((attack, displayIndex) => (
         <AttackSwingRow
           key={attack.attackIndex}
@@ -50,6 +44,6 @@ export const AttacksPanel = () => {
         />
       ))}
       <AttacksPanelSummary />
-    </AttacksList>
+    </div>
   );
 };

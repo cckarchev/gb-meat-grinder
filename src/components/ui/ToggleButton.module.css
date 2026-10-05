@@ -1,0 +1,48 @@
+@layer primitives {
+  /* Active = accent fill (CCK primary); inactive = teal-outline ghost. */
+  .toggleButton {
+    composes: displayHeading focusRing from '../../styles/mixins.module.css';
+    font-size: var(--font-size-md);
+    letter-spacing: var(--tracking-button);
+    padding: var(--space-sm) var(--space-2xl);
+    border-radius: var(--radius);
+    cursor: pointer;
+    white-space: nowrap;
+    background: transparent;
+    color: var(--teal-bright);
+    border: var(--rule-width) solid var(--ghost-border);
+    transition:
+      opacity var(--duration-base) ease,
+      background var(--duration-base) ease,
+      border-color var(--duration-base) ease;
+  }
+
+  .toggleButton:hover:not(:disabled) {
+    border-color: var(--ghost-border-hover);
+    background: var(--ghost-bg);
+  }
+
+  .toggleButton[data-active] {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: transparent;
+  }
+
+  .toggleButton[data-active]:hover:not(:disabled) {
+    opacity: var(--opacity-hover);
+    background: var(--accent);
+    border-color: transparent;
+  }
+
+  .toggleButton:disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 720px) {
+    .toggleButton {
+      font-size: var(--font-size-sm);
+      padding: var(--space-xs) var(--space-md);
+    }
+  }
+}

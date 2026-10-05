@@ -1,19 +1,13 @@
-import {
-  DicePoolBar,
-  PoolCluster,
-  PoolReadout,
-  PoolReadoutGroup,
-  PoolReadoutLabel,
-  PoolReadoutValue,
-  PoolToggle,
-} from '@/components/attacks/swing/dicePoolStyles';
+import styles from '@/components/attacks/swing/DicePoolStrip.module.css';
 import { WrapContinuationToggle } from '@/components/attacks/swing/WrapContinuationToggle';
 import { InfoTip } from '@/components/ui/InfoTip';
+import { Mono } from '@/components/ui/ui';
 import {
   BONUS_TIME_MOMENTUM_COST,
   BONUS_TIME_TAC_BONUS,
   CHARGE_TAC_BONUS,
 } from '@/core/shared/constants';
+import { dataFlag } from '@/styles/dataFlag';
 
 const BONUS_TIME_UNAFFORDABLE_TOOLTIP = `Bonus Time needs at least ${BONUS_TIME_MOMENTUM_COST} momentum before this attack (costs ${BONUS_TIME_MOMENTUM_COST} before the roll).`;
 
@@ -50,10 +44,11 @@ export const DicePoolStrip = ({
   onWrapToggle,
 }: DicePoolStripProps) => {
   return (
-    <DicePoolBar aria-label="Dice pool for this attack">
-      <PoolCluster>
+    // biome-ignore lint/a11y/useAriaPropsSupportedByRole: predates the CSS Modules move; giving the div a role changes the accessibility tree, so it is a separate fix.
+    <div className={styles.bar} aria-label="Dice pool for this attack">
+      <div className={styles.cluster}>
         {canCharge ? (
-          <PoolToggle>
+          <label className={styles.poolToggle}>
             <input
               type="radio"
               name="charge-attack"
@@ -61,9 +56,12 @@ export const DicePoolStrip = ({
               onChange={onCharge}
             />
             <span>+{CHARGE_TAC_BONUS} TAC charge</span>
-          </PoolToggle>
+          </label>
         ) : null}
-        <PoolToggle $disabled={bonusTimeDisabled}>
+        <label
+          className={styles.poolToggle}
+          data-disabled={dataFlag(bonusTimeDisabled)}
+        >
           <input
             type="checkbox"
             checked={bonusTime}
@@ -79,9 +77,9 @@ export const DicePoolStrip = ({
           >
             Bonus Time (+{BONUS_TIME_TAC_BONUS} Dice Pool)
           </InfoTip>
-        </PoolToggle>
-      </PoolCluster>
-      <PoolReadoutGroup>
+        </label>
+      </div>
+      <div className={styles.readoutGroup}>
         {canWrap ? (
           <WrapContinuationToggle
             attackIndex={attackIndex}
@@ -89,11 +87,11 @@ export const DicePoolStrip = ({
             onClick={onWrapToggle}
           />
         ) : null}
-        <PoolReadout>
-          <PoolReadoutLabel>Dice Pool</PoolReadoutLabel>
-          <PoolReadoutValue>{tac}</PoolReadoutValue>
-        </PoolReadout>
-      </PoolReadoutGroup>
-    </DicePoolBar>
+        <div className={styles.readout}>
+          <span className={styles.readoutLabel}>Dice Pool</span>
+          <Mono className={styles.readoutValue}>{tac}</Mono>
+        </div>
+      </div>
+    </div>
   );
 };

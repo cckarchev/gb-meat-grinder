@@ -15,7 +15,7 @@ Want a beater that isn't here yet? [Open an issue](https://github.com/cckarchev/
 
 - React 19 + TypeScript
 - Vite
-- styled-components
+- CSS Modules
 
 ## Development
 

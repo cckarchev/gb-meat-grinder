@@ -1,25 +1,9 @@
 import type { ReactNode } from 'react';
-import styled from 'styled-components';
-import { ToggleButton } from '@/components/ui/controls';
+import styles from '@/components/attacks/plays/PlayPill.module.css';
+import { ToggleButton } from '@/components/ui/ToggleButton';
 import { TooltipBubble } from '@/components/ui/TooltipBubble';
 import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
-import { narrowViewport } from '@/styles/breakpoints';
-
-const PillAnchor = styled.span`
-  position: relative;
-  display: inline-flex;
-`;
-
-const PlayToggleButton = styled(ToggleButton)<{ $muted: boolean }>`
-  min-width: 8.5rem;
-
-  /* No-op plays (e.g. Snack Break) read as cosmetic via a dashed outline. */
-  ${(props) => (props.$muted && !props.$active ? 'border-style: dashed;' : '')}
-
-  ${narrowViewport} {
-    min-width: 6.75rem;
-  }
-`;
+import { dataFlag } from '@/styles/dataFlag';
 
 type PlayPillProps = {
   active: boolean;
@@ -43,22 +27,23 @@ export const PlayPill = ({
     useTooltipOpen<HTMLSpanElement>();
 
   return (
-    <PillAnchor {...wrapperProps}>
-      <PlayToggleButton
+    <span className={styles.anchor} {...wrapperProps}>
+      <ToggleButton
+        className={styles.playToggleButton}
         type="button"
-        $active={active}
-        $muted={muted}
+        active={active}
+        data-muted={dataFlag(muted)}
         aria-label={ariaLabel}
         {...triggerProps}
         onClick={onClick}
       >
         {children}
-      </PlayToggleButton>
+      </ToggleButton>
       {open ? (
-        <TooltipBubble $size="compact" id={tooltipId} role="tooltip">
+        <TooltipBubble size="compact" id={tooltipId} role="tooltip">
           {description}
         </TooltipBubble>
       ) : null}
-    </PillAnchor>
+    </span>
   );
 };

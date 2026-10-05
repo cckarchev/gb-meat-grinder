@@ -1,0 +1,15 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  grid-column: 1 / -1;
+}
+
+.fieldLabel {
+  composes: capsLabel from '../../styles/mixins.module.css';
+  font-size: var(--font-size-xs);
+}
+
+.select {
+  width: 100%;
+}

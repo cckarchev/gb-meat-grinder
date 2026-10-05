@@ -1,0 +1,35 @@
+@layer primitives {
+  /* Popover panel anchored below its `position: relative` parent. Resets the
+     typography it would otherwise inherit from buttons and uppercase labels. */
+  .tooltipBubble {
+    position: absolute;
+    top: calc(100% + var(--space-xs));
+    left: 0;
+    z-index: var(--popover-z);
+    width: max-content;
+    max-width: min(var(--bubble-max-width), 80vw);
+    padding: var(--space-sm) var(--space-md);
+    border: var(--rule);
+    border-radius: var(--radius);
+    background: var(--popover-bg);
+    color: var(--text);
+    box-shadow: var(--popover-shadow);
+    font-size: var(--bubble-font-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-normal);
+    white-space: normal;
+    text-align: left;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .tooltipBubble[data-size='compact'] {
+    --bubble-max-width: 16rem;
+    --bubble-font-size: var(--font-size-xs);
+  }
+
+  .tooltipBubble[data-size='regular'] {
+    --bubble-max-width: 18rem;
+    --bubble-font-size: var(--font-size-sm);
+  }
+}

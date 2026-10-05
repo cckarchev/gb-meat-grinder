@@ -1,0 +1,94 @@
+.attackRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2xl) var(--space-3xl);
+  width: 100%;
+}
+
+.attackMain {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.attackBlock {
+  position: relative;
+  --playbook-column-width: var(--playbook-column-track);
+  border-radius: var(--radius);
+  padding: var(--space-lg) var(--space-lg) var(--space-xl);
+  border: var(--rule);
+  background: var(--panel);
+}
+
+.attackBlock[data-disabled] {
+  opacity: var(--opacity-dimmed);
+  filter: grayscale(0.6);
+}
+
+/* Accent per standout kind. `--kind-accent` also colors the corner brackets,
+   which render inside the block. */
+.attackBlock[data-kind='charge'] {
+  --kind-accent: var(--accent-charge);
+  --kind-soft: var(--accent-charge-soft);
+}
+
+.attackBlock[data-kind='berserker'] {
+  --kind-accent: var(--accent-berserker);
+  --kind-soft: var(--accent-berserker-soft);
+}
+
+/* Focused attacks read via a crisp 1px accent border plus the corner brackets,
+   with no heavy halo, which clashed with the brackets. */
+.attackBlock[data-kind='charge'],
+.attackBlock[data-kind='berserker'] {
+  border-color: var(--kind-accent);
+  background: color-mix(in srgb, var(--kind-soft) 16%, var(--panel));
+}
+
+.attackHeading {
+  composes: displayHeading from '../../../styles/mixins.module.css';
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  font-size: var(--font-size-base);
+  color: var(--text);
+  margin-bottom: var(--space-sm);
+}
+
+.killingBlowBadge {
+  composes: capsLabel from '../../../styles/mixins.module.css';
+  padding: var(--space-4xs) var(--space-xs);
+  border-radius: var(--radius);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--accent-ink);
+  background: var(--accent-berserker);
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .attackRow {
+    gap: var(--space-sm);
+  }
+
+  .attackBlock {
+    --playbook-column-width: clamp(
+      2.15rem,
+      10.5vw,
+      var(--playbook-column-track)
+    );
+    padding: var(--space-sm) var(--space-md) var(--space-lg);
+  }
+
+  .attackHeading {
+    font-size: var(--font-size-md);
+    margin-bottom: var(--space-xs);
+  }
+}
+
+@media (max-width: 400px) {
+  .attackBlock {
+    --playbook-column-width: clamp(1.75rem, 11vw, var(--playbook-column-track));
+    padding: var(--space-sm) var(--space-sm) var(--space-md);
+  }
+}

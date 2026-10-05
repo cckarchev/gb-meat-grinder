@@ -1,0 +1,23 @@
+@layer primitives {
+  .anchor {
+    position: relative;
+    display: inline;
+  }
+
+  /* Inline text trigger, styled as plain text with a dotted underline hint. */
+  .trigger {
+    composes: focusRing tooltipHint from '../../styles/mixins.module.css';
+    font: inherit;
+    color: inherit;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: none;
+    cursor: help;
+    text-align: inherit;
+  }
+
+  .trigger:focus-visible {
+    border-radius: var(--radius);
+  }
+}

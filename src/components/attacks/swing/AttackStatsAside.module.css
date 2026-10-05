@@ -1,0 +1,48 @@
+.rail {
+  flex: 0 0 auto;
+  text-align: right;
+  padding: var(--space-sm) var(--space-3xs) 0 0;
+  min-width: 2rem;
+  font-size: var(--font-size-base);
+}
+
+.statRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+
+.statRow:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Sized in `em` so it scales with the rail's narrow-viewport font size. */
+.caption {
+  composes: monoCapsLabel from '../../../styles/mixins.module.css';
+  flex-shrink: 0;
+  font-size: 0.64em;
+}
+
+.value {
+  font-size: 0.92em;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+}
+
+@media (max-width: 720px) {
+  .rail {
+    padding: var(--space-xs) var(--space-4xs) 0 0;
+    font-size: var(--font-size-sm);
+  }
+
+  .statRow {
+    gap: var(--space-2xs);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .caption {
+    letter-spacing: var(--tracking-caps);
+  }
+}

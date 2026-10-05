@@ -1,69 +1,5 @@
 import { useId } from 'react';
-import styled from 'styled-components';
-import { narrowViewport } from '@/styles/breakpoints';
-import { inputButton } from '@/styles/mixins';
-
-const StepControlField = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  min-width: 10rem;
-
-  ${narrowViewport} {
-    min-width: 7.25rem;
-  }
-`;
-
-const LabelText = styled.span`
-  font-size: 0.8rem;
-  color: var(--muted);
-`;
-
-const ControlRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-`;
-
-const StepButton = styled.button`
-  ${inputButton}
-  font-size: 1.1rem;
-  line-height: 1;
-  width: 2.25rem;
-  height: 2.25rem;
-  padding: 0;
-
-  &:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-  }
-
-  ${narrowViewport} {
-    width: 2rem;
-    height: 2rem;
-    font-size: 1rem;
-  }
-`;
-
-const ValueDisplay = styled.span`
-  flex: 1;
-  min-width: 5.5rem;
-  text-align: center;
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-  font-size: 0.95rem;
-  padding: 0.35rem 0.25rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--input-bg);
-  color: var(--text);
-
-  ${narrowViewport} {
-    min-width: 4.25rem;
-    font-size: 0.88rem;
-    padding: 0.28rem 0.18rem;
-  }
-`;
+import styles from '@/components/ui/StepControl.module.css';
 
 /** How far one button press moves the value. */
 const STEP = 1;
@@ -94,27 +30,32 @@ export const StepControl = ({
   const canIncrease = value < max;
 
   return (
-    <StepControlField>
-      <LabelText id={labelId}>{label}</LabelText>
-      <ControlRow role="group" aria-labelledby={labelId}>
-        <StepButton
+    <div className={styles.field}>
+      <span className={styles.labelText} id={labelId}>
+        {label}
+      </span>
+      {/* biome-ignore lint/a11y/useSemanticElements: a fieldset brings its own border, padding and min-width, so the group stays a labelled div. */}
+      <div className={styles.controlRow} role="group" aria-labelledby={labelId}>
+        <button
+          className={styles.stepButton}
           type="button"
           aria-label={`Decrease ${ariaSubject}`}
           disabled={!canDecrease}
           onClick={() => onChange(Math.max(min, value - STEP))}
         >
           -
-        </StepButton>
-        <ValueDisplay>{valueLabel}</ValueDisplay>
-        <StepButton
+        </button>
+        <span className={styles.valueDisplay}>{valueLabel}</span>
+        <button
+          className={styles.stepButton}
           type="button"
           aria-label={`Increase ${ariaSubject}`}
           disabled={!canIncrease}
           onClick={() => onChange(Math.min(max, value + STEP))}
         >
           +
-        </StepButton>
-      </ControlRow>
-    </StepControlField>
+        </button>
+      </div>
+    </div>
   );
 };

@@ -1,11 +1,10 @@
 import { PlaybookLineButton } from '@/components/attacks/playbook/PlaybookLineButton';
 import {
-  ColumnBlock,
-  ColumnGrid,
-  ColumnHead,
-  ColumnResults,
-  WrapSlotBlock,
-} from '@/components/attacks/playbook/playbookGridStyles';
+  probHeatBackground,
+  probHeatBorder,
+  probHeatTextColor,
+} from '@/components/attacks/playbook/probStyle';
+import styles from '@/components/attacks/playbook/WrapSlotPickGrid.module.css';
 import {
   knockDownIsOnlyEffect,
   knockDownTakenBeforePick,
@@ -14,8 +13,22 @@ import { type SwingRoll, wrapSlotColumns } from '@/core/playbook/wrapSlots';
 import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
 import { formatPercent } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import type { CustomPropertyStyle } from '@/styles/customProperties';
+import { dataFlag } from '@/styles/dataFlag';
 
 const HIT_CHANCE_DIGITS = 1;
+
+/** Keeps the grid one track wide even when no column is reachable. */
+const MIN_COLUMN_COUNT = 1;
+
+/** Heat colors for a column head, read by the CSS module. */
+const columnHeadStyle = (hitChance: number): CustomPropertyStyle => {
+  return {
+    '--heat-background': probHeatBackground(hitChance),
+    '--heat-text': probHeatTextColor(hitChance),
+    '--heat-border': probHeatBorder(hitChance),
+  };
+};
 
 type WrapSlotPickGridProps = {
   attackIndex: number;
@@ -55,16 +68,27 @@ export const WrapSlotPickGrid = ({
     enemyKnockedDown,
   );
 
+  const columnCount = Math.max(MIN_COLUMN_COUNT, visibleColumns.length);
+  const gridStyle: CustomPropertyStyle = { '--column-count': columnCount };
+
   return (
-    <WrapSlotBlock $first={firstSlotInSection}>
-      <ColumnGrid $columnCount={visibleColumns.length}>
+    <div
+      className={styles.wrapSlotBlock}
+      data-first={dataFlag(firstSlotInSection)}
+    >
+      <div className={styles.columnGrid} style={gridStyle}>
         {visibleColumns.map(({ column, hitChance }) => {
           const hitChanceLabel = formatPercent(hitChance, HIT_CHANCE_DIGITS);
 
           return (
-            <ColumnBlock key={column.netSuccesses}>
-              <ColumnHead $hitChance={hitChance}>{hitChanceLabel}</ColumnHead>
-              <ColumnResults>
+            <div className={styles.columnBlock} key={column.netSuccesses}>
+              <div
+                className={styles.columnHead}
+                style={columnHeadStyle(hitChance)}
+              >
+                {hitChanceLabel}
+              </div>
+              <div className={styles.columnResults}>
                 {column.results.map((result) => {
                   const selected = selectedId === result.id;
 
@@ -93,11 +117,11 @@ export const WrapSlotPickGrid = ({
                     />
                   );
                 })}
-              </ColumnResults>
-            </ColumnBlock>
+              </div>
+            </div>
           );
         })}
-      </ColumnGrid>
-    </WrapSlotBlock>
+      </div>
+    </div>
   );
 };
