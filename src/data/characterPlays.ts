@@ -37,3 +37,26 @@ export const snackBreak: CharacterPlay = {
   label: 'Snack Break',
   oncePerTurn: true,
 };
+
+/** Cast's Shield Glare: -1 TAC and -1 DEF; only the -1 DEF matters to her attack. */
+export const shieldGlare: CharacterPlay = {
+  id: 'shieldGlare',
+  label: 'Shield Glare',
+  defReductionForLater: 1,
+  oncePerTurn: false,
+};
+
+/** Cast's Shield Throw: scatters the ball, no effect on the attack math. */
+export const shieldThrow: CharacterPlay = {
+  id: 'shieldThrow',
+  label: 'Shield Throw',
+  oncePerTurn: false,
+};
+
+/** Veteran Cinder's Impale: 3 DMG, modified like playbook damage. */
+export const impale: CharacterPlay = {
+  id: 'impale',
+  label: 'Impale',
+  damage: 3,
+  oncePerTurn: true,
+};

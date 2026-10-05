@@ -53,7 +53,10 @@ src/
     shared/       constants and small helpers
   data/
     attackers/    beater definitions + registry.ts (the simulatable models)
-    guilds/       per-guild buffs and character plays, one file per guild
+    guilds/       per-guild buffs, one file per guild
+    characterPlays.ts   shared character plays catalog
+    characterTraits.ts  shared character traits catalog
+    guildBuffs.ts       guild buffs shared across guilds
   components/     UI panels (attacker/, enemy/, attacks/) and ui/ primitives
   gbMeatGrinder/  app state: reducer, initial state, simulation hooks
 ```
@@ -67,7 +70,7 @@ Types live next to their domain as `*.types.ts`.
 
 Adding a beater means writing a file in `src/data/attackers/` and registering it
 in `src/data/attackers/registry.ts`. Guild buffs live in their own file under
-`src/data/guilds/`.
+`src/data/guilds/`; buffs several guilds share live in `src/data/guildBuffs.ts`.
 
 ## Disclaimer
 

@@ -1,5 +1,4868 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`engine golden scenarios > Cast > base (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.001236,
+    ],
+    [
+      1,
+      0.00824,
+    ],
+    [
+      2,
+      0.032959,
+    ],
+    [
+      3,
+      0.084686,
+    ],
+    [
+      4,
+      0.159706,
+    ],
+    [
+      5,
+      0.215836,
+    ],
+    [
+      6,
+      0.21904,
+    ],
+    [
+      7,
+      0.15316,
+    ],
+    [
+      8,
+      0.081101,
+    ],
+    [
+      9,
+      0.026436,
+    ],
+    [
+      10,
+      0.014477,
+    ],
+    [
+      11,
+      0.001717,
+    ],
+    [
+      12,
+      0.00131,
+    ],
+    [
+      13,
+      0.000038,
+    ],
+    [
+      14,
+      0.000057,
+    ],
+    [
+      16,
+      0.000001,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 5.5,
+  "expectedHpRemaining": 8.500002,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.000058,
+  "killingBlowIndex": 3,
+  "likelyDamage": [
+    3,
+    8,
+  ],
+  "rowLabels": [
+    "4",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > base (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.001236,
+    ],
+    [
+      1,
+      0.00824,
+    ],
+    [
+      2,
+      0.033783,
+    ],
+    [
+      3,
+      0.088806,
+    ],
+    [
+      4,
+      0.172134,
+    ],
+    [
+      5,
+      0.236816,
+    ],
+    [
+      6,
+      0.240234,
+    ],
+    [
+      7,
+      0.15625,
+    ],
+    [
+      8,
+      0.0625,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 5.25,
+  "expectedHpRemaining": 8.75,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    3,
+    7,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > base (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.001236,
+    ],
+    [
+      1,
+      0.00824,
+    ],
+    [
+      2,
+      0.033783,
+    ],
+    [
+      3,
+      0.088806,
+    ],
+    [
+      4,
+      0.172134,
+    ],
+    [
+      5,
+      0.236816,
+    ],
+    [
+      6,
+      0.240234,
+    ],
+    [
+      7,
+      0.15625,
+    ],
+    [
+      8,
+      0.0625,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 5.25,
+  "expectedHpRemaining": 8.75,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    3,
+    7,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > bonus time (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.109375,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.109375,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.109375,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 18,
+    "totalEffective": 18,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000082,
+    ],
+    [
+      1,
+      0.00074,
+    ],
+    [
+      2,
+      0.004449,
+    ],
+    [
+      3,
+      0.016839,
+    ],
+    [
+      4,
+      0.0488,
+    ],
+    [
+      5,
+      0.100605,
+    ],
+    [
+      6,
+      0.164407,
+    ],
+    [
+      7,
+      0.186969,
+    ],
+    [
+      8,
+      0.18328,
+    ],
+    [
+      9,
+      0.113707,
+    ],
+    [
+      10,
+      0.108228,
+    ],
+    [
+      11,
+      0.027994,
+    ],
+    [
+      12,
+      0.034866,
+    ],
+    [
+      13,
+      0.002712,
+    ],
+    [
+      14,
+      0.005806,
+    ],
+    [
+      15,
+      0.000066,
+    ],
+    [
+      16,
+      0.00044,
+    ],
+    [
+      18,
+      0.00001,
+    ],
+  ],
+  "damageIfAllHits": [
+    6,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 7.476563,
+  "expectedHpRemaining": 6.524423,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.006322,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    5,
+    10,
+  ],
+  "rowLabels": [
+    "6",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > bonus time (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000082,
+    ],
+    [
+      1,
+      0.00074,
+    ],
+    [
+      2,
+      0.004991,
+    ],
+    [
+      3,
+      0.02044,
+    ],
+    [
+      4,
+      0.06642,
+    ],
+    [
+      5,
+      0.147878,
+    ],
+    [
+      6,
+      0.260284,
+    ],
+    [
+      7,
+      0.280573,
+    ],
+    [
+      8,
+      0.218591,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 6.351563,
+  "expectedHpRemaining": 7.648438,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    5,
+    8,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > bonus time (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000082,
+    ],
+    [
+      1,
+      0.00074,
+    ],
+    [
+      2,
+      0.004991,
+    ],
+    [
+      3,
+      0.02044,
+    ],
+    [
+      4,
+      0.06642,
+    ],
+    [
+      5,
+      0.147878,
+    ],
+    [
+      6,
+      0.260284,
+    ],
+    [
+      7,
+      0.280573,
+    ],
+    [
+      8,
+      0.218591,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 6.351563,
+  "expectedHpRemaining": 7.648438,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    5,
+    8,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > charge into stance (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.333333,
+      "prob": 0.000051,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      "shieldThrow",
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.00503,
+    ],
+    [
+      1,
+      0.024996,
+    ],
+    [
+      2,
+      0.083359,
+    ],
+    [
+      3,
+      0.161942,
+    ],
+    [
+      4,
+      0.237197,
+    ],
+    [
+      5,
+      0.213014,
+    ],
+    [
+      6,
+      0.156988,
+    ],
+    [
+      7,
+      0.057093,
+    ],
+    [
+      8,
+      0.04786,
+    ],
+    [
+      9,
+      0.005295,
+    ],
+    [
+      10,
+      0.006443,
+    ],
+    [
+      11,
+      0.000369,
+    ],
+    [
+      12,
+      0.000377,
+    ],
+    [
+      13,
+      0.000028,
+    ],
+    [
+      14,
+      0.000009,
+    ],
+    [
+      15,
+      0.000001,
+    ],
+    [
+      16,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    8,
+    4,
+    4,
+    0,
+  ],
+  "expectedDamage": 4.537024,
+  "expectedHpRemaining": 9.462977,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.00001,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    2,
+    7,
+  ],
+  "rowLabels": [
+    "6 → 2GB",
+    "4",
+    "4",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+      "two_gb",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > charge into stance (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.333333,
+      "prob": 0.000051,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.00503,
+    ],
+    [
+      1,
+      0.024996,
+    ],
+    [
+      2,
+      0.090094,
+    ],
+    [
+      3,
+      0.184373,
+    ],
+    [
+      4,
+      0.286362,
+    ],
+    [
+      5,
+      0.253125,
+    ],
+    [
+      6,
+      0.155764,
+    ],
+    [
+      7,
+      0.000245,
+    ],
+    [
+      8,
+      0.000013,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    2,
+    2,
+    0,
+  ],
+  "expectedDamage": 4.10577,
+  "expectedHpRemaining": 9.89423,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    2,
+    6,
+  ],
+  "rowLabels": [
+    "2GB → 2GB",
+    "2GB",
+    "2GB",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > charge into stance (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.333333,
+      "prob": 0.000051,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.00503,
+    ],
+    [
+      1,
+      0.024996,
+    ],
+    [
+      2,
+      0.090094,
+    ],
+    [
+      3,
+      0.184373,
+    ],
+    [
+      4,
+      0.286362,
+    ],
+    [
+      5,
+      0.253125,
+    ],
+    [
+      6,
+      0.155764,
+    ],
+    [
+      7,
+      0.000245,
+    ],
+    [
+      8,
+      0.000013,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    2,
+    2,
+    0,
+  ],
+  "expectedDamage": 4.10577,
+  "expectedHpRemaining": 9.89423,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    2,
+    6,
+  ],
+  "rowLabels": [
+    "2GB → 2GB",
+    "2GB",
+    "2GB",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > cover (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.009537,
+    ],
+    [
+      1,
+      0.045776,
+    ],
+    [
+      2,
+      0.120544,
+    ],
+    [
+      3,
+      0.203247,
+    ],
+    [
+      4,
+      0.241791,
+    ],
+    [
+      5,
+      0.203247,
+    ],
+    [
+      6,
+      0.120544,
+    ],
+    [
+      7,
+      0.045776,
+    ],
+    [
+      8,
+      0.009537,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 4,
+  "expectedHpRemaining": 10,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    2,
+    6,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > cover (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.009537,
+    ],
+    [
+      1,
+      0.045776,
+    ],
+    [
+      2,
+      0.120544,
+    ],
+    [
+      3,
+      0.203247,
+    ],
+    [
+      4,
+      0.241791,
+    ],
+    [
+      5,
+      0.203247,
+    ],
+    [
+      6,
+      0.120544,
+    ],
+    [
+      7,
+      0.045776,
+    ],
+    [
+      8,
+      0.009537,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 4,
+  "expectedHpRemaining": 10,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    2,
+    6,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > cover (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.009537,
+    ],
+    [
+      1,
+      0.045776,
+    ],
+    [
+      2,
+      0.120544,
+    ],
+    [
+      3,
+      0.203247,
+    ],
+    [
+      4,
+      0.241791,
+    ],
+    [
+      5,
+      0.203247,
+    ],
+    [
+      6,
+      0.120544,
+    ],
+    [
+      7,
+      0.045776,
+    ],
+    [
+      8,
+      0.009537,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 4,
+  "expectedHpRemaining": 10,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    2,
+    6,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > hard target (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 2,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 1,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 2,
+      "defMinRoll": 5,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 3,
+      "defMinRoll": 5,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.389744,
+    ],
+    [
+      1,
+      0.324787,
+    ],
+    [
+      2,
+      0.190812,
+    ],
+    [
+      3,
+      0.069919,
+    ],
+    [
+      4,
+      0.02004,
+    ],
+    [
+      5,
+      0.004006,
+    ],
+    [
+      6,
+      0.000626,
+    ],
+    [
+      7,
+      0.000061,
+    ],
+    [
+      8,
+      0.000004,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 1.020576,
+  "expectedHpRemaining": 16.979424,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    2,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > hard target (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 2,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 1,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 2,
+      "defMinRoll": 5,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 3,
+      "defMinRoll": 5,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.389744,
+    ],
+    [
+      1,
+      0.324787,
+    ],
+    [
+      2,
+      0.190812,
+    ],
+    [
+      3,
+      0.069919,
+    ],
+    [
+      4,
+      0.02004,
+    ],
+    [
+      5,
+      0.004006,
+    ],
+    [
+      6,
+      0.000626,
+    ],
+    [
+      7,
+      0.000061,
+    ],
+    [
+      8,
+      0.000004,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 1.020576,
+  "expectedHpRemaining": 16.979424,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    2,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > hard target (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 2,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 1,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 2,
+      "defMinRoll": 5,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 3,
+      "defMinRoll": 5,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.389744,
+    ],
+    [
+      1,
+      0.324787,
+    ],
+    [
+      2,
+      0.190812,
+    ],
+    [
+      3,
+      0.069919,
+    ],
+    [
+      4,
+      0.02004,
+    ],
+    [
+      5,
+      0.004006,
+    ],
+    [
+      6,
+      0.000626,
+    ],
+    [
+      7,
+      0.000061,
+    ],
+    [
+      8,
+      0.000004,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 1.020576,
+  "expectedHpRemaining": 16.979424,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    2,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > knocked down and snared (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.833333,
+      "prob": 0.736776,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.833333,
+      "prob": 0.736776,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.833333,
+      "prob": 0.736776,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.833333,
+      "prob": 0.736776,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0,
+    ],
+    [
+      4,
+      0,
+    ],
+    [
+      5,
+      0.000005,
+    ],
+    [
+      6,
+      0.00007,
+    ],
+    [
+      7,
+      0.000556,
+    ],
+    [
+      8,
+      0.004724,
+    ],
+    [
+      9,
+      0.004638,
+    ],
+    [
+      10,
+      0.049905,
+    ],
+    [
+      11,
+      0.013326,
+    ],
+    [
+      12,
+      0.212059,
+    ],
+    [
+      13,
+      0.012858,
+    ],
+    [
+      14,
+      0.407185,
+    ],
+    [
+      16,
+      0.294673,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 13.856739,
+  "expectedHpRemaining": 0.732608,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.701858,
+  "killingBlowIndex": 3,
+  "likelyDamage": [
+    12,
+    16,
+  ],
+  "rowLabels": [
+    "4",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > knocked down and snared (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.833333,
+      "prob": 0.991298,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.833333,
+      "prob": 0.991298,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.833333,
+      "prob": 0.991298,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.833333,
+      "prob": 0.991298,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0,
+    ],
+    [
+      4,
+      0.000003,
+    ],
+    [
+      5,
+      0.000065,
+    ],
+    [
+      6,
+      0.00297,
+    ],
+    [
+      7,
+      0.031318,
+    ],
+    [
+      8,
+      0.965644,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 7.962534,
+  "expectedHpRemaining": 6.037466,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    8,
+    8,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > knocked down and snared (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.833333,
+      "prob": 0.991298,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.833333,
+      "prob": 0.991298,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.833333,
+      "prob": 0.991298,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.833333,
+      "prob": 0.991298,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0,
+    ],
+    [
+      4,
+      0.000003,
+    ],
+    [
+      5,
+      0.000065,
+    ],
+    [
+      6,
+      0.00297,
+    ],
+    [
+      7,
+      0.031318,
+    ],
+    [
+      8,
+      0.965644,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 7.962534,
+  "expectedHpRemaining": 6.037466,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    8,
+    8,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > resilient (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 12,
+    "totalEffective": 12,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.006592,
+    ],
+    [
+      1,
+      0.032959,
+    ],
+    [
+      2,
+      0.10437,
+    ],
+    [
+      3,
+      0.195313,
+    ],
+    [
+      4,
+      0.264221,
+    ],
+    [
+      5,
+      0.21698,
+    ],
+    [
+      6,
+      0.128632,
+    ],
+    [
+      7,
+      0.027466,
+    ],
+    [
+      8,
+      0.021149,
+    ],
+    [
+      9,
+      0.000916,
+    ],
+    [
+      10,
+      0.001373,
+    ],
+    [
+      12,
+      0.000031,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 4.125,
+  "expectedHpRemaining": 9.875,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    2,
+    6,
+  ],
+  "rowLabels": [
+    "4",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > resilient (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 6,
+    "totalEffective": 6,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.006592,
+    ],
+    [
+      1,
+      0.032959,
+    ],
+    [
+      2,
+      0.107666,
+    ],
+    [
+      3,
+      0.206299,
+    ],
+    [
+      4,
+      0.287109,
+    ],
+    [
+      5,
+      0.234375,
+    ],
+    [
+      6,
+      0.125,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 3.9375,
+  "expectedHpRemaining": 10.0625,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    2,
+    6,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > resilient (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 6,
+    "totalEffective": 6,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.006592,
+    ],
+    [
+      1,
+      0.032959,
+    ],
+    [
+      2,
+      0.107666,
+    ],
+    [
+      3,
+      0.206299,
+    ],
+    [
+      4,
+      0.287109,
+    ],
+    [
+      5,
+      0.234375,
+    ],
+    [
+      6,
+      0.125,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 3.9375,
+  "expectedHpRemaining": 10.0625,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    2,
+    6,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > soft target (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.666667,
+      "prob": 0.460905,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.666667,
+      "prob": 0.460905,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.666667,
+      "prob": 0.460905,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.666667,
+      "prob": 0.460905,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0.000005,
+    ],
+    [
+      4,
+      0.000069,
+    ],
+    [
+      5,
+      0.000637,
+    ],
+    [
+      6,
+      0.004545,
+    ],
+    [
+      7,
+      0.020877,
+    ],
+    [
+      8,
+      0.069668,
+    ],
+    [
+      9,
+      0.055937,
+    ],
+    [
+      10,
+      0.229361,
+    ],
+    [
+      11,
+      0.051805,
+    ],
+    [
+      12,
+      0.312443,
+    ],
+    [
+      13,
+      0.016117,
+    ],
+    [
+      14,
+      0.193406,
+    ],
+    [
+      16,
+      0.045128,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 11.489712,
+  "expectedHpRemaining": 0.032183,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.973866,
+  "killingBlowIndex": 1,
+  "likelyDamage": [
+    9,
+    14,
+  ],
+  "rowLabels": [
+    "4",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > soft target (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.666667,
+      "prob": 0.954733,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.666667,
+      "prob": 0.954733,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.666667,
+      "prob": 0.954733,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.666667,
+      "prob": 0.954733,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0.000009,
+    ],
+    [
+      4,
+      0.000175,
+    ],
+    [
+      5,
+      0.002119,
+    ],
+    [
+      6,
+      0.023587,
+    ],
+    [
+      7,
+      0.143251,
+    ],
+    [
+      8,
+      0.830858,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 7.802469,
+  "expectedHpRemaining": 0.197531,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.830858,
+  "killingBlowIndex": 3,
+  "likelyDamage": [
+    7,
+    8,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > soft target (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.666667,
+      "prob": 0.954733,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.666667,
+      "prob": 0.954733,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.666667,
+      "prob": 0.954733,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.666667,
+      "prob": 0.954733,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 8,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0.000009,
+    ],
+    [
+      4,
+      0.000175,
+    ],
+    [
+      5,
+      0.002119,
+    ],
+    [
+      6,
+      0.023587,
+    ],
+    [
+      7,
+      0.143251,
+    ],
+    [
+      8,
+      0.830858,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    2,
+    2,
+    2,
+  ],
+  "expectedDamage": 7.802469,
+  "expectedHpRemaining": 0.197531,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.830858,
+  "killingBlowIndex": 3,
+  "likelyDamage": [
+    7,
+    8,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > tough hide with buffs (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 4,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+      {
+        "bonus": 4,
+        "id": "burningPassion",
+        "label": "Burning Passion",
+      },
+    ],
+    "rawCardDamage": 24,
+    "totalEffective": 28,
+    "toughHideReduction": 4,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      2,
+      0.000001,
+    ],
+    [
+      3,
+      0.000008,
+    ],
+    [
+      4,
+      0.000013,
+    ],
+    [
+      5,
+      0.000155,
+    ],
+    [
+      6,
+      0.00049,
+    ],
+    [
+      7,
+      0.000992,
+    ],
+    [
+      8,
+      0.00586,
+    ],
+    [
+      9,
+      0.01257,
+    ],
+    [
+      10,
+      0.022263,
+    ],
+    [
+      11,
+      0.08084,
+    ],
+    [
+      12,
+      0.110578,
+    ],
+    [
+      13,
+      0.122367,
+    ],
+    [
+      14,
+      0.221426,
+    ],
+    [
+      15,
+      0.074756,
+    ],
+    [
+      16,
+      0.203967,
+    ],
+    [
+      17,
+      0.019897,
+    ],
+    [
+      18,
+      0.095693,
+    ],
+    [
+      19,
+      0.002058,
+    ],
+    [
+      20,
+      0.02307,
+    ],
+    [
+      21,
+      0.00009,
+    ],
+    [
+      22,
+      0.002734,
+    ],
+    [
+      23,
+      0.000001,
+    ],
+    [
+      24,
+      0.000166,
+    ],
+    [
+      26,
+      0.000005,
+    ],
+    [
+      28,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    7,
+    7,
+    7,
+    7,
+  ],
+  "expectedDamage": 14.3125,
+  "expectedHpRemaining": 0.785597,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.643863,
+  "killingBlowIndex": 1,
+  "likelyDamage": [
+    11,
+    18,
+  ],
+  "rowLabels": [
+    "6",
+    "6",
+    "6",
+    "6",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > tough hide with buffs (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.890625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.890625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.890625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.890625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 4,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+      {
+        "bonus": 4,
+        "id": "burningPassion",
+        "label": "Burning Passion",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 12,
+    "toughHideReduction": 4,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      2,
+      0.000001,
+    ],
+    [
+      3,
+      0.000014,
+    ],
+    [
+      4,
+      0.000013,
+    ],
+    [
+      5,
+      0.000245,
+    ],
+    [
+      6,
+      0.001213,
+    ],
+    [
+      7,
+      0.001468,
+    ],
+    [
+      8,
+      0.01402,
+    ],
+    [
+      9,
+      0.047089,
+    ],
+    [
+      10,
+      0.04183,
+    ],
+    [
+      11,
+      0.264921,
+    ],
+    [
+      12,
+      0.629187,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    3,
+    3,
+    3,
+  ],
+  "expectedDamage": 11.4375,
+  "expectedHpRemaining": 2.5625,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    10,
+    12,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cast > tough hide with buffs (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.890625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.890625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.890625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 2,
+      "pHit": 0.5,
+      "prob": 0.890625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 4,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+      {
+        "bonus": 4,
+        "id": "burningPassion",
+        "label": "Burning Passion",
+      },
+    ],
+    "rawCardDamage": 8,
+    "totalEffective": 12,
+    "toughHideReduction": 4,
+  },
+  "characterPlayPicks": [
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+    [
+      "shieldThrow",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      2,
+      0.000001,
+    ],
+    [
+      3,
+      0.000014,
+    ],
+    [
+      4,
+      0.000013,
+    ],
+    [
+      5,
+      0.000245,
+    ],
+    [
+      6,
+      0.001213,
+    ],
+    [
+      7,
+      0.001468,
+    ],
+    [
+      8,
+      0.01402,
+    ],
+    [
+      9,
+      0.047089,
+    ],
+    [
+      10,
+      0.04183,
+    ],
+    [
+      11,
+      0.264921,
+    ],
+    [
+      12,
+      0.629187,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    3,
+    3,
+    3,
+  ],
+  "expectedDamage": 11.4375,
+  "expectedHpRemaining": 2.5625,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    10,
+    12,
+  ],
+  "rowLabels": [
+    "2GB",
+    "2GB",
+    "2GB",
+    "2GB",
+  ],
+  "wrapPicks": [
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+    [
+      "two_gb",
+    ],
+  ],
+}
+`;
+
 exports[`engine golden scenarios > Thresher > base (damage) 1`] = `
 {
   "attacks": [
@@ -10414,6 +15277,4806 @@ exports[`engine golden scenarios > Veteran Boar > tough hide with buffs (utility
       "one_gb",
     ],
     [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > base (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.109375,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.109375,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.109375,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0.000028,
+    ],
+    [
+      2,
+      0.000728,
+    ],
+    [
+      3,
+      0.008762,
+    ],
+    [
+      4,
+      0.051169,
+    ],
+    [
+      5,
+      0.153994,
+    ],
+    [
+      6,
+      0.247877,
+    ],
+    [
+      7,
+      0.223229,
+    ],
+    [
+      8,
+      0.145273,
+    ],
+    [
+      9,
+      0.098554,
+    ],
+    [
+      10,
+      0.044166,
+    ],
+    [
+      11,
+      0.016437,
+    ],
+    [
+      12,
+      0.008125,
+    ],
+    [
+      13,
+      0.0009,
+    ],
+    [
+      14,
+      0.000736,
+    ],
+    [
+      16,
+      0.00002,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 6.84375,
+  "expectedHpRemaining": 7.156291,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.000756,
+  "killingBlowIndex": 3,
+  "likelyDamage": [
+    5,
+    9,
+  ],
+  "rowLabels": [
+    "4",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > base (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.34375,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.033173,
+    ],
+    [
+      1,
+      0.214467,
+    ],
+    [
+      2,
+      0.266747,
+    ],
+    [
+      3,
+      0.226801,
+    ],
+    [
+      4,
+      0.17207,
+    ],
+    [
+      5,
+      0.074599,
+    ],
+    [
+      6,
+      0.012144,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.5625,
+  "expectedHpRemaining": 11.4375,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > base (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.34375,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.033173,
+    ],
+    [
+      1,
+      0.214467,
+    ],
+    [
+      2,
+      0.266747,
+    ],
+    [
+      3,
+      0.226801,
+    ],
+    [
+      4,
+      0.17207,
+    ],
+    [
+      5,
+      0.074599,
+    ],
+    [
+      6,
+      0.012144,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.5625,
+  "expectedHpRemaining": 11.4375,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > bonus time (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 24,
+    "totalEffective": 24,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0.000002,
+    ],
+    [
+      2,
+      0.000056,
+    ],
+    [
+      3,
+      0.000986,
+    ],
+    [
+      4,
+      0.008884,
+    ],
+    [
+      5,
+      0.04297,
+    ],
+    [
+      6,
+      0.114468,
+    ],
+    [
+      7,
+      0.171298,
+    ],
+    [
+      8,
+      0.169285,
+    ],
+    [
+      9,
+      0.1718,
+    ],
+    [
+      10,
+      0.141494,
+    ],
+    [
+      11,
+      0.069248,
+    ],
+    [
+      12,
+      0.072157,
+    ],
+    [
+      13,
+      0.012199,
+    ],
+    [
+      14,
+      0.020782,
+    ],
+    [
+      15,
+      0.000881,
+    ],
+    [
+      16,
+      0.003198,
+    ],
+    [
+      17,
+      0.000028,
+    ],
+    [
+      18,
+      0.000254,
+    ],
+    [
+      19,
+      0,
+    ],
+    [
+      20,
+      0.000011,
+    ],
+    [
+      22,
+      0,
+    ],
+    [
+      24,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    6,
+    6,
+    6,
+    6,
+  ],
+  "expectedDamage": 8.601563,
+  "expectedHpRemaining": 5.406881,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.025153,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    6,
+    12,
+  ],
+  "rowLabels": [
+    "6",
+    "6",
+    "6",
+    "6",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > bonus time (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.636719,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.016764,
+    ],
+    [
+      1,
+      0.170544,
+    ],
+    [
+      2,
+      0.135371,
+    ],
+    [
+      3,
+      0.340779,
+    ],
+    [
+      4,
+      0.258468,
+    ],
+    [
+      5,
+      0.071409,
+    ],
+    [
+      6,
+      0.006665,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.894531,
+  "expectedHpRemaining": 11.105469,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > bonus time (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.636719,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.016764,
+    ],
+    [
+      1,
+      0.170544,
+    ],
+    [
+      2,
+      0.135371,
+    ],
+    [
+      3,
+      0.340779,
+    ],
+    [
+      4,
+      0.258468,
+    ],
+    [
+      5,
+      0.071409,
+    ],
+    [
+      6,
+      0.006665,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.894531,
+  "expectedHpRemaining": 11.105469,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > charge into stance (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.333333,
+      "prob": 0.000356,
+      "tac": 10,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.109375,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.109375,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 15,
+    "totalEffective": 15,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000025,
+    ],
+    [
+      1,
+      0.001067,
+    ],
+    [
+      2,
+      0.012981,
+    ],
+    [
+      3,
+      0.037342,
+    ],
+    [
+      4,
+      0.031585,
+    ],
+    [
+      5,
+      0.012225,
+    ],
+    [
+      6,
+      0.072972,
+    ],
+    [
+      7,
+      0.208821,
+    ],
+    [
+      8,
+      0.27039,
+    ],
+    [
+      9,
+      0.15196,
+    ],
+    [
+      10,
+      0.106884,
+    ],
+    [
+      11,
+      0.06608,
+    ],
+    [
+      12,
+      0.011835,
+    ],
+    [
+      13,
+      0.014158,
+    ],
+    [
+      14,
+      0.000326,
+    ],
+    [
+      15,
+      0.001265,
+    ],
+    [
+      16,
+      0.000043,
+    ],
+    [
+      17,
+      0.000036,
+    ],
+    [
+      18,
+      0.000004,
+    ],
+  ],
+  "damageIfAllHits": [
+    10,
+    4,
+    4,
+    0,
+  ],
+  "expectedDamage": 7.90358,
+  "expectedHpRemaining": 6.097897,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.001675,
+  "killingBlowIndex": 1,
+  "likelyDamage": [
+    6,
+    10,
+  ],
+  "rowLabels": [
+    "6 → 1",
+    "4",
+    "4",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+      "dmg1",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > charge into stance (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.333333,
+      "prob": 0.000356,
+      "tac": 10,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 1,
+    "totalEffective": 4,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+      null,
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.046969,
+    ],
+    [
+      1,
+      0.045877,
+    ],
+    [
+      2,
+      0.011203,
+    ],
+    [
+      3,
+      0.198795,
+    ],
+    [
+      4,
+      0.399663,
+    ],
+    [
+      5,
+      0.248127,
+    ],
+    [
+      6,
+      0.049011,
+    ],
+    [
+      7,
+      0.000161,
+    ],
+    [
+      8,
+      0.000157,
+    ],
+    [
+      9,
+      0.000038,
+    ],
+  ],
+  "damageIfAllHits": [
+    7,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 3.80074,
+  "expectedHpRemaining": 10.19926,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    2,
+    5,
+  ],
+  "rowLabels": [
+    "GB → 1",
+    "GB",
+    "GB",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+      "dmg1",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > charge into stance (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.333333,
+      "prob": 0.000356,
+      "tac": 10,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 1,
+    "totalEffective": 4,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+      null,
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.046969,
+    ],
+    [
+      1,
+      0.045877,
+    ],
+    [
+      2,
+      0.011203,
+    ],
+    [
+      3,
+      0.198795,
+    ],
+    [
+      4,
+      0.399663,
+    ],
+    [
+      5,
+      0.248127,
+    ],
+    [
+      6,
+      0.049011,
+    ],
+    [
+      7,
+      0.000161,
+    ],
+    [
+      8,
+      0.000157,
+    ],
+    [
+      9,
+      0.000038,
+    ],
+  ],
+  "damageIfAllHits": [
+    7,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 3.80074,
+  "expectedHpRemaining": 10.19926,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    2,
+    5,
+  ],
+  "rowLabels": [
+    "GB → 1",
+    "GB",
+    "GB",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+      "dmg1",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > cover (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.1875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 14,
+    "totalEffective": 14,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000006,
+    ],
+    [
+      1,
+      0.000277,
+    ],
+    [
+      2,
+      0.004984,
+    ],
+    [
+      3,
+      0.041027,
+    ],
+    [
+      4,
+      0.156057,
+    ],
+    [
+      5,
+      0.291538,
+    ],
+    [
+      6,
+      0.28034,
+    ],
+    [
+      7,
+      0.14514,
+    ],
+    [
+      8,
+      0.053318,
+    ],
+    [
+      9,
+      0.020914,
+    ],
+    [
+      10,
+      0.004995,
+    ],
+    [
+      11,
+      0.001116,
+    ],
+    [
+      12,
+      0.000263,
+    ],
+    [
+      13,
+      0.000019,
+    ],
+    [
+      14,
+      0.000006,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 5.59375,
+  "expectedHpRemaining": 8.40625,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.000006,
+  "killingBlowIndex": 3,
+  "likelyDamage": [
+    4,
+    7,
+  ],
+  "rowLabels": [
+    "2",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg2",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > cover (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.1875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.028112,
+    ],
+    [
+      1,
+      0.168123,
+    ],
+    [
+      2,
+      0.313711,
+    ],
+    [
+      3,
+      0.266293,
+    ],
+    [
+      4,
+      0.138788,
+    ],
+    [
+      5,
+      0.06566,
+    ],
+    [
+      6,
+      0.019312,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.59375,
+  "expectedHpRemaining": 11.40625,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > cover (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.1875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.028112,
+    ],
+    [
+      1,
+      0.168123,
+    ],
+    [
+      2,
+      0.313711,
+    ],
+    [
+      3,
+      0.266293,
+    ],
+    [
+      4,
+      0.138788,
+    ],
+    [
+      5,
+      0.06566,
+    ],
+    [
+      6,
+      0.019312,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.59375,
+  "expectedHpRemaining": 11.40625,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > hard target (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 2,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.333333,
+      "prob": 0.017833,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.333333,
+      "prob": 0.001372,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 5,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.333333,
+      "prob": 0.001372,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 5,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.333333,
+      "prob": 0.001372,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 14,
+    "totalEffective": 14,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.029464,
+    ],
+    [
+      1,
+      0.151181,
+    ],
+    [
+      2,
+      0.302693,
+    ],
+    [
+      3,
+      0.300449,
+    ],
+    [
+      4,
+      0.15865,
+    ],
+    [
+      5,
+      0.047161,
+    ],
+    [
+      6,
+      0.0088,
+    ],
+    [
+      7,
+      0.001369,
+    ],
+    [
+      8,
+      0.000208,
+    ],
+    [
+      9,
+      0.000023,
+    ],
+    [
+      10,
+      0.000002,
+    ],
+    [
+      11,
+      0,
+    ],
+    [
+      12,
+      0,
+    ],
+    [
+      13,
+      0,
+    ],
+    [
+      14,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    2,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 2.592593,
+  "expectedHpRemaining": 15.407407,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    4,
+  ],
+  "rowLabels": [
+    "2",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg2",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > hard target (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 2,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.333333,
+      "prob": 0.017833,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.333333,
+      "prob": 0.100137,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 5,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.333333,
+      "prob": 0.100137,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 5,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.333333,
+      "prob": 0.100137,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.06254,
+    ],
+    [
+      1,
+      0.25585,
+    ],
+    [
+      2,
+      0.378515,
+    ],
+    [
+      3,
+      0.237048,
+    ],
+    [
+      4,
+      0.055832,
+    ],
+    [
+      5,
+      0.007269,
+    ],
+    [
+      6,
+      0.002946,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.001372,
+  "expectedHpRemaining": 15.998628,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    3,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > hard target (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 2,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.333333,
+      "prob": 0.017833,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.333333,
+      "prob": 0.100137,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 5,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.333333,
+      "prob": 0.100137,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 5,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.333333,
+      "prob": 0.100137,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.06254,
+    ],
+    [
+      1,
+      0.25585,
+    ],
+    [
+      2,
+      0.378515,
+    ],
+    [
+      3,
+      0.237048,
+    ],
+    [
+      4,
+      0.055832,
+    ],
+    [
+      5,
+      0.007269,
+    ],
+    [
+      6,
+      0.002946,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.001372,
+  "expectedHpRemaining": 15.998628,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    3,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > knocked down and snared (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.833333,
+      "prob": 0.669796,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.833333,
+      "prob": 0.279082,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.833333,
+      "prob": 0.279082,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.833333,
+      "prob": 0.279082,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 22,
+    "totalEffective": 22,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0,
+    ],
+    [
+      4,
+      0,
+    ],
+    [
+      5,
+      0,
+    ],
+    [
+      6,
+      0.000001,
+    ],
+    [
+      7,
+      0.000031,
+    ],
+    [
+      8,
+      0.000276,
+    ],
+    [
+      9,
+      0.000544,
+    ],
+    [
+      10,
+      0.005777,
+    ],
+    [
+      11,
+      0.003356,
+    ],
+    [
+      12,
+      0.047798,
+    ],
+    [
+      13,
+      0.00843,
+    ],
+    [
+      14,
+      0.185669,
+    ],
+    [
+      15,
+      0.00766,
+    ],
+    [
+      16,
+      0.338524,
+    ],
+    [
+      17,
+      0.00287,
+    ],
+    [
+      18,
+      0.279492,
+    ],
+    [
+      19,
+      0.00038,
+    ],
+    [
+      20,
+      0.104632,
+    ],
+    [
+      22,
+      0.014559,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    6,
+    6,
+    6,
+  ],
+  "expectedDamage": 16.415645,
+  "expectedHpRemaining": 0.141808,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.933786,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    14,
+    20,
+  ],
+  "rowLabels": [
+    "4",
+    "6",
+    "6",
+    "6",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > knocked down and snared (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.833333,
+      "prob": 0.982367,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.833333,
+      "prob": 0.997996,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.833333,
+      "prob": 0.997996,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.833333,
+      "prob": 0.997996,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000128,
+    ],
+    [
+      1,
+      0.0174,
+    ],
+    [
+      2,
+      0.000105,
+    ],
+    [
+      3,
+      0.976484,
+    ],
+    [
+      4,
+      0.005872,
+    ],
+    [
+      5,
+      0.000012,
+    ],
+    [
+      6,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.970608,
+  "expectedHpRemaining": 11.029392,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    3,
+    3,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > knocked down and snared (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.833333,
+      "prob": 0.982367,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.833333,
+      "prob": 0.997996,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.833333,
+      "prob": 0.997996,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.833333,
+      "prob": 0.997996,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000128,
+    ],
+    [
+      1,
+      0.0174,
+    ],
+    [
+      2,
+      0.000105,
+    ],
+    [
+      3,
+      0.976484,
+    ],
+    [
+      4,
+      0.005872,
+    ],
+    [
+      5,
+      0.000012,
+    ],
+    [
+      6,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.970608,
+  "expectedHpRemaining": 11.029392,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    3,
+    3,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > resilient (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.109375,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.109375,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 12,
+    "totalEffective": 12,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000027,
+    ],
+    [
+      1,
+      0.001255,
+    ],
+    [
+      2,
+      0.019333,
+    ],
+    [
+      3,
+      0.110844,
+    ],
+    [
+      4,
+      0.27029,
+    ],
+    [
+      5,
+      0.291195,
+    ],
+    [
+      6,
+      0.153542,
+    ],
+    [
+      7,
+      0.094582,
+    ],
+    [
+      8,
+      0.045288,
+    ],
+    [
+      9,
+      0.007664,
+    ],
+    [
+      10,
+      0.005795,
+    ],
+    [
+      12,
+      0.000187,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 4.984375,
+  "expectedHpRemaining": 9.015625,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    3,
+    7,
+  ],
+  "rowLabels": [
+    "4",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > resilient (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.34375,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.049374,
+    ],
+    [
+      1,
+      0.295094,
+    ],
+    [
+      2,
+      0.252903,
+    ],
+    [
+      3,
+      0.214054,
+    ],
+    [
+      4,
+      0.151566,
+    ],
+    [
+      5,
+      0.03701,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    3,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.234375,
+  "expectedHpRemaining": 11.765625,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > resilient (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 6,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.34375,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.65625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.049374,
+    ],
+    [
+      1,
+      0.295094,
+    ],
+    [
+      2,
+      0.252903,
+    ],
+    [
+      3,
+      0.214054,
+    ],
+    [
+      4,
+      0.151566,
+    ],
+    [
+      5,
+      0.03701,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    3,
+    0,
+    0,
+  ],
+  "expectedDamage": 2.234375,
+  "expectedHpRemaining": 11.765625,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > soft target (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.666667,
+      "prob": 0.351166,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.666667,
+      "prob": 0.351166,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.666667,
+      "prob": 0.351166,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.666667,
+      "prob": 0.351166,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0.000007,
+    ],
+    [
+      4,
+      0.000187,
+    ],
+    [
+      5,
+      0.002605,
+    ],
+    [
+      6,
+      0.018588,
+    ],
+    [
+      7,
+      0.067242,
+    ],
+    [
+      8,
+      0.114938,
+    ],
+    [
+      9,
+      0.125504,
+    ],
+    [
+      10,
+      0.240375,
+    ],
+    [
+      11,
+      0.080194,
+    ],
+    [
+      12,
+      0.223,
+    ],
+    [
+      13,
+      0.017108,
+    ],
+    [
+      14,
+      0.095045,
+    ],
+    [
+      16,
+      0.015207,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 10.403292,
+  "expectedHpRemaining": 0.113012,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.911372,
+  "killingBlowIndex": 1,
+  "likelyDamage": [
+    8,
+    14,
+  ],
+  "rowLabels": [
+    "4",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > soft target (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.666667,
+      "prob": 0.899863,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.666667,
+      "prob": 0.899863,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.666667,
+      "prob": 0.899863,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.666667,
+      "prob": 0.899863,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.001004,
+    ],
+    [
+      1,
+      0.072627,
+    ],
+    [
+      2,
+      0.023805,
+    ],
+    [
+      3,
+      0.661309,
+    ],
+    [
+      4,
+      0.216655,
+    ],
+    [
+      5,
+      0.023733,
+    ],
+    [
+      6,
+      0.000867,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 3.09465,
+  "expectedHpRemaining": 4.90535,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    3,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > soft target (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.666667,
+      "prob": 0.899863,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.666667,
+      "prob": 0.899863,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.666667,
+      "prob": 0.899863,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.666667,
+      "prob": 0.899863,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 0,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.001004,
+    ],
+    [
+      1,
+      0.072627,
+    ],
+    [
+      2,
+      0.023805,
+    ],
+    [
+      3,
+      0.661309,
+    ],
+    [
+      4,
+      0.216655,
+    ],
+    [
+      5,
+      0.023733,
+    ],
+    [
+      6,
+      0.000867,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 3.09465,
+  "expectedHpRemaining": 4.90535,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    3,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > tough hide with buffs (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 4,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 24,
+    "totalEffective": 24,
+    "toughHideReduction": 4,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0.000019,
+    ],
+    [
+      3,
+      0.000415,
+    ],
+    [
+      4,
+      0.004853,
+    ],
+    [
+      5,
+      0.029066,
+    ],
+    [
+      6,
+      0.092047,
+    ],
+    [
+      7,
+      0.157178,
+    ],
+    [
+      8,
+      0.164326,
+    ],
+    [
+      9,
+      0.173217,
+    ],
+    [
+      10,
+      0.161976,
+    ],
+    [
+      11,
+      0.074897,
+    ],
+    [
+      12,
+      0.092461,
+    ],
+    [
+      13,
+      0.014067,
+    ],
+    [
+      14,
+      0.029087,
+    ],
+    [
+      15,
+      0.001069,
+    ],
+    [
+      16,
+      0.004854,
+    ],
+    [
+      17,
+      0.000035,
+    ],
+    [
+      18,
+      0.000415,
+    ],
+    [
+      19,
+      0,
+    ],
+    [
+      20,
+      0.000019,
+    ],
+    [
+      22,
+      0,
+    ],
+    [
+      24,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    6,
+    6,
+    6,
+    6,
+  ],
+  "expectedDamage": 8.9375,
+  "expectedHpRemaining": 5.075158,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.035479,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    6,
+    12,
+  ],
+  "rowLabels": [
+    "6",
+    "6",
+    "6",
+    "6",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > tough hide with buffs (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 1,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 1,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.003725,
+    ],
+    [
+      1,
+      0.107437,
+    ],
+    [
+      2,
+      0.088495,
+    ],
+    [
+      3,
+      0.393419,
+    ],
+    [
+      4,
+      0.312085,
+    ],
+    [
+      5,
+      0.086743,
+    ],
+    [
+      6,
+      0.008096,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 3.195313,
+  "expectedHpRemaining": 10.804688,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Veteran Cinder > tough hide with buffs (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.773438,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [
+      {
+        "bonus": 0,
+        "id": "temperedSteel",
+        "label": "Tempered Steel",
+      },
+      {
+        "bonus": 1,
+        "id": "tooledUp",
+        "label": "Tooled Up",
+      },
+      {
+        "bonus": 0,
+        "id": "searingStrike",
+        "label": "Searing Strike",
+      },
+      {
+        "bonus": 0,
+        "id": "weakPoint",
+        "label": "Weak Point",
+      },
+      {
+        "bonus": 0,
+        "id": "burning",
+        "label": "Burning",
+      },
+    ],
+    "rawCardDamage": 0,
+    "totalEffective": 3,
+    "toughHideReduction": 1,
+  },
+  "characterPlayPicks": [
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+    [
+      "impale",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.003725,
+    ],
+    [
+      1,
+      0.107437,
+    ],
+    [
+      2,
+      0.088495,
+    ],
+    [
+      3,
+      0.393419,
+    ],
+    [
+      4,
+      0.312085,
+    ],
+    [
+      5,
+      0.086743,
+    ],
+    [
+      6,
+      0.008096,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 3.195313,
+  "expectedHpRemaining": 10.804688,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    4,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
   ],
 }
 `;

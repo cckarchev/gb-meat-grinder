@@ -1,3 +1,4 @@
+import { tooledUp } from '@/data/guildBuffs';
 import type { Guild } from '@/data/guilds/guild.types';
 
 export const butchers: Guild = {
@@ -5,16 +6,12 @@ export const butchers: Guild = {
   name: 'Butchers',
   color: '#ce1f27',
   buffs: [
-    {
-      id: 'tooledUp',
-      label: 'Tooled Up',
-      tooltip: '+1 damage on each selected playbook line damage result.',
-      damageBonus: 1,
-    },
+    tooledUp,
     {
       id: 'theOwner',
       label: 'The Owner',
-      tooltip: '+1 damage on each selected playbook line damage result.',
+      tooltip:
+        '+1 DMG to character plays that cause damage and to playbook damage results.',
       damageBonus: 1,
     },
   ],
