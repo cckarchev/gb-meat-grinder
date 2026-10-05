@@ -3,6 +3,7 @@
 import { berserkerRowOffset } from '@/core/attacks/attackStructure';
 import { effectiveDamageForChoice } from '@/core/damage/damage';
 import type {
+  PlaybookChoiceId,
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
@@ -106,4 +107,80 @@ export const activationAttackIndices = (
   }
 
   return indices;
+};
+
+/** A non-empty wrap slot and where it sits in the plan. */
+export type PlacedPick = {
+  attackIndex: number;
+  pickIndex: number;
+  id: PlaybookChoiceId;
+};
+
+/**
+ * Every non-empty pick strictly before `(attackIndex, pickIndex)` in activation
+ * order: all picks of earlier swings, then this swing's picks before `pickIndex`.
+ * Pass `pickIndex` 0 for just the earlier swings. Empty when the swing is not
+ * part of the activation.
+ */
+export const picksBeforeInActivation = (
+  attacker: AttackerData,
+  wrapPicks: WrapPick[][],
+  damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
+  attackIndex: number,
+  pickIndex: number,
+): PlacedPick[] => {
+  const order = activationAttackIndices(
+    attacker,
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+  );
+
+  const orderPosition = order.indexOf(attackIndex);
+
+  if (orderPosition < 0) {
+    return [];
+  }
+
+  const placed: PlacedPick[] = [];
+
+  for (const swingIndex of order.slice(0, orderPosition + 1)) {
+    const swingPicks = wrapPicks[swingIndex];
+    const isTargetSwing = swingIndex === attackIndex;
+    const picksToTake = isTargetSwing ? pickIndex : swingPicks.length;
+
+    for (let slot = 0; slot < picksToTake; slot++) {
+      const id = swingPicks[slot];
+
+      if (id == null) {
+        continue;
+      }
+
+      placed.push({ attackIndex: swingIndex, pickIndex: slot, id });
+    }
+  }
+
+  return placed;
+};
+
+/** A swing's first wrap slot; the picks before it are all on earlier swings. */
+const FIRST_PICK_INDEX = 0;
+
+/** Every non-empty pick on swings strictly earlier than `attackIndex`. */
+export const picksOnEarlierSwings = (
+  attacker: AttackerData,
+  wrapPicks: WrapPick[][],
+  damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
+  attackIndex: number,
+): PlacedPick[] => {
+  return picksBeforeInActivation(
+    attacker,
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+    attackIndex,
+    FIRST_PICK_INDEX,
+  );
 };

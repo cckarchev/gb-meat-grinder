@@ -1,6 +1,6 @@
 /** Once Per Turn bookkeeping: which plays earlier picks used up and which remain. */
 
-import { activationAttackIndices } from '@/core/attacks/attackRows';
+import { picksBeforeInActivation } from '@/core/attacks/attackRows';
 import {
   characterPlaysForAttacker,
   defaultCharacterPlayId,
@@ -31,44 +31,28 @@ export const characterPlayUsageBeforePick = (
 ): CharacterPlayUsage => {
   const used = new Set<string>();
 
-  const order = activationAttackIndices(
+  const earlierPicks = picksBeforeInActivation(
     attacker,
     wrapPicks,
     damageMods,
     activeBaseCount,
+    attackIndex,
+    pickIndex,
   );
 
-  const orderPosition = order.indexOf(attackIndex);
+  for (const earlier of earlierPicks) {
+    if (!choiceUsesCharacterPlay(attacker, earlier.id)) {
+      continue;
+    }
 
-  if (orderPosition < 0) {
-    return used;
-  }
+    const play =
+      characterPlayPicks[earlier.attackIndex]?.[earlier.pickIndex] ??
+      defaultCharacterPlayId(attacker);
 
-  for (let position = 0; position <= orderPosition; position++) {
-    const swingIndex = order[position];
-    const swingPicks = wrapPicks[swingIndex];
-    const isTargetSwing = swingIndex === attackIndex;
-    const picksToCheck = isTargetSwing ? pickIndex : swingPicks.length;
-
-    for (let slot = 0; slot < picksToCheck; slot++) {
-      const id = swingPicks[slot];
-
-      if (id == null || !choiceUsesCharacterPlay(attacker, id)) {
-        continue;
-      }
-
-      const play =
-        characterPlayPicks[swingIndex]?.[slot] ??
-        defaultCharacterPlayId(attacker);
-
-      // Repeatable plays may be taken again and stack, so they never count as
-      // "used up": they stay available and keep applying on later swings.
-      if (
-        play != null &&
-        getCharacterPlay(attacker, play)?.repeatable !== true
-      ) {
-        used.add(play);
-      }
+    // Repeatable plays may be taken again and stack, so they never count as
+    // "used up": they stay available and keep applying on later swings.
+    if (play != null && getCharacterPlay(attacker, play)?.repeatable !== true) {
+      used.add(play);
     }
   }
 

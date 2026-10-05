@@ -1,6 +1,6 @@
 /** Knock Down only applies once per activation, and never on a target already down. */
 
-import { activationAttackIndices } from '@/core/attacks/attackRows';
+import { picksBeforeInActivation } from '@/core/attacks/attackRows';
 import type {
   PlaybookDamageMods,
   WrapPick,
@@ -26,33 +26,16 @@ export const knockDownTakenBeforePick = (
     return true;
   }
 
-  const order = activationAttackIndices(
+  const earlierPicks = picksBeforeInActivation(
     attacker,
     wrapPicks,
     damageMods,
     activeBaseCount,
+    attackIndex,
+    pickIndex,
   );
 
-  const orderPosition = order.indexOf(attackIndex);
-
-  if (orderPosition < 0) {
-    return false;
-  }
-
-  for (let position = 0; position <= orderPosition; position++) {
-    const swingIndex = order[position];
-    const swingPicks = wrapPicks[swingIndex];
-    const isTargetSwing = swingIndex === attackIndex;
-    const picksToCheck = isTargetSwing ? pickIndex : swingPicks.length;
-
-    for (let slot = 0; slot < picksToCheck; slot++) {
-      const id = swingPicks[slot];
-
-      if (id != null && getPlaybookResult(attacker, id).appliesKnockDown) {
-        return true;
-      }
-    }
-  }
-
-  return false;
+  return earlierPicks.some((earlier) => {
+    return getPlaybookResult(attacker, earlier.id).appliesKnockDown === true;
+  });
 };

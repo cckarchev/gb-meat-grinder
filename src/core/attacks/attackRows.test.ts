@@ -9,6 +9,8 @@ import {
   attackRowIsBerserker,
   baseAttackDealtDamage,
   berserkerSourceBaseIndex,
+  picksBeforeInActivation,
+  picksOnEarlierSwings,
 } from '@/core/attacks/attackRows';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
 import { coverSwingClockIndices } from '@/core/playbook/coverClearing';
@@ -141,5 +143,47 @@ describe('rows outside the activation', () => {
     expect(
       rowEffectsForPick(attacker, [[null]], [[null]], 0, 0, NO_MODS, 1),
     ).toEqual(NO_EFFECTS);
+  });
+});
+
+describe('picksBeforeInActivation', () => {
+  const berserker = makeAttacker({ inf: 2, berserker: true });
+  const wrapPicks = [['two', null], ['one'], ['one'], [null]];
+
+  const picksBefore = (attackIndex: number, pickIndex: number) => {
+    return picksBeforeInActivation(
+      berserker,
+      wrapPicks,
+      NO_MODS,
+      2,
+      attackIndex,
+      pickIndex,
+    );
+  };
+
+  it('walks earlier swings in activation order, Berserkers included', () => {
+    expect(picksBefore(1, 0)).toEqual([
+      { attackIndex: 0, pickIndex: 0, id: 'two' },
+      { attackIndex: 2, pickIndex: 0, id: 'one' },
+    ]);
+  });
+
+  it('stops before the given pick on its own swing', () => {
+    expect(picksBefore(1, 1)).toEqual([
+      { attackIndex: 0, pickIndex: 0, id: 'two' },
+      { attackIndex: 2, pickIndex: 0, id: 'one' },
+      { attackIndex: 1, pickIndex: 0, id: 'one' },
+    ]);
+  });
+
+  it('lists only earlier swings when asked for whole swings', () => {
+    expect(picksOnEarlierSwings(berserker, wrapPicks, NO_MODS, 2, 1)).toEqual(
+      picksBefore(1, 0),
+    );
+  });
+
+  it('is empty for the first pick and for a swing outside the activation', () => {
+    expect(picksBefore(0, 0)).toEqual([]);
+    expect(picksBefore(5, 0)).toEqual([]);
   });
 });

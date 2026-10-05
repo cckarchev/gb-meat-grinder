@@ -1,6 +1,6 @@
 /** What earlier swings in the activation leave behind for a later one: cover cleared, TAC and DEF carry-over. */
 
-import { activationAttackIndices } from '@/core/attacks/attackRows';
+import { picksOnEarlierSwings } from '@/core/attacks/attackRows';
 import {
   coverSwingClockIndices,
   wrapPickClearsCover,
@@ -69,44 +69,30 @@ export const modifiersBeforeAttack = (
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
 ): { tacBonus: number; defReduction: number } => {
-  const order = activationAttackIndices(
+  const earlierPicks = picksOnEarlierSwings(
     attacker,
     wrapPicks,
     damageMods,
     activeBaseCount,
+    attackIndex,
   );
-
-  const orderPosition = order.indexOf(attackIndex);
-
-  if (orderPosition < 0) {
-    return { tacBonus: 0, defReduction: 0 };
-  }
 
   let tacBonus = 0;
   let defReduction = 0;
 
-  for (let position = 0; position < orderPosition; position++) {
-    const earlierIndex = order[position];
-    const earlierPicks = wrapPicks[earlierIndex];
+  for (const earlier of earlierPicks) {
+    const effects = rowEffectsForPick(
+      attacker,
+      wrapPicks,
+      characterPlayPicks,
+      earlier.attackIndex,
+      earlier.pickIndex,
+      damageMods,
+      activeBaseCount,
+    );
 
-    for (let pickIndex = 0; pickIndex < earlierPicks.length; pickIndex++) {
-      if (earlierPicks[pickIndex] == null) {
-        continue;
-      }
-
-      const effects = rowEffectsForPick(
-        attacker,
-        wrapPicks,
-        characterPlayPicks,
-        earlierIndex,
-        pickIndex,
-        damageMods,
-        activeBaseCount,
-      );
-
-      tacBonus += effects.tacBonusForLater;
-      defReduction += effects.defReductionForLater;
-    }
+    tacBonus += effects.tacBonusForLater;
+    defReduction += effects.defReductionForLater;
   }
 
   return { tacBonus, defReduction };
