@@ -10,7 +10,12 @@ import { swingTacAndDef } from '@/core/attacks/swingTac';
 import { maxNetSuccessesForRoll } from '@/core/damage/probability';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 
-/** Highest net successes reachable in one roll on this row (TAC - ARM cap). */
+/**
+ * Highest net successes reachable in one roll on this row (TAC - ARM cap).
+ * Builds its own timeline on purpose: the clamp calls it row by row while it
+ * edits the plan, and an edit can change what later rows see (cover, DEF,
+ * Searing Strike), so a timeline built before the loop would be stale.
+ */
 export const maxPlaybookColumnForRow = (
   plan: AttackPlan,
   attackIndex: number,

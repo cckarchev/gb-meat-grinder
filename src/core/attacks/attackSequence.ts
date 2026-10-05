@@ -4,6 +4,7 @@ import {
   activationTimeline,
   swingStateAt,
 } from '@/core/attacks/activationTimeline';
+import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
 import type {
   ActivationRollParams,
@@ -18,10 +19,14 @@ import {
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import { wrapNetThresholdAllHits } from '@/core/playbook/wrapSlots';
 
+/**
+ * Every swing's roll context, with the activation timeline they were computed
+ * from so callers reuse it instead of rebuilding it.
+ */
 export const computeAttackSequence = (
   plan: AttackPlan,
   params: ActivationRollParams,
-): { attacks: AttackRollContext[] } => {
+): { attacks: AttackRollContext[]; timeline: ActivationTimeline } => {
   const { wrapPicks } = plan;
   const { attacker, armor, damageMods, activeBaseCount } = params;
 
@@ -68,5 +73,5 @@ export const computeAttackSequence = (
     });
   }
 
-  return { attacks };
+  return { attacks, timeline };
 };

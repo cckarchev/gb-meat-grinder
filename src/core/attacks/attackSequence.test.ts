@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { activationTimeline } from '@/core/attacks/activationTimeline';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
@@ -10,20 +11,20 @@ const STANCE = true;
 
 const NO_BONUS_TIME = [false, false];
 
-describe('computeAttackSequence', () => {
-  const params: ActivationRollParams = {
-    attacker: makeAttacker({ tac: 6 }),
-    chargeAttackIndex: NO_ATTACK_INDEX,
-    armor: 1,
-    enemyHasCover: !COVER,
-    enemyDefensiveStance: !STANCE,
-    damageMods: NO_MODS,
-    enemyDef: 4,
-    bonusTimeByAttack: NO_BONUS_TIME,
-    initialTacModifier: 0,
-    activeBaseCount: 2,
-  };
+const params: ActivationRollParams = {
+  attacker: makeAttacker({ tac: 6 }),
+  chargeAttackIndex: NO_ATTACK_INDEX,
+  armor: 1,
+  enemyHasCover: !COVER,
+  enemyDefensiveStance: !STANCE,
+  damageMods: NO_MODS,
+  enemyDef: 4,
+  bonusTimeByAttack: NO_BONUS_TIME,
+  initialTacModifier: 0,
+  activeBaseCount: 2,
+};
 
+describe('computeAttackSequence', () => {
   it('builds per-swing roll contexts with binomial success odds', () => {
     const plan = {
       wrapPicks: [['two'], ['one']],
@@ -64,5 +65,18 @@ describe('computeAttackSequence', () => {
     const { attacks } = computeAttackSequence(plan, params);
 
     expect(attacks.map((attack) => attack.tac)).toEqual([6, 8]);
+  });
+});
+
+describe('the activation timeline of the sequence', () => {
+  it('is returned with the swings, so callers do not rebuild it', () => {
+    const plan = {
+      wrapPicks: [['gb'], ['one']],
+      characterPlayPicks: [['playTac'], [null]],
+    };
+
+    const { timeline } = computeAttackSequence(plan, params);
+
+    expect(timeline).toEqual(activationTimeline(plan, params));
   });
 });

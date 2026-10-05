@@ -3,7 +3,6 @@ import type {
   ActivationScenario,
   DerivedSimulation,
 } from '@/core/activation/simulation.types';
-import { activationTimeline } from '@/core/attacks/activationTimeline';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import { activeTraitFlatDamage } from '@/core/damage/damage';
 import { killingBlowDisplayIndex } from '@/core/damage/killingBlow';
@@ -64,7 +63,7 @@ export const deriveSimulation = (
     characterPlayPicks: effectiveCharacterPlayPicks,
   };
 
-  const { attacks } = computeAttackSequence(effectivePlan, {
+  const { attacks, timeline } = computeAttackSequence(effectivePlan, {
     attacker,
     chargeAttackIndex: effectiveChargeAttackIndex,
     armor: scenario.armor,
@@ -81,13 +80,6 @@ export const deriveSimulation = (
   const hasIgnoredSwing =
     isAttackIndex(ignoredAttackIndex) && attacks.length > 0;
   const ignoredDisplayIndex = hasIgnoredSwing ? 0 : NO_ATTACK_INDEX;
-
-  const timeline = activationTimeline(effectivePlan, {
-    attacker,
-    damageMods: scenario.damageMods,
-    activeBaseCount,
-    chargeAttackIndex: effectiveChargeAttackIndex,
-  });
 
   const rowDamageIfHit = rowDamageIfAllHit(
     attacker,
