@@ -62,7 +62,7 @@ const ValueDisplay = styled.span`
   flex: 1;
   min-width: 5.5rem;
   text-align: center;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   font-size: 0.95rem;
   padding: 0.35rem 0.25rem;

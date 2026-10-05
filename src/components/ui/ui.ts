@@ -55,7 +55,7 @@ export const Select = styled.select`
 `;
 
 export const Mono = styled.span`
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
 `;
 
