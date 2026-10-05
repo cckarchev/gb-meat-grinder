@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { EnemyConditions } from '@/components/enemy/EnemyConditions';
+import { EnemyGuildDebuffs } from '@/components/enemy/EnemyGuildDebuffs';
 import { StepControl } from '@/components/ui/StepControl';
 import { Panel, PanelTitle, Row } from '@/components/ui/ui';
 import {
@@ -51,6 +52,7 @@ export const EnemyPanel = () => {
           ariaSubject="target HP"
         />
       </Row>
+      <EnemyGuildDebuffs />
       <EnemyConditions />
     </EnemyPanelBox>
   );

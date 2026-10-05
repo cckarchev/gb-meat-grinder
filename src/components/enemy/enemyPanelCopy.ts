@@ -22,3 +22,5 @@ export const TOOLTIP_SNARED = `Target starts the activation Snared: -${SNARED_DE
 
 export const TOOLTIP_RESILIENCE =
   'Resilience: the activation’s first attack is wholly ignored (no damage, effects, wraps, momentum, or Berserker trigger) and carries nothing over to later attacks. That swing is shown but disabled.';
+
+export const LABEL_GUILD_DEBUFFS = 'Guild debuffs';

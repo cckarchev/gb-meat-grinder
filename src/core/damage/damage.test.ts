@@ -5,9 +5,15 @@ import {
   effectiveEnemyDef,
   effectivePlaybookDamage,
   guildBuffIsExcluded,
+  guildBuffsFor,
   playbookDamageBonusSum,
 } from '@/core/damage/damage';
-import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
+import {
+  makeAttacker,
+  modsWith,
+  NO_MODS,
+  TEST_GUILD,
+} from '@/core/testing/fixtures';
 import type { CharacterTrait } from '@/data/characterTraits';
 import { dontFearTheReaper } from '@/data/characterTraits';
 
@@ -88,5 +94,33 @@ describe('buffs and damage', () => {
       3,
     );
     expect(activeTraitFlatDamage(attacker, { passive: true })).toBe(0);
+  });
+});
+
+describe('guild buff sides', () => {
+  const attacker = makeAttacker({
+    guild: {
+      ...TEST_GUILD,
+      buffs: [
+        { id: 'pump', label: 'Pump', tooltip: '', damageBonus: 1 },
+        {
+          id: 'crack',
+          label: 'Crack',
+          tooltip: '',
+          target: 'enemy',
+          armorReduction: 1,
+        },
+      ],
+    },
+    excludedGuildBuffs: ['crack'],
+  });
+
+  it('splits buffs by side, keeping excluded ones for the UI to disable', () => {
+    expect(guildBuffsFor(attacker, 'attacker').map((buff) => buff.id)).toEqual([
+      'pump',
+    ]);
+    expect(guildBuffsFor(attacker, 'enemy').map((buff) => buff.id)).toEqual([
+      'crack',
+    ]);
   });
 });

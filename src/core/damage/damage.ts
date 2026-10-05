@@ -14,6 +14,7 @@ import {
   TOUGH_HIDE_DAMAGE_PENALTY,
 } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { GuildBuff, GuildBuffTarget } from '@/data/guilds/guild.types';
 
 export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
   toughHide: false,
@@ -28,6 +29,20 @@ export const guildBuffIsExcluded = (
   const excluded = attacker.excludedGuildBuffs ?? [];
 
   return excluded.includes(buffId);
+};
+
+const DEFAULT_GUILD_BUFF_TARGET: GuildBuffTarget = 'attacker';
+
+/** The guild's effects on one side, excluded ones included (the UI disables those). */
+export const guildBuffsFor = (
+  attacker: AttackerData,
+  target: GuildBuffTarget,
+): readonly GuildBuff[] => {
+  return attacker.guild.buffs.filter((buff) => {
+    const buffTarget = buff.target ?? DEFAULT_GUILD_BUFF_TARGET;
+
+    return buffTarget === target;
+  });
 };
 
 /** Guild buffs this model can receive (excludes buffs it is the source of). */
