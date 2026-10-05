@@ -11,6 +11,7 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
+import { isAttackIndex } from '@/core/shared/attackIndex';
 import { KILLING_BLOW_MOMENTUM } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
@@ -72,7 +73,7 @@ const momentumAfterEachSwing = (input: SwingProjectionInput): number[] => {
 
   const { killingBlowIndex } = input;
 
-  if (killingBlowIndex < 0) {
+  if (!isAttackIndex(killingBlowIndex)) {
     return momentum;
   }
 

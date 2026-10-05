@@ -17,7 +17,7 @@ export const canAffordBonusTime = (pool: number): boolean => {
   return pool >= BONUS_TIME_MOMENTUM_COST;
 };
 
-/** Clears Bonus Time flags that can no longer be paid (pool less than 1 before that swing). */
+/** Clears Bonus Time flags that can no longer be paid (pool below `BONUS_TIME_MOMENTUM_COST` before that swing). */
 export const sanitizeBonusTimeFlags = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],

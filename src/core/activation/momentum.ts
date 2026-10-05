@@ -1,15 +1,12 @@
 /** Momentum pool through the activation: earned by heat picks, spent on Bonus Time. */
 
-import { pickGeneratesMomentum } from '@/core/activation/momentousLines';
+import { momentumEarnedBySwing } from '@/core/activation/momentousLines';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
 import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import {
-  BONUS_TIME_MOMENTUM_COST,
-  MOMENTOUS_PICK_MOMENTUM,
-} from '@/core/shared/constants';
+import { BONUS_TIME_MOMENTUM_COST } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /**
@@ -44,11 +41,7 @@ const momentumAcrossSwings = (
   let total = startingMomentum;
 
   for (const j of order.slice(0, swingCount)) {
-    for (const id of wrapPicks[j] ?? []) {
-      if (pickGeneratesMomentum(attacker, id, damageMods)) {
-        total += MOMENTOUS_PICK_MOMENTUM;
-      }
-    }
+    total += momentumEarnedBySwing(attacker, wrapPicks[j] ?? [], damageMods);
 
     if (bonusTimeByAttack[j] === true) {
       total -= BONUS_TIME_MOMENTUM_COST;

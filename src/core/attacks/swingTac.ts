@@ -1,10 +1,12 @@
 /** Per-swing TAC after charge, cover, Bonus Time and everything earlier swings carried over. */
 
+import { isChargeSwing } from '@/core/attacks/attackStructure';
 import {
   coverTacPenaltyForAttack,
   modifiersBeforeAttack,
 } from '@/core/attacks/earlierSwingEffects';
 import {
+  effectiveDefMinRoll,
   enemyDefBaseForAttackRow,
   tacBonusFromDefReductionCap,
 } from '@/core/attacks/swingDefense';
@@ -24,14 +26,13 @@ export const tacForAttack = (
   chargeAttackIndex: number,
   tacBonusFromSingledOut: number,
   activeBaseCount: number,
-  coverTacPenalty = 0,
-  bonusTimeTacBonus = 0,
-  initialTacModifier = 0,
+  coverTacPenalty: number,
+  bonusTimeTacBonus: number,
+  initialTacModifier: number,
 ): number => {
-  const charge =
-    attackIndex < activeBaseCount && attackIndex === chargeAttackIndex
-      ? CHARGE_TAC_BONUS
-      : 0;
+  const charge = isChargeSwing(attackIndex, chargeAttackIndex, activeBaseCount)
+    ? CHARGE_TAC_BONUS
+    : 0;
 
   return (
     attacker.tac +
@@ -43,8 +44,14 @@ export const tacForAttack = (
   );
 };
 
-/** Full TAC for one row: carry-over, DEF-floor dice, cover and Bonus Time combined. */
-export const tacForAttackRow = (
+/** What one swing rolls: its dice and the DEF each die must meet. */
+export type SwingTacAndDef = {
+  tac: number;
+  defMinRoll: number;
+};
+
+/** TAC and to-hit DEF for one row: carry-over, DEF-floor dice, cover and Bonus Time combined. */
+export const swingTacAndDef = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],
@@ -57,7 +64,7 @@ export const tacForAttackRow = (
   bonusTimeByAttack: readonly boolean[],
   initialTacModifier: number,
   activeBaseCount: number,
-): number => {
+): SwingTacAndDef => {
   const { tacBonus, defReduction } = modifiersBeforeAttack(
     attacker,
     wrapPicks,
@@ -76,8 +83,9 @@ export const tacForAttackRow = (
   );
 
   const tacFromDefCap = tacBonusFromDefReductionCap(defForRow, defReduction);
+  const defMinRoll = effectiveDefMinRoll(defForRow, defReduction);
 
-  const coverPen = coverTacPenaltyForAttack(
+  const coverPenalty = coverTacPenaltyForAttack(
     attacker,
     enemyHasCover,
     wrapPicks,
@@ -88,14 +96,49 @@ export const tacForAttackRow = (
   const bonusTimeTac =
     bonusTimeByAttack[attackIndex] === true ? BONUS_TIME_TAC_BONUS : 0;
 
-  return tacForAttack(
+  const tac = tacForAttack(
     attacker,
     attackIndex,
     chargeAttackIndex,
     tacBonus + tacFromDefCap,
     activeBaseCount,
-    coverPen,
+    coverPenalty,
     bonusTimeTac,
     initialTacModifier,
   );
+
+  return { tac, defMinRoll };
+};
+
+/** Full TAC for one row; see `swingTacAndDef`. */
+export const tacForAttackRow = (
+  attacker: AttackerData,
+  wrapPicks: WrapPick[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
+  attackIndex: number,
+  chargeAttackIndex: number,
+  enemyHasCover: boolean,
+  enemyDefensiveStance: boolean,
+  damageMods: PlaybookDamageMods,
+  baseDef: number,
+  bonusTimeByAttack: readonly boolean[],
+  initialTacModifier: number,
+  activeBaseCount: number,
+): number => {
+  const { tac } = swingTacAndDef(
+    attacker,
+    wrapPicks,
+    characterPlayPicks,
+    attackIndex,
+    chargeAttackIndex,
+    enemyHasCover,
+    enemyDefensiveStance,
+    damageMods,
+    baseDef,
+    bonusTimeByAttack,
+    initialTacModifier,
+    activeBaseCount,
+  );
+
+  return tac;
 };

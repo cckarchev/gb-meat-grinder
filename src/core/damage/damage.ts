@@ -8,6 +8,7 @@ import type {
 } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/wrapSlots';
 import {
+  ARM_MIN,
   DEF_MAX,
   KNOCKED_DOWN_DEF_PENALTY,
   SNARED_DEF_PENALTY,
@@ -108,7 +109,7 @@ export const effectiveArmor = (
     0,
   );
 
-  return Math.max(0, baseArmor - reduction);
+  return Math.max(ARM_MIN, baseArmor - reduction);
 };
 
 export const effectivePlaybookDamage = (

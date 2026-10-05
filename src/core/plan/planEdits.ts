@@ -1,6 +1,6 @@
 /** User edits to the plan: picking a line, clearing a continuation, choosing a play. */
 
-import { defaultCharacterPlayId } from '@/core/characterPlays/characterPlayLookup';
+import { playSlotForPick } from '@/core/characterPlays/characterPlayLookup';
 import { sanitizeCharacterPlayPicksWrap } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type {
@@ -43,7 +43,6 @@ export const nextPlanAfterWrapChoice = (
   });
 
   const rowLength = nextPicks[attackIndex].length;
-  const usesPlay = id !== null && choiceUsesCharacterPlay(attacker, id);
 
   const nextCharacterPlay = withRowReplaced(
     prev.characterPlayPicks,
@@ -55,11 +54,7 @@ export const nextPlanAfterWrapChoice = (
         padded.push(null);
       }
 
-      if (!usesPlay) {
-        padded[pickIndex] = null;
-      } else if (padded[pickIndex] == null) {
-        padded[pickIndex] = defaultCharacterPlayId(attacker);
-      }
+      padded[pickIndex] = playSlotForPick(attacker, id, padded[pickIndex]);
 
       return padded.slice(0, rowLength);
     },

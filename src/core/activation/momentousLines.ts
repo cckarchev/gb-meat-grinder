@@ -8,6 +8,7 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/wrapSlots';
+import { MOMENTOUS_PICK_MOMENTUM } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 export const momentousLineStyle = (
@@ -40,4 +41,17 @@ export const pickGeneratesMomentum = (
   }
 
   return momentousLineStyle(attacker, id, mods) === 'heat';
+};
+
+/** Momentum one swing's picks earn on a hit: one per pick that generates it. */
+export const momentumEarnedBySwing = (
+  attacker: AttackerData,
+  picks: readonly WrapPick[],
+  mods: PlaybookDamageMods,
+): number => {
+  const momentousPicks = picks.filter((id) => {
+    return pickGeneratesMomentum(attacker, id, mods);
+  });
+
+  return momentousPicks.length * MOMENTOUS_PICK_MOMENTUM;
 };

@@ -5,6 +5,7 @@ import type {
   CharacterPlayPick,
   CharacterPlayPickSlot,
   PlaybookChoiceId,
+  WrapPick,
 } from '@/core/playbook/playbook.types';
 import { choiceUsesCharacterPlay } from '@/core/playbook/wrapSlots';
 import type { AttackerData } from '@/data/attackers/attacker.types';
@@ -34,14 +35,26 @@ export const defaultCharacterPlayId = (
   return characterPlaysForAttacker(attacker)[0]?.id ?? null;
 };
 
-/** Play slot a freshly placed pick starts with: the default play, if it uses one. */
-export const initialCharacterPlayFor = (
+/**
+ * The play slot a pick should hold: empty unless the pick uses a play, otherwise
+ * the `current` play or, when there is none, the default one.
+ */
+export const playSlotForPick = (
   attacker: AttackerData,
-  id: PlaybookChoiceId,
+  id: WrapPick,
+  current: CharacterPlayPickSlot,
 ): CharacterPlayPickSlot => {
   if (!choiceUsesCharacterPlay(attacker, id)) {
     return null;
   }
 
-  return defaultCharacterPlayId(attacker);
+  return current ?? defaultCharacterPlayId(attacker);
+};
+
+/** Play slot a freshly placed pick starts with: the default play, if it uses one. */
+export const initialCharacterPlayFor = (
+  attacker: AttackerData,
+  id: PlaybookChoiceId,
+): CharacterPlayPickSlot => {
+  return playSlotForPick(attacker, id, null);
 };

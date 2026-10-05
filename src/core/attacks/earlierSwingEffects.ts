@@ -15,7 +15,7 @@ import { COVER_TAC_PENALTY } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /**
- * Cover: −1 TAC on this attack’s dice pool while the enemy is in terrain.
+ * Cover: `COVER_TAC_PENALTY` fewer dice on this attack while the enemy is in terrain.
  * Push (>) or double push (>>) on any **earlier** attack in activation order
  * (base → berserker → …) clears that terrain benefit on later swings.
  */

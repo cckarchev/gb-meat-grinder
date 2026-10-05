@@ -87,16 +87,27 @@ export const damageIfAllHitsWrap = (
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
 ): number[] => {
-  return wrapPicks.map((picks, i) =>
-    attackRowIsActive(attacker, wrapPicks, i, damageMods, activeBaseCount)
-      ? picks.reduce(
-          (s, id) =>
-            s +
-            (id == null
-              ? 0
-              : effectiveDamageForChoice(attacker, id, damageMods)),
-          0,
-        )
-      : 0,
-  );
+  const pickDamage = (id: WrapPick): number => {
+    if (id == null) {
+      return 0;
+    }
+
+    return effectiveDamageForChoice(attacker, id, damageMods);
+  };
+
+  return wrapPicks.map((picks, attackIndex) => {
+    const active = attackRowIsActive(
+      attacker,
+      wrapPicks,
+      attackIndex,
+      damageMods,
+      activeBaseCount,
+    );
+
+    if (!active) {
+      return 0;
+    }
+
+    return picks.reduce((sum, id) => sum + pickDamage(id), 0);
+  });
 };

@@ -2,17 +2,8 @@
 
 import { activationAttackIndices } from '@/core/attacks/attackRows';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import {
-  coverTacPenaltyForAttack,
-  modifiersBeforeAttack,
-} from '@/core/attacks/earlierSwingEffects';
-import {
-  armorForAttackRow,
-  effectiveDefMinRoll,
-  enemyDefBaseForAttackRow,
-  tacBonusFromDefReductionCap,
-} from '@/core/attacks/swingDefense';
-import { tacForAttack } from '@/core/attacks/swingTac';
+import { armorForAttackRow } from '@/core/attacks/swingDefense';
+import { swingTacAndDef } from '@/core/attacks/swingTac';
 import {
   hitProbabilityPerDie,
   probAttackSucceeds,
@@ -23,7 +14,6 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { wrapNetThresholdAllHits } from '@/core/playbook/wrapSlots';
-import { BONUS_TIME_TAC_BONUS } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 export const computeAttackSequence = (
@@ -48,46 +38,19 @@ export const computeAttackSequence = (
     damageMods,
     activeBaseCount,
   )) {
-    const { tacBonus, defReduction } = modifiersBeforeAttack(
+    const { tac, defMinRoll } = swingTacAndDef(
       attacker,
       wrapPicks,
       characterPlayPicks,
       i,
-      damageMods,
-      activeBaseCount,
-    );
-
-    const defForRow = enemyDefBaseForAttackRow(
-      baseDef,
-      i,
       chargeAttackIndex,
-      enemyDefensiveStance,
-      activeBaseCount,
-    );
-
-    const tacFromDefCap = tacBonusFromDefReductionCap(defForRow, defReduction);
-    const defMin = effectiveDefMinRoll(defForRow, defReduction);
-
-    const coverPen = coverTacPenaltyForAttack(
-      attacker,
       enemyHasCover,
-      wrapPicks,
-      i,
-      activeBaseCount,
-    );
-
-    const bonusTimeTac =
-      bonusTimeByAttack[i] === true ? BONUS_TIME_TAC_BONUS : 0;
-
-    const tac = tacForAttack(
-      attacker,
-      i,
-      chargeAttackIndex,
-      tacBonus + tacFromDefCap,
-      activeBaseCount,
-      coverPen,
-      bonusTimeTac,
+      enemyDefensiveStance,
+      damageMods,
+      baseDef,
+      bonusTimeByAttack,
       initialTacModifier,
+      activeBaseCount,
     );
 
     const rowArmor = armorForAttackRow(
@@ -100,7 +63,7 @@ export const computeAttackSequence = (
       activeBaseCount,
     );
 
-    const pHit = hitProbabilityPerDie(defMin);
+    const pHit = hitProbabilityPerDie(defMinRoll);
     const need = wrapNetThresholdAllHits(attacker, wrapPicks[i]);
     const prob = probAttackSucceeds(tac, pHit, rowArmor, need);
 
@@ -108,7 +71,7 @@ export const computeAttackSequence = (
       attackIndex: i,
       tac,
       armor: rowArmor,
-      defMinRoll: defMin,
+      defMinRoll,
       pHit,
       netSuccessesNeeded: need,
       prob,

@@ -1,4 +1,4 @@
-/** Bonus Time: +1 TAC this attack; costs 1 momentum before the roll. */
+/** TAC Bonus Time adds to its attack; it costs `BONUS_TIME_MOMENTUM_COST` before the roll. */
 export const BONUS_TIME_TAC_BONUS = 1;
 
 export const DEF_MIN = 2;

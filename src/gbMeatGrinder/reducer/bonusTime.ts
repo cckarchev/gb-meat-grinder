@@ -3,26 +3,18 @@
  * pay. The spend adds a TAC die, so every flag change re-clamps the plan.
  */
 
-import { sanitizeBonusTimeFlags } from '@/core/activation/bonusTimeFlags';
+import {
+  canAffordBonusTime,
+  sanitizeBonusTimeFlags,
+} from '@/core/activation/bonusTimeFlags';
 import { momentumPoolBeforeBonusTime } from '@/core/activation/momentum';
-import { BONUS_TIME_MOMENTUM_COST } from '@/core/shared/constants';
+import { rowEqual } from '@/core/shared/gridEqual';
 import { withReclampedPlan } from '@/gbMeatGrinder/reducer/planReclamp';
 import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
 import {
   activeBaseCountOf,
   attackerOf,
 } from '@/gbMeatGrinder/reducer/stateSelectors';
-
-const bonusTimeEqual = (
-  a: readonly boolean[],
-  b: readonly boolean[],
-): boolean => {
-  if (a.length !== b.length) {
-    return false;
-  }
-
-  return a.every((v, i) => v === b[i]);
-};
 
 const sanitizedBonusTime = (
   state: MeatGrinderState,
@@ -54,7 +46,7 @@ export const toggleBonusTime = (
       activeBaseCountOf(state),
     );
 
-    if (pool < BONUS_TIME_MOMENTUM_COST) {
+    if (!canAffordBonusTime(pool)) {
       return state;
     }
   }
@@ -77,7 +69,7 @@ export const resanitizeBonusTime = (
 ): MeatGrinderState => {
   const sanitized = sanitizedBonusTime(state, state.bonusTimeByAttack);
 
-  if (bonusTimeEqual(sanitized, state.bonusTimeByAttack)) {
+  if (rowEqual(sanitized, state.bonusTimeByAttack)) {
     return state;
   }
 

@@ -9,7 +9,8 @@ import {
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /**
- * Influence the charge consumes: free for Furious models, otherwise 2.
+ * Influence the charge consumes: free for Furious models, otherwise
+ * `CHARGE_INFLUENCE_COST`.
  * 0 when the model is not charging.
  */
 export const chargeInfluenceCost = (
@@ -60,6 +61,17 @@ export const effectiveChargeIndex = (
   chargeAttackIndex: number,
 ): number => {
   return charging ? chargeAttackIndex : NO_ATTACK_INDEX;
+};
+
+/** Whether this row is the charge: the chosen charge row, while still an active base. */
+export const isChargeSwing = (
+  attackIndex: number,
+  chargeAttackIndex: number,
+  activeBaseCount: number,
+): boolean => {
+  const isActiveBase = attackIndex < activeBaseCount;
+
+  return isActiveBase && attackIndex === chargeAttackIndex;
 };
 
 /**

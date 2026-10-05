@@ -25,8 +25,8 @@ const NO_EFFECTS: PickEffects = {
 };
 
 /**
- * Modifiers this pick adds to later swings (SO/Stagger each once; after both,
- * further GB / 1GB lines have no character-play effect).
+ * Modifiers this pick adds to later swings. A Knock Down after the first one, or
+ * a Once Per Turn play an earlier pick already used, adds nothing.
  */
 export const rowEffectsForPick = (
   attacker: AttackerData,
@@ -90,9 +90,9 @@ export const rowEffectsForPick = (
 };
 
 /**
- * −1 ARM on this swing if an earlier swing's GB triggered a character play that
- * reduces ARM (e.g. They Ain't Tough!), in activation order (strictly earlier).
- * A condition, so it never stacks past 1.
+ * ARM this swing loses because an earlier swing's GB triggered a character play
+ * that reduces ARM (e.g. They Ain't Tough!), in activation order (strictly
+ * earlier). A condition, so it never stacks past `MAX_ARMOR_REDUCTION`.
  */
 export const armorReductionBeforeAttack = (
   attacker: AttackerData,

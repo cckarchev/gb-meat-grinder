@@ -12,7 +12,10 @@ import type {
 import { choiceUsesCharacterPlay } from '@/core/playbook/wrapSlots';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
-/** Fix illegal character-play rows when earlier picks consumed SO or Stagger. */
+/**
+ * Fix play slots that no longer match their pick, or that hold a Once Per Turn
+ * play an earlier pick already used.
+ */
 export const sanitizeCharacterPlayPicksWrap = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],

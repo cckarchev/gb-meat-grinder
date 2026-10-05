@@ -15,6 +15,7 @@ import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
+import { isAttackIndex } from '@/core/shared/attackIndex';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
@@ -41,7 +42,21 @@ export const resilienceIgnoredAttackIndex = (
     activeBaseCount,
   );
 
-  return order.length > 0 ? order[0] : -1;
+  return order.length > 0 ? order[0] : NO_ATTACK_INDEX;
+};
+
+/** Rows with the ignored swing's row blanked (the same rows when none is ignored). */
+const withIgnoredRowBlanked = <T>(
+  rows: (T | null)[][],
+  ignoredIndex: number,
+): (T | null)[][] => {
+  if (!isAttackIndex(ignoredIndex)) {
+    return rows;
+  }
+
+  return rows.map((row, attackIndex) => {
+    return attackIndex === ignoredIndex ? row.map(() => null) : row;
+  });
 };
 
 /** Wrap picks with the ignored swing's row blanked (unchanged when none). */
@@ -49,13 +64,7 @@ export const effectiveWrapPicksForResilience = (
   wrapPicks: WrapPick[][],
   ignoredIndex: number,
 ): WrapPick[][] => {
-  if (ignoredIndex < 0) {
-    return wrapPicks;
-  }
-
-  return wrapPicks.map((row, i) =>
-    i === ignoredIndex ? row.map(() => null) : row,
-  );
+  return withIgnoredRowBlanked(wrapPicks, ignoredIndex);
 };
 
 /** Character-play picks with the ignored swing's row blanked (unchanged when none). */
@@ -63,13 +72,7 @@ export const effectiveCharacterPlayPicksForResilience = (
   characterPlayPicks: CharacterPlayPickSlot[][],
   ignoredIndex: number,
 ): CharacterPlayPickSlot[][] => {
-  if (ignoredIndex < 0) {
-    return characterPlayPicks;
-  }
-
-  return characterPlayPicks.map((row, i) =>
-    i === ignoredIndex ? row.map(() => null) : row,
-  );
+  return withIgnoredRowBlanked(characterPlayPicks, ignoredIndex);
 };
 
 /** Bonus-Time flags with the ignored swing forced off (unchanged when none). */
@@ -77,11 +80,11 @@ export const effectiveBonusTimeForResilience = (
   bonusTimeByAttack: readonly boolean[],
   ignoredIndex: number,
 ): boolean[] => {
-  const base = bonusTimeByAttack.map((b) => b);
+  const flags = [...bonusTimeByAttack];
 
-  if (ignoredIndex >= 0) {
-    base[ignoredIndex] = false;
+  if (isAttackIndex(ignoredIndex)) {
+    flags[ignoredIndex] = false;
   }
 
-  return base;
+  return flags;
 };

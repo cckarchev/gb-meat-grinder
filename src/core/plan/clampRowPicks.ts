@@ -3,8 +3,8 @@
  */
 
 import {
-  defaultCharacterPlayId,
   initialCharacterPlayFor,
+  playSlotForPick,
 } from '@/core/characterPlays/characterPlayLookup';
 import type { AttackPlanRow } from '@/core/plan/attackPlan.types';
 import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
@@ -13,7 +13,6 @@ import {
   maxPlaybookNet,
 } from '@/core/playbook/playbookIndex';
 import {
-  choiceUsesCharacterPlay,
   netSuccessesForChoice,
   wrapSlotBudget,
   wrapSlotCount,
@@ -100,13 +99,7 @@ const syncCharacterPlays = (
   const { picks, plays } = row;
 
   for (let slot = 0; slot < picks.length; slot++) {
-    const id = picks[slot];
-
-    if (id == null || !choiceUsesCharacterPlay(attacker, id)) {
-      plays[slot] = null;
-    } else if (plays[slot] == null) {
-      plays[slot] = defaultCharacterPlayId(attacker);
-    }
+    plays[slot] = playSlotForPick(attacker, picks[slot], plays[slot]);
   }
 };
 

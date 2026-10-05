@@ -17,6 +17,7 @@ import { specialAbilityFlatDamage } from '@/core/damage/damage';
 import { damageQuantile } from '@/core/damage/damageDistribution';
 import { planDamageOutcome } from '@/core/damage/killOdds';
 import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
+import { isAttackIndex } from '@/core/shared/attackIndex';
 import { KILLING_BLOW_MOMENTUM } from '@/core/shared/constants';
 
 /** The damage range shown is the 10th to 90th percentile of outcomes. */
@@ -29,8 +30,13 @@ export const activeSwings = (
   ignoredDisplayIndex: number,
   killingBlowIndex: number,
 ): AttackRollContext[] => {
-  const start = ignoredDisplayIndex >= 0 ? ignoredDisplayIndex + 1 : 0;
-  const end = killingBlowIndex >= 0 ? killingBlowIndex + 1 : attacks.length;
+  const start = isAttackIndex(ignoredDisplayIndex)
+    ? ignoredDisplayIndex + 1
+    : 0;
+
+  const end = isAttackIndex(killingBlowIndex)
+    ? killingBlowIndex + 1
+    : attacks.length;
 
   return attacks.slice(start, end);
 };
@@ -42,7 +48,8 @@ export const swingIsSkipped = (
   killingBlowIndex: number,
 ): boolean => {
   const ignored = displayIndex === ignoredDisplayIndex;
-  const afterKill = killingBlowIndex >= 0 && displayIndex > killingBlowIndex;
+  const afterKill =
+    isAttackIndex(killingBlowIndex) && displayIndex > killingBlowIndex;
 
   return ignored || afterKill;
 };
@@ -73,8 +80,9 @@ export const summarizeActivation = (
     0,
   );
 
-  const killingBlowMomentum =
-    input.killingBlowIndex >= 0 ? KILLING_BLOW_MOMENTUM : 0;
+  const killingBlowMomentum = isAttackIndex(input.killingBlowIndex)
+    ? KILLING_BLOW_MOMENTUM
+    : 0;
 
   const bonusTimeSpends = activeAttacks.filter(
     (swing) => input.bonusTimeByAttack[swing.attackIndex],

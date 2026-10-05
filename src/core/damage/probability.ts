@@ -15,15 +15,15 @@ const binomialCoeff = (n: number, k: number): number => {
     return 1;
   }
 
-  k = Math.min(k, n - k);
+  // C(n, k) = C(n, n - k), so loop over the smaller of the two.
+  const steps = Math.min(k, n - k);
+  let coefficient = 1;
 
-  let c = 1;
-
-  for (let i = 0; i < k; i++) {
-    c = (c * (n - i)) / (i + 1);
+  for (let i = 0; i < steps; i++) {
+    coefficient = (coefficient * (n - i)) / (i + 1);
   }
 
-  return c;
+  return coefficient;
 };
 
 export const binomialPmf = (n: number, p: number, k: number): number => {

@@ -1,3 +1,5 @@
+import { clamp } from '@/core/shared/clamp';
+
 /** HSL hue at p = 1 (green). p = 0 maps to hue 0 (red). */
 const HEAT_HUE_MAX = 118;
 const HEAT_SATURATION = '62%';
@@ -15,7 +17,7 @@ const BORDER_ALPHA_MIN = 0.25;
 const BORDER_ALPHA_RANGE = 0.45;
 
 const clampUnit = (p: number): number => {
-  return Math.min(1, Math.max(0, p));
+  return clamp(p, 0, 1);
 };
 
 const heatHue = (t: number): number => {

@@ -6,6 +6,7 @@ import {
   chargeInfluenceCost,
   clampChargeAttackIndex,
   effectiveChargeIndex,
+  isChargeSwing,
   maxBaseAttackCount,
 } from '@/core/attacks/attackStructure';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
@@ -89,5 +90,22 @@ describe('effectiveChargeIndex', () => {
 
   it('has no charge row when not charging', () => {
     expect(effectiveChargeIndex(NOT_CHARGING, 2)).toBe(NO_ATTACK_INDEX);
+  });
+});
+
+describe('isChargeSwing', () => {
+  const ACTIVE_BASES = 2;
+
+  it('is true only on the charge row', () => {
+    expect(isChargeSwing(1, 1, ACTIVE_BASES)).toBe(true);
+    expect(isChargeSwing(0, 1, ACTIVE_BASES)).toBe(false);
+  });
+
+  it('is false when not charging', () => {
+    expect(isChargeSwing(0, NO_ATTACK_INDEX, ACTIVE_BASES)).toBe(false);
+  });
+
+  it('is false when the charge row is no longer an active base', () => {
+    expect(isChargeSwing(2, 2, ACTIVE_BASES)).toBe(false);
   });
 });

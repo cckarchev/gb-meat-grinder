@@ -1,19 +1,25 @@
 /** Enemy DEF and ARM for a swing after stance, conditions and earlier plays. */
 
+import { isChargeSwing } from '@/core/attacks/attackStructure';
 import type {
   CharacterPlayPickSlot,
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { armorReductionBeforeAttack } from '@/core/playbook/rowEffects';
+import { clamp } from '@/core/shared/clamp';
 import {
+  ARM_MIN,
   DEF_MAX,
   DEF_MIN,
   DEFENSIVE_STANCE_DEF_BONUS,
 } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
-/** Effective enemy DEF stat for this row (charge + Defensive Stance = +1, capped). */
+/**
+ * Effective enemy DEF stat for this row: the charge into Defensive Stance gains
+ * `DEFENSIVE_STANCE_DEF_BONUS`, capped at `DEF_MAX`.
+ */
 export const enemyDefBaseForAttackRow = (
   enemyDef: number,
   attackIndex: number,
@@ -21,12 +27,11 @@ export const enemyDefBaseForAttackRow = (
   enemyDefensiveStance: boolean,
   activeBaseCount: number,
 ): number => {
-  const stanceBonus =
+  const chargedIntoStance =
     enemyDefensiveStance &&
-    attackIndex < activeBaseCount &&
-    attackIndex === chargeAttackIndex
-      ? DEFENSIVE_STANCE_DEF_BONUS
-      : 0;
+    isChargeSwing(attackIndex, chargeAttackIndex, activeBaseCount);
+
+  const stanceBonus = chargedIntoStance ? DEFENSIVE_STANCE_DEF_BONUS : 0;
 
   return Math.min(DEF_MAX, enemyDef + stanceBonus);
 };
@@ -35,7 +40,9 @@ export const effectiveDefMinRoll = (
   baseDef: number,
   defReduction: number,
 ): number => {
-  return Math.max(DEF_MIN, Math.min(DEF_MAX, baseDef - defReduction));
+  const reducedDef = baseDef - defReduction;
+
+  return clamp(reducedDef, DEF_MIN, DEF_MAX);
 };
 
 /**
@@ -71,5 +78,5 @@ export const armorForAttackRow = (
     activeBaseCount,
   );
 
-  return Math.max(0, baseArmor - earlierReduction);
+  return Math.max(ARM_MIN, baseArmor - earlierReduction);
 };

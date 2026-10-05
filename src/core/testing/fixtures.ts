@@ -1,3 +1,4 @@
+import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from '@/core/damage/damage';
 import type {
   CharacterPlay,
   PlaybookColumn,
@@ -130,7 +131,8 @@ export const makeAttacker = (
   };
 };
 
-export const NO_MODS: PlaybookDamageMods = { toughHide: false, buffs: {} };
+/** No Tough Hide and no buffs: the calculator's default damage mods. */
+export const NO_MODS = DEFAULT_PLAYBOOK_DAMAGE_MODS;
 
 export const modsWith = (
   overrides: Partial<PlaybookDamageMods>,

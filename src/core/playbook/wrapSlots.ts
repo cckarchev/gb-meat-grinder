@@ -126,14 +126,19 @@ export const wrapNetThresholdAllHits = (
   return maxNeed;
 };
 
-export const defaultCharacterPlayPicksWrap = (
-  size: number,
-): CharacterPlayPickSlot[][] => {
+/** One row per attack, each holding a single empty slot. */
+const rowsWithOneEmptySlot = (size: number): null[][] => {
   return Array.from({ length: size }, () => [null]);
 };
 
+export const defaultCharacterPlayPicksWrap = (
+  size: number,
+): CharacterPlayPickSlot[][] => {
+  return rowsWithOneEmptySlot(size);
+};
+
 export const defaultWrapPicks = (size: number): WrapPick[][] => {
-  return Array.from({ length: size }, () => [null]);
+  return rowsWithOneEmptySlot(size);
 };
 
 /** Whether any slot of a swing's wrap row holds a pick. */
