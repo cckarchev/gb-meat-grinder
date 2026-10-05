@@ -10,12 +10,14 @@ import {
 } from '@/components/attacks/swing/dicePoolStyles';
 import { InfoTip } from '@/components/ui/InfoTip';
 import { CHARGE_TAC_BONUS } from '@/core/attacks/swingTac';
+import {
+  BONUS_TIME_MOMENTUM_COST,
+  BONUS_TIME_TAC_BONUS,
+} from '@/core/shared/constants';
 
-const BONUS_TIME_UNAFFORDABLE_TOOLTIP =
-  'Bonus Time needs at least 1 momentum before this attack (costs 1 before the roll).';
+const BONUS_TIME_UNAFFORDABLE_TOOLTIP = `Bonus Time needs at least ${BONUS_TIME_MOMENTUM_COST} momentum before this attack (costs ${BONUS_TIME_MOMENTUM_COST} before the roll).`;
 
-const BONUS_TIME_TOOLTIP =
-  'Bonus Time: +1 Dice Pool this attack; spend 1 momentum before rolling.';
+const BONUS_TIME_TOOLTIP = `Bonus Time: +${BONUS_TIME_TAC_BONUS} Dice Pool this attack; spend ${BONUS_TIME_MOMENTUM_COST} momentum before rolling.`;
 
 type DicePoolStripProps = {
   attackIndex: number;
@@ -75,7 +77,7 @@ export const DicePoolStrip = ({
                 : BONUS_TIME_TOOLTIP
             }
           >
-            Bonus Time (+1 Dice Pool)
+            Bonus Time (+{BONUS_TIME_TAC_BONUS} Dice Pool)
           </InfoTip>
         </PoolToggle>
       </PoolCluster>

@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import { focusRing } from '@/styles/mixins';
 
+/** Fixed white in both themes: text on the guild color, and the fill of a zeroed momentous line. */
+const LINE_WHITE = '#ffffff';
+
 export const LineButton = styled.button<{
   $momentous: boolean;
   $momentousZeroEffective: boolean;
@@ -49,9 +52,9 @@ export const LineButton = styled.button<{
     p.$momentous
       ? p.$momentousColor
       : p.$momentousZeroEffective
-        ? '#ffffff'
+        ? LINE_WHITE
         : 'var(--playbook-line-nm-bg)'};
-  color: ${(p) => (p.$momentous ? '#ffffff' : 'var(--playbook-line-nm-fg)')};
+  color: ${(p) => (p.$momentous ? LINE_WHITE : 'var(--playbook-line-nm-fg)')};
   border: 1px solid
     ${(p) =>
       p.$momentous
