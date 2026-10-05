@@ -90,7 +90,7 @@ export const ColumnResults = styled.div`
   }
 `;
 
-export const ColumnHead = styled.div<{ $p: number }>`
+export const ColumnHead = styled.div<{ $hitChance: number }>`
   flex-shrink: 0;
   font-size: 0.7rem;
   font-weight: 600;
@@ -99,9 +99,9 @@ export const ColumnHead = styled.div<{ $p: number }>`
   text-align: center;
   padding: 0.4rem 0.35rem;
   line-height: 1.25;
-  background: ${(props) => probHeatBackground(props.$p)};
-  color: ${(props) => probHeatTextColor(props.$p)};
-  border-bottom: 1px solid ${(props) => probHeatBorder(props.$p)};
+  background: ${(props) => probHeatBackground(props.$hitChance)};
+  color: ${(props) => probHeatTextColor(props.$hitChance)};
+  border-bottom: 1px solid ${(props) => probHeatBorder(props.$hitChance)};
 
   ${narrowViewport} {
     font-size: 0.62rem;

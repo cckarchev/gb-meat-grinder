@@ -86,7 +86,9 @@ export const WrapSlotPickGrid = ({
 
           return (
             <ColumnBlock key={column.netSuccesses}>
-              <ColumnHead $p={columnHitChance}>{hitChanceLabel}</ColumnHead>
+              <ColumnHead $hitChance={columnHitChance}>
+                {hitChanceLabel}
+              </ColumnHead>
               <ColumnResults>
                 {column.results.map((result) => {
                   const selected =
