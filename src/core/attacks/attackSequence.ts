@@ -3,14 +3,16 @@
 import { activationAttackIndices } from '@/core/attacks/attackRows';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import {
-  armorForAttackRow,
   coverTacPenaltyForAttack,
+  modifiersBeforeAttack,
+} from '@/core/attacks/earlierSwingEffects';
+import {
+  armorForAttackRow,
   effectiveDefMinRoll,
   enemyDefBaseForAttackRow,
-  modifiersBeforeAttack,
   tacBonusFromDefReductionCap,
-  tacForAttack,
-} from '@/core/attacks/swingModifiers';
+} from '@/core/attacks/swingDefense';
+import { tacForAttack } from '@/core/attacks/swingTac';
 import {
   hitProbabilityPerDie,
   probAttackSucceeds,

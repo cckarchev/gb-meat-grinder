@@ -3,7 +3,7 @@
  */
 
 import { activationAttackIndices } from '@/core/attacks/attackRows';
-import { maxPlaybookColumnForPlan } from '@/core/attacks/swingModifiers';
+import { maxPlaybookColumnForPlan } from '@/core/attacks/maxPlaybookColumn';
 import type {
   AttackPlan,
   AttackPlanClampParams,

@@ -17,7 +17,7 @@ import {
   activeBaseAttackCount,
   attackArraySize,
 } from '@/core/attacks/attackStructure';
-import { maxPlaybookColumnForRow } from '@/core/attacks/swingModifiers';
+import { maxPlaybookColumnForRow } from '@/core/attacks/maxPlaybookColumn';
 import {
   availableBuffs,
   effectiveArmor,

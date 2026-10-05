@@ -9,7 +9,7 @@ import {
   TacPoolValue,
 } from '@/components/attacks/swing/dicePoolStyles';
 import { InfoTip } from '@/components/ui/InfoTip';
-import { CHARGE_TAC_BONUS } from '@/core/attacks/swingModifiers';
+import { CHARGE_TAC_BONUS } from '@/core/attacks/swingTac';
 
 const BONUS_TIME_UNAFFORDABLE_TOOLTIP =
   'Bonus Time needs at least 1 momentum before this attack (costs 1 before the roll).';
