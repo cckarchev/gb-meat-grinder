@@ -46,7 +46,7 @@ src/
   core/           pure engine logic, one folder per domain
     plan/         the attack plan and the clamp that keeps it legal
     attacks/      attack rows, sequencing, swing modifiers and projections
-    playbook/     playbook lookups, labels, wrap slots, row effects
+    playbook/     playbook lookups, labels, wrap slots, row effects, cover, Knock Down
     characterPlays/  character play lookup, effects, Once Per Turn usage
     damage/       damage, kill odds, killing blow, resilience, probability
     activation/   momentum, simulation, summary/ (activation totals and tooltips)

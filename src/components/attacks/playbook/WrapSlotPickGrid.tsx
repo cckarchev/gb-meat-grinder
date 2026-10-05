@@ -8,11 +8,11 @@ import {
   WrapSlotBlock,
 } from '@/components/attacks/playbook/playbookGridStyles';
 import { formatPercent, probAttackSucceeds } from '@/core/damage/probability';
+import { kdAlreadyTakenBeforePick } from '@/core/playbook/knockDown';
 import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { kdAlreadyTakenBeforePick } from '@/core/playbook/rowEffects';
 import {
   wrapExtendedNetNeeded,
   wrapSlotBudget,

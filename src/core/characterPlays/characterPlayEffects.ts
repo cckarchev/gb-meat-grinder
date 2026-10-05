@@ -4,17 +4,14 @@ import { getCharacterPlay } from '@/core/characterPlays/characterPlayLookup';
 import type {
   CharacterPlay,
   CharacterPlayPick,
+  PickEffects,
 } from '@/core/playbook/playbook.types';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 export const characterPlayPickModifiers = (
   attacker: AttackerData,
   pick: CharacterPlayPick,
-): {
-  tacBonusForLater: number;
-  defReductionForLater: number;
-  armorReduction: number;
-} => {
+): PickEffects => {
   const cp = getCharacterPlay(attacker, pick);
 
   return {

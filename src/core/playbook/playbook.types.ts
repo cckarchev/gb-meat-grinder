@@ -37,6 +37,13 @@ export type CharacterPlayPick = string;
 /** Ids of character plays already used on earlier swings (same activation). */
 export type CharacterPlayUsage = ReadonlySet<string>;
 
+/** What one pick carries into later swings of the same activation. */
+export type PickEffects = {
+  tacBonusForLater: number;
+  defReductionForLater: number;
+  armorReduction: number;
+};
+
 export type PlaybookResult = {
   id: PlaybookChoiceId;
   label: string;

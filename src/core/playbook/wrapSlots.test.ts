@@ -3,7 +3,7 @@ import {
   defaultCharacterPlayId,
   getCharacterPlay,
 } from '@/core/characterPlays/characterPlayLookup';
-import { wrapPickClearsCover } from '@/core/playbook/rowEffects';
+import { wrapPickClearsCover } from '@/core/playbook/coverClearing';
 import {
   defaultWrapPicks,
   getPlaybookResult,

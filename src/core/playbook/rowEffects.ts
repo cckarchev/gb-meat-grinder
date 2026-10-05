@@ -1,14 +1,13 @@
-/**
- * Effects earlier picks carry into later swings: cover, armor and Knock Down.
- */
+/** Effects each pick carries into later swings: TAC, DEF and the ARM condition. */
 
 import { activationAttackIndices } from '@/core/attacks/attackRows';
-import { berserkerRowOffset } from '@/core/attacks/attackStructure';
 import { characterPlayPickModifiers } from '@/core/characterPlays/characterPlayEffects';
 import { defaultCharacterPlayId } from '@/core/characterPlays/characterPlayLookup';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
+import { kdAlreadyTakenBeforePick } from '@/core/playbook/knockDown';
 import type {
   CharacterPlayPickSlot,
+  PickEffects,
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
@@ -19,16 +18,75 @@ import {
 import { MAX_ARMOR_REDUCTION } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
-/** True if this pick removes the enemy's cover (a push / double push result). */
-export const wrapPickClearsCover = (
+const NO_EFFECTS: PickEffects = {
+  tacBonusForLater: 0,
+  defReductionForLater: 0,
+  armorReduction: 0,
+};
+
+/**
+ * Modifiers this pick adds to later swings (SO/Stagger each once; after both,
+ * further GB / 1GB lines have no character-play effect).
+ */
+export const rowEffectsForPick = (
   attacker: AttackerData,
-  id: WrapPick | null | undefined,
-): boolean => {
+  wrapPicks: WrapPick[][],
+  characterPlayPicks: CharacterPlayPickSlot[][],
+  attackIndex: number,
+  pickIndex: number,
+  damageMods: PlaybookDamageMods,
+  activeBaseCount: number,
+): PickEffects => {
+  const id = wrapPicks[attackIndex][pickIndex];
+
   if (id == null) {
-    return false;
+    return NO_EFFECTS;
   }
 
-  return getPlaybookResult(attacker, id).clearsCover === true;
+  const result = getPlaybookResult(attacker, id);
+
+  const redundantKnockDown =
+    result.appliesKnockDown &&
+    kdAlreadyTakenBeforePick(
+      attacker,
+      wrapPicks,
+      attackIndex,
+      pickIndex,
+      damageMods,
+      activeBaseCount,
+    );
+
+  if (redundantKnockDown) {
+    return NO_EFFECTS;
+  }
+
+  if (!choiceUsesCharacterPlay(attacker, id)) {
+    return {
+      tacBonusForLater: result.tacBonusForLater,
+      defReductionForLater: result.defReductionForLater,
+      armorReduction: 0,
+    };
+  }
+
+  const used = characterPlayUsageBeforePick(
+    attacker,
+    wrapPicks,
+    characterPlayPicks,
+    attackIndex,
+    pickIndex,
+    damageMods,
+    activeBaseCount,
+  );
+
+  const play =
+    characterPlayPicks[attackIndex]?.[pickIndex] ??
+    defaultCharacterPlayId(attacker);
+
+  if (play == null || used.has(play)) {
+    return NO_EFFECTS;
+  }
+
+  return characterPlayPickModifiers(attacker, play);
 };
 
 /**
@@ -67,7 +125,7 @@ export const armorReductionBeforeAttack = (
         continue;
       }
 
-      reduction += rowEffectsForPick(
+      const effects = rowEffectsForPick(
         attacker,
         wrapPicks,
         characterPlayPicks,
@@ -75,152 +133,11 @@ export const armorReductionBeforeAttack = (
         k,
         damageMods,
         activeBaseCount,
-      ).armorReduction;
+      );
+
+      reduction += effects.armorReduction;
     }
   }
 
   return Math.min(MAX_ARMOR_REDUCTION, reduction);
-};
-
-/**
- * Fixed GB swing order for cover: each base then its berserker, regardless of
- * whether the berserker row is “active” for damage (so > / >> are never skipped).
- */
-export const coverSwingClockIndices = (
-  attacker: AttackerData,
-  activeBaseCount: number,
-): number[] => {
-  const out: number[] = [];
-  const offset = berserkerRowOffset(attacker);
-
-  for (let b = 0; b < activeBaseCount; b++) {
-    out.push(b);
-
-    if (attacker.berserker) {
-      out.push(offset + b);
-    }
-  }
-
-  return out;
-};
-
-/**
- * True if Knock Down is unavailable for this pick: either the target is already
- * Knocked Down before the activation, or KD was taken on a strictly earlier wrap
- * pick (activation order). Only one KD can ever apply.
- */
-export const kdAlreadyTakenBeforePick = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  attackIndex: number,
-  pickIndex: number,
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
-  enemyKnockedDown = false,
-): boolean => {
-  if (enemyKnockedDown) {
-    return true;
-  }
-
-  const order = activationAttackIndices(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-  );
-
-  const targetPos = order.indexOf(attackIndex);
-
-  if (targetPos < 0) {
-    return false;
-  }
-
-  for (let oi = 0; oi <= targetPos; oi++) {
-    const j = order[oi];
-    const kLimit = j === attackIndex ? pickIndex : wrapPicks[j].length;
-
-    for (let k = 0; k < kLimit; k++) {
-      const id = wrapPicks[j][k];
-
-      if (id != null && getPlaybookResult(attacker, id).appliesKnockDown) {
-        return true;
-      }
-    }
-  }
-
-  return false;
-};
-
-/**
- * Modifiers this pick adds to later swings (SO/Stagger each once; after both,
- * further GB / 1GB lines have no character-play effect).
- */
-export const rowEffectsForPick = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
-  attackIndex: number,
-  pickIndex: number,
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
-): {
-  tacBonusForLater: number;
-  defReductionForLater: number;
-  armorReduction: number;
-} => {
-  const none = {
-    tacBonusForLater: 0,
-    defReductionForLater: 0,
-    armorReduction: 0,
-  };
-
-  const id = wrapPicks[attackIndex][pickIndex];
-
-  if (id == null) {
-    return none;
-  }
-
-  const result = getPlaybookResult(attacker, id);
-
-  if (
-    result.appliesKnockDown &&
-    kdAlreadyTakenBeforePick(
-      attacker,
-      wrapPicks,
-      attackIndex,
-      pickIndex,
-      damageMods,
-      activeBaseCount,
-    )
-  ) {
-    return none;
-  }
-
-  if (!choiceUsesCharacterPlay(attacker, id)) {
-    return {
-      tacBonusForLater: result.tacBonusForLater,
-      defReductionForLater: result.defReductionForLater,
-      armorReduction: 0,
-    };
-  }
-
-  const used = characterPlayUsageBeforePick(
-    attacker,
-    wrapPicks,
-    characterPlayPicks,
-    attackIndex,
-    pickIndex,
-    damageMods,
-    activeBaseCount,
-  );
-
-  const f =
-    characterPlayPicks[attackIndex]?.[pickIndex] ??
-    defaultCharacterPlayId(attacker);
-
-  if (f == null || used.has(f)) {
-    return none;
-  }
-
-  return characterPlayPickModifiers(attacker, f);
 };

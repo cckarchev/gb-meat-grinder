@@ -1,16 +1,16 @@
 /** What earlier swings in the activation leave behind for a later one: cover cleared, TAC and DEF carry-over. */
 
 import { activationAttackIndices } from '@/core/attacks/attackRows';
+import {
+  coverSwingClockIndices,
+  wrapPickClearsCover,
+} from '@/core/playbook/coverClearing';
 import type {
   CharacterPlayPickSlot,
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import {
-  coverSwingClockIndices,
-  rowEffectsForPick,
-  wrapPickClearsCover,
-} from '@/core/playbook/rowEffects';
+import { rowEffectsForPick } from '@/core/playbook/rowEffects';
 import { COVER_TAC_PENALTY } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 

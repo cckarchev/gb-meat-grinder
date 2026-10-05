@@ -11,11 +11,11 @@ import {
   berserkerSourceBaseIndex,
 } from '@/core/attacks/attackRows';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
+import { coverSwingClockIndices } from '@/core/playbook/coverClearing';
+import { kdAlreadyTakenBeforePick } from '@/core/playbook/knockDown';
 import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
 import {
   armorReductionBeforeAttack,
-  coverSwingClockIndices,
-  kdAlreadyTakenBeforePick,
   rowEffectsForPick,
 } from '@/core/playbook/rowEffects';
 import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
