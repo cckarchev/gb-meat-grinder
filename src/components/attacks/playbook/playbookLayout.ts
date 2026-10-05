@@ -1,14 +1,11 @@
-/**
- * Grid track width for each playbook column (net-success column).
- * Keep in sync with `ColumnGrid` in playbookGridStyles.ts.
- */
+/** Default grid track width for each playbook (net-success) column. */
 export const PLAYBOOK_COLUMN_TRACK = '3.65rem';
 
 /**
- * Set on `AttackBlock` so wrap strip + column grid share one width (including narrow
- * viewports). Use in CSS: `var(--playbook-column-width, 3.65rem)`.
+ * Custom property `AttackBlock` sets to narrow the column track on small
+ * viewports; `ColumnGrid` reads it, falling back to `PLAYBOOK_COLUMN_TRACK`.
  */
 export const PLAYBOOK_COLUMN_WIDTH_VAR = '--playbook-column-width';
 
-/** Gap between playbook columns; keep in sync with `ColumnGrid` in playbookGridStyles.ts. */
+/** Gap between playbook columns. */
 export const PLAYBOOK_GRID_GAP = '0.4rem';

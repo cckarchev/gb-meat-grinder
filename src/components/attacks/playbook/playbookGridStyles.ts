@@ -43,7 +43,6 @@ export const ColumnGrid = styled.div<{ $columnCount: number }>`
   min-width: 0;
 
   ${narrowViewport} {
-    /* Same fixed track as wrap control; scroll horizontally instead of stretching. */
     gap: 0.22rem;
   }
 

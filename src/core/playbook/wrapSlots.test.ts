@@ -8,6 +8,7 @@ import {
   defaultWrapPicks,
   getPlaybookResult,
   netSuccessesForChoice,
+  rowHasWrapPick,
   wrapExtendedNetNeeded,
   wrapNetThresholdAllHits,
   wrapSlotBudget,
@@ -71,5 +72,19 @@ describe('wrap slots', () => {
     expect(wrapPickClearsCover(attacker, 'push')).toBe(true);
     expect(wrapPickClearsCover(attacker, 'two')).toBe(false);
     expect(wrapPickClearsCover(attacker, null)).toBe(false);
+  });
+});
+
+describe('rowHasWrapPick', () => {
+  it('is true when any slot of the row holds a pick', () => {
+    expect(rowHasWrapPick([null, 'two'])).toBe(true);
+  });
+
+  it('is false when every slot is empty', () => {
+    expect(rowHasWrapPick([null, null])).toBe(false);
+  });
+
+  it('is false for a missing row', () => {
+    expect(rowHasWrapPick(undefined)).toBe(false);
   });
 });

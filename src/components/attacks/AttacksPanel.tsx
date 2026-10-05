@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { useWrapExpansion } from '@/components/attacks/playbook/useWrapExpansion';
 import { AttacksPanelSummary } from '@/components/attacks/summary/AttacksPanelSummary';
 import { AttackSwingRow } from '@/components/attacks/swing/AttackSwingRow';
+import { useActivationInput } from '@/components/attacks/useActivationInput';
+import { swingIsSkipped } from '@/core/activation/summary/activationSummary';
 import { projectSwings } from '@/core/attacks/swingProjections';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 const AttacksList = styled.div`
@@ -15,63 +16,21 @@ const AttacksList = styled.div`
 
 export const AttacksPanel = () => {
   const {
-    attacker,
-    hp: targetHp,
     charging,
-    chargeAttackIndex,
     activeBaseCount,
-    startingMomentum,
     wrapPicks,
     characterPlayPicks,
-    effectiveWrapPicks,
     effectiveBonusTimeByAttack,
     ignoredAttackIndex,
     damageMods,
-    specialAbilities,
     attacks,
     killingBlowIndex,
     dispatch,
   } = useMeatGrinderSimulation();
 
-  const effectiveChargeAttackIndex = charging
-    ? chargeAttackIndex
-    : NO_ATTACK_INDEX;
+  const { input, effectiveChargeAttackIndex } = useActivationInput();
   const wrapExpansion = useWrapExpansion();
-
-  const projection = useMemo(
-    () =>
-      projectSwings({
-        attacker,
-        attacks,
-        killingBlowIndex,
-        wrapPicks: effectiveWrapPicks,
-        bonusTimeByAttack: effectiveBonusTimeByAttack,
-        damageMods,
-        specialAbilities,
-        startingMomentum,
-        activeBaseCount,
-        targetHp,
-      }),
-    [
-      attacker,
-      attacks,
-      killingBlowIndex,
-      effectiveWrapPicks,
-      effectiveBonusTimeByAttack,
-      damageMods,
-      specialAbilities,
-      startingMomentum,
-      activeBaseCount,
-      targetHp,
-    ],
-  );
-
-  const isSwingDisabled = (displayIdx: number): boolean => {
-    const ignored = displayIdx === ignoredAttackIndex;
-    const afterKill = killingBlowIndex >= 0 && displayIdx > killingBlowIndex;
-
-    return ignored || afterKill;
-  };
+  const projection = useMemo(() => projectSwings(input), [input]);
 
   return (
     <AttacksList>
@@ -80,7 +39,11 @@ export const AttacksPanel = () => {
           key={a.attackIndex}
           attack={a}
           displayIdx={displayIdx}
-          disabled={isSwingDisabled(displayIdx)}
+          disabled={swingIsSkipped(
+            displayIdx,
+            ignoredAttackIndex,
+            killingBlowIndex,
+          )}
           isKillingBlow={displayIdx === killingBlowIndex}
           charging={charging}
           chargeAttackIndex={effectiveChargeAttackIndex}

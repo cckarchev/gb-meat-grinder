@@ -135,3 +135,10 @@ export const defaultCharacterPlayPicksWrap = (
 export const defaultWrapPicks = (size: number): WrapPick[][] => {
   return Array.from({ length: size }, () => [null]);
 };
+
+/** Whether any slot of a swing's wrap row holds a pick. */
+export const rowHasWrapPick = (
+  picks: readonly WrapPick[] | undefined,
+): boolean => {
+  return (picks ?? []).some((id) => id != null);
+};

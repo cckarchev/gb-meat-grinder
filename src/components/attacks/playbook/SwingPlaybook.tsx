@@ -63,24 +63,22 @@ export const SwingPlaybook = ({
 
   const hasWrapContinuation = rowPicks.length > 1;
 
-  const renderSlot = (pickIndex: number, firstSlotInSection: boolean) => {
-    return (
-      <WrapSlotPickGrid
-        key={pickIndex}
-        attackIndex={attackIndex}
-        pickIndex={pickIndex}
-        tac={attack.tac}
-        pHit={attack.pHit}
-        armor={armor}
-        maxNet={maxNet}
-        wrapPicks={wrapPicks}
-        damageMods={damageMods}
-        activeBaseCount={activeBaseCount}
-        firstSlotInSection={firstSlotInSection}
-        onChoiceChange={onChoiceChange}
-      />
-    );
-  };
+  const renderSlot = (pickIndex: number, firstSlotInSection: boolean) => (
+    <WrapSlotPickGrid
+      key={pickIndex}
+      attackIndex={attackIndex}
+      pickIndex={pickIndex}
+      tac={attack.tac}
+      pHit={attack.pHit}
+      armor={armor}
+      maxNet={maxNet}
+      wrapPicks={wrapPicks}
+      damageMods={damageMods}
+      activeBaseCount={activeBaseCount}
+      firstSlotInSection={firstSlotInSection}
+      onChoiceChange={onChoiceChange}
+    />
+  );
 
   return (
     <>

@@ -35,6 +35,18 @@ export const activeSwings = (
   return attacks.slice(start, end);
 };
 
+/** Whether the swing at `displayIdx` is ignored by Resilience or comes after the killing blow. */
+export const swingIsSkipped = (
+  displayIdx: number,
+  ignoredAttackIndex: number,
+  killingBlowIndex: number,
+): boolean => {
+  const ignored = displayIdx === ignoredAttackIndex;
+  const afterKill = killingBlowIndex >= 0 && displayIdx > killingBlowIndex;
+
+  return ignored || afterKill;
+};
+
 export const summarizeActivation = (
   input: ActivationSummaryInput,
 ): ActivationSummary => {

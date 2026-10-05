@@ -15,81 +15,24 @@ import {
   TotalsSectionTitle,
 } from '@/components/attacks/summary/attacksSummaryStyles';
 import { SummaryStat } from '@/components/attacks/summary/SummaryStat';
+import { useActivationInput } from '@/components/attacks/useActivationInput';
 import { Mono, Summary } from '@/components/ui/ui';
 import { summarizeActivation } from '@/core/activation/summary/activationSummary';
 import { attackKindLabel } from '@/core/attacks/attackVariant';
 import { formatPercent } from '@/core/damage/probability';
-import type { WrapPick } from '@/core/playbook/playbook.types';
 import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
+import { rowHasWrapPick } from '@/core/playbook/wrapSlots';
+import { formatRange, formatSigned } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 const EXPECTED_VALUE_DIGITS = 1;
 
-const swingHasWrapSelection = (
-  picks: readonly WrapPick[] | undefined,
-): boolean => {
-  return (picks ?? []).some((id) => id != null);
-};
-
-const formatRange = ({ low, high }: { low: number; high: number }): string => {
-  return low === high ? `${low}` : `${low}-${high}`;
-};
-
-const formatSigned = (value: number): string => {
-  return value > 0 ? `+${value}` : `${value}`;
-};
-
 export const AttacksPanelSummary = () => {
-  const {
-    attacker,
-    hp: targetHp,
-    charging,
-    chargeAttackIndex,
-    activeBaseCount,
-    startingMomentum,
-    effectiveBonusTimeByAttack,
-    effectiveWrapPicks,
-    ignoredAttackIndex,
-    damageMods,
-    specialAbilities,
-    attacks,
-    killingBlowIndex,
-  } = useMeatGrinderSimulation();
+  const { attacker, damageMods, effectiveWrapPicks } =
+    useMeatGrinderSimulation();
 
-  const effectiveChargeAttackIndex = charging
-    ? chargeAttackIndex
-    : NO_ATTACK_INDEX;
-
-  const summary = useMemo(
-    () =>
-      summarizeActivation({
-        attacker,
-        attacks,
-        ignoredAttackIndex,
-        killingBlowIndex,
-        wrapPicks: effectiveWrapPicks,
-        bonusTimeByAttack: effectiveBonusTimeByAttack,
-        damageMods,
-        specialAbilities,
-        startingMomentum,
-        activeBaseCount,
-        targetHp,
-      }),
-    [
-      attacker,
-      attacks,
-      ignoredAttackIndex,
-      killingBlowIndex,
-      effectiveWrapPicks,
-      effectiveBonusTimeByAttack,
-      damageMods,
-      specialAbilities,
-      startingMomentum,
-      activeBaseCount,
-      targetHp,
-    ],
-  );
+  const { input, effectiveChargeAttackIndex } = useActivationInput();
+  const summary = useMemo(() => summarizeActivation(input), [input]);
 
   return (
     <Summary as="section" aria-label="Per-swing hit odds">
@@ -113,7 +56,7 @@ export const AttacksPanelSummary = () => {
             </SelectionPicksInline>
           </SelectionLine>
           <Mono>
-            {swingHasWrapSelection(effectiveWrapPicks[swing.attackIndex])
+            {rowHasWrapPick(effectiveWrapPicks[swing.attackIndex])
               ? formatPercent(swing.prob)
               : '-'}
           </Mono>

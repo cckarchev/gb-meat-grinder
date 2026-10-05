@@ -1,5 +1,5 @@
+import type { ReactNode } from 'react';
 import styled from 'styled-components';
-import type { AppChromeProps } from '@/components/ui/layout.types';
 import { narrowViewport } from '@/styles/breakpoints';
 
 const Shell = styled.div`
@@ -14,6 +14,10 @@ const Shell = styled.div`
     padding: 0.75rem 0.5rem 1.5rem;
   }
 `;
+
+type AppChromeProps = {
+  children: ReactNode;
+};
 
 export const AppChrome = ({ children }: AppChromeProps) => {
   return <Shell>{children}</Shell>;

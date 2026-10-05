@@ -3,6 +3,7 @@ import { AttackerModelSelect } from '@/components/attacker/AttackerModelSelect';
 import { AttackerPreAttackOptions } from '@/components/attacker/AttackerPreAttackOptions';
 import { StepControl } from '@/components/ui/StepControl';
 import { Panel, PanelTitle } from '@/components/ui/ui';
+import { formatSigned } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 
@@ -48,8 +49,8 @@ export const AttackerPanel = () => {
     dispatch,
   } = useMeatGrinderSimulation();
 
-  const gangingUpLabel = gangingUp > 0 ? `+${gangingUp}` : '0';
-  const crowdingOutLabel = crowdingOut > 0 ? `-${crowdingOut}` : '0';
+  const gangingUpLabel = formatSigned(gangingUp);
+  const crowdingOutLabel = formatSigned(-crowdingOut);
 
   return (
     <Panel>

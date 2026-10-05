@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   activeSwings,
   summarizeActivation,
+  swingIsSkipped,
 } from '@/core/activation/summary/activationSummary';
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
@@ -52,6 +53,23 @@ describe('activeSwings', () => {
 
   it('drops the ignored lead swing and everything after the killing blow', () => {
     expect(activeSwings(attacks, 0, 1)).toEqual([attacks[1]]);
+  });
+});
+
+describe('swingIsSkipped', () => {
+  it('plays every swing when nothing is ignored and nothing kills', () => {
+    expect(swingIsSkipped(0, -1, -1)).toBe(false);
+    expect(swingIsSkipped(2, -1, -1)).toBe(false);
+  });
+
+  it('skips the swing Resilience ignores', () => {
+    expect(swingIsSkipped(0, 0, -1)).toBe(true);
+    expect(swingIsSkipped(1, 0, -1)).toBe(false);
+  });
+
+  it('plays the killing blow and skips every swing after it', () => {
+    expect(swingIsSkipped(1, -1, 1)).toBe(false);
+    expect(swingIsSkipped(2, -1, 1)).toBe(true);
   });
 });
 

@@ -1,6 +1,5 @@
 import { useId } from 'react';
 import styled from 'styled-components';
-import type { StepControlProps } from '@/components/ui/stepControl.types';
 import { narrowViewport } from '@/styles/breakpoints';
 import { focusRing } from '@/styles/mixins';
 
@@ -77,6 +76,18 @@ const ValueDisplay = styled.span`
     padding: 0.28rem 0.18rem;
   }
 `;
+
+type StepControlProps = {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  onChange: (next: number) => void;
+  /** Shown inside the value box, e.g. `4+` or `2` */
+  valueLabel: string;
+  decrementAriaLabel: string;
+  incrementAriaLabel: string;
+};
 
 export const StepControl = ({
   label,

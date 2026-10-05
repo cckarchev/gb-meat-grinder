@@ -1,5 +1,5 @@
+import type { ReactNode } from 'react';
 import styled from 'styled-components';
-import type { TargetPanelsRowProps } from '@/components/ui/layout.types';
 import { Panel } from '@/components/ui/ui';
 import { narrowViewport } from '@/styles/breakpoints';
 
@@ -20,6 +20,10 @@ const Row = styled.div`
     margin-bottom: 0.65rem;
   }
 `;
+
+type TargetPanelsRowProps = {
+  children: ReactNode;
+};
 
 export const TargetPanelsRow = ({ children }: TargetPanelsRowProps) => {
   return <Row>{children}</Row>;
