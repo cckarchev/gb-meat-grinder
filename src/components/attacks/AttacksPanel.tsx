@@ -82,7 +82,6 @@ export const AttacksPanel = () => {
           displayIdx={displayIdx}
           disabled={isSwingDisabled(displayIdx)}
           isKillingBlow={displayIdx === killingBlowIndex}
-          armor={a.armor}
           charging={charging}
           chargeAttackIndex={effectiveChargeAttackIndex}
           activeBaseCount={activeBaseCount}

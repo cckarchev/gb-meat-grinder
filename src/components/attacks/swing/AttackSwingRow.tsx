@@ -36,7 +36,6 @@ export const AttackSwingRow = ({
   displayIdx,
   disabled,
   isKillingBlow,
-  armor,
   charging,
   chargeAttackIndex,
   activeBaseCount,
@@ -57,6 +56,7 @@ export const AttackSwingRow = ({
 }: AttackSwingRowProps) => {
   const { attacker } = useMeatGrinderSimulation();
   const i = attack.attackIndex;
+  const armor = attack.armor;
   const maxNet = maxNetSuccessesForRoll(attack.tac, armor);
 
   const hasWrapContinuation = wrapPicks[i].length > 1;

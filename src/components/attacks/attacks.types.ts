@@ -33,7 +33,6 @@ export type AttackSwingRowProps = {
   displayIdx: number;
   disabled: boolean;
   isKillingBlow: boolean;
-  armor: number;
   charging: boolean;
   chargeAttackIndex: number;
   activeBaseCount: number;
