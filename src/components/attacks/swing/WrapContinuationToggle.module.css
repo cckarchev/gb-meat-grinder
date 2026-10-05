@@ -1,12 +1,10 @@
 .toggleButton {
   composes: inputButton from '../../../styles/mixins.module.css';
   display: inline-flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: var(--space-2xs);
   flex-shrink: 0;
-  box-sizing: border-box;
   margin: 0;
   padding: var(--space-2xs) var(--space-sm);
   font-size: var(--font-size-xs);
@@ -49,6 +47,5 @@
     padding: var(--space-3xs) var(--space-xs);
     font-size: var(--font-size-2xs);
     gap: var(--space-3xs);
-    border-radius: var(--radius-xs);
   }
 }

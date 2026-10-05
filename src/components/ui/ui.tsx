@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import styles from '@/components/ui/ui.module.css';
 import { joinClassNames } from '@/styles/joinClassNames';
 
@@ -26,8 +26,12 @@ export const PanelTitle = ({ className, ...props }: ComponentProps<'h2'>) => {
   );
 };
 
-export const Row = ({ className, ...props }: ComponentProps<'div'>) => {
-  return <div className={joinClassNames(styles.row, className)} {...props} />;
+type RowProps = {
+  children: ReactNode;
+};
+
+export const Row = ({ children }: RowProps) => {
+  return <div className={styles.row}>{children}</div>;
 };
 
 export const Select = ({ className, ...props }: ComponentProps<'select'>) => {

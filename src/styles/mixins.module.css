@@ -36,11 +36,17 @@
     letter-spacing: var(--tracking-heading);
   }
 
+  /* Dotted underline hinting that the text opens a tooltip. */
+  .tooltipHint {
+    text-decoration: underline dotted;
+    text-underline-offset: 0.12em;
+  }
+
   /* Bordered field surface shared by selects and input-style buttons. */
   .inputSurface {
     font: inherit;
     border: var(--rule);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius);
     background: var(--input-bg);
     color: var(--text);
   }

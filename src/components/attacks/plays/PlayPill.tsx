@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import styles from '@/components/attacks/plays/PlayPill.module.css';
-import { ToggleButton } from '@/components/ui/controls';
+import { ToggleButton } from '@/components/ui/ToggleButton';
 import { TooltipBubble } from '@/components/ui/TooltipBubble';
 import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
 import { dataFlag } from '@/styles/dataFlag';

@@ -1,7 +1,7 @@
 @layer primitives {
   .panel {
     border: var(--rule);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius);
     padding: var(--space-2xl);
     margin-bottom: var(--space-2xl);
     background: var(--panel);
@@ -60,7 +60,6 @@
     .panel {
       padding: var(--space-lg) var(--space-md);
       margin-bottom: var(--space-lg);
-      border-radius: var(--radius-md);
     }
 
     .panelFooterSection {

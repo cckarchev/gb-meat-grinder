@@ -8,7 +8,8 @@
   align-items: start;
 }
 
-/* A rule before the pre-attack toggles, which title their own groups. */
+/* Extra room above the footer rule, since the pre-attack toggles title their
+   own groups instead of sitting under a panel heading. */
 .preAttackSection {
   margin-top: var(--space-2xl);
 }

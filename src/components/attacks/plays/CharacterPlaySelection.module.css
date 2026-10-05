@@ -21,7 +21,9 @@
   margin-top: var(--space-sm);
 }
 
-.slotRow:first-of-type {
+/* The heading's own margin spaces the first slot. `:first-of-type` would
+   never match here: the heading is a `div` too. */
+.sectionHeading + .slotRow {
   margin-top: 0;
 }
 
@@ -37,7 +39,7 @@
   font-weight: var(--font-weight-bold);
   color: var(--muted);
   border: var(--rule);
-  border-radius: var(--radius-xs);
+  border-radius: var(--radius);
 }
 
 .pills {

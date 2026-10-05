@@ -5,7 +5,7 @@
     font-size: var(--font-size-md);
     letter-spacing: var(--tracking-button);
     padding: var(--space-sm) var(--space-2xl);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius);
     cursor: pointer;
     white-space: nowrap;
     background: transparent;

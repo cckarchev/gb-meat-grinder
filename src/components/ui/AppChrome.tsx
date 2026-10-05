@@ -1,10 +1,11 @@
-import type { ComponentProps } from 'react';
+import type { ReactNode } from 'react';
 import styles from '@/components/ui/AppChrome.module.css';
-import { joinClassNames } from '@/styles/joinClassNames';
+
+type AppChromeProps = {
+  children: ReactNode;
+};
 
 /** Centered, width-capped page shell around the whole app. */
-export const AppChrome = ({ className, ...props }: ComponentProps<'div'>) => {
-  return (
-    <div className={joinClassNames(styles.appChrome, className)} {...props} />
-  );
+export const AppChrome = ({ children }: AppChromeProps) => {
+  return <div className={styles.appChrome}>{children}</div>;
 };

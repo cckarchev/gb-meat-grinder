@@ -25,7 +25,7 @@
   gap: var(--space-xs) var(--space-lg);
   padding: var(--space-3xs) var(--space-xs);
   margin: 0 calc(var(--space-xs) * -1);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   font-size: var(--font-size-md);
   color: var(--text);
   transition: background-color var(--duration-fast) ease;

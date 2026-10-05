@@ -1,25 +1,14 @@
 import type { ComponentProps } from 'react';
 import styles from '@/components/ui/TooltipBubble.module.css';
-import { joinClassNames } from '@/styles/joinClassNames';
 
 type TooltipBubbleSize = 'compact' | 'regular';
 
-type TooltipBubbleProps = ComponentProps<'span'> & {
-  /** Picks the offset, width, padding, and font size set. */
+type TooltipBubbleProps = Omit<ComponentProps<'span'>, 'className'> & {
+  /** Picks the max width and font size. */
   size: TooltipBubbleSize;
 };
 
 /** Popover panel anchored below its `position: relative` parent. */
-export const TooltipBubble = ({
-  size,
-  className,
-  ...props
-}: TooltipBubbleProps) => {
-  return (
-    <span
-      className={joinClassNames(styles.tooltipBubble, className)}
-      data-size={size}
-      {...props}
-    />
-  );
+export const TooltipBubble = ({ size, ...props }: TooltipBubbleProps) => {
+  return <span className={styles.tooltipBubble} data-size={size} {...props} />;
 };

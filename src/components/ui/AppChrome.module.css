@@ -1,7 +1,6 @@
 @layer primitives {
   /* Centered, width-capped page shell around the whole app. */
   .appChrome {
-    box-sizing: border-box;
     width: 100%;
     max-width: 880px;
     margin: 0 auto;

@@ -5,7 +5,7 @@
   gap: var(--space-md) var(--space-xl);
   margin-bottom: var(--space-lg);
   padding: var(--space-sm) var(--space-lg);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius);
   border: var(--rule);
   background: color-mix(in srgb, var(--input-bg) 88%, var(--border));
 }
@@ -22,7 +22,6 @@
 /* Dice pool readout + wrap toggle (wrap lives here so the playbook row can use full width). */
 .readoutGroup {
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: var(--space-sm);
   flex: 0 0 auto;
@@ -33,7 +32,6 @@
 
 .readout {
   display: flex;
-  flex-direction: row;
   align-items: baseline;
   gap: var(--space-xs);
   flex: 0 0 auto;

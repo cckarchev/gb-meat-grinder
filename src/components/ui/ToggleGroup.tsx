@@ -1,32 +1,19 @@
-import type { ComponentProps, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import styles from '@/components/ui/ToggleGroup.module.css';
 import type { CustomPropertyStyle } from '@/styles/customProperties';
-import { joinClassNames } from '@/styles/joinClassNames';
+
+type ToggleGroupLayoutProps = {
+  children: ReactNode;
+};
 
 /** Panel footer holding toggle groups stacked with even spacing. */
-export const ToggleGroupStack = ({
-  className,
-  ...props
-}: ComponentProps<'div'>) => {
-  return (
-    <div
-      className={joinClassNames(styles.toggleGroupStack, className)}
-      {...props}
-    />
-  );
+export const ToggleGroupStack = ({ children }: ToggleGroupLayoutProps) => {
+  return <div className={styles.toggleGroupStack}>{children}</div>;
 };
 
 /** Two toggle groups side by side, stacked on the narrowest screens. */
-export const ToggleGroupPair = ({
-  className,
-  ...props
-}: ComponentProps<'div'>) => {
-  return (
-    <div
-      className={joinClassNames(styles.toggleGroupPair, className)}
-      {...props}
-    />
-  );
+export const ToggleGroupPair = ({ children }: ToggleGroupLayoutProps) => {
+  return <div className={styles.toggleGroupPair}>{children}</div>;
 };
 
 type ToggleGroupProps = {

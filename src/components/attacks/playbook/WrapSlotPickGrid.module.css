@@ -32,7 +32,7 @@
   min-width: 0;
   height: 100%;
   border: var(--rule);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   overflow: hidden;
   background: var(--input-bg);
 }

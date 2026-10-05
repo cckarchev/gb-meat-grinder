@@ -64,12 +64,8 @@
   --focus-outline: var(--outline-width) solid var(--focus-ring);
   /** Subtle row hover wash (ties a label to its value while scanning). */
   --row-hover: rgba(255, 255, 255, 0.06);
-  /** Sharp corners everywhere to match CCK. Keys retained so existing
-      var(--radius-*) consumers keep working. */
-  --radius-lg: 0;
-  --radius-md: 0;
-  --radius-sm: 0;
-  --radius-xs: 0;
+  /** Sharp corners everywhere to match CCK. */
+  --radius: 0;
   /** Charge attack accent (CCK orange family). */
   --accent-charge: var(--accent);
   --accent-charge-soft: #f0905f;

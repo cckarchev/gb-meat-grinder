@@ -1,16 +1,11 @@
-import type { ComponentProps } from 'react';
+import type { ReactNode } from 'react';
 import styles from '@/components/ui/ui.module.css';
-import { joinClassNames } from '@/styles/joinClassNames';
+
+type SetupPanelsRowProps = {
+  children: ReactNode;
+};
 
 /** Side-by-side row for the attacker and enemy panels, wrapping on narrow screens. */
-export const SetupPanelsRow = ({
-  className,
-  ...props
-}: ComponentProps<'div'>) => {
-  return (
-    <div
-      className={joinClassNames(styles.setupPanelsRow, className)}
-      {...props}
-    />
-  );
+export const SetupPanelsRow = ({ children }: SetupPanelsRowProps) => {
+  return <div className={styles.setupPanelsRow}>{children}</div>;
 };

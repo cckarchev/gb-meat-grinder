@@ -6,7 +6,7 @@
 
   /* Inline text trigger, styled as plain text with a dotted underline hint. */
   .trigger {
-    composes: focusRing from '../../styles/mixins.module.css';
+    composes: focusRing tooltipHint from '../../styles/mixins.module.css';
     font: inherit;
     color: inherit;
     padding: 0;
@@ -14,12 +14,10 @@
     border: 0;
     background: none;
     cursor: help;
-    text-decoration: underline dotted;
-    text-underline-offset: 0.12em;
     text-align: inherit;
   }
 
   .trigger:focus-visible {
-    border-radius: 0;
+    border-radius: var(--radius);
   }
 }

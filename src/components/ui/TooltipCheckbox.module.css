@@ -29,8 +29,7 @@
 
   /* Plain label text (clicking it toggles the box), hinting at its tooltip. */
   .labelText {
+    composes: tooltipHint from '../../styles/mixins.module.css';
     position: relative;
-    text-decoration: underline dotted;
-    text-underline-offset: 0.12em;
   }
 }

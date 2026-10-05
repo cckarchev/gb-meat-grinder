@@ -10,7 +10,7 @@
     max-width: min(var(--bubble-max-width), 80vw);
     padding: var(--space-sm) var(--space-md);
     border: var(--rule);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius);
     background: var(--popover-bg);
     color: var(--text);
     box-shadow: var(--popover-shadow);

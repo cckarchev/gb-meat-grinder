@@ -1,8 +1,8 @@
 import { AttackerPanel } from '@/components/attacker/AttackerPanel';
 import { AttacksPanel } from '@/components/attacks/AttacksPanel';
 import { EnemyPanel } from '@/components/enemy/EnemyPanel';
-import { ToggleButton } from '@/components/ui/controls';
 import { SetupPanelsRow } from '@/components/ui/SetupPanelsRow';
+import { ToggleButton } from '@/components/ui/ToggleButton';
 import styles from '@/gbMeatGrinder/MeatGrinderRoot.module.css';
 import { MeatGrinderSimulationContext } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { useMeatGrinderSimulationState } from '@/gbMeatGrinder/useMeatGrinderSimulationState';

@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react';
-import styles from '@/components/ui/controls.module.css';
+import styles from '@/components/ui/ToggleButton.module.css';
 import { dataFlag } from '@/styles/dataFlag';
 import { joinClassNames } from '@/styles/joinClassNames';
 
