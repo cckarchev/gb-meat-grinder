@@ -3,6 +3,7 @@
 import { picksBeforeInActivation } from '@/core/attacks/attackRows';
 import type {
   PlaybookDamageMods,
+  PlaybookResult,
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/playbookIndex';
@@ -38,4 +39,25 @@ export const knockDownTakenBeforePick = (
   return earlierPicks.some((earlier) => {
     return getPlaybookResult(attacker, earlier.id).appliesKnockDown === true;
   });
+};
+
+/**
+ * True if Knock Down is all this line does. A line with other effects (damage,
+ * momentum, a dodge, ...) stays worth picking after KD is taken: its effects
+ * apply on their own and only the KD is dropped.
+ */
+export const knockDownIsOnlyEffect = (result: PlaybookResult): boolean => {
+  if (!result.appliesKnockDown) {
+    return false;
+  }
+
+  const hasOtherEffect =
+    result.damage > 0 ||
+    result.momentum === true ||
+    result.dodge === true ||
+    result.clearsCover === true ||
+    result.picksCharacterPlay === true ||
+    (result.tacBonusForLater ?? 0) > 0;
+
+  return !hasOtherEffect;
 };

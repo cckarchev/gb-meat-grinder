@@ -13,7 +13,7 @@ const KNOCK_DOWN_LOCKED_TITLE =
 type PlaybookLineButtonProps = {
   id: PlaybookChoiceId;
   selected: boolean;
-  /** Knock Down already applied earlier, so this line cannot be picked. */
+  /** KD-only line after Knock Down already applied, so it cannot be picked. */
   knockDownLocked: boolean;
   /** Formatted hit chance for this line's column, for the accessible label. */
   hitChanceLabel: string;

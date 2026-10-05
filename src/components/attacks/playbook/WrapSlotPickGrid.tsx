@@ -6,7 +6,10 @@ import {
   ColumnResults,
   WrapSlotBlock,
 } from '@/components/attacks/playbook/playbookGridStyles';
-import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
+import {
+  knockDownIsOnlyEffect,
+  knockDownTakenBeforePick,
+} from '@/core/playbook/knockDown';
 import { type SwingRoll, wrapSlotColumns } from '@/core/playbook/wrapSlots';
 import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
 import { formatPercent } from '@/core/shared/format';
@@ -76,7 +79,7 @@ export const WrapSlotPickGrid = ({
                       id={result.id}
                       selected={selected}
                       knockDownLocked={
-                        result.appliesKnockDown === true && knockDownTaken
+                        knockDownTaken && knockDownIsOnlyEffect(result)
                       }
                       hitChanceLabel={hitChanceLabel}
                       onClick={() =>

@@ -64,20 +64,30 @@ describe('clampAttackPlan', () => {
     );
   };
 
-  /** Model whose only net-1 line is a KD and only net-2 line is a GB. */
-  const knockDownThenGbAttacker = (tac: number): AttackerData => {
-    const fixture = makeAttacker();
-    const gbResult = getPlaybookResult(fixture, 'gb');
-    const knockDownResult = getPlaybookResult(fixture, 'kd');
+  const fixture = makeAttacker();
 
+  /** The fixture `kd` line without its dodge: Knock Down is all it does. */
+  const bareKnockDown = { ...getPlaybookResult(fixture, 'kd'), dodge: false };
+
+  /** Model whose only net-1 line is a bare KD and only net-2 line is a GB. */
+  const knockDownThenGbAttacker = (tac: number): AttackerData => {
     return makeAttacker({
       tac,
       playbook: [
-        { netSuccesses: 1, results: [knockDownResult] },
-        { netSuccesses: 2, results: [gbResult] },
+        { netSuccesses: 1, results: [bareKnockDown] },
+        { netSuccesses: 2, results: [getPlaybookResult(fixture, 'gb')] },
       ],
     });
   };
+
+  /** TAC 3 model with a net-1 `1` line and a net-3 bare KD line. */
+  const bareKnockDownAttacker = makeAttacker({
+    tac: 3,
+    playbook: [
+      { netSuccesses: 1, results: [getPlaybookResult(fixture, 'one')] },
+      { netSuccesses: 3, results: [bareKnockDown] },
+    ],
+  });
 
   it('downgrades picks the roll can never reach', () => {
     // 2 dice, ARM 0: max 2 net, so `four` becomes the first net-2 line.
@@ -167,10 +177,30 @@ describe('clampAttackPlan', () => {
     ).toEqual([['one'], []]);
   });
 
-  it('replaces every KD after the first one', () => {
+  it('replaces every bare KD after the first one', () => {
+    expect(
+      clamp({
+        attacker: bareKnockDownAttacker,
+        wrapPicks: [['kd'], ['kd']],
+        activeBaseCount: 2,
+      }).wrapPicks,
+    ).toEqual([['kd'], ['one']]);
+
+    expect(
+      clamp({
+        attacker: bareKnockDownAttacker,
+        wrapPicks: [['kd'], ['kd']],
+        activeBaseCount: 2,
+        enemyKnockedDown: ENEMY_KNOCKED_DOWN,
+      }).wrapPicks,
+    ).toEqual([['one'], ['one']]);
+  });
+
+  it('keeps a repeated KD line that carries other effects', () => {
+    // The later KD does not apply, but its dodge (or damage) still does.
     expect(
       clamp({ wrapPicks: [['kd'], ['kd']], activeBaseCount: 2 }).wrapPicks,
-    ).toEqual([['kd'], ['one']]);
+    ).toEqual([['kd'], ['kd']]);
 
     expect(
       clamp({
@@ -178,7 +208,7 @@ describe('clampAttackPlan', () => {
         activeBaseCount: 2,
         enemyKnockedDown: ENEMY_KNOCKED_DOWN,
       }).wrapPicks,
-    ).toEqual([['one'], ['one']]);
+    ).toEqual([['kd'], ['kd']]);
   });
 
   it('gives a GB replacement for a duplicate KD its default play', () => {
