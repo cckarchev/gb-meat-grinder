@@ -9,12 +9,9 @@
 import { describe, expect, it } from 'vitest';
 import { ATTACKERS } from '@/attackers/registry';
 import { activationAttackIndices } from '@/core/attackRows';
-import {
-  clampAttackPlan,
-  maxPlaybookColumnForRow,
-} from '@/core/attackSequence';
 import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
 import { characterPlayAvailabilityForPick } from '@/core/characterPlayPicks';
+import { clampAttackPlan } from '@/core/clampAttackPlan';
 import {
   availableBuffs,
   effectiveArmor,
@@ -33,6 +30,7 @@ import {
   damageModifierBreakdownWrap,
 } from '@/core/rowDamage';
 import { deriveSimulation } from '@/core/simulation';
+import { maxPlaybookColumnForRow } from '@/core/swingModifiers';
 import {
   choiceUsesCharacterPlay,
   defaultCharacterPlayPicksWrap,
