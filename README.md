@@ -58,6 +58,11 @@ src/
   gbMeatGrinder/  app state: reducer, initial state, simulation hooks
 ```
 
+## Modeling rules
+
+[MODELING.md](MODELING.md) records the Guild Ball rules the calculator encodes (stacking,
+condition timing, damage sources, momentum). Read it before adding a model or an effect.
+
 Types live next to their domain as `*.types.ts`.
 
 Adding a beater means writing a file in `src/data/attackers/` and registering it
