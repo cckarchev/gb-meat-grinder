@@ -17,7 +17,7 @@ export const SectionHeading = styled.div`
   font-size: 0.68rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--tracking-caps);
   color: var(--muted);
   margin-bottom: 0.4rem;
 `;

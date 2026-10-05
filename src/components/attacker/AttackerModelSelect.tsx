@@ -14,7 +14,7 @@ const ModelField = styled.label`
 const ModelFieldLabel = styled.span`
   font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--tracking-caps);
   color: var(--muted);
 `;
 

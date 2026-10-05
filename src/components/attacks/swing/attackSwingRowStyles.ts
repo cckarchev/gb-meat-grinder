@@ -96,7 +96,7 @@ export const KillingBlowBadge = styled.span`
   font-size: 0.66rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--tracking-caps);
   color: var(--accent-ink);
   background: var(--accent-berserker);
   white-space: nowrap;
