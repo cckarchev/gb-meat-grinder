@@ -57,7 +57,7 @@ export const planDamageOutcome = (
     const state = swingStateAt(timeline, attack.attackIndex);
     const extras = {
       playDamageBySlot: state.playDamageBySlot,
-      chargeDamage: state.chargeTraitDamage,
+      chargeTraitDamage: state.chargeTraitDamage,
     };
     const swingMods = withSwingDamageBonus(mods, state.playbookDamageBonus);
 

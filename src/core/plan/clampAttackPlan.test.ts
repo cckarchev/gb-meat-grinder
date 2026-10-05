@@ -5,21 +5,15 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/playbookIndex';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker, NO_MODS, TEST_PLAYBOOK } from '@/core/testing/fixtures';
+import {
+  makeAttacker,
+  makeRollParams,
+  planOf,
+  TEST_PLAYBOOK,
+} from '@/core/testing/fixtures';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
-const COVER = true;
-
-const STANCE = true;
-
-const NO_BONUS_TIME = [false, false];
-
 const ENEMY_KNOCKED_DOWN = true;
-
-const ENEMY_DEF = 4;
-
-const NO_TAC_MODIFIER = 0;
 
 describe('clampAttackPlan', () => {
   type ClampOptions = {
@@ -43,25 +37,10 @@ describe('clampAttackPlan', () => {
   }: ClampOptions) => {
     const model = attacker ?? makeAttacker({ tac });
 
-    const plays =
-      characterPlayPicks ?? wrapPicks.map((row) => row.map(() => null));
-
-    return clampAttackPlan(
-      { wrapPicks, characterPlayPicks: plays },
-      {
-        attacker: model,
-        chargeAttackIndex: NO_ATTACK_INDEX,
-        armor,
-        enemyHasCover: !COVER,
-        enemyDefensiveStance: !STANCE,
-        damageMods: NO_MODS,
-        enemyDef: ENEMY_DEF,
-        bonusTimeByAttack: NO_BONUS_TIME,
-        initialTacModifier: NO_TAC_MODIFIER,
-        enemyKnockedDown,
-        activeBaseCount,
-      },
-    );
+    return clampAttackPlan(planOf(wrapPicks, characterPlayPicks), {
+      ...makeRollParams({ attacker: model, armor, activeBaseCount }),
+      enemyKnockedDown,
+    });
   };
 
   const fixture = makeAttacker();
@@ -243,17 +222,8 @@ describe('clampAttackPlan', () => {
     };
 
     const result = clampAttackPlan(plan, {
-      attacker: makeAttacker({ tac: 4 }),
-      chargeAttackIndex: NO_ATTACK_INDEX,
-      armor: 0,
-      enemyHasCover: !COVER,
-      enemyDefensiveStance: !STANCE,
-      damageMods: NO_MODS,
-      enemyDef: ENEMY_DEF,
-      bonusTimeByAttack: NO_BONUS_TIME,
-      initialTacModifier: NO_TAC_MODIFIER,
+      ...makeRollParams({ attacker: makeAttacker({ tac: 4 }) }),
       enemyKnockedDown: false,
-      activeBaseCount: 2,
     });
 
     expect(result).toBe(plan);
@@ -266,17 +236,8 @@ describe('clampAttackPlan', () => {
     };
 
     const result = clampAttackPlan(plan, {
-      attacker: makeAttacker({ tac: 2 }),
-      chargeAttackIndex: NO_ATTACK_INDEX,
-      armor: 0,
-      enemyHasCover: !COVER,
-      enemyDefensiveStance: !STANCE,
-      damageMods: NO_MODS,
-      enemyDef: ENEMY_DEF,
-      bonusTimeByAttack: NO_BONUS_TIME,
-      initialTacModifier: NO_TAC_MODIFIER,
+      ...makeRollParams({ attacker: makeAttacker({ tac: 2 }) }),
       enemyKnockedDown: false,
-      activeBaseCount: 2,
     });
 
     expect(result).not.toBe(plan);

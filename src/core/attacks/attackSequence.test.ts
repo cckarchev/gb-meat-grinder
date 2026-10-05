@@ -2,8 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { activationTimeline } from '@/core/attacks/activationTimeline';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+import { makeAttacker, makeRollParams } from '@/core/testing/fixtures';
 
 const COVER = true;
 
@@ -11,18 +10,14 @@ const STANCE = true;
 
 const NO_BONUS_TIME = [false, false];
 
-const params: ActivationRollParams = {
+const params: ActivationRollParams = makeRollParams({
   attacker: makeAttacker({ tac: 6 }),
-  chargeAttackIndex: NO_ATTACK_INDEX,
   armor: 1,
   enemyHasCover: !COVER,
   enemyDefensiveStance: !STANCE,
-  damageMods: NO_MODS,
   enemyDef: 4,
   bonusTimeByAttack: NO_BONUS_TIME,
-  initialTacModifier: 0,
-  activeBaseCount: 2,
-};
+});
 
 describe('computeAttackSequence', () => {
   it('builds per-swing roll contexts with binomial success odds', () => {

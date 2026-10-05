@@ -24,7 +24,7 @@ export type CharacterTrait = {
 /** Thresher's Don't Fear The... (activated, Once Per Turn). */
 export const dontFearTheReaper: CharacterTrait = {
   id: 'dontFearTheReaper',
-  label: "Don't Fear The Reaper",
+  label: "Don't Fear The...",
   tooltip:
     'Remove a Harvest marker to deal 3 unmodified damage (a character trait: ' +
     'Tough Hide and damage buffs do not apply).',

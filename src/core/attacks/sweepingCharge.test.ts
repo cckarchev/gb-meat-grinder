@@ -9,6 +9,7 @@ import {
   makeAttacker,
   modsWith,
   NO_MODS,
+  planOf,
 } from '@/core/testing/fixtures';
 import { searingStrike, sweepingCharge } from '@/data/characterTraits';
 
@@ -31,13 +32,6 @@ const timelineFor = (plan: AttackPlan, mods = NO_MODS) => {
     activeBaseCount: SWINGS,
     chargeAttackIndex: CHARGE_ROW,
   });
-};
-
-const planOf = (rows: string[][]): AttackPlan => {
-  return {
-    wrapPicks: rows,
-    characterPlayPicks: rows.map((row) => row.map(() => null)),
-  };
 };
 
 describe('Sweeping Charge in the plan', () => {
@@ -76,7 +70,7 @@ describe('Sweeping Charge in the plan', () => {
 });
 
 describe('Sweeping Charge in the odds', () => {
-  const extras = { playDamageBySlot: [], chargeDamage: 3 };
+  const extras = { playDamageBySlot: [], chargeTraitDamage: 3 };
 
   it('adds 3 when the roll reaches the picked damage line', () => {
     expect(pickedDamageForNet(sweeper, NO_MODS, ['two'], 2, extras)).toBe(5);

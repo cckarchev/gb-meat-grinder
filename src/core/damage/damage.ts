@@ -64,18 +64,42 @@ export const activeBuffs = (
 
 /**
  * Flat, unmodified damage from the model's activated traits (e.g. Thresher's
- * Don't Fear The Reaper). Character traits ignore Tough Hide and damage buffs,
+ * Don't Fear The...). Character traits ignore Tough Hide and damage buffs,
  * so it is simply added to the activation's damage.
  */
 export const activeTraitFlatDamage = (
   attacker: AttackerData,
   activeTraits: Record<string, boolean>,
 ): number => {
-  const activated = (attacker.characterTraits ?? []).filter((trait) => {
-    return trait.active === true && activeTraits[trait.id] === true;
-  });
+  const activated = activatedTraits(attacker, activeTraits);
 
   return activated.reduce((sum, trait) => sum + (trait.flatDamage ?? 0), 0);
+};
+
+/** The model's traits the user activates with a checkbox. */
+export const activatableTraits = (
+  attacker: AttackerData,
+): readonly CharacterTrait[] => {
+  return (attacker.characterTraits ?? []).filter((trait) => {
+    return trait.active === true;
+  });
+};
+
+/** The activatable traits currently toggled on. */
+export const activatedTraits = (
+  attacker: AttackerData,
+  activeTraits: Record<string, boolean>,
+): readonly CharacterTrait[] => {
+  return activatableTraits(attacker).filter((trait) => {
+    return activeTraits[trait.id] === true;
+  });
+};
+
+const TRAIT_LABEL_SEPARATOR = ' + ';
+
+/** Several traits named on one breakdown line (e.g. `Searing Strike + Sweeping Charge`). */
+export const joinTraitLabels = (traits: readonly CharacterTrait[]): string => {
+  return traits.map((trait) => trait.label).join(TRAIT_LABEL_SEPARATOR);
 };
 
 /** The attacker's traits plus those granted by active buffs, once each. */

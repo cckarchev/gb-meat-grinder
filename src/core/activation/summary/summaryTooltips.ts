@@ -2,7 +2,11 @@
 
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
 import { swingStateAt } from '@/core/attacks/activationTimeline';
-import { attackerTraits } from '@/core/damage/damage';
+import {
+  activatedTraits,
+  attackerTraits,
+  joinTraitLabels,
+} from '@/core/damage/damage';
 import {
   characterPlayDamageSources,
   damageModifierBreakdown,
@@ -78,20 +82,17 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
 
   // Unmodified charge damage (Sweeping Charge), named after its trait.
   if (chargeDamage > 0) {
-    const chargeTraits = attackerTraits(input.attacker, input.damageMods);
+    const chargeTraits = attackerTraits(
+      input.attacker,
+      input.damageMods,
+    ).filter((trait) => {
+      return (trait.chargeDamage ?? 0) > 0;
+    });
 
-    const labels = chargeTraits
-      .filter((trait) => (trait.chargeDamage ?? 0) > 0)
-      .map((trait) => trait.label);
-
-    tooltip += `; +${chargeDamage} ${labels.join(' + ')}`;
+    tooltip += `; +${chargeDamage} ${joinTraitLabels(chargeTraits)}`;
   }
 
-  const activatedTraits = (input.attacker.characterTraits ?? []).filter(
-    (trait) => trait.active === true && input.activeTraits[trait.id] === true,
-  );
-
-  for (const trait of activatedTraits) {
+  for (const trait of activatedTraits(input.attacker, input.activeTraits)) {
     tooltip += `; +${trait.flatDamage ?? 0} ${trait.label}`;
   }
 

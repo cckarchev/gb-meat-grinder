@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { activationTimeline } from '@/core/attacks/activationTimeline';
 import { sumSwingTac, swingTacAndDef } from '@/core/attacks/swingTac';
-import { CHARGE_TAC_BONUS, NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+import { CHARGE_TAC_BONUS } from '@/core/shared/constants';
+import { makeAttacker, makeRollParams } from '@/core/testing/fixtures';
 
 describe('sumSwingTac', () => {
   it('sums base TAC, charge, bonuses and penalties', () => {
@@ -51,18 +51,7 @@ describe('swingTacAndDef', () => {
     characterPlayPicks: [[null], [null]],
   };
 
-  const params = {
-    attacker,
-    chargeAttackIndex: NO_ATTACK_INDEX,
-    armor: 0,
-    enemyHasCover: false,
-    enemyDefensiveStance: false,
-    damageMods: NO_MODS,
-    enemyDef: FLOOR_DEF,
-    bonusTimeByAttack: [false, false],
-    initialTacModifier: 0,
-    activeBaseCount: 2,
-  };
+  const params = makeRollParams({ attacker, enemyDef: FLOOR_DEF });
 
   const swing = (attackIndex: number) => {
     const timeline = activationTimeline(plan, params);

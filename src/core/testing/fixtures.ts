@@ -1,10 +1,15 @@
+import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
 import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from '@/core/damage/damage';
+import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type {
   CharacterPlay,
+  CharacterPlayPickSlot,
   PlaybookColumn,
   PlaybookDamageMods,
   PlaybookResult,
+  WrapPick,
 } from '@/core/playbook/playbook.types';
+import { DEF_DEFAULT, NO_ATTACK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 import {
   CROWDING_OUT_RANGE,
@@ -177,4 +182,47 @@ export const modsWith = (
   overrides: Partial<PlaybookDamageMods>,
 ): PlaybookDamageMods => {
   return { ...NO_MODS, ...overrides };
+};
+
+/** A plan from its wrap picks; without `plays`, no slot picks a character play. */
+export const planOf = (
+  rows: WrapPick[][],
+  plays?: CharacterPlayPickSlot[][],
+): AttackPlan => {
+  const noPlays = rows.map((row) => row.map(() => null));
+
+  return { wrapPicks: rows, characterPlayPicks: plays ?? noPlays };
+};
+
+/** Three swings that each pick the same line once. */
+export const threeOf = (id: string): AttackPlan => {
+  return planOf([[id], [id], [id]]);
+};
+
+/** Enemy ARM in the neutral roll params: nothing to strip. */
+const NEUTRAL_ARMOR = 0;
+
+/** Swings in the neutral roll params. */
+const NEUTRAL_BASE_COUNT = 2;
+
+/**
+ * Roll params with nothing in play: no charge, cover, stance, mods, Bonus Time
+ * or TAC modifier, ARM 0 and the default DEF. Tests override what they exercise.
+ */
+export const makeRollParams = (
+  overrides: Partial<ActivationRollParams> = {},
+): ActivationRollParams => {
+  return {
+    attacker: makeAttacker(),
+    chargeAttackIndex: NO_ATTACK_INDEX,
+    armor: NEUTRAL_ARMOR,
+    enemyHasCover: false,
+    enemyDefensiveStance: false,
+    damageMods: NO_MODS,
+    enemyDef: DEF_DEFAULT,
+    bonusTimeByAttack: [],
+    initialTacModifier: 0,
+    activeBaseCount: NEUTRAL_BASE_COUNT,
+    ...overrides,
+  };
 };

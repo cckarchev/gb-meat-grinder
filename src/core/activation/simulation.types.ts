@@ -37,7 +37,7 @@ export type ActivationScenario = {
   crowdingOut: number;
   bonusTimeByAttack: boolean[];
   damageMods: PlaybookDamageMods;
-  /** Activated traits (e.g. Don't Fear The Reaper), by trait id. */
+  /** Activated traits (e.g. Don't Fear The...), by trait id. */
   activeTraits: Record<string, boolean>;
   attackPlan: AttackPlan;
 };

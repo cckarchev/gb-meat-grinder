@@ -5,13 +5,16 @@ import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import { wrapPickClearsCover } from '@/core/playbook/coverClearing';
-import type {
-  CharacterPlayPickSlot,
-  PlaybookDamageMods,
-} from '@/core/playbook/playbook.types';
+import type { PlaybookDamageMods } from '@/core/playbook/playbook.types';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { modsWith, NO_MODS } from '@/core/testing/fixtures';
+import {
+  makeRollParams,
+  modsWith,
+  NO_MODS,
+  planOf,
+  threeOf,
+} from '@/core/testing/fixtures';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 import { cast } from '@/data/attackers/cast';
 import { veteranCinder } from '@/data/attackers/veteranCinder';
@@ -21,20 +24,6 @@ import { veteranCinder } from '@/data/attackers/veteranCinder';
 const ACTIVE = 3;
 const CHARGE_ROW = 0;
 const ENEMY_DEF = 4;
-
-const planOf = (
-  rows: string[][],
-  plays?: CharacterPlayPickSlot[][],
-): AttackPlan => {
-  return {
-    wrapPicks: rows,
-    characterPlayPicks: plays ?? rows.map((row) => row.map(() => null)),
-  };
-};
-
-const threeOf = (id: string): AttackPlan => {
-  return planOf([[id], [id], [id]]);
-};
 
 type ScenarioOptions = {
   mods?: PlaybookDamageMods;
@@ -47,18 +36,14 @@ const rollParams = (
   attacker: AttackerData,
   options: ScenarioOptions,
 ): ActivationRollParams => {
-  return {
+  return makeRollParams({
     attacker,
     chargeAttackIndex: options.chargeAttackIndex ?? NO_ATTACK_INDEX,
     armor: options.armor ?? 0,
-    enemyHasCover: false,
-    enemyDefensiveStance: false,
     damageMods: options.mods ?? NO_MODS,
     enemyDef: ENEMY_DEF,
-    bonusTimeByAttack: [],
-    initialTacModifier: 0,
     activeBaseCount: options.activeBaseCount ?? ACTIVE,
-  };
+  });
 };
 
 const swingArmor = (

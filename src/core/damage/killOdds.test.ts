@@ -3,8 +3,12 @@ import { activationTimeline } from '@/core/attacks/activationTimeline';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { planDamageOutcome } from '@/core/damage/killOdds';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker, NO_MODS, PLAY_DAMAGE } from '@/core/testing/fixtures';
+import {
+  makeAttacker,
+  makeRollParams,
+  NO_MODS,
+  PLAY_DAMAGE,
+} from '@/core/testing/fixtures';
 
 describe('planDamageOutcome', () => {
   it('convolves swings and folds in flat damage', () => {
@@ -50,18 +54,7 @@ describe('planDamageOutcome', () => {
     const characterPlayPicks = [['playDamage'], ['playDamage']];
     const plan = { wrapPicks, characterPlayPicks };
 
-    const rollParams = {
-      attacker,
-      chargeAttackIndex: NO_ATTACK_INDEX,
-      armor: 0,
-      enemyHasCover: false,
-      enemyDefensiveStance: false,
-      damageMods: NO_MODS,
-      enemyDef: 2,
-      bonusTimeByAttack: [false, false],
-      initialTacModifier: 0,
-      activeBaseCount: 2,
-    };
+    const rollParams = makeRollParams({ attacker, enemyDef: 2 });
 
     const timeline = activationTimeline(plan, rollParams);
     const { attacks } = computeAttackSequence(plan, rollParams);

@@ -101,11 +101,6 @@ const sumEffects = (
   return { tacBonus, defReduction, armorReduction };
 };
 
-/** Whether the target is Burning before the first swing (the Burning condition). */
-const startsBurning = (params: TimelineParams): boolean => {
-  return params.damageMods.targetBurning;
-};
-
 /** +DMG Burning Passion-like traits add to playbook damage against a Burning target. */
 const damageBonusVsBurning = (params: TimelineParams): number => {
   const traits = attackerTraits(params.attacker, params.damageMods);
@@ -251,7 +246,8 @@ export const activationTimeline = (
     },
   );
 
-  let burning = startsBurning(params);
+  // Burning before the first swing comes from the toggled Burning condition.
+  let burning = damageMods.targetBurning;
 
   const preAppliedState: SwingState = {
     ...EMPTY_SWING_STATE,

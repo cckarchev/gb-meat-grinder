@@ -106,7 +106,7 @@ Charge alone depends on the roll of its own (charge) swing.
 |---|:-:|:-:|:-:|
 | **Playbook damage results** | reduces | +1 | +1 while Burning |
 | **Character plays** that cause damage (*Impale*) | reduces | +1 | no |
-| **Character traits** (*Sweeping Charge*, *Don't Fear The Reaper*) | no | no | no |
+| **Character traits** (*Sweeping Charge*, *Don't Fear The...*) | no | no | no |
 
 ## Playbook symbols
 

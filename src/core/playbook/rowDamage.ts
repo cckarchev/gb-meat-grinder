@@ -11,6 +11,7 @@ import {
   availableBuffs,
   effectiveDamageForChoice,
   effectivePlaybookDamage,
+  joinTraitLabels,
   withSwingDamageBonus,
 } from '@/core/damage/damage';
 import type {
@@ -23,7 +24,6 @@ import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 const TRAIT_ID_SEPARATOR = '+';
-const TRAIT_LABEL_SEPARATOR = ' + ';
 
 /** The breakdown line for Burning Passion-like traits, named after them. */
 const burningPassionLine = (
@@ -36,13 +36,13 @@ const burningPassionLine = (
   });
 
   const id = traits.map((trait) => trait.id).join(TRAIT_ID_SEPARATOR);
-  const label = traits.map((trait) => trait.label).join(TRAIT_LABEL_SEPARATOR);
+  const label = joinTraitLabels(traits);
 
   return { id, label, bonus };
 };
 
 /** A damage source the breakdown itemizes, at its printed amount. */
-export type PrintedDamageSource = { label: string; amount: number };
+type PrintedDamageSource = { label: string; amount: number };
 
 /**
  * The damaging plays live on the given swings, by play, at their printed amount

@@ -19,6 +19,7 @@ import {
 import { maxPlaybookColumnForRow } from '@/core/attacks/maxPlaybookColumn';
 import { characterPlayAvailabilityForPick } from '@/core/characterPlays/characterPlayUsage';
 import {
+  activatableTraits,
   availableBuffs,
   effectiveDamageForChoice,
   effectiveEnemyDef,
@@ -220,9 +221,10 @@ const runScenario = (
   };
 
   const activeTraits = Object.fromEntries(
-    (attacker.characterTraits ?? [])
-      .filter((trait) => trait.active === true)
-      .map((trait) => [trait.id, scenario.allActiveTraits]),
+    activatableTraits(attacker).map((trait) => [
+      trait.id,
+      scenario.allActiveTraits,
+    ]),
   );
 
   const armor = scenario.armor;

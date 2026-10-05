@@ -25,7 +25,7 @@ describe('play damage in the odds', () => {
   const attacker = makeAttacker({ characterPlays: [PLAY_DAMAGE] });
 
   it('adds a slot play damage only when the roll reaches that slot line', () => {
-    const extras = { playDamageBySlot: [3], chargeDamage: 0 };
+    const extras = { playDamageBySlot: [3], chargeTraitDamage: 0 };
 
     // `gb` costs 3 net: below it the slot falls back to the best lower line.
     expect(pickedDamageForNet(attacker, NO_MODS, ['gb'], 3, extras)).toBe(4);

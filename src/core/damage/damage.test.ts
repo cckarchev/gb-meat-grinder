@@ -1,11 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import {
+  activatableTraits,
+  activatedTraits,
   activeTraitFlatDamage,
   availableBuffs,
   effectiveEnemyDef,
   effectivePlaybookDamage,
   guildBuffIsExcluded,
   guildBuffsFor,
+  joinTraitLabels,
   playbookDamageBonusSum,
 } from '@/core/damage/damage';
 import {
@@ -122,5 +125,29 @@ describe('guild buff sides', () => {
     expect(guildBuffsFor(attacker, 'enemy').map((buff) => buff.id)).toEqual([
       'crack',
     ]);
+  });
+});
+
+describe('activated traits', () => {
+  const attacker = makeAttacker({
+    characterTraits: [dontFearTheReaper, PASSIVE_TRAIT],
+  });
+
+  it('lists only the traits the user can activate', () => {
+    expect(activatableTraits(attacker)).toEqual([dontFearTheReaper]);
+  });
+
+  it('keeps the activatable traits that are toggled on', () => {
+    expect(activatedTraits(attacker, {})).toEqual([]);
+    expect(activatedTraits(attacker, { passive: true })).toEqual([]);
+    expect(activatedTraits(attacker, { dontFearTheReaper: true })).toEqual([
+      dontFearTheReaper,
+    ]);
+  });
+
+  it('joins trait labels for a tooltip line', () => {
+    expect(joinTraitLabels([dontFearTheReaper, PASSIVE_TRAIT])).toBe(
+      `${dontFearTheReaper.label} + Passive`,
+    );
   });
 });

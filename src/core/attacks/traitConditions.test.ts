@@ -13,18 +13,12 @@ import {
   modsWith,
   NO_MODS,
   PLAY_DAMAGE,
+  threeOf,
 } from '@/core/testing/fixtures';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 import { burningPassion, searingStrike } from '@/data/characterTraits';
 
 const SWINGS = 3;
-
-const threeOf = (id: string): AttackPlan => {
-  return {
-    wrapPicks: [[id], [id], [id]],
-    characterPlayPicks: [[null], [null], [null]],
-  };
-};
 
 const timelineFor = (
   attacker: AttackerData,

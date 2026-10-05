@@ -9,7 +9,7 @@ import {
 import { GuildBuffCheckbox } from '@/components/ui/GuildBuffCheckbox';
 import { ToggleGroup, ToggleGroupStack } from '@/components/ui/ToggleGroup';
 import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
-import { guildBuffsFor } from '@/core/damage/damage';
+import { activatableTraits, guildBuffsFor } from '@/core/damage/damage';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 /** Charging, then guild buffs and activated traits under guild-colored titles. */
@@ -27,9 +27,7 @@ export const AttackerPreAttackOptions = () => {
 
   const buffs = guildBuffsFor(attacker, 'attacker');
 
-  const activatedTraits = (attacker.characterTraits ?? []).filter(
-    (trait) => trait.active === true,
-  );
+  const toggleableTraits = activatableTraits(attacker);
 
   return (
     <ToggleGroupStack>
@@ -47,12 +45,12 @@ export const AttackerPreAttackOptions = () => {
           ))}
         </ToggleGroup>
       ) : null}
-      {activatedTraits.length > 0 ? (
+      {toggleableTraits.length > 0 ? (
         <ToggleGroup
           title={LABEL_ACTIVATED_TRAITS}
           color={attacker.guild.color}
         >
-          {activatedTraits.map((trait) => (
+          {toggleableTraits.map((trait) => (
             <TooltipCheckbox
               key={trait.id}
               checked={activeTraits[trait.id] === true}
