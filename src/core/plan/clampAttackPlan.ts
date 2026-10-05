@@ -2,11 +2,11 @@
  * Keeps a wrap / character-play plan legal as the inputs that bound it change.
  */
 
+import { sanitizeCharacterPlayPicksWrap } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
 import type {
   AttackPlan,
   AttackPlanClampParams,
 } from '@/core/plan/attackPlan.types';
-import { sanitizeCharacterPlayPicksWrap } from '@/core/plan/characterPlayPicks';
 import { clampAttackRow } from '@/core/plan/clampAttackRow';
 import { stripDuplicateKnockDown } from '@/core/plan/clampKnockDown';
 import { gridEqual } from '@/core/shared/gridEqual';

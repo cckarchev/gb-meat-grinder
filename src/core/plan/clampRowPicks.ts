@@ -2,11 +2,11 @@
  * Fits one attack row's wrap picks to the highest playbook column it reaches.
  */
 
-import type { AttackPlanRow } from '@/core/plan/attackPlan.types';
 import {
   defaultCharacterPlayId,
   initialCharacterPlayFor,
-} from '@/core/plan/characterPlayPicks';
+} from '@/core/characterPlays/characterPlayLookup';
+import type { AttackPlanRow } from '@/core/plan/attackPlan.types';
 import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
 import {
   cheapestChoiceId,

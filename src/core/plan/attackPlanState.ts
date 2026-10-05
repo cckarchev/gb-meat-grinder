@@ -2,12 +2,10 @@ import {
   activeBaseAttackCount,
   attackArraySize,
 } from '@/core/attacks/attackStructure';
+import { defaultCharacterPlayId } from '@/core/characterPlays/characterPlayLookup';
+import { sanitizeCharacterPlayPicksWrap } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
 import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from '@/core/damage/damage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
-import {
-  defaultCharacterPlayId,
-  sanitizeCharacterPlayPicksWrap,
-} from '@/core/plan/characterPlayPicks';
 import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
 import type {
   CharacterPlayPick,

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   defaultCharacterPlayId,
   getCharacterPlay,
-} from '@/core/plan/characterPlayPicks';
+} from '@/core/characterPlays/characterPlayLookup';
 import { wrapPickClearsCover } from '@/core/playbook/rowEffects';
 import {
   defaultWrapPicks,

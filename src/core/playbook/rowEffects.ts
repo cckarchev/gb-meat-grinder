@@ -4,11 +4,9 @@
 
 import { activationAttackIndices } from '@/core/attacks/attackRows';
 import { berserkerRowOffset } from '@/core/attacks/attackStructure';
-import {
-  characterPlayPickModifiers,
-  characterPlayUsageBeforePick,
-  defaultCharacterPlayId,
-} from '@/core/plan/characterPlayPicks';
+import { characterPlayPickModifiers } from '@/core/characterPlays/characterPlayEffects';
+import { defaultCharacterPlayId } from '@/core/characterPlays/characterPlayLookup';
+import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
 import type {
   CharacterPlayPickSlot,
   PlaybookDamageMods,

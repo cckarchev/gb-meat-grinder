@@ -18,6 +18,7 @@ import {
   attackArraySize,
 } from '@/core/attacks/attackStructure';
 import { maxPlaybookColumnForRow } from '@/core/attacks/maxPlaybookColumn';
+import { characterPlayAvailabilityForPick } from '@/core/characterPlays/characterPlayUsage';
 import {
   availableBuffs,
   effectiveArmor,
@@ -27,7 +28,6 @@ import {
 } from '@/core/damage/damage';
 import { damageQuantile } from '@/core/damage/damageDistribution';
 import { planDamageOutcome } from '@/core/damage/killOdds';
-import { characterPlayAvailabilityForPick } from '@/core/plan/characterPlayPicks';
 import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
 import type {
   CharacterPlayPickSlot,

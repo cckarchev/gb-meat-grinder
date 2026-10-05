@@ -10,7 +10,7 @@ import {
   baseAttackDealtDamage,
   berserkerSourceBaseIndex,
 } from '@/core/attacks/attackRows';
-import { characterPlayUsageBeforePick } from '@/core/plan/characterPlayPicks';
+import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
 import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
 import {
   armorReductionBeforeAttack,

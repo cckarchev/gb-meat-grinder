@@ -11,10 +11,10 @@ import {
 } from '@/components/attacks/plays/characterPlayStyles';
 import { PlayPill } from '@/components/attacks/plays/PlayPill';
 import {
-  characterPlayAvailabilityForPick,
   characterPlayEffectSummary,
   characterPlayHasEffect,
-} from '@/core/plan/characterPlayPicks';
+} from '@/core/characterPlays/characterPlayEffects';
+import { characterPlayAvailabilityForPick } from '@/core/characterPlays/characterPlayUsage';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 type CharacterPlaySelectionProps = {

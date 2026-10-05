@@ -4,11 +4,11 @@
 
 import { activationAttackIndices } from '@/core/attacks/attackRows';
 import { maxPlaybookColumnForPlan } from '@/core/attacks/maxPlaybookColumn';
+import { initialCharacterPlayFor } from '@/core/characterPlays/characterPlayLookup';
 import type {
   AttackPlan,
   AttackPlanClampParams,
 } from '@/core/plan/attackPlan.types';
-import { initialCharacterPlayFor } from '@/core/plan/characterPlayPicks';
 import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
 import { cheapestChoiceId } from '@/core/playbook/playbookIndex';
 import { getPlaybookResult, wrapSlotBudget } from '@/core/playbook/wrapSlots';
