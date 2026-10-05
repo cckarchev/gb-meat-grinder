@@ -5,6 +5,7 @@ import { createInitialMeatGrinderState } from '@/gbMeatGrinder/reducer/meatGrind
 import { meatGrinderReducer } from '@/gbMeatGrinder/reducer/meatGrinderReducer';
 import { attackerOf } from '@/gbMeatGrinder/reducer/stateSelectors';
 import type { MeatGrinderSimulation } from '@/gbMeatGrinder/simulation.types';
+import { pickUiEngineResults } from '@/gbMeatGrinder/uiEngineResults';
 
 export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
   const [state, dispatch] = useReducer(
@@ -21,24 +22,16 @@ export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
   );
 
   return useMemo(() => {
-    const { attackerId, attackPlan, bonusTimeByAttack, ...exposedState } =
+    const { attackerId, attackPlan, bonusTimeByAttack, ...uiEditableState } =
       state;
 
     return {
-      ...exposedState,
+      ...uiEditableState,
+      ...pickUiEngineResults(derived),
       attacker,
       availableAttackers: ATTACKERS,
-      activeBaseCount: derived.activeBaseCount,
-      effectiveChargeAttackIndex: derived.effectiveChargeAttackIndex,
       wrapPicks: attackPlan.wrapPicks,
       characterPlayPicks: attackPlan.characterPlayPicks,
-      effectiveWrapPicks: derived.effectiveWrapPicks,
-      effectiveBonusTimeByAttack: derived.effectiveBonusTimeByAttack,
-      ignoredDisplayIndex: derived.ignoredDisplayIndex,
-      attacks: derived.attacks,
-      rowDamageIfHit: derived.rowDamageIfHit,
-      flatDamage: derived.flatDamage,
-      killingBlowIndex: derived.killingBlowIndex,
       dispatch,
     };
   }, [attacker, state, derived]);

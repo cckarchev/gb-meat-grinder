@@ -1,5 +1,4 @@
 import type { Dispatch } from 'react';
-import type { DerivedSimulation } from '@/core/activation/simulation.types';
 import type {
   CharacterPlayPickSlot,
   WrapPick,
@@ -9,30 +8,17 @@ import type {
   MeatGrinderAction,
   MeatGrinderState,
 } from '@/gbMeatGrinder/reducer/reducer.types';
+import type { UiEngineResults } from '@/gbMeatGrinder/uiEngineResults';
 
 /** Editable state the components read as is. */
-type ExposedState = Omit<
+type UiEditableState = Omit<
   MeatGrinderState,
   'attackerId' | 'attackPlan' | 'bonusTimeByAttack'
 >;
 
-/** Engine results the components read. */
-type ExposedDerivation = Pick<
-  DerivedSimulation,
-  | 'activeBaseCount'
-  | 'effectiveChargeAttackIndex'
-  | 'effectiveWrapPicks'
-  | 'effectiveBonusTimeByAttack'
-  | 'ignoredDisplayIndex'
-  | 'attacks'
-  | 'rowDamageIfHit'
-  | 'flatDamage'
-  | 'killingBlowIndex'
->;
-
 /** React hook + context value for the Meat Grinder simulation. */
-export type MeatGrinderSimulation = ExposedState &
-  ExposedDerivation & {
+export type MeatGrinderSimulation = UiEditableState &
+  UiEngineResults & {
     /** The selected attacker model. */
     attacker: AttackerData;
     /** Every model that can be selected. */
