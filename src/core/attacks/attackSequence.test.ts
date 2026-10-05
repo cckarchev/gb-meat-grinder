@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
+import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
-
-const NO_CHARGE = -1;
 
 const COVER = true;
 
@@ -20,7 +19,7 @@ describe('computeAttackSequence', () => {
       1,
       [['two'], ['one']],
       [[null], [null]],
-      NO_CHARGE,
+      NO_ATTACK_INDEX,
       !COVER,
       !STANCE,
       NO_MODS,
@@ -59,7 +58,7 @@ describe('computeAttackSequence', () => {
       1,
       [['gb'], ['one']],
       [['playTac'], [null]],
-      NO_CHARGE,
+      NO_ATTACK_INDEX,
       !COVER,
       !STANCE,
       NO_MODS,

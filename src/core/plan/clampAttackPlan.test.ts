@@ -5,10 +5,9 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/wrapSlots';
+import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { makeAttacker, NO_MODS, TEST_PLAYBOOK } from '@/core/testing/fixtures';
 import type { AttackerData } from '@/data/attackers/attacker.types';
-
-const NO_CHARGE = -1;
 
 const COVER = true;
 
@@ -51,7 +50,7 @@ describe('clampAttackPlan', () => {
       { wrapPicks, characterPlayPicks: plays },
       {
         attacker: model,
-        chargeAttackIndex: NO_CHARGE,
+        chargeAttackIndex: NO_ATTACK_INDEX,
         armor,
         enemyHasCover: !COVER,
         enemyDefensiveStance: !STANCE,
@@ -215,7 +214,7 @@ describe('clampAttackPlan', () => {
 
     const result = clampAttackPlan(plan, {
       attacker: makeAttacker({ tac: 4 }),
-      chargeAttackIndex: NO_CHARGE,
+      chargeAttackIndex: NO_ATTACK_INDEX,
       armor: 0,
       enemyHasCover: !COVER,
       enemyDefensiveStance: !STANCE,
@@ -238,7 +237,7 @@ describe('clampAttackPlan', () => {
 
     const result = clampAttackPlan(plan, {
       attacker: makeAttacker({ tac: 2 }),
-      chargeAttackIndex: NO_CHARGE,
+      chargeAttackIndex: NO_ATTACK_INDEX,
       armor: 0,
       enemyHasCover: !COVER,
       enemyDefensiveStance: !STANCE,

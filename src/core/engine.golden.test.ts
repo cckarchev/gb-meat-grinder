@@ -45,6 +45,7 @@ import {
   defaultWrapPicks,
   wrapSlotBudget,
 } from '@/core/playbook/wrapSlots';
+import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 import { ATTACKERS } from '@/data/attackers/registry';
 import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
@@ -54,7 +55,6 @@ const PLAN_SETTLE_PASSES = 6;
 const LOW_QUANTILE = 0.1;
 const HIGH_QUANTILE = 0.9;
 const CHARGE_ROW = 0;
-const NO_CHARGE = -1;
 
 type Scenario = {
   name: string;
@@ -211,7 +211,7 @@ const runScenario = (
     scenario.charging,
   );
 
-  const chargeAttackIndex = scenario.charging ? CHARGE_ROW : NO_CHARGE;
+  const chargeAttackIndex = scenario.charging ? CHARGE_ROW : NO_ATTACK_INDEX;
 
   const damageMods: PlaybookDamageMods = {
     toughHide: scenario.toughHide,
