@@ -21,6 +21,9 @@ export const KILLING_BLOW_MOMENTUM = 1;
 /** Momentum each momentous line that deals damage earns on a hit. */
 export const MOMENTOUS_PICK_MOMENTUM = 1;
 
+/** Least influence a model can be allocated; the most is its INF. */
+export const INFLUENCE_MIN = 0;
+
 /** Influence a non-Furious model spends to charge. */
 export const CHARGE_INFLUENCE_COST = 2;
 

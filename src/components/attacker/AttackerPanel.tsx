@@ -3,6 +3,7 @@ import { AttackerModelSelect } from '@/components/attacker/AttackerModelSelect';
 import { AttackerPreAttackOptions } from '@/components/attacker/AttackerPreAttackOptions';
 import { StepControl } from '@/components/ui/StepControl';
 import { Panel, PanelTitle } from '@/components/ui/ui';
+import { INFLUENCE_MIN } from '@/core/shared/constants';
 import { formatSigned } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
@@ -60,7 +61,7 @@ export const AttackerPanel = () => {
         <StepControl
           label="Influence"
           value={influence}
-          min={0}
+          min={INFLUENCE_MIN}
           max={attacker.inf}
           onChange={(value) => dispatch({ type: 'influence', value })}
           ariaSubject="influence"

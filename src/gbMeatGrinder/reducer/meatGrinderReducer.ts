@@ -7,6 +7,7 @@ import {
   nextPlanAfterWrapChoice,
 } from '@/core/plan/planEdits';
 import { clamp } from '@/core/shared/clamp';
+import { INFLUENCE_MIN } from '@/core/shared/constants';
 import { attackerById } from '@/data/attackers/registry';
 import {
   resanitizeBonusTime,
@@ -53,7 +54,11 @@ const transition = (
       return { ...state, hp: action.value };
     }
     case 'influence': {
-      const influence = clamp(action.value, 0, attackerOf(state).inf);
+      const influence = clamp(
+        action.value,
+        INFLUENCE_MIN,
+        attackerOf(state).inf,
+      );
 
       return withReclampedCharge(state, { influence });
     }
