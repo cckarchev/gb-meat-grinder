@@ -15,13 +15,15 @@ const cache = new WeakMap<AttackerData, PlaybookIndex>();
 const buildIndex = (attacker: AttackerData): PlaybookIndex => {
   const byId = new Map<PlaybookChoiceId, PlaybookResult>();
 
-  for (const col of attacker.playbook) {
-    for (const r of col.results) {
-      byId.set(r.id, r);
+  for (const column of attacker.playbook) {
+    for (const result of column.results) {
+      byId.set(result.id, result);
     }
   }
 
-  const maxNet = Math.max(...attacker.playbook.map((c) => c.netSuccesses));
+  const maxNet = Math.max(
+    ...attacker.playbook.map((column) => column.netSuccesses),
+  );
 
   return { byId, maxNet };
 };
@@ -34,11 +36,11 @@ export const playbookIndex = (attacker: AttackerData): PlaybookIndex => {
     return cached;
   }
 
-  const idx = buildIndex(attacker);
+  const index = buildIndex(attacker);
 
-  cache.set(attacker, idx);
+  cache.set(attacker, index);
 
-  return idx;
+  return index;
 };
 
 export const maxPlaybookNet = (attacker: AttackerData): number => {

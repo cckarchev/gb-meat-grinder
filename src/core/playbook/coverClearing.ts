@@ -25,16 +25,16 @@ export const coverSwingClockIndices = (
   attacker: AttackerData,
   activeBaseCount: number,
 ): number[] => {
-  const out: number[] = [];
+  const indices: number[] = [];
   const offset = berserkerRowOffset(attacker);
 
-  for (let b = 0; b < activeBaseCount; b++) {
-    out.push(b);
+  for (let baseIndex = 0; baseIndex < activeBaseCount; baseIndex++) {
+    indices.push(baseIndex);
 
     if (attacker.berserker) {
-      out.push(offset + b);
+      indices.push(offset + baseIndex);
     }
   }
 
-  return out;
+  return indices;
 };

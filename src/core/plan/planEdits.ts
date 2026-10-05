@@ -18,8 +18,8 @@ const withRowReplaced = <T>(
   index: number,
   replace: (row: readonly T[]) => T[],
 ): T[][] => {
-  return rows.map((row, i) => {
-    return i === index ? replace(row) : [...row];
+  return rows.map((row, rowIndex) => {
+    return rowIndex === index ? replace(row) : [...row];
   });
 };
 
@@ -39,7 +39,7 @@ export const nextPlanAfterWrapChoice = (
   }
 
   const nextPicks = withRowReplaced(prev.wrapPicks, attackIndex, (row) => {
-    return row.map((cur, j) => (j === pickIndex ? id : cur));
+    return row.map((current, slot) => (slot === pickIndex ? id : current));
   });
 
   const rowLength = nextPicks[attackIndex].length;

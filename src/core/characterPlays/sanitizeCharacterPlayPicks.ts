@@ -29,14 +29,16 @@ export const sanitizeCharacterPlayPicksWrap = (
 
   let changed = false;
 
-  for (let i = 0; i < wrapPicks.length; i++) {
-    for (let k = 0; k < wrapPicks[i].length; k++) {
-      const pick = wrapPicks[i][k];
+  for (let attackIndex = 0; attackIndex < wrapPicks.length; attackIndex++) {
+    const picks = wrapPicks[attackIndex];
+
+    for (let slot = 0; slot < picks.length; slot++) {
+      const pick = picks[slot];
       const usesPlay = pick != null && choiceUsesCharacterPlay(attacker, pick);
 
       if (!usesPlay) {
-        if (next[i]?.[k] != null) {
-          next[i][k] = null;
+        if (next[attackIndex]?.[slot] != null) {
+          next[attackIndex][slot] = null;
           changed = true;
         }
 
@@ -47,8 +49,8 @@ export const sanitizeCharacterPlayPicksWrap = (
         attacker,
         wrapPicks,
         next,
-        i,
-        k,
+        attackIndex,
+        slot,
         damageMods,
         activeBaseCount,
       );
@@ -59,11 +61,11 @@ export const sanitizeCharacterPlayPicksWrap = (
         continue;
       }
 
-      const current = next[i][k];
-      const currentIsAvailable = available.some((cp) => cp.id === current);
+      const current = next[attackIndex][slot];
+      const currentIsAvailable = available.some((play) => play.id === current);
 
       if (current == null || !currentIsAvailable) {
-        next[i][k] = available[0].id;
+        next[attackIndex][slot] = available[0].id;
         changed = true;
       }
     }

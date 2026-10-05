@@ -31,19 +31,21 @@ const momentumAcrossSwings = (
     activeBaseCount,
   );
 
-  const pos = order.indexOf(attackIndex);
+  const orderPosition = order.indexOf(attackIndex);
 
-  if (pos < 0) {
+  if (orderPosition < 0) {
     return startingMomentum;
   }
 
-  const swingCount = inclusive ? pos + 1 : pos;
+  const swingCount = inclusive ? orderPosition + 1 : orderPosition;
   let total = startingMomentum;
 
-  for (const j of order.slice(0, swingCount)) {
-    total += momentumEarnedBySwing(attacker, wrapPicks[j] ?? [], damageMods);
+  for (const swingIndex of order.slice(0, swingCount)) {
+    const swingPicks = wrapPicks[swingIndex] ?? [];
 
-    if (bonusTimeByAttack[j] === true) {
+    total += momentumEarnedBySwing(attacker, swingPicks, damageMods);
+
+    if (bonusTimeByAttack[swingIndex] === true) {
       total -= BONUS_TIME_MOMENTUM_COST;
     }
   }

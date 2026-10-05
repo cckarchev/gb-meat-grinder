@@ -18,13 +18,13 @@ export const getPlaybookResult = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
 ): PlaybookResult => {
-  const r = playbookIndex(attacker).byId.get(id);
+  const result = playbookIndex(attacker).byId.get(id);
 
-  if (!r) {
+  if (!result) {
     throw new Error(`Unknown playbook id: ${id}`);
   }
 
-  return r;
+  return result;
 };
 
 export const choiceUsesCharacterPlay = (
@@ -42,13 +42,15 @@ export const netSuccessesForChoice = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
 ): number => {
-  const col = attacker.playbook.find((c) => c.results.some((r) => r.id === id));
+  const column = attacker.playbook.find((candidate) => {
+    return candidate.results.some((result) => result.id === id);
+  });
 
-  if (!col) {
+  if (!column) {
     throw new Error(`No column for id ${id}`);
   }
 
-  return col.netSuccesses;
+  return column.netSuccesses;
 };
 
 /** How many playbook results this attack can resolve (ceil(maxNet / card cap)). */
@@ -105,8 +107,8 @@ export const wrapNetThresholdAllHits = (
 ): number => {
   let maxNeed = 0;
 
-  for (let k = 0; k < picks.length; k++) {
-    const id = picks[k];
+  for (let slot = 0; slot < picks.length; slot++) {
+    const id = picks[slot];
 
     if (id == null) {
       continue;
@@ -114,7 +116,7 @@ export const wrapNetThresholdAllHits = (
 
     const need = wrapExtendedNetNeeded(
       attacker,
-      k,
+      slot,
       netSuccessesForChoice(attacker, id),
     );
 

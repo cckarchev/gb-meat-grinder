@@ -20,27 +20,27 @@ const clampUnit = (p: number): number => {
   return clamp(p, 0, 1);
 };
 
-const heatHue = (t: number): number => {
-  return Math.round(t * HEAT_HUE_MAX);
+const heatHue = (clamped: number): number => {
+  return Math.round(clamped * HEAT_HUE_MAX);
 };
 
 /** Map probability to red (0) → green (1) for heat styling. */
 export const probHeatBackground = (p: number): string => {
-  const t = clampUnit(p);
-  const light = HEAT_LIGHTNESS_MIN + t * HEAT_LIGHTNESS_RANGE;
+  const clamped = clampUnit(p);
+  const light = HEAT_LIGHTNESS_MIN + clamped * HEAT_LIGHTNESS_RANGE;
 
-  return `hsl(${heatHue(t)} ${HEAT_SATURATION} ${light}%)`;
+  return `hsl(${heatHue(clamped)} ${HEAT_SATURATION} ${light}%)`;
 };
 
 export const probHeatTextColor = (p: number): string => {
-  const t = clampUnit(p);
+  const clamped = clampUnit(p);
 
-  return t > DARK_TEXT_THRESHOLD ? DARK_TEXT : LIGHT_TEXT;
+  return clamped > DARK_TEXT_THRESHOLD ? DARK_TEXT : LIGHT_TEXT;
 };
 
 export const probHeatBorder = (p: number): string => {
-  const t = clampUnit(p);
-  const alpha = BORDER_ALPHA_MIN + t * BORDER_ALPHA_RANGE;
+  const clamped = clampUnit(p);
+  const alpha = BORDER_ALPHA_MIN + clamped * BORDER_ALPHA_RANGE;
 
-  return `hsla(${heatHue(t)} ${BORDER_SATURATION} ${BORDER_LIGHTNESS} / ${alpha})`;
+  return `hsla(${heatHue(clamped)} ${BORDER_SATURATION} ${BORDER_LIGHTNESS} / ${alpha})`;
 };

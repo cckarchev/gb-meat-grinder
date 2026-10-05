@@ -109,19 +109,20 @@ export const armorReductionBeforeAttack = (
     activeBaseCount,
   );
 
-  const pos = order.indexOf(attackIndex);
+  const orderPosition = order.indexOf(attackIndex);
 
-  if (pos < 0) {
+  if (orderPosition < 0) {
     return 0;
   }
 
   let reduction = 0;
 
-  for (let oi = 0; oi < pos; oi++) {
-    const j = order[oi];
+  for (let position = 0; position < orderPosition; position++) {
+    const earlierIndex = order[position];
+    const earlierPicks = wrapPicks[earlierIndex];
 
-    for (let k = 0; k < wrapPicks[j].length; k++) {
-      if (wrapPicks[j][k] == null) {
+    for (let pickIndex = 0; pickIndex < earlierPicks.length; pickIndex++) {
+      if (earlierPicks[pickIndex] == null) {
         continue;
       }
 
@@ -129,8 +130,8 @@ export const armorReductionBeforeAttack = (
         attacker,
         wrapPicks,
         characterPlayPicks,
-        j,
-        k,
+        earlierIndex,
+        pickIndex,
         damageMods,
         activeBaseCount,
       );

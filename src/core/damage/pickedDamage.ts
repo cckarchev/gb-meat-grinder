@@ -18,16 +18,19 @@ const bestDamageWithinBudget = (
 ): number => {
   let best = 0;
 
-  for (const col of attacker.playbook) {
-    if (col.netSuccesses < MIN_PLAYBOOK_NET || col.netSuccesses > budget) {
+  for (const column of attacker.playbook) {
+    const tooCheap = column.netSuccesses < MIN_PLAYBOOK_NET;
+    const overBudget = column.netSuccesses > budget;
+
+    if (tooCheap || overBudget) {
       continue;
     }
 
-    for (const r of col.results) {
-      const d = effectiveDamageForChoice(attacker, r.id, mods);
+    for (const result of column.results) {
+      const damage = effectiveDamageForChoice(attacker, result.id, mods);
 
-      if (d > best) {
-        best = d;
+      if (damage > best) {
+        best = damage;
       }
     }
   }

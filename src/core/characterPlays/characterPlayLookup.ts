@@ -25,7 +25,7 @@ export const getCharacterPlay = (
     return undefined;
   }
 
-  return characterPlaysForAttacker(attacker).find((c) => c.id === id);
+  return characterPlaysForAttacker(attacker).find((play) => play.id === id);
 };
 
 /** Play picked by default when a GB result is chosen: the first guild play. */

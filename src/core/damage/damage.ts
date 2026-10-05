@@ -34,13 +34,13 @@ export const guildBuffIsExcluded = (
 /** Guild buffs this model can receive (excludes buffs it is the source of). */
 export const availableBuffs = (attacker: AttackerData) => {
   return attacker.guild.buffs.filter(
-    (b) => !guildBuffIsExcluded(attacker, b.id),
+    (buff) => !guildBuffIsExcluded(attacker, buff.id),
   );
 };
 
 /** The attacker's available buffs that are currently toggled on. */
 const activeBuffs = (attacker: AttackerData, mods: PlaybookDamageMods) => {
-  return availableBuffs(attacker).filter((b) => mods.buffs[b.id]);
+  return availableBuffs(attacker).filter((buff) => mods.buffs[buff.id]);
 };
 
 /**
@@ -53,8 +53,8 @@ export const specialAbilityFlatDamage = (
   toggled: Record<string, boolean>,
 ): number => {
   return (attacker.specialAbilities ?? [])
-    .filter((a) => toggled[a.id])
-    .reduce((sum, a) => sum + a.flatDamage, 0);
+    .filter((ability) => toggled[ability.id])
+    .reduce((sum, ability) => sum + ability.flatDamage, 0);
 };
 
 /** Sum of the +damage from selected buffs. */
@@ -76,7 +76,9 @@ const buffsIgnoreToughHide = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
 ): boolean => {
-  return activeBuffs(attacker, mods).some((b) => b.ignoresToughHide === true);
+  return activeBuffs(attacker, mods).some(
+    (buff) => buff.ignoresToughHide === true,
+  );
 };
 
 /**
@@ -105,7 +107,7 @@ export const effectiveArmor = (
   mods: PlaybookDamageMods,
 ): number => {
   const reduction = activeBuffs(attacker, mods).reduce(
-    (s, b) => s + (b.armorReduction ?? 0),
+    (sum, buff) => sum + (buff.armorReduction ?? 0),
     0,
   );
 
@@ -123,9 +125,10 @@ export const effectivePlaybookDamage = (
 
   const toughHideApplies =
     mods.toughHide && !buffsIgnoreToughHide(attacker, mods);
-  const pen = toughHideApplies ? TOUGH_HIDE_DAMAGE_PENALTY : 0;
+  const toughHidePenalty = toughHideApplies ? TOUGH_HIDE_DAMAGE_PENALTY : 0;
+  const buffBonus = playbookDamageBonusSum(attacker, mods);
 
-  return Math.max(0, cardDamage - pen + playbookDamageBonusSum(attacker, mods));
+  return Math.max(0, cardDamage - toughHidePenalty + buffBonus);
 };
 
 export const effectiveDamageForChoice = (

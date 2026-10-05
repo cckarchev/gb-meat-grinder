@@ -15,11 +15,11 @@ export const killingBlowDisplayIndex = (
 ): number => {
   let dealt = flatDamage;
 
-  for (let idx = 0; idx < attacks.length; idx++) {
-    dealt += rowDamageIfHit[attacks[idx].attackIndex] ?? 0;
+  for (let displayIndex = 0; displayIndex < attacks.length; displayIndex++) {
+    dealt += rowDamageIfHit[attacks[displayIndex].attackIndex] ?? 0;
 
     if (dealt >= targetHp) {
-      return idx;
+      return displayIndex;
     }
   }
 

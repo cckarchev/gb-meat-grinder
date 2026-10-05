@@ -81,8 +81,8 @@ const momentumAfterEachSwing = (input: SwingProjectionInput): number[] => {
   // and later (disabled) swings freeze at the post-kill total.
   const afterKill = momentum[killingBlowIndex] + KILLING_BLOW_MOMENTUM;
 
-  return momentum.map((value, idx) =>
-    idx >= killingBlowIndex ? afterKill : value,
+  return momentum.map((value, displayIndex) =>
+    displayIndex >= killingBlowIndex ? afterKill : value,
   );
 };
 

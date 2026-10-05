@@ -32,17 +32,19 @@ export const computeAttackSequence = (
 ): { attacks: AttackRollContext[] } => {
   const attacks: AttackRollContext[] = [];
 
-  for (const i of activationAttackIndices(
+  const order = activationAttackIndices(
     attacker,
     wrapPicks,
     damageMods,
     activeBaseCount,
-  )) {
+  );
+
+  for (const attackIndex of order) {
     const { tac, defMinRoll } = swingTacAndDef(
       attacker,
       wrapPicks,
       characterPlayPicks,
-      i,
+      attackIndex,
       chargeAttackIndex,
       enemyHasCover,
       enemyDefensiveStance,
@@ -59,21 +61,25 @@ export const computeAttackSequence = (
       wrapPicks,
       characterPlayPicks,
       damageMods,
-      i,
+      attackIndex,
       activeBaseCount,
     );
 
     const pHit = hitProbabilityPerDie(defMinRoll);
-    const need = wrapNetThresholdAllHits(attacker, wrapPicks[i]);
-    const prob = probAttackSucceeds(tac, pHit, rowArmor, need);
+    const netSuccessesNeeded = wrapNetThresholdAllHits(
+      attacker,
+      wrapPicks[attackIndex],
+    );
+
+    const prob = probAttackSucceeds(tac, pHit, rowArmor, netSuccessesNeeded);
 
     attacks.push({
-      attackIndex: i,
+      attackIndex,
       tac,
       armor: rowArmor,
       defMinRoll,
       pHit,
-      netSuccessesNeeded: need,
+      netSuccessesNeeded,
       prob,
     });
   }

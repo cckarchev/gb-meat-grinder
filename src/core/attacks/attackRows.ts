@@ -57,13 +57,17 @@ export const attackRowIsActive = (
     return false;
   }
 
-  const b = berserkerSourceBaseIndex(attacker, attackIndex);
+  const sourceBaseIndex = berserkerSourceBaseIndex(attacker, attackIndex);
 
-  if (b < 0 || b >= activeBaseCount) {
+  if (sourceBaseIndex < 0 || sourceBaseIndex >= activeBaseCount) {
     return false;
   }
 
-  return baseAttackDealtDamage(attacker, wrapPicks[b] ?? [], damageMods);
+  return baseAttackDealtDamage(
+    attacker,
+    wrapPicks[sourceBaseIndex] ?? [],
+    damageMods,
+  );
 };
 
 /**
@@ -76,24 +80,30 @@ export const activationAttackIndices = (
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
 ): number[] => {
-  const out: number[] = [];
+  const indices: number[] = [];
   const offset = berserkerRowOffset(attacker);
 
-  for (let b = 0; b < activeBaseCount; b++) {
-    out.push(b);
+  for (let baseIndex = 0; baseIndex < activeBaseCount; baseIndex++) {
+    indices.push(baseIndex);
 
     if (!attacker.berserker) {
       continue;
     }
 
-    const ber = offset + b;
+    const berserkerIndex = offset + baseIndex;
 
     if (
-      attackRowIsActive(attacker, wrapPicks, ber, damageMods, activeBaseCount)
+      attackRowIsActive(
+        attacker,
+        wrapPicks,
+        berserkerIndex,
+        damageMods,
+        activeBaseCount,
+      )
     ) {
-      out.push(ber);
+      indices.push(berserkerIndex);
     }
   }
 
-  return out;
+  return indices;
 };

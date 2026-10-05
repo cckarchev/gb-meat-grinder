@@ -33,22 +33,22 @@ export const coverTacPenaltyForAttack = (
   /* Use fixed base → berserker clock so > / >> are never skipped when a berserker
    * row is omitted from `activationAttackIndices` (damage-gated). */
   const clock = coverSwingClockIndices(attacker, activeBaseCount);
-  const pos = clock.indexOf(attackIndex);
+  const clockPosition = clock.indexOf(attackIndex);
 
-  if (pos < 0) {
+  if (clockPosition < 0) {
     return COVER_TAC_PENALTY;
   }
 
-  for (let p = 0; p < pos; p++) {
-    const j = clock[p];
-    const row = wrapPicks[j];
+  for (let position = 0; position < clockPosition; position++) {
+    const earlierIndex = clock[position];
+    const row = wrapPicks[earlierIndex];
 
     if (!row?.length) {
       continue;
     }
 
-    for (let k = 0; k < row.length; k++) {
-      if (wrapPickClearsCover(attacker, row[k])) {
+    for (let pickIndex = 0; pickIndex < row.length; pickIndex++) {
+      if (wrapPickClearsCover(attacker, row[pickIndex])) {
         return 0;
       }
     }
@@ -76,35 +76,36 @@ export const modifiersBeforeAttack = (
     activeBaseCount,
   );
 
-  const targetPos = order.indexOf(attackIndex);
+  const orderPosition = order.indexOf(attackIndex);
 
-  if (targetPos < 0) {
+  if (orderPosition < 0) {
     return { tacBonus: 0, defReduction: 0 };
   }
 
   let tacBonus = 0;
   let defReduction = 0;
 
-  for (let oi = 0; oi < targetPos; oi++) {
-    const j = order[oi];
+  for (let position = 0; position < orderPosition; position++) {
+    const earlierIndex = order[position];
+    const earlierPicks = wrapPicks[earlierIndex];
 
-    for (let k = 0; k < wrapPicks[j].length; k++) {
-      if (wrapPicks[j][k] == null) {
+    for (let pickIndex = 0; pickIndex < earlierPicks.length; pickIndex++) {
+      if (earlierPicks[pickIndex] == null) {
         continue;
       }
 
-      const m = rowEffectsForPick(
+      const effects = rowEffectsForPick(
         attacker,
         wrapPicks,
         characterPlayPicks,
-        j,
-        k,
+        earlierIndex,
+        pickIndex,
         damageMods,
         activeBaseCount,
       );
 
-      tacBonus += m.tacBonusForLater;
-      defReduction += m.defReductionForLater;
+      tacBonus += effects.tacBonusForLater;
+      defReduction += effects.defReductionForLater;
     }
   }
 

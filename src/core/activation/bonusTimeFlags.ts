@@ -39,8 +39,8 @@ export const sanitizeBonusTimeFlags = (
   for (let pass = 0; pass < maxPasses; pass++) {
     let changed = false;
 
-    for (const i of order) {
-      if (!next[i]) {
+    for (const attackIndex of order) {
+      if (!next[attackIndex]) {
         continue;
       }
 
@@ -48,14 +48,14 @@ export const sanitizeBonusTimeFlags = (
         attacker,
         wrapPicks,
         damageMods,
-        i,
+        attackIndex,
         startingMomentum,
         next,
         activeBaseCount,
       );
 
       if (!canAffordBonusTime(pool)) {
-        next[i] = false;
+        next[attackIndex] = false;
         changed = true;
       }
     }

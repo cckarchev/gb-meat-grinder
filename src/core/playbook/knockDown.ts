@@ -33,18 +33,20 @@ export const kdAlreadyTakenBeforePick = (
     activeBaseCount,
   );
 
-  const targetPos = order.indexOf(attackIndex);
+  const orderPosition = order.indexOf(attackIndex);
 
-  if (targetPos < 0) {
+  if (orderPosition < 0) {
     return false;
   }
 
-  for (let oi = 0; oi <= targetPos; oi++) {
-    const j = order[oi];
-    const kLimit = j === attackIndex ? pickIndex : wrapPicks[j].length;
+  for (let position = 0; position <= orderPosition; position++) {
+    const swingIndex = order[position];
+    const swingPicks = wrapPicks[swingIndex];
+    const isTargetSwing = swingIndex === attackIndex;
+    const picksToCheck = isTargetSwing ? pickIndex : swingPicks.length;
 
-    for (let k = 0; k < kLimit; k++) {
-      const id = wrapPicks[j][k];
+    for (let slot = 0; slot < picksToCheck; slot++) {
+      const id = swingPicks[slot];
 
       if (id != null && getPlaybookResult(attacker, id).appliesKnockDown) {
         return true;

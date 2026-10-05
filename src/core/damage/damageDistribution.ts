@@ -26,8 +26,8 @@ const probNoNetSuccesses = (
 ): number => {
   let prob = 0;
 
-  for (let h = 0; h <= armor; h++) {
-    prob += binomialPmf(tac, pHit, h);
+  for (let hits = 0; hits <= armor; hits++) {
+    prob += binomialPmf(tac, pHit, hits);
   }
 
   return prob;
@@ -66,15 +66,15 @@ export const convolve = (
   a: DamageDistribution,
   b: DamageDistribution,
 ): DamageDistribution => {
-  const out: DamageDistribution = new Map();
+  const sum: DamageDistribution = new Map();
 
-  for (const [da, pa] of a) {
-    for (const [db, pb] of b) {
-      addProbability(out, da + db, pa * pb);
+  for (const [damageA, probabilityA] of a) {
+    for (const [damageB, probabilityB] of b) {
+      addProbability(sum, damageA + damageB, probabilityA * probabilityB);
     }
   }
 
-  return out;
+  return sum;
 };
 
 /**
@@ -94,11 +94,11 @@ export const damageQuantile = (
 
   let cumulative = 0;
 
-  for (const dmg of damages) {
-    cumulative += distribution.get(dmg) ?? 0;
+  for (const damage of damages) {
+    cumulative += distribution.get(damage) ?? 0;
 
     if (cumulative >= quantile) {
-      return dmg;
+      return damage;
     }
   }
 

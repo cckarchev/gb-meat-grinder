@@ -68,16 +68,16 @@ export const probAttackSucceeds = (
   return tail;
 };
 
-export const formatPercent = (x: number, digits = 1): string => {
-  if (!Number.isFinite(x)) {
+export const formatPercent = (probability: number, digits = 1): string => {
+  if (!Number.isFinite(probability)) {
     return '-';
   }
 
-  if (x < TINY_PROBABILITY && x > 0) {
+  if (probability < TINY_PROBABILITY && probability > 0) {
     return TINY_PROBABILITY_LABEL;
   }
 
-  return `${(PERCENT * x).toFixed(digits)}%`;
+  return `${(PERCENT * probability).toFixed(digits)}%`;
 };
 
 /** Max net successes in one roll: all dice hit, then subtract ARM. */

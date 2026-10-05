@@ -38,29 +38,36 @@ export const characterPlayUsageBeforePick = (
     activeBaseCount,
   );
 
-  const targetPos = order.indexOf(attackIndex);
+  const orderPosition = order.indexOf(attackIndex);
 
-  if (targetPos < 0) {
+  if (orderPosition < 0) {
     return used;
   }
 
-  for (let oi = 0; oi <= targetPos; oi++) {
-    const j = order[oi];
-    const kLimit = j === attackIndex ? pickIndex : wrapPicks[j].length;
+  for (let position = 0; position <= orderPosition; position++) {
+    const swingIndex = order[position];
+    const swingPicks = wrapPicks[swingIndex];
+    const isTargetSwing = swingIndex === attackIndex;
+    const picksToCheck = isTargetSwing ? pickIndex : swingPicks.length;
 
-    for (let k = 0; k < kLimit; k++) {
-      const id = wrapPicks[j][k];
+    for (let slot = 0; slot < picksToCheck; slot++) {
+      const id = swingPicks[slot];
 
       if (id == null || !choiceUsesCharacterPlay(attacker, id)) {
         continue;
       }
 
-      const f = characterPlayPicks[j]?.[k] ?? defaultCharacterPlayId(attacker);
+      const play =
+        characterPlayPicks[swingIndex]?.[slot] ??
+        defaultCharacterPlayId(attacker);
 
       // Repeatable plays may be taken again and stack, so they never count as
       // "used up": they stay available and keep applying on later swings.
-      if (f != null && getCharacterPlay(attacker, f)?.repeatable !== true) {
-        used.add(f);
+      if (
+        play != null &&
+        getCharacterPlay(attacker, play)?.repeatable !== true
+      ) {
+        used.add(play);
       }
     }
   }
@@ -73,7 +80,9 @@ export const unusedCharacterPlays = (
   attacker: AttackerData,
   used: CharacterPlayUsage,
 ): CharacterPlay[] => {
-  return characterPlaysForAttacker(attacker).filter((cp) => !used.has(cp.id));
+  return characterPlaysForAttacker(attacker).filter(
+    (play) => !used.has(play.id),
+  );
 };
 
 /** Character plays still choosable on this pick (those not used by earlier picks). */

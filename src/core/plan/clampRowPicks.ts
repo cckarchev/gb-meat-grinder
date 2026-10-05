@@ -30,7 +30,9 @@ const firstReachableChoiceId = (
   }
 
   const targetNet = Math.min(maxNet, maxPlaybookNet(attacker));
-  const column = attacker.playbook.find((c) => c.netSuccesses === targetNet);
+  const column = attacker.playbook.find((candidate) => {
+    return candidate.netSuccesses === targetNet;
+  });
 
   return column?.results[0].id ?? cheapestChoiceId(attacker);
 };

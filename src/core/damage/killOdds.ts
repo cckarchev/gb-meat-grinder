@@ -25,8 +25,8 @@ const withFlatDamage = (
 ): DamageDistribution => {
   const shifted: DamageDistribution = new Map();
 
-  for (const [dmg, prob] of dist) {
-    addProbability(shifted, dmg + flatDamage, prob);
+  for (const [damage, prob] of dist) {
+    addProbability(shifted, damage + flatDamage, prob);
   }
 
   return shifted;
@@ -60,13 +60,13 @@ const activationOutcome = (
   let expectedHpRemaining = 0;
   let killProbability = 0;
 
-  for (const [dmg, prob] of damageDistribution) {
-    const hpLeft = Math.max(0, targetHp - dmg);
+  for (const [damage, prob] of damageDistribution) {
+    const hpLeft = Math.max(0, targetHp - damage);
 
-    expectedDamage += dmg * prob;
+    expectedDamage += damage * prob;
     expectedHpRemaining += hpLeft * prob;
 
-    if (dmg >= targetHp) {
+    if (damage >= targetHp) {
       killProbability += prob;
     }
   }

@@ -16,9 +16,9 @@ export const momentousLineStyle = (
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
 ): MomentousLineStyle => {
-  const r = getPlaybookResult(attacker, id);
+  const result = getPlaybookResult(attacker, id);
 
-  if (r.momentum !== true) {
+  if (result.momentum !== true) {
     return 'none';
   }
 

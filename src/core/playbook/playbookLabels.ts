@@ -19,18 +19,18 @@ export const playbookLineDisplayLabel = (
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
 ): string => {
-  const r = getPlaybookResult(attacker, id);
-  const dodge = r.dodge ? '<' : '';
+  const result = getPlaybookResult(attacker, id);
+  const dodge = result.dodge ? '<' : '';
 
-  if (r.picksCharacterPlay && r.damage > 0) {
+  if (result.picksCharacterPlay && result.damage > 0) {
     return `${effectiveDamageForChoice(attacker, id, mods)}GB${dodge}`;
   }
 
-  if (r.damage > 0 && r.label === String(r.damage)) {
+  if (result.damage > 0 && result.label === String(result.damage)) {
     return `${effectiveDamageForChoice(attacker, id, mods)}${dodge}`;
   }
 
-  return r.label + dodge;
+  return result.label + dodge;
 };
 
 /**

@@ -31,43 +31,50 @@ export const damageModifierBreakdownWrap = (
     bonus: 0,
   }));
 
-  for (let i = 0; i < wrapPicks.length; i++) {
-    if (
-      !attackRowIsActive(attacker, wrapPicks, i, damageMods, activeBaseCount)
-    ) {
+  for (let attackIndex = 0; attackIndex < wrapPicks.length; attackIndex++) {
+    const active = attackRowIsActive(
+      attacker,
+      wrapPicks,
+      attackIndex,
+      damageMods,
+      activeBaseCount,
+    );
+
+    if (!active) {
       continue;
     }
 
-    for (const id of wrapPicks[i]) {
+    for (const id of wrapPicks[attackIndex]) {
       if (id == null) {
         continue;
       }
 
-      const card = getPlaybookResult(attacker, id).damage;
+      const cardDamage = getPlaybookResult(attacker, id).damage;
 
-      if (card <= 0) {
+      if (cardDamage <= 0) {
         continue;
       }
 
-      rawCardDamage += card;
+      rawCardDamage += cardDamage;
 
-      const full = effectiveDamageForChoice(attacker, id, damageMods);
+      const effective = effectiveDamageForChoice(attacker, id, damageMods);
 
-      totalEffective += full;
+      totalEffective += effective;
 
       toughHideReduction +=
         effectiveDamageForChoice(attacker, id, {
           ...damageMods,
           toughHide: false,
-        }) - full;
+        }) - effective;
 
-      for (const bb of buffBonuses) {
-        const without: PlaybookDamageMods = {
+      for (const buffBonus of buffBonuses) {
+        const withoutBuff: PlaybookDamageMods = {
           ...damageMods,
-          buffs: { ...damageMods.buffs, [bb.id]: false },
+          buffs: { ...damageMods.buffs, [buffBonus.id]: false },
         };
 
-        bb.bonus += full - effectiveDamageForChoice(attacker, id, without);
+        buffBonus.bonus +=
+          effective - effectiveDamageForChoice(attacker, id, withoutBuff);
       }
     }
   }
