@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 import { PanelTitle } from '@/components/ui/ui';
 
-export const ProbabilitySummaryTitle = styled(PanelTitle)`
+export const SummarySectionTitle = styled(PanelTitle)`
   margin-bottom: 0.5rem;
 `;
 
-export const TotalsSectionTitle = styled(ProbabilitySummaryTitle)`
+export const TotalsSectionTitle = styled(SummarySectionTitle)`
   margin-top: 1rem;
 `;
 
-export const ProbabilityRow = styled.div`
+export const SummaryRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;

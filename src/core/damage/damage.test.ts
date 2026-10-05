@@ -4,6 +4,7 @@ import {
   effectiveArmor,
   effectiveEnemyDef,
   effectivePlaybookDamage,
+  guildBuffIsExcluded,
   playbookDamageBonusSum,
   specialAbilityFlatDamage,
 } from '@/core/damage/damage';
@@ -21,6 +22,14 @@ describe('buffs and damage', () => {
       'sharp',
       'condition',
     ]);
+  });
+
+  it('tells whether one buff is excluded for the model', () => {
+    const excluding = makeAttacker({ excludedGuildBuffs: ['sunder'] });
+
+    expect(guildBuffIsExcluded(excluding, 'sunder')).toBe(true);
+    expect(guildBuffIsExcluded(excluding, 'sharp')).toBe(false);
+    expect(guildBuffIsExcluded(attacker, 'sunder')).toBe(false);
   });
 
   it('sums the damage bonus of active buffs only', () => {

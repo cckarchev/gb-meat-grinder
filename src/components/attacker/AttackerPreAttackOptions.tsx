@@ -1,4 +1,5 @@
 import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
+import { guildBuffIsExcluded } from '@/core/damage/damage';
 import { CHARGE_INFLUENCE_COST } from '@/core/shared/constants';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
@@ -35,8 +36,7 @@ export const AttackerPreAttackOptions = () => {
         Charging{chargeCostLabel}
       </TooltipCheckbox>
       {attacker.guild.buffs.map((buff) => {
-        const excluded =
-          attacker.excludedGuildBuffs?.includes(buff.id) ?? false;
+        const excluded = guildBuffIsExcluded(attacker, buff.id);
 
         const tooltip = excluded
           ? `${buff.tooltip} (not available to ${attacker.name})`

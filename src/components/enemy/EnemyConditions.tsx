@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import {
+  LABEL_KNOCKED_DOWN,
+  LABEL_SNARED,
   TOOLTIP_COVER,
   TOOLTIP_DEFENSIVE_STANCE,
   TOOLTIP_KNOCKED_DOWN,
@@ -102,14 +104,14 @@ export const EnemyConditions = () => {
             onChange={(value) => dispatch({ type: 'enemyKnockedDown', value })}
             tooltip={TOOLTIP_KNOCKED_DOWN}
           >
-            Knocked Down (-1 DEF)
+            {LABEL_KNOCKED_DOWN}
           </TooltipCheckbox>
           <TooltipCheckbox
             checked={enemySnared}
             onChange={(value) => dispatch({ type: 'enemySnared', value })}
             tooltip={TOOLTIP_SNARED}
           >
-            Snared (-1 DEF)
+            {LABEL_SNARED}
           </TooltipCheckbox>
           <TooltipCheckbox
             checked={enemyResilience}

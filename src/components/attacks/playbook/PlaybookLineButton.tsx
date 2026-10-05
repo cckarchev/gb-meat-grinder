@@ -38,7 +38,7 @@ export const PlaybookLineButton = ({
       type="button"
       disabled={kdLocked}
       $momentous={momentousStyle === 'heat'}
-      $momentousZeroEffective={momentousStyle === 'zeroed'}
+      $momentousZeroed={momentousStyle === 'zeroed'}
       $momentousColor={attacker.guild.color}
       $selected={selected}
       aria-pressed={selected}
@@ -48,9 +48,9 @@ export const PlaybookLineButton = ({
     >
       {segments.length > 1 ? (
         <LineLabelStack>
-          {segments.map((seg, idx) => (
+          {segments.map((segment, idx) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: label segments are static and may repeat
-            <span key={idx}>{seg}</span>
+            <span key={idx}>{segment}</span>
           ))}
         </LineLabelStack>
       ) : (

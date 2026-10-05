@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export type TooltipBubbleSize = 'compact' | 'regular';
+type TooltipBubbleSize = 'compact' | 'regular';
 
 type TooltipBubbleMetrics = {
   offset: string;

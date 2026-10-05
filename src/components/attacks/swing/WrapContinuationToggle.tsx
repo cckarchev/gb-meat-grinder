@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { wrapSectionId, wrapTriggerId } from '@/components/attacks/wrapIds';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import { focusRing } from '@/styles/mixins';
 
@@ -67,22 +68,24 @@ const ChevronCaret = styled.span<{ $open: boolean }>`
   }
 `;
 
-/** Opens / closes extra wrap slots (shown next to TAC in the dice pool strip). */
+type WrapContinuationToggleProps = {
+  attackIndex: number;
+  wrapOpen: boolean;
+  onClick: () => void;
+};
+
+/** Opens / closes extra wrap slots (shown beside the pool readout in the dice pool strip). */
 export const WrapContinuationToggle = ({
   attackIndex,
   wrapOpen,
   onClick,
-}: {
-  attackIndex: number;
-  wrapOpen: boolean;
-  onClick: () => void;
-}) => {
+}: WrapContinuationToggleProps) => {
   return (
     <WrapToggleButton
       type="button"
-      id={`attack-wrap-trigger-${attackIndex}`}
+      id={wrapTriggerId(attackIndex)}
       aria-expanded={wrapOpen}
-      aria-controls={`attack-wrap-${attackIndex}`}
+      aria-controls={wrapSectionId(attackIndex)}
       title={
         wrapOpen
           ? 'Close additional wrap and clear extra picks'

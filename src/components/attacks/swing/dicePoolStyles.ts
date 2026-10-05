@@ -29,8 +29,8 @@ export const PoolCluster = styled.div`
   flex: 1 1 auto;
 `;
 
-/** TAC readout + wrap toggle (wrap lives here so the playbook row can use full width). */
-export const TacPoolRight = styled.div`
+/** Dice pool readout + wrap toggle (wrap lives here so the playbook row can use full width). */
+export const PoolReadoutGroup = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -54,7 +54,7 @@ export const TacPoolRight = styled.div`
   }
 `;
 
-export const TacPoolBadge = styled.div`
+export const PoolReadout = styled.div`
   display: flex;
   flex-direction: row;
   align-items: baseline;
@@ -62,7 +62,7 @@ export const TacPoolBadge = styled.div`
   flex: 0 0 auto;
 `;
 
-export const TacPoolLabel = styled.span`
+export const PoolReadoutLabel = styled.span`
   font-family: var(--font-mono);
   font-size: 0.62rem;
   font-weight: 500;
@@ -71,7 +71,7 @@ export const TacPoolLabel = styled.span`
   color: var(--muted);
 `;
 
-export const TacPoolValue = styled(Mono)`
+export const PoolReadoutValue = styled(Mono)`
   font-size: 1.35rem;
   font-weight: 700;
   line-height: 1;

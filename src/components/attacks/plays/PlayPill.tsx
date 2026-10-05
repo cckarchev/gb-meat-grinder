@@ -9,7 +9,7 @@ const PillWrap = styled.span`
   display: inline-flex;
 `;
 
-const SelectionBtn = styled(ToggleButton)<{ $muted?: boolean }>`
+const SelectionBtn = styled(ToggleButton)<{ $muted: boolean }>`
   min-width: 8.5rem;
 
   /* No-op plays (e.g. Snack Break) read as cosmetic via a dashed outline. */

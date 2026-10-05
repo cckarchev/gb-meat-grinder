@@ -48,7 +48,7 @@ export const WrapSlotPickGrid = ({
   const budget = wrapSlotBudget(attacker, maxNet, pickIndex);
 
   const visibleColumns = attacker.playbook.filter(
-    (c) => c.netSuccesses <= budget,
+    (column) => column.netSuccesses <= budget,
   );
 
   const kdTaken = kdAlreadyTakenBeforePick(
@@ -64,21 +64,29 @@ export const WrapSlotPickGrid = ({
   return (
     <WrapSlotBlock $first={firstSlotInSection}>
       <ColumnGrid $columnCount={visibleColumns.length}>
-        {visibleColumns.map((col) => {
+        {visibleColumns.map((column) => {
           const netForHeat = wrapExtendedNetNeeded(
             attacker,
             pickIndex,
-            col.netSuccesses,
+            column.netSuccesses,
           );
 
-          const pCol = probAttackSucceeds(tac, pHit, armor, netForHeat);
-          const hitChanceLabel = formatPercent(pCol, HIT_CHANCE_DIGITS);
+          const columnHitChance = probAttackSucceeds(
+            tac,
+            pHit,
+            armor,
+            netForHeat,
+          );
+          const hitChanceLabel = formatPercent(
+            columnHitChance,
+            HIT_CHANCE_DIGITS,
+          );
 
           return (
-            <ColumnBlock key={col.netSuccesses}>
-              <ColumnHead $p={pCol}>{hitChanceLabel}</ColumnHead>
+            <ColumnBlock key={column.netSuccesses}>
+              <ColumnHead $p={columnHitChance}>{hitChanceLabel}</ColumnHead>
               <ColumnResults>
-                {col.results.map((result) => {
+                {column.results.map((result) => {
                   const selected =
                     wrapPicks[attackIndex][pickIndex] === result.id;
 

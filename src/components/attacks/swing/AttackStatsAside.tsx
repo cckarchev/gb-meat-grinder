@@ -53,17 +53,19 @@ const AttackStatMono = styled(Mono)`
   color: var(--text);
 `;
 
+type AttackStatsAsideProps = {
+  defMinRoll: number;
+  armor: number;
+  momentum: number;
+  remainingHpIfHit: number;
+};
+
 export const AttackStatsAside = ({
   defMinRoll,
   armor,
   momentum,
   remainingHpIfHit,
-}: {
-  defMinRoll: number;
-  armor: number;
-  momentum: number;
-  remainingHpIfHit: number;
-}) => {
+}: AttackStatsAsideProps) => {
   return (
     <AttackStatsRail aria-label="Defense, armor, momentum, and HP after this swing">
       <StatRow>

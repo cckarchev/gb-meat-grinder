@@ -17,14 +17,14 @@ import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulati
 type CharacterPlaySelectionProps = {
   slots: CharacterPlaySlotRef[];
   attackIndex: number;
-  displayIdx: number;
+  displayIndex: number;
 };
 
 /** Character-play options offered after a GB / 1GB playbook result. */
 export const CharacterPlaySelection = ({
   slots,
   attackIndex,
-  displayIdx,
+  displayIndex,
 }: CharacterPlaySelectionProps) => {
   const {
     attacker,
@@ -55,7 +55,7 @@ export const CharacterPlaySelection = ({
   }
 
   const multipleSlots = actionable.length > 1;
-  const attackOrdinal = displayIdx + 1;
+  const attackOrdinal = displayIndex + 1;
 
   return (
     <Section aria-label={`Character play for attack ${attackOrdinal}`}>
@@ -71,26 +71,26 @@ export const CharacterPlaySelection = ({
               <SlotTag aria-hidden="true">{slotOrdinal}</SlotTag>
             ) : null}
             <Pills>
-              {available.map((cp) => {
-                const summary = characterPlayEffectSummary(cp);
+              {available.map((play) => {
+                const summary = characterPlayEffectSummary(play);
 
                 return (
                   <PlayPill
-                    key={cp.id}
-                    active={pick === cp.id}
-                    muted={!characterPlayHasEffect(cp)}
+                    key={play.id}
+                    active={pick === play.id}
+                    muted={!characterPlayHasEffect(play)}
                     description={summary}
-                    ariaLabel={`${cp.label} (${summary}) for attack ${attackOrdinal}${slotSuffix}`}
+                    ariaLabel={`${play.label} (${summary}) for attack ${attackOrdinal}${slotSuffix}`}
                     onClick={() =>
                       dispatch({
                         type: 'characterPlayPick',
                         attackIndex,
                         pickIndex,
-                        pick: cp.id,
+                        pick: play.id,
                       })
                     }
                   >
-                    {cp.label}
+                    {play.label}
                   </PlayPill>
                 );
               })}

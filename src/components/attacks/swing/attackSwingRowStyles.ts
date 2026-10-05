@@ -25,7 +25,7 @@ export const AttackMain = styled.div`
 
 export const AttackBlock = styled.div<{
   $variant: AttackBlockVariant;
-  $disabled?: boolean;
+  $disabled: boolean;
 }>`
   position: relative;
   ${PLAYBOOK_COLUMN_WIDTH_VAR}: ${PLAYBOOK_COLUMN_TRACK};
@@ -98,15 +98,4 @@ export const KillingBlowBadge = styled.span`
   color: var(--accent-ink);
   background: var(--accent-berserker);
   white-space: nowrap;
-`;
-
-export const PlaybookPrimarySlot = styled.div`
-  width: 100%;
-  min-width: 0;
-`;
-
-export const UnreachableNote = styled.p`
-  margin: 0.35rem 0 0;
-  font-size: 0.82rem;
-  color: var(--muted);
 `;

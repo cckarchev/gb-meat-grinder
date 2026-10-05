@@ -1,13 +1,13 @@
-import { WrapContinuationToggle } from '@/components/attacks/playbook/WrapContinuationToggle';
 import {
   DicePoolBar,
   PoolCluster,
+  PoolReadout,
+  PoolReadoutGroup,
+  PoolReadoutLabel,
+  PoolReadoutValue,
   PoolToggle,
-  TacPoolBadge,
-  TacPoolLabel,
-  TacPoolRight,
-  TacPoolValue,
 } from '@/components/attacks/swing/dicePoolStyles';
+import { WrapContinuationToggle } from '@/components/attacks/swing/WrapContinuationToggle';
 import { InfoTip } from '@/components/ui/InfoTip';
 import { CHARGE_TAC_BONUS } from '@/core/attacks/swingTac';
 import {
@@ -81,7 +81,7 @@ export const DicePoolStrip = ({
           </InfoTip>
         </PoolToggle>
       </PoolCluster>
-      <TacPoolRight>
+      <PoolReadoutGroup>
         {canWrap ? (
           <WrapContinuationToggle
             attackIndex={attackIndex}
@@ -89,11 +89,11 @@ export const DicePoolStrip = ({
             onClick={onWrapToggle}
           />
         ) : null}
-        <TacPoolBadge>
-          <TacPoolLabel>Dice Pool</TacPoolLabel>
-          <TacPoolValue>{tac}</TacPoolValue>
-        </TacPoolBadge>
-      </TacPoolRight>
+        <PoolReadout>
+          <PoolReadoutLabel>Dice Pool</PoolReadoutLabel>
+          <PoolReadoutValue>{tac}</PoolReadoutValue>
+        </PoolReadout>
+      </PoolReadoutGroup>
     </DicePoolBar>
   );
 };

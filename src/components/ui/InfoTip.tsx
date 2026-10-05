@@ -28,19 +28,18 @@ const Trigger = styled.button`
   }
 `;
 
+type InfoTipProps = {
+  content: string;
+  children: ReactNode;
+};
+
 /**
  * Accessible inline tooltip. The supplied text remains the visible, focusable
  * trigger; the description opens on hover, focus, or click/tap and dismisses on
  * blur, outside click, or Escape. Safe to nest inside a `<label>` because a
  * `<button>` is interactive content (clicking it does not toggle the control).
  */
-export const InfoTip = ({
-  content,
-  children,
-}: {
-  content: string;
-  children: ReactNode;
-}) => {
+export const InfoTip = ({ content, children }: InfoTipProps) => {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLSpanElement>(null);
   const tooltipId = useId();
@@ -73,7 +72,7 @@ export const InfoTip = ({
         aria-expanded={open}
         onClick={(e) => {
           e.stopPropagation();
-          setOpen((v) => !v);
+          setOpen((wasOpen) => !wasOpen);
         }}
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}

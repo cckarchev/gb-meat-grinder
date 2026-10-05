@@ -12,6 +12,11 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
 /** Passes beyond one per swing, as a safety margin for the settle loop. */
 const EXTRA_SETTLE_PASSES = 2;
 
+/** Whether a momentum pool can pay for one Bonus Time spend. */
+export const canAffordBonusTime = (pool: number): boolean => {
+  return pool >= BONUS_TIME_MOMENTUM_COST;
+};
+
 /** Clears Bonus Time flags that can no longer be paid (pool less than 1 before that swing). */
 export const sanitizeBonusTimeFlags = (
   attacker: AttackerData,
@@ -49,7 +54,7 @@ export const sanitizeBonusTimeFlags = (
         activeBaseCount,
       );
 
-      if (pool < BONUS_TIME_MOMENTUM_COST) {
+      if (!canAffordBonusTime(pool)) {
         next[i] = false;
         changed = true;
       }

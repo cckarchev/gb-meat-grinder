@@ -20,11 +20,21 @@ export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
   buffs: {},
 };
 
-/** Guild buffs this model can receive (excludes buffs it is the source of). */
-export const availableBuffs = (attacker: AttackerData) => {
+/** Whether the model cannot receive this guild buff (it is the source of it). */
+export const guildBuffIsExcluded = (
+  attacker: AttackerData,
+  buffId: string,
+): boolean => {
   const excluded = attacker.excludedGuildBuffs ?? [];
 
-  return attacker.guild.buffs.filter((b) => !excluded.includes(b.id));
+  return excluded.includes(buffId);
+};
+
+/** Guild buffs this model can receive (excludes buffs it is the source of). */
+export const availableBuffs = (attacker: AttackerData) => {
+  return attacker.guild.buffs.filter(
+    (b) => !guildBuffIsExcluded(attacker, b.id),
+  );
 };
 
 /** The attacker's available buffs that are currently toggled on. */

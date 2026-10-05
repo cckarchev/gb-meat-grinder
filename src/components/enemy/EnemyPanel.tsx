@@ -30,7 +30,7 @@ export const EnemyPanel = () => {
           value={enemyDef}
           min={DEF_MIN}
           max={DEF_MAX}
-          onChange={(v) => dispatch({ type: 'enemyDef', value: v })}
+          onChange={(value) => dispatch({ type: 'enemyDef', value })}
           valueLabel={`${enemyDef}+`}
           decrementAriaLabel="Decrease defense threshold"
           incrementAriaLabel="Increase defense threshold"
@@ -40,7 +40,7 @@ export const EnemyPanel = () => {
           value={armor}
           min={ARM_MIN}
           max={ARM_MAX}
-          onChange={(v) => dispatch({ type: 'armor', value: v })}
+          onChange={(value) => dispatch({ type: 'armor', value })}
           valueLabel={String(armor)}
           decrementAriaLabel="Decrease armor"
           incrementAriaLabel="Increase armor"
@@ -50,7 +50,7 @@ export const EnemyPanel = () => {
           value={hp}
           min={HP_MIN}
           max={HP_MAX}
-          onChange={(v) => dispatch({ type: 'hp', value: v })}
+          onChange={(value) => dispatch({ type: 'hp', value })}
           valueLabel={String(hp)}
           decrementAriaLabel="Decrease target HP"
           incrementAriaLabel="Increase target HP"

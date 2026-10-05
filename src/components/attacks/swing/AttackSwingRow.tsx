@@ -9,6 +9,7 @@ import {
 } from '@/components/attacks/swing/attackSwingRowStyles';
 import { DicePoolStrip } from '@/components/attacks/swing/DicePoolStrip';
 import { CornerBrackets } from '@/components/ui/CornerBrackets';
+import { canAffordBonusTime } from '@/core/activation/bonusTimeFlags';
 import { attackRowIsBerserker } from '@/core/attacks/attackRows';
 import type {
   AttackBlockVariant,
@@ -20,7 +21,6 @@ import {
 } from '@/core/attacks/attackVariant';
 import { maxNetSuccessesForRoll } from '@/core/damage/probability';
 import {
-  BONUS_TIME_MOMENTUM_COST,
   KILLING_BLOW_MOMENTUM,
   MIN_PLAYBOOK_NET,
 } from '@/core/shared/constants';
@@ -36,7 +36,7 @@ const CORNER_ACCENTS: Partial<Record<AttackBlockVariant, string>> = {
 /** Per-swing values only `AttacksPanel` knows; shared plan state comes from context. */
 type AttackSwingRowProps = {
   attack: AttackRollContext;
-  displayIdx: number;
+  displayIndex: number;
   disabled: boolean;
   isKillingBlow: boolean;
   /** Charge row the engine uses: the chosen base, or none when not charging. */
@@ -51,7 +51,7 @@ type AttackSwingRowProps = {
 
 export const AttackSwingRow = ({
   attack,
-  displayIdx,
+  displayIndex,
   disabled,
   isKillingBlow,
   chargeAttackIndex,
@@ -72,7 +72,7 @@ export const AttackSwingRow = ({
   const variant = attackBlockVariant(attacker, attackIndex, chargeAttackIndex);
   const cornerAccent = CORNER_ACCENTS[variant];
   const bonusTimeDisabled =
-    !bonusTime && bonusTimeMomentumPool < BONUS_TIME_MOMENTUM_COST;
+    !bonusTime && !canAffordBonusTime(bonusTimeMomentumPool);
 
   const handleWrapToggle = () => {
     if (wrapOpen) {
@@ -120,7 +120,7 @@ export const AttackSwingRow = ({
           />
           <SwingPlaybook
             attack={attack}
-            displayIdx={displayIdx}
+            displayIndex={displayIndex}
             maxNet={maxNet}
             wrapOpen={wrapOpen}
           />

@@ -1,10 +1,11 @@
 import type { CharacterPlaySlotRef } from '@/components/attacks/attacks.types';
-import { WrapSlotPickGrid } from '@/components/attacks/playbook/WrapSlotPickGrid';
-import { CharacterPlaySelection } from '@/components/attacks/plays/CharacterPlaySelection';
 import {
   PlaybookPrimarySlot,
   UnreachableNote,
-} from '@/components/attacks/swing/attackSwingRowStyles';
+} from '@/components/attacks/playbook/swingPlaybookStyles';
+import { WrapSlotPickGrid } from '@/components/attacks/playbook/WrapSlotPickGrid';
+import { CharacterPlaySelection } from '@/components/attacks/plays/CharacterPlaySelection';
+import { wrapSectionId, wrapTriggerId } from '@/components/attacks/wrapIds';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { choiceUsesCharacterPlay } from '@/core/playbook/wrapSlots';
 import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
@@ -12,7 +13,7 @@ import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulati
 
 type SwingPlaybookProps = {
   attack: AttackRollContext;
-  displayIdx: number;
+  displayIndex: number;
   maxNet: number;
   wrapOpen: boolean;
 };
@@ -20,7 +21,7 @@ type SwingPlaybookProps = {
 /** The swing's playbook picks: first slot, wrap slots and character plays. */
 export const SwingPlaybook = ({
   attack,
-  displayIdx,
+  displayIndex,
   maxNet,
   wrapOpen,
 }: SwingPlaybookProps) => {
@@ -38,10 +39,11 @@ export const SwingPlaybook = ({
   }
 
   const characterPlaySlots = rowPicks
-    .map((pid, pickIndex) => ({ pid, pickIndex }))
+    .map((choiceId, pickIndex) => ({ choiceId, pickIndex }))
     .filter(
-      (x): x is CharacterPlaySlotRef =>
-        x.pid != null && choiceUsesCharacterPlay(attacker, x.pid),
+      (slot): slot is CharacterPlaySlotRef =>
+        slot.choiceId != null &&
+        choiceUsesCharacterPlay(attacker, slot.choiceId),
     );
 
   const hasWrapContinuation = rowPicks.length > 1;
@@ -64,8 +66,8 @@ export const SwingPlaybook = ({
       <PlaybookPrimarySlot>{renderSlot(0, true)}</PlaybookPrimarySlot>
       {hasWrapContinuation ? (
         <section
-          id={`attack-wrap-${attackIndex}`}
-          aria-labelledby={`attack-wrap-trigger-${attackIndex}`}
+          id={wrapSectionId(attackIndex)}
+          aria-labelledby={wrapTriggerId(attackIndex)}
           hidden={!wrapOpen}
         >
           {rowPicks.slice(1).map((_, slot) => {
@@ -78,7 +80,7 @@ export const SwingPlaybook = ({
       <CharacterPlaySelection
         slots={characterPlaySlots}
         attackIndex={attackIndex}
-        displayIdx={displayIdx}
+        displayIndex={displayIndex}
       />
     </>
   );

@@ -62,7 +62,7 @@ export const AttackerPanel = () => {
           value={influence}
           min={0}
           max={attacker.inf}
-          onChange={(v) => dispatch({ type: 'influence', value: v })}
+          onChange={(value) => dispatch({ type: 'influence', value })}
           valueLabel={String(influence)}
           decrementAriaLabel="Decrease influence"
           incrementAriaLabel="Increase influence"
@@ -72,7 +72,7 @@ export const AttackerPanel = () => {
           value={startingMomentum}
           min={attacker.startingMomentum.min}
           max={attacker.startingMomentum.max}
-          onChange={(v) => dispatch({ type: 'startingMomentum', value: v })}
+          onChange={(value) => dispatch({ type: 'startingMomentum', value })}
           valueLabel={String(startingMomentum)}
           decrementAriaLabel="Decrease starting momentum"
           incrementAriaLabel="Increase starting momentum"
@@ -82,7 +82,7 @@ export const AttackerPanel = () => {
           value={gangingUp}
           min={attacker.gangingUp.min}
           max={attacker.gangingUp.max}
-          onChange={(v) => dispatch({ type: 'gangingUpRaw', value: v })}
+          onChange={(value) => dispatch({ type: 'gangingUpRaw', value })}
           valueLabel={gangingUpLabel}
           decrementAriaLabel="Decrease Ganging Up"
           incrementAriaLabel="Increase Ganging Up"
@@ -92,7 +92,7 @@ export const AttackerPanel = () => {
           value={crowdingOut}
           min={attacker.crowdingOut.min}
           max={attacker.crowdingOut.max}
-          onChange={(v) => dispatch({ type: 'crowdingOutRaw', value: v })}
+          onChange={(value) => dispatch({ type: 'crowdingOutRaw', value })}
           valueLabel={crowdingOutLabel}
           decrementAriaLabel="Decrease Crowding Out"
           incrementAriaLabel="Increase Crowding Out"

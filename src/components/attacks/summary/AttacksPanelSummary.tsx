@@ -8,10 +8,10 @@ import {
 } from '@/components/attacks/summary/attacksSummaryCopy';
 import {
   OddsAggregateBlock,
-  ProbabilityRow,
-  ProbabilitySummaryTitle,
   SelectionLine,
   SelectionPicksInline,
+  SummaryRow,
+  SummarySectionTitle,
   TotalsSectionTitle,
 } from '@/components/attacks/summary/attacksSummaryStyles';
 import { SummaryStat } from '@/components/attacks/summary/SummaryStat';
@@ -36,11 +36,11 @@ export const AttacksPanelSummary = () => {
 
   return (
     <Summary as="section" aria-label="Per-swing hit odds">
-      <ProbabilitySummaryTitle>Odds</ProbabilitySummaryTitle>
-      {summary.activeAttacks.map((swing, displayIdx) => (
-        <ProbabilityRow key={swing.attackIndex}>
+      <SummarySectionTitle>Odds</SummarySectionTitle>
+      {summary.activeAttacks.map((swing, displayIndex) => (
+        <SummaryRow key={swing.attackIndex}>
           <SelectionLine>
-            <Mono>{displayIdx + 1}</Mono>.{' '}
+            <Mono>{displayIndex + 1}</Mono>.{' '}
             {attackKindLabel(
               attacker,
               swing.attackIndex,
@@ -60,7 +60,7 @@ export const AttacksPanelSummary = () => {
               ? formatPercent(swing.prob)
               : '-'}
           </Mono>
-        </ProbabilityRow>
+        </SummaryRow>
       ))}
       <OddsAggregateBlock>
         <SummaryStat label="Kills the target" tooltip={TOOLTIP_KILL}>

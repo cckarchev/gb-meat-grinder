@@ -7,7 +7,7 @@ const LINE_WHITE = '#ffffff';
 
 export const LineButton = styled.button<{
   $momentous: boolean;
-  $momentousZeroEffective: boolean;
+  $momentousZeroed: boolean;
   $momentousColor: string;
   $selected: boolean;
 }>`
@@ -51,7 +51,7 @@ export const LineButton = styled.button<{
   background: ${(p) =>
     p.$momentous
       ? p.$momentousColor
-      : p.$momentousZeroEffective
+      : p.$momentousZeroed
         ? LINE_WHITE
         : 'var(--playbook-line-nm-bg)'};
   color: ${(p) => (p.$momentous ? LINE_WHITE : 'var(--playbook-line-nm-fg)')};

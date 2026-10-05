@@ -28,24 +28,24 @@ export const AttacksPanel = () => {
 
   return (
     <AttacksList>
-      {attacks.map((a, displayIdx) => (
+      {attacks.map((attack, displayIndex) => (
         <AttackSwingRow
-          key={a.attackIndex}
-          attack={a}
-          displayIdx={displayIdx}
+          key={attack.attackIndex}
+          attack={attack}
+          displayIndex={displayIndex}
           disabled={swingIsSkipped(
-            displayIdx,
+            displayIndex,
             ignoredDisplayIndex,
             killingBlowIndex,
           )}
-          isKillingBlow={displayIdx === killingBlowIndex}
+          isKillingBlow={displayIndex === killingBlowIndex}
           chargeAttackIndex={effectiveChargeAttackIndex}
-          remainingHpIfHit={projection.remainingHp[displayIdx]}
-          momentum={projection.momentum[displayIdx]}
-          bonusTime={effectiveBonusTimeByAttack[a.attackIndex] === true}
-          bonusTimeMomentumPool={projection.bonusTimePool[displayIdx]}
-          wrapOpen={wrapExpansion.isOpen(a.attackIndex)}
-          onToggleWrapExpansion={() => wrapExpansion.toggle(a.attackIndex)}
+          remainingHpIfHit={projection.remainingHp[displayIndex]}
+          momentum={projection.momentum[displayIndex]}
+          bonusTime={effectiveBonusTimeByAttack[attack.attackIndex] === true}
+          bonusTimeMomentumPool={projection.bonusTimePool[displayIndex]}
+          wrapOpen={wrapExpansion.isOpen(attack.attackIndex)}
+          onToggleWrapExpansion={() => wrapExpansion.toggle(attack.attackIndex)}
         />
       ))}
       <AttacksPanelSummary />
