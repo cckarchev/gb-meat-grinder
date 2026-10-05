@@ -34,3 +34,28 @@ export type AttacksPanelProps = {
 };
 
 export type CharacterPlaySlotRef = { pid: PlaybookChoiceId; pickIndex: number };
+
+export type AttackSwingRowProps = {
+  attack: AttackRollContext;
+  displayIdx: number;
+  disabled?: boolean;
+  isKillingBlow?: boolean;
+  armor: number;
+  charging: boolean;
+  chargeAttackIndex: number;
+  activeBaseCount: number;
+  wrapPicks: AttacksPanelProps['wrapPicks'];
+  characterPlayPicks: AttacksPanelProps['characterPlayPicks'];
+  damageMods: AttacksPanelProps['damageMods'];
+  remainingHpIfHit: number;
+  momentum: number;
+  bonusTime: boolean;
+  bonusTimeMomentumPool: number;
+  onBonusTimeChange: AttacksPanelProps['onBonusTimeChange'];
+  wrapOpen: boolean;
+  onChargeAttackIndexChange: AttacksPanelProps['onChargeAttackIndexChange'];
+  onChoiceChange: AttacksPanelProps['onChoiceChange'];
+  onCharacterPlayPickChange: AttacksPanelProps['onCharacterPlayPickChange'];
+  onToggleWrapExpansion: () => void;
+  onWrapContinuationCleared: AttacksPanelProps['onWrapContinuationCleared'];
+};
