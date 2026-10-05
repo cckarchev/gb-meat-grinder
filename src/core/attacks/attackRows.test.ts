@@ -63,9 +63,22 @@ describe('activation order', () => {
   });
 
   it('projects damage per active row when every pick hits', () => {
-    expect(rowDamageIfAllHit(berserker, wrapPicks, NO_MODS, 2)).toEqual([
-      2, 0, 0, 0,
-    ]);
+    const timeline = activationTimeline(
+      {
+        wrapPicks,
+        characterPlayPicks: wrapPicks.map((row) => row.map(() => null)),
+      },
+      {
+        attacker: berserker,
+        damageMods: NO_MODS,
+        activeBaseCount: 2,
+        chargeAttackIndex: NO_ATTACK_INDEX,
+      },
+    );
+
+    expect(
+      rowDamageIfAllHit(berserker, wrapPicks, NO_MODS, 2, timeline),
+    ).toEqual([2, 0, 0, 0]);
   });
 });
 

@@ -117,6 +117,13 @@ export const PLAY_NOOP: CharacterPlay = {
   oncePerTurn: true,
 };
 
+export const PLAY_DAMAGE: CharacterPlay = {
+  id: 'playDamage',
+  label: 'Play Damage',
+  damage: 3,
+  oncePerTurn: true,
+};
+
 export const makeAttacker = (
   overrides: Partial<AttackerData> = {},
 ): AttackerData => {

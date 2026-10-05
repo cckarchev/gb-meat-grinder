@@ -1,7 +1,10 @@
 /** Breakdown text for the momentum and damage totals in the attacks summary. */
 
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
-import { damageModifierBreakdown } from '@/core/playbook/rowDamage';
+import {
+  characterPlayDamageSources,
+  damageModifierBreakdown,
+} from '@/core/playbook/rowDamage';
 
 const NO_DAMAGE_TOOLTIP =
   'No selected playbook lines deal card damage to HP (after Tough Hide).';
@@ -32,6 +35,7 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
     input.wrapPicks,
     input.damageMods,
     input.activeBaseCount,
+    input.timeline,
   );
 
   const dealsNothing =
@@ -44,6 +48,16 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
   }
 
   let tooltip = `${breakdown.rawCardDamage} from card pips`;
+
+  // Printed play damage sits beside the card pips; Tough Hide and buffs on
+  // both are itemized on their own lines below.
+  const activeIndexes = input.attacks.map((swing) => swing.attackIndex);
+
+  const playSources = characterPlayDamageSources(input.timeline, activeIndexes);
+
+  for (const source of playSources) {
+    tooltip += `; +${source.amount} ${source.label}`;
+  }
 
   if (breakdown.toughHideReduction > 0) {
     tooltip += `; -${breakdown.toughHideReduction} Tough Hide`;

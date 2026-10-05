@@ -7,8 +7,14 @@ import type {
   TimelineParams,
 } from '@/core/attacks/activationTimeline.types';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
-import { activeBuffs } from '@/core/damage/damage';
+import {
+  effectivePlayForPick,
+  getCharacterPlay,
+} from '@/core/characterPlays/characterPlayLookup';
+import { activeBuffs, effectivePlaybookDamage } from '@/core/damage/damage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
+import type { CharacterPlay } from '@/core/playbook/playbook.types';
+import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
 import {
   pickEffectName,
   pickEffectsForLaterSwings,
@@ -20,7 +26,11 @@ const NO_CARRIED_EFFECTS: CarriedEffects = {
   armorReduction: 0,
 };
 
-const EMPTY_SWING_STATE: SwingState = { effectsBefore: NO_CARRIED_EFFECTS };
+const EMPTY_SWING_STATE: SwingState = {
+  effectsBefore: NO_CARRIED_EFFECTS,
+  damagingPlayBySlot: [],
+  playDamageBySlot: [],
+};
 
 /** A row's state, or an empty one for a row past the end of the plan. */
 export const swingStateAt = (
@@ -75,6 +85,73 @@ const sumEffects = (
   return { tacBonus, defReduction, armorReduction };
 };
 
+/** Total play damage a swing deals when every pick on it lands. */
+export const swingPlayDamage = (state: SwingState): number => {
+  return state.playDamageBySlot.reduce((sum, damage) => sum + damage, 0);
+};
+
+type SwingPlayDamage = Pick<
+  SwingState,
+  'damagingPlayBySlot' | 'playDamageBySlot'
+>;
+
+/**
+ * The damaging plays one swing's picks trigger. A Once Per Turn play deals its
+ * damage only on the first pick that triggers it; `usedOncePerTurn` carries
+ * those across the walk.
+ */
+const swingPlayDamageFor = (
+  plan: AttackPlan,
+  params: TimelineParams,
+  attackIndex: number,
+  usedOncePerTurn: Set<string>,
+): SwingPlayDamage => {
+  const { attacker, damageMods } = params;
+  const row = plan.wrapPicks[attackIndex] ?? [];
+
+  const damagingPlayBySlot: (CharacterPlay | null)[] = row.map(() => null);
+  const playDamageBySlot: number[] = row.map(() => 0);
+
+  row.forEach((id, pickIndex) => {
+    if (id == null || !choiceUsesCharacterPlay(attacker, id)) {
+      return;
+    }
+
+    const playId = effectivePlayForPick(
+      attacker,
+      plan.characterPlayPicks,
+      attackIndex,
+      pickIndex,
+    );
+
+    const play = getCharacterPlay(attacker, playId);
+    const printedDamage = play?.damage ?? 0;
+
+    if (play == null || printedDamage <= 0) {
+      return;
+    }
+
+    const spent = play.oncePerTurn && usedOncePerTurn.has(play.id);
+
+    if (spent) {
+      return;
+    }
+
+    if (play.oncePerTurn) {
+      usedOncePerTurn.add(play.id);
+    }
+
+    damagingPlayBySlot[pickIndex] = play;
+    playDamageBySlot[pickIndex] = effectivePlaybookDamage(
+      attacker,
+      printedDamage,
+      damageMods,
+    );
+  });
+
+  return { damagingPlayBySlot, playDamageBySlot };
+};
+
 export const activationTimeline = (
   plan: AttackPlan,
   params: TimelineParams,
@@ -84,7 +161,12 @@ export const activationTimeline = (
 
   // Effects of the same name never stack, so each name keeps its first value.
   const named = preAppliedEffects(params);
-  const preAppliedState: SwingState = { effectsBefore: sumEffects(named) };
+  const preAppliedState: SwingState = {
+    ...EMPTY_SWING_STATE,
+    effectsBefore: sumEffects(named),
+  };
+
+  const usedOncePerTurn = new Set<string>();
 
   const states: SwingState[] = wrapPicks.map(() => preAppliedState);
 
@@ -96,7 +178,10 @@ export const activationTimeline = (
   );
 
   for (const attackIndex of order) {
-    states[attackIndex] = { effectsBefore: sumEffects(named) };
+    states[attackIndex] = {
+      effectsBefore: sumEffects(named),
+      ...swingPlayDamageFor(plan, params, attackIndex, usedOncePerTurn),
+    };
 
     const row = wrapPicks[attackIndex] ?? [];
 

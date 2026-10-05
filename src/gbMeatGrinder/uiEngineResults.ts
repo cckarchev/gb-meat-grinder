@@ -8,6 +8,7 @@ export const UI_ENGINE_RESULT_KEYS = [
   'effectiveBonusTimeByAttack',
   'ignoredDisplayIndex',
   'attacks',
+  'timeline',
   'rowDamageIfHit',
   'flatDamage',
   'killingBlowIndex',

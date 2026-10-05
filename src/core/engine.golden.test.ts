@@ -353,6 +353,7 @@ const runScenario = (
     ignoredAttackIndex,
     effectiveWrapPicks,
     attacks,
+    timeline,
     rowDamageIfHit,
     flatDamage,
     killingBlowIndex,
@@ -365,6 +366,7 @@ const runScenario = (
     damageMods,
     flatDamage,
     scenario.hp,
+    timeline,
   );
 
   const sortedDistribution = [...outcome.damageDistribution].sort(
@@ -394,6 +396,7 @@ const runScenario = (
       effectiveWrapPicks,
       damageMods,
       activeBaseCount,
+      timeline,
     ),
     killingBlowIndex,
     killProbability: round(outcome.killProbability),

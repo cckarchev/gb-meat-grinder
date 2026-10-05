@@ -1,5 +1,7 @@
 /** Kill chance, expected damage and HP left for a whole activation. */
 
+import { swingStateAt } from '@/core/attacks/activationTimeline';
+import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import type {
   ActivationDamageOutcome,
@@ -45,14 +47,17 @@ export const planDamageOutcome = (
   mods: PlaybookDamageMods,
   flatDamage: number,
   targetHp: number,
+  timeline: ActivationTimeline,
 ): ActivationDamageOutcome => {
   let total: DamageDistribution = new Map([[0, 1]]);
 
   for (const attack of attacks) {
     const picks = wrapPicks[attack.attackIndex] ?? [];
+    const state = swingStateAt(timeline, attack.attackIndex);
+    const extras = { playDamageBySlot: state.playDamageBySlot };
 
     const pickedDamage: DamageForNet = (net) => {
-      return pickedDamageForNet(attacker, mods, picks, net);
+      return pickedDamageForNet(attacker, mods, picks, net, extras);
     };
 
     const swing = swingDamageDistribution(attack, pickedDamage);

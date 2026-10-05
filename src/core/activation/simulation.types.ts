@@ -1,3 +1,4 @@
+import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type {
@@ -76,6 +77,8 @@ export type DerivedSimulation = {
   /** Bonus-Time flags with the Resilience-ignored swing forced off. */
   effectiveBonusTimeByAttack: boolean[];
   attacks: AttackRollContext[];
+  /** Per-swing state the engine derived, by attack index. */
+  timeline: ActivationTimeline;
   /** Damage each attack row deals if every pick on it hits, by attack index. */
   rowDamageIfHit: number[];
   /** Guaranteed damage from the activated traits, applied before any swing. */

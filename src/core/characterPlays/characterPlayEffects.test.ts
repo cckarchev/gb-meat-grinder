@@ -8,6 +8,7 @@ import type { CharacterPlay } from '@/core/playbook/playbook.types';
 import {
   makeAttacker,
   PLAY_ARM,
+  PLAY_DAMAGE,
   PLAY_DEF,
   PLAY_NOOP,
   PLAY_REPEATABLE,
@@ -21,6 +22,13 @@ const NO_EFFECTS = {
 };
 
 describe('character play effects', () => {
+  it('describes play damage and counts it as an effect', () => {
+    expect(characterPlayHasEffect(PLAY_DAMAGE)).toBe(true);
+    expect(characterPlayEffectSummary(PLAY_DAMAGE)).toBe(
+      '3 DMG. Once per turn.',
+    );
+  });
+
   it('describes play effects and cadence', () => {
     expect(characterPlayHasEffect(PLAY_NOOP)).toBe(false);
     expect(characterPlayHasEffect(PLAY_ARM)).toBe(true);

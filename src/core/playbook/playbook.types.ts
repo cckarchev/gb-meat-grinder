@@ -21,8 +21,14 @@ export type CharacterPlay = {
   tacBonusForLater?: number;
   /** −enemy DEF on later attacks (e.g. Stagger). */
   defReductionForLater?: number;
-  /** −enemy ARM on later attacks (e.g. They Ain't Tough!). A condition; caps at 1. */
+  /** −enemy ARM on later attacks (e.g. They Ain't Tough!). A named condition: it applies once. */
   armorReduction?: number;
+  /**
+   * DMG the play causes when triggered (e.g. Impale = 3). Modified like a
+   * playbook damage result by Tough Hide and +DMG buffs, but not by effects
+   * limited to playbook damage results (Burning Passion).
+   */
+  damage?: number;
   /**
    * Once Per Turn, copied from the card: picking it on one swing removes it from
    * later swings. It only limits availability; effects of the same name never

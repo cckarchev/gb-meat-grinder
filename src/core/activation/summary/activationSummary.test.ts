@@ -5,9 +5,11 @@ import {
   swingIsSkipped,
 } from '@/core/activation/summary/activationSummary';
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
+import { activationTimeline } from '@/core/attacks/activationTimeline';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { activeTraitFlatDamage } from '@/core/damage/damage';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
+import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
 
 /** A swing that always rolls exactly `tac` net successes. */
@@ -46,11 +48,26 @@ const input = (
   };
 
   // Derived the way `deriveSimulation` does, unless a test pins them.
+  const characterPlayPicks = scenario.wrapPicks.map((row) => {
+    return row.map(() => null);
+  });
+
+  const timeline = activationTimeline(
+    { wrapPicks: scenario.wrapPicks, characterPlayPicks },
+    {
+      attacker: scenario.attacker,
+      damageMods: scenario.damageMods,
+      activeBaseCount: scenario.activeBaseCount,
+      chargeAttackIndex: NO_ATTACK_INDEX,
+    },
+  );
+
   const rowDamageIfHit = rowDamageIfAllHit(
     scenario.attacker,
     scenario.wrapPicks,
     scenario.damageMods,
     scenario.activeBaseCount,
+    timeline,
   );
 
   const flatDamage = activeTraitFlatDamage(
@@ -58,7 +75,7 @@ const input = (
     scenario.activeTraits,
   );
 
-  return { rowDamageIfHit, flatDamage, ...scenario };
+  return { timeline, rowDamageIfHit, flatDamage, ...scenario };
 };
 
 describe('activeSwings', () => {

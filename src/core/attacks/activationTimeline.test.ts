@@ -12,6 +12,7 @@ import {
   modsWith,
   NO_MODS,
   PLAY_ARM,
+  PLAY_DAMAGE,
   PLAY_DEF,
   PLAY_REPEATABLE,
   PLAY_TAC,
@@ -166,5 +167,41 @@ describe('named effects do not stack', () => {
     const timeline = activationTimeline(plan, params({ attacker }));
 
     expect(timeline[2].effectsBefore.tacBonus).toBe(1);
+  });
+});
+
+describe('damaging character plays', () => {
+  const attacker = makeAttacker({ characterPlays: [PLAY_DAMAGE] });
+
+  const twoGbs: AttackPlan = {
+    wrapPicks: [['gb'], ['gb']],
+    characterPlayPicks: [['playDamage'], ['playDamage']],
+  };
+
+  it('puts the play damage on the slot that triggers it', () => {
+    const timeline = activationTimeline(twoGbs, params({ attacker }));
+
+    expect(timeline[0].playDamageBySlot).toEqual([3]);
+  });
+
+  it('deals an Once Per Turn play only the first time', () => {
+    const timeline = activationTimeline(twoGbs, params({ attacker }));
+
+    expect(timeline[1].playDamageBySlot).toEqual([0]);
+  });
+
+  it('applies Tough Hide and damage buffs to it', () => {
+    const toughHide = activationTimeline(
+      twoGbs,
+      params({ attacker, damageMods: modsWith({ toughHide: true }) }),
+    );
+
+    const sharp = activationTimeline(
+      twoGbs,
+      params({ attacker, damageMods: modsWith({ buffs: { sharp: true } }) }),
+    );
+
+    expect(toughHide[0].playDamageBySlot).toEqual([2]);
+    expect(sharp[0].playDamageBySlot).toEqual([4]);
   });
 });

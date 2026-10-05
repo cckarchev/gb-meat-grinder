@@ -128,6 +128,7 @@ describe('deriveSimulation', () => {
       derived.effectiveWrapPicks,
       state.damageMods,
       derived.activeBaseCount,
+      derived.timeline,
     );
 
     expect(derived.rowDamageIfHit).toEqual(expectedRowDamage);

@@ -12,6 +12,14 @@ import {
 import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
+/** Damage a swing deals besides its card results, by where it lands. */
+export type SwingDamageExtras = {
+  /** Effective play damage triggered on each slot, added when that slot reaches its line. */
+  playDamageBySlot: readonly number[];
+};
+
+const NO_EXTRAS: SwingDamageExtras = { playDamageBySlot: [] };
+
 /** Most card damage reachable in a single playbook column within `budget` net. */
 const bestDamageWithinBudget = (
   attacker: AttackerData,
@@ -51,6 +59,7 @@ export const pickedDamageForNet = (
   mods: PlaybookDamageMods,
   picks: readonly WrapPick[],
   net: number,
+  extras: SwingDamageExtras = NO_EXTRAS,
 ): number => {
   if (net < MIN_PLAYBOOK_NET) {
     return 0;
@@ -75,9 +84,15 @@ export const pickedDamageForNet = (
 
     const reachesPickedLine = slotBudget >= netSuccessesForChoice(attacker, id);
 
-    total += reachesPickedLine
-      ? effectiveDamageForChoice(attacker, id, mods)
-      : bestDamageWithinBudget(attacker, mods, slotBudget);
+    if (!reachesPickedLine) {
+      total += bestDamageWithinBudget(attacker, mods, slotBudget);
+
+      continue;
+    }
+
+    const playDamage = extras.playDamageBySlot[slot] ?? 0;
+
+    total += effectiveDamageForChoice(attacker, id, mods) + playDamage;
   }
 
   return total;

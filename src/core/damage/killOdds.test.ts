@@ -1,7 +1,10 @@
 import { describe, expect, it } from 'vitest';
+import { activationTimeline } from '@/core/attacks/activationTimeline';
+import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { planDamageOutcome } from '@/core/damage/killOdds';
-import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+import { NO_ATTACK_INDEX } from '@/core/shared/constants';
+import { makeAttacker, NO_MODS, PLAY_DAMAGE } from '@/core/testing/fixtures';
 
 describe('planDamageOutcome', () => {
   it('convolves swings and folds in flat damage', () => {
@@ -28,6 +31,7 @@ describe('planDamageOutcome', () => {
       NO_MODS,
       flatDamage,
       targetHp,
+      [],
     );
 
     expect(outcome.killProbability).toBeCloseTo(0.75);
@@ -38,5 +42,41 @@ describe('planDamageOutcome', () => {
       [1, 0.25],
       [2, 0.75],
     ]);
+  });
+
+  it('counts an Once Per Turn damaging play once across the activation', () => {
+    const attacker = makeAttacker({ characterPlays: [PLAY_DAMAGE], tac: 20 });
+    const wrapPicks = [['gb'], ['gb']];
+    const characterPlayPicks = [['playDamage'], ['playDamage']];
+    const plan = { wrapPicks, characterPlayPicks };
+
+    const rollParams = {
+      attacker,
+      chargeAttackIndex: NO_ATTACK_INDEX,
+      armor: 0,
+      enemyHasCover: false,
+      enemyDefensiveStance: false,
+      damageMods: NO_MODS,
+      enemyDef: 2,
+      bonusTimeByAttack: [false, false],
+      initialTacModifier: 0,
+      activeBaseCount: 2,
+    };
+
+    const timeline = activationTimeline(plan, rollParams);
+    const { attacks } = computeAttackSequence(plan, rollParams);
+
+    const outcome = planDamageOutcome(
+      attacker,
+      attacks,
+      wrapPicks,
+      NO_MODS,
+      0,
+      100,
+      timeline,
+    );
+
+    // With 20 dice both swings almost surely reach `gb`: 1 + 3, then 1.
+    expect(outcome.expectedDamage).toBeCloseTo(5, 2);
   });
 });
