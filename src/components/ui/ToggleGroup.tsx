@@ -1,56 +1,33 @@
-import type { ReactNode } from 'react';
-import styled from 'styled-components';
-import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
-import { monoCapsLabel } from '@/styles/mixins';
-
-/** Muted by default; guild groups pass the guild color. */
-const GroupLabel = styled.div<{ $color?: string }>`
-  ${monoCapsLabel}
-  font-size: 0.72rem;
-  color: ${({ $color }) => $color ?? 'var(--muted)'};
-`;
-
-const GroupList = styled.div<{ $columns: number }>`
-  display: grid;
-  grid-template-columns: repeat(${({ $columns }) => $columns}, minmax(0, 1fr));
-  gap: 0 1rem;
-  align-items: start;
-
-  ${narrowViewport} {
-    gap: 0 0.55rem;
-  }
-
-  ${extraNarrowViewport} {
-    grid-template-columns: 1fr;
-  }
-`;
+import type { ComponentProps, ReactNode } from 'react';
+import styles from '@/components/ui/ToggleGroup.module.css';
+import type { CustomPropertyStyle } from '@/styles/customProperties';
+import { joinClassNames } from '@/styles/joinClassNames';
 
 /** Panel footer holding toggle groups stacked with even spacing. */
-export const ToggleGroupStack = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-
-  ${narrowViewport} {
-    gap: 0.6rem;
-  }
-`;
+export const ToggleGroupStack = ({
+  className,
+  ...props
+}: ComponentProps<'div'>) => {
+  return (
+    <div
+      className={joinClassNames(styles.toggleGroupStack, className)}
+      {...props}
+    />
+  );
+};
 
 /** Two toggle groups side by side, stacked on the narrowest screens. */
-export const ToggleGroupPair = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.85rem 1rem;
-  align-items: start;
-
-  ${narrowViewport} {
-    gap: 0.6rem 0.55rem;
-  }
-
-  ${extraNarrowViewport} {
-    grid-template-columns: 1fr;
-  }
-`;
+export const ToggleGroupPair = ({
+  className,
+  ...props
+}: ComponentProps<'div'>) => {
+  return (
+    <div
+      className={joinClassNames(styles.toggleGroupPair, className)}
+      {...props}
+    />
+  );
+};
 
 type ToggleGroupProps = {
   title: string;
@@ -66,10 +43,18 @@ export const ToggleGroup = ({
   columns = 1,
   children,
 }: ToggleGroupProps) => {
+  // An unset color leaves the CSS fallback (muted) in place.
+  const labelStyle: CustomPropertyStyle = { '--group-label-color': color };
+  const listStyle: CustomPropertyStyle = { '--group-columns': columns };
+
   return (
     <section>
-      <GroupLabel $color={color}>{title}</GroupLabel>
-      <GroupList $columns={columns}>{children}</GroupList>
+      <div className={styles.groupLabel} style={labelStyle}>
+        {title}
+      </div>
+      <div className={styles.groupList} style={listStyle}>
+        {children}
+      </div>
     </section>
   );
 };

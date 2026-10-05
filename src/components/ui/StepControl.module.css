@@ -1,0 +1,61 @@
+@layer primitives {
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    min-width: 10rem;
+  }
+
+  .labelText {
+    font-size: var(--font-size-sm);
+    color: var(--muted);
+  }
+
+  .controlRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .stepButton {
+    composes: inputButton from '../../styles/mixins.module.css';
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-none);
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+  }
+
+  .stepButton:disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+  }
+
+  /* A read-only field: the input surface with tabular mono numerals. */
+  .valueDisplay {
+    composes: inputSurface tabularMono from '../../styles/mixins.module.css';
+    flex: 1;
+    min-width: 5.5rem;
+    text-align: center;
+    font-size: var(--font-size-base);
+    padding: var(--space-xs) var(--space-2xs);
+  }
+
+  @media (max-width: 720px) {
+    .field {
+      min-width: 7.25rem;
+    }
+
+    .stepButton {
+      width: 2rem;
+      height: 2rem;
+      font-size: var(--font-size-base);
+    }
+
+    .valueDisplay {
+      min-width: 4.25rem;
+      font-size: var(--font-size-md);
+      padding: var(--space-2xs) var(--space-3xs);
+    }
+  }
+}

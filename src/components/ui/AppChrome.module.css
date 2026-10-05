@@ -1,0 +1,17 @@
+@layer primitives {
+  /* Centered, width-capped page shell around the whole app. */
+  .appChrome {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: var(--space-4xl) var(--space-3xl) calc(var(--space-4xl) * 2);
+    text-align: left;
+  }
+
+  @media (max-width: 720px) {
+    .appChrome {
+      padding: var(--space-lg) var(--space-sm) var(--space-4xl);
+    }
+  }
+}

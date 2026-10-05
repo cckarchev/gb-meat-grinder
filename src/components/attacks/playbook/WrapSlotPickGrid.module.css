@@ -1,0 +1,106 @@
+.wrapSlotBlock {
+  overflow-x: auto;
+  /* Keep vertical overflow clipped (no phantom scrollbar with overflow-x: auto). */
+  overflow-y: hidden;
+}
+
+/* Rule and spacing that separate a wrap slot from the one above it. */
+.wrapSlotBlock:not([data-first]) {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: var(--rule);
+}
+
+/* `--column-count` comes from the component; `--playbook-column-width` from
+   the enclosing attack block. */
+.columnGrid {
+  display: grid;
+  grid-template-columns: repeat(
+      var(--column-count),
+      var(--playbook-column-width, var(--playbook-column-track))
+    );
+  gap: var(--space-xs);
+  align-items: stretch;
+  width: max-content;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.columnBlock {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  border: var(--rule);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--input-bg);
+}
+
+.columnResults {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-3xs);
+}
+
+/* The heat colors come from the component, computed from the hit chance. */
+.columnHead {
+  flex-shrink: 0;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-heading);
+  text-align: center;
+  padding: var(--space-xs);
+  line-height: var(--line-height-tight);
+  background: var(--heat-background);
+  color: var(--heat-text);
+  border-bottom: var(--rule-width) solid var(--heat-border);
+}
+
+@media (max-width: 720px) {
+  .wrapSlotBlock:not([data-first]) {
+    margin-top: var(--space-md);
+    padding-top: var(--space-sm);
+  }
+
+  .columnGrid {
+    gap: var(--space-2xs);
+  }
+
+  .columnResults {
+    gap: var(--space-2xs);
+    padding-top: var(--space-xs);
+    padding-bottom: var(--space-4xs);
+  }
+
+  .columnHead {
+    font-size: var(--font-size-2xs);
+    padding: var(--space-2xs) var(--space-3xs);
+    letter-spacing: var(--tracking-snug);
+  }
+}
+
+@media (max-width: 400px) {
+  .wrapSlotBlock:not([data-first]) {
+    margin-top: var(--space-sm);
+    padding-top: var(--space-xs);
+  }
+
+  .columnGrid {
+    gap: var(--space-3xs);
+  }
+
+  .columnResults {
+    gap: var(--space-3xs);
+    padding-top: var(--space-2xs);
+  }
+
+  .columnHead {
+    font-size: var(--font-size-3xs);
+  }
+}

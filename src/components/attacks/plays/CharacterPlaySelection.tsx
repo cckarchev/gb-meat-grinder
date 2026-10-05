@@ -1,10 +1,4 @@
-import {
-  Pills,
-  Section,
-  SectionHeading,
-  SlotRow,
-  SlotTag,
-} from '@/components/attacks/plays/characterPlayStyles';
+import styles from '@/components/attacks/plays/CharacterPlaySelection.module.css';
 import { PlayPill } from '@/components/attacks/plays/PlayPill';
 import {
   characterPlayEffectSummary,
@@ -59,19 +53,25 @@ export const CharacterPlaySelection = ({
   const attackNumber = attackOrdinal(displayIndex);
 
   return (
-    <Section aria-label={`Character play for attack ${attackNumber}`}>
-      <SectionHeading>Character Play</SectionHeading>
+    // biome-ignore lint/a11y/useAriaPropsSupportedByRole: predates the CSS Modules move; giving the div a role changes the accessibility tree, so it is a separate fix.
+    <div
+      className={styles.section}
+      aria-label={`Character play for attack ${attackNumber}`}
+    >
+      <div className={styles.sectionHeading}>Character Play</div>
       {actionable.map(({ pickIndex, available }, slotIndex) => {
         const pick = characterPlayPicks[attackIndex]?.[pickIndex];
         const slotOrdinal = slotIndex + 1;
         const slotSuffix = multipleSlots ? `, play ${slotOrdinal}` : '';
 
         return (
-          <SlotRow key={pickIndex}>
+          <div className={styles.slotRow} key={pickIndex}>
             {multipleSlots ? (
-              <SlotTag aria-hidden="true">{slotOrdinal}</SlotTag>
+              <span className={styles.slotTag} aria-hidden="true">
+                {slotOrdinal}
+              </span>
             ) : null}
-            <Pills>
+            <div className={styles.pills}>
               {available.map((play) => {
                 const summary = characterPlayEffectSummary(play);
 
@@ -95,10 +95,10 @@ export const CharacterPlaySelection = ({
                   </PlayPill>
                 );
               })}
-            </Pills>
-          </SlotRow>
+            </div>
+          </div>
         );
       })}
-    </Section>
+    </div>
   );
 };

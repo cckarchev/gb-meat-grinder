@@ -1,0 +1,66 @@
+/* Groups the character-play picks and separates them from the playbook grid above. */
+.section {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: var(--rule-dashed);
+}
+
+.sectionHeading {
+  composes: capsLabel from '../../../styles/mixins.module.css';
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-xs);
+}
+
+/* One pick slot (each GB / 1GB result grants one). */
+.slotRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm) var(--space-lg);
+  margin-top: var(--space-sm);
+}
+
+.slotRow:first-of-type {
+  margin-top: 0;
+}
+
+/* Small ordinal badge shown only when there is more than one pick slot. */
+.slotTag {
+  flex: 0 0 auto;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--muted);
+  border: var(--rule);
+  border-radius: var(--radius-xs);
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm) var(--space-lg);
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+@media (max-width: 720px) {
+  .section {
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+  }
+
+  .slotRow {
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
+  }
+
+  .pills {
+    gap: var(--space-xs);
+  }
+}

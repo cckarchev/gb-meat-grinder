@@ -1,0 +1,12 @@
+/* Stretch to the row height so the toggles can sit at the bottom. */
+.enemyPanel {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Pre-attack toggles: a rule separates them from the stat steppers, and
+   `margin-top: auto` pins them to the bottom so they align with the attacker
+   panel's toggles in the same row. */
+.toggles {
+  margin-top: auto;
+}

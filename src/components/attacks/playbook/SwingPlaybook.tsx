@@ -1,4 +1,4 @@
-import { UnreachableNote } from '@/components/attacks/playbook/swingPlaybookStyles';
+import styles from '@/components/attacks/playbook/SwingPlaybook.module.css';
 import { WrapSlotPickGrid } from '@/components/attacks/playbook/WrapSlotPickGrid';
 import { CharacterPlaySelection } from '@/components/attacks/plays/CharacterPlaySelection';
 import { wrapSectionId, wrapTriggerId } from '@/components/attacks/wrapIds';
@@ -32,10 +32,10 @@ export const SwingPlaybook = ({
 
   if (maxNet < MIN_PLAYBOOK_NET) {
     return (
-      <UnreachableNote>
+      <p className={styles.unreachableNote}>
         No playbook column reachable: TAC - ARM is {maxNet}. Raise TAC (charge,
         Singled Out) or lower ARM.
-      </UnreachableNote>
+      </p>
     );
   }
 

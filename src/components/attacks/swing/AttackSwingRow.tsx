@@ -1,19 +1,15 @@
 import { SwingPlaybook } from '@/components/attacks/playbook/SwingPlaybook';
 import { AttackStatsAside } from '@/components/attacks/swing/AttackStatsAside';
-import {
-  AttackBlock,
-  AttackHeading,
-  AttackMain,
-  AttackRow,
-  KIND_ACCENTS,
-  KillingBlowBadge,
-} from '@/components/attacks/swing/attackSwingRowStyles';
+import styles from '@/components/attacks/swing/AttackSwingRow.module.css';
 import { DicePoolStrip } from '@/components/attacks/swing/DicePoolStrip';
 import { CornerBrackets } from '@/components/ui/CornerBrackets';
 import { canAffordBonusTime } from '@/core/activation/bonusTimeFlags';
 import { attackKind, attackKindLabel } from '@/core/attacks/attackKind';
 import { attackRowIsBerserker } from '@/core/attacks/attackRows';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+import type {
+  AttackKind,
+  AttackRollContext,
+} from '@/core/attacks/attackSequence.types';
 import { maxNetSuccessesForRoll } from '@/core/damage/probability';
 import { rowHasWrapContinuation } from '@/core/playbook/wrapSlots';
 import {
@@ -21,8 +17,18 @@ import {
   MIN_PLAYBOOK_NET,
 } from '@/core/shared/constants';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { dataFlag } from '@/styles/dataFlag';
 
 const CORNER_BRACKET_SIZE = 16;
+
+/** Kinds that stand out from a plain swing; their colors live in the CSS module. */
+const ACCENTED_KINDS: ReadonlySet<AttackKind> = new Set([
+  'charge',
+  'berserker',
+]);
+
+/** Set by the CSS module on accented attack blocks, which wrap the brackets. */
+const KIND_ACCENT_COLOR = 'var(--kind-accent)';
 
 /** Per-swing values only `AttacksPanel` knows; shared plan state comes from context. */
 type AttackSwingRowProps = {
@@ -61,7 +67,7 @@ export const AttackSwingRow = ({
 
   const hasWrapContinuation = rowHasWrapContinuation(wrapPicks[attackIndex]);
   const kind = attackKind(attacker, attackIndex, chargeAttackIndex);
-  const cornerAccent = KIND_ACCENTS[kind]?.accent;
+  const accented = ACCENTED_KINDS.has(kind);
   const bonusTimeDisabled =
     !bonusTime && !canAffordBonusTime(bonusTimeMomentumPool);
 
@@ -82,20 +88,28 @@ export const AttackSwingRow = ({
   };
 
   return (
-    <AttackRow>
-      <AttackMain>
-        <AttackBlock $kind={kind} $disabled={disabled} inert={disabled}>
-          {cornerAccent ? (
-            <CornerBrackets accent={cornerAccent} size={CORNER_BRACKET_SIZE} />
+    <div className={styles.attackRow}>
+      <div className={styles.attackMain}>
+        <div
+          className={styles.attackBlock}
+          data-kind={kind}
+          data-disabled={dataFlag(disabled)}
+          inert={disabled}
+        >
+          {accented ? (
+            <CornerBrackets
+              accent={KIND_ACCENT_COLOR}
+              size={CORNER_BRACKET_SIZE}
+            />
           ) : null}
-          <AttackHeading>
+          <div className={styles.attackHeading}>
             {attackKindLabel(attacker, attackIndex, chargeAttackIndex)}
             {isKillingBlow ? (
-              <KillingBlowBadge>
+              <span className={styles.killingBlowBadge}>
                 Killing blow · +{KILLING_BLOW_MOMENTUM} MOM
-              </KillingBlowBadge>
+              </span>
             ) : null}
-          </AttackHeading>
+          </div>
           <DicePoolStrip
             attackIndex={attackIndex}
             tac={attack.tac}
@@ -115,14 +129,14 @@ export const AttackSwingRow = ({
             maxNet={maxNet}
             wrapOpen={wrapOpen}
           />
-        </AttackBlock>
-      </AttackMain>
+        </div>
+      </div>
       <AttackStatsAside
         defMinRoll={attack.defMinRoll}
         armor={armor}
         momentum={momentum}
         remainingHpIfHit={remainingHpIfHit}
       />
-    </AttackRow>
+    </div>
   );
 };

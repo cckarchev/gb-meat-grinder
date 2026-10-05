@@ -1,0 +1,54 @@
+.toggleButton {
+  composes: inputButton from '../../../styles/mixins.module.css';
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  flex-shrink: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: var(--space-2xs) var(--space-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--tracking-snug);
+  white-space: nowrap;
+  transition:
+    background var(--duration-fast) ease,
+    border-color var(--duration-fast) ease;
+}
+
+/* Points right while closed, down once open. Sized in `em` so it follows the
+   button's text down on narrow screens. */
+.caret {
+  flex-shrink: 0;
+  font-size: 0.76em;
+  line-height: var(--line-height-none);
+  color: var(--muted);
+  transition: transform var(--duration-base) ease;
+  transform: rotate(-90deg);
+}
+
+.caret[data-open] {
+  transform: rotate(0deg);
+}
+
+.caret::before {
+  content: '▼';
+}
+
+@media (max-width: 720px) {
+  .toggleButton {
+    padding: var(--space-2xs) var(--space-xs);
+  }
+}
+
+@media (max-width: 400px) {
+  .toggleButton {
+    padding: var(--space-3xs) var(--space-xs);
+    font-size: var(--font-size-2xs);
+    gap: var(--space-3xs);
+    border-radius: var(--radius-xs);
+  }
+}

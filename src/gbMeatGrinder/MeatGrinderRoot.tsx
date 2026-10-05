@@ -1,85 +1,35 @@
-import styled from 'styled-components';
 import { AttackerPanel } from '@/components/attacker/AttackerPanel';
 import { AttacksPanel } from '@/components/attacks/AttacksPanel';
 import { EnemyPanel } from '@/components/enemy/EnemyPanel';
 import { ToggleButton } from '@/components/ui/controls';
 import { SetupPanelsRow } from '@/components/ui/SetupPanelsRow';
+import styles from '@/gbMeatGrinder/MeatGrinderRoot.module.css';
 import { MeatGrinderSimulationContext } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { useMeatGrinderSimulationState } from '@/gbMeatGrinder/useMeatGrinderSimulationState';
-import { narrowViewport } from '@/styles/breakpoints';
-
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-
-  ${narrowViewport} {
-    margin-bottom: 0.85rem;
-    gap: 0.5rem;
-  }
-`;
-
-const TitleGroup = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  min-width: 0;
-
-  ${narrowViewport} {
-    gap: 0.45rem;
-  }
-`;
-
-const TitleIcon = styled.img`
-  width: 1.75rem;
-  height: 1.75rem;
-  flex-shrink: 0;
-
-  ${narrowViewport} {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-`;
-
-const Title = styled.h1`
-  font-family: var(--font-display);
-  font-size: 1.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-heading);
-  line-height: 1;
-  margin: 0;
-
-  ${narrowViewport} {
-    font-size: 1.35rem;
-  }
-`;
-
-const ResetButton = styled(ToggleButton)`
-  flex-shrink: 0;
-  font-size: 0.8rem;
-  padding: 0.38rem 0.75rem;
-`;
 
 export const MeatGrinderRoot = () => {
   const simulation = useMeatGrinderSimulationState();
 
   return (
     <MeatGrinderSimulationContext.Provider value={simulation}>
-      <Header>
-        <TitleGroup>
-          <TitleIcon src="/favicon.svg" alt="" aria-hidden="true" />
-          <Title>GB Meat Grinder</Title>
-        </TitleGroup>
-        <ResetButton
+      <header className={styles.header}>
+        <div className={styles.titleGroup}>
+          <img
+            className={styles.titleIcon}
+            src="/favicon.svg"
+            alt=""
+            aria-hidden="true"
+          />
+          <h1 className={styles.title}>GB Meat Grinder</h1>
+        </div>
+        <ToggleButton
+          className={styles.resetButton}
           type="button"
           onClick={() => simulation.dispatch({ type: 'reset' })}
         >
           Reset
-        </ResetButton>
-      </Header>
+        </ToggleButton>
+      </header>
       <SetupPanelsRow>
         <AttackerPanel />
         <EnemyPanel />

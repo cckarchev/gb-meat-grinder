@@ -1,0 +1,51 @@
+@layer primitives {
+  /* Muted by default; guild groups pass the guild color. */
+  .groupLabel {
+    composes: monoCapsLabel from '../../styles/mixins.module.css';
+    font-size: var(--font-size-xs);
+    color: var(--group-label-color, var(--muted));
+  }
+
+  .groupList {
+    display: grid;
+    grid-template-columns: repeat(var(--group-columns), minmax(0, 1fr));
+    gap: 0 var(--space-2xl);
+    align-items: start;
+  }
+
+  /* Panel footer holding toggle groups stacked with even spacing. */
+  .toggleGroupStack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  /* Two toggle groups side by side, stacked on the narrowest screens. */
+  .toggleGroupPair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl) var(--space-2xl);
+    align-items: start;
+  }
+
+  @media (max-width: 720px) {
+    .groupList {
+      gap: 0 var(--space-md);
+    }
+
+    .toggleGroupStack {
+      gap: var(--space-md);
+    }
+
+    .toggleGroupPair {
+      gap: var(--space-md);
+    }
+  }
+
+  @media (max-width: 400px) {
+    .groupList,
+    .toggleGroupPair {
+      grid-template-columns: 1fr;
+    }
+  }
+}

@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import { EnemyConditions } from '@/components/enemy/EnemyConditions';
 import { EnemyDefenses } from '@/components/enemy/EnemyDefenses';
 import { EnemyGuildDebuffs } from '@/components/enemy/EnemyGuildDebuffs';
+import styles from '@/components/enemy/EnemyPanel.module.css';
 import { StepControl } from '@/components/ui/StepControl';
 import { ToggleGroupPair, ToggleGroupStack } from '@/components/ui/ToggleGroup';
 import { Panel, PanelFooterSection, PanelTitle, Row } from '@/components/ui/ui';
@@ -15,26 +15,11 @@ import {
 } from '@/core/shared/constants';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
-/** Stretch to the row height so the toggles can sit at the bottom. */
-const EnemyPanelBox = styled(Panel)`
-  display: flex;
-  flex-direction: column;
-`;
-
-/**
- * Pre-attack toggles: a rule separates them from the stat steppers, and
- * `margin-top: auto` pins them to the bottom so they align with the attacker
- * panel's toggles in the same row.
- */
-const EnemyToggles = styled(PanelFooterSection)`
-  margin-top: auto;
-`;
-
 export const EnemyPanel = () => {
   const { enemyDef, armor, hp, dispatch } = useMeatGrinderSimulation();
 
   return (
-    <EnemyPanelBox>
+    <Panel className={styles.enemyPanel}>
       <PanelTitle>Enemy</PanelTitle>
       <Row>
         <StepControl
@@ -63,7 +48,7 @@ export const EnemyPanel = () => {
           ariaSubject="target HP"
         />
       </Row>
-      <EnemyToggles>
+      <PanelFooterSection className={styles.toggles}>
         <ToggleGroupStack>
           <ToggleGroupPair>
             <EnemyConditions />
@@ -71,7 +56,7 @@ export const EnemyPanel = () => {
           </ToggleGroupPair>
           <EnemyGuildDebuffs />
         </ToggleGroupStack>
-      </EnemyToggles>
-    </EnemyPanelBox>
+      </PanelFooterSection>
+    </Panel>
   );
 };

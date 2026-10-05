@@ -1,0 +1,30 @@
+/* Model spans the full width on its own row; the paired steppers (Influence /
+   Starting momentum, then Ganging Up / Crowding Out) line up in two columns
+   instead of flex-wrapping unaligned. */
+.controlsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2xl);
+  align-items: start;
+}
+
+/* A rule before the pre-attack toggles, which title their own groups. */
+.preAttackSection {
+  margin-top: var(--space-2xl);
+}
+
+@media (max-width: 720px) {
+  .controlsGrid {
+    gap: var(--space-md);
+  }
+
+  .preAttackSection {
+    margin-top: var(--space-lg);
+  }
+}
+
+@media (max-width: 400px) {
+  .controlsGrid {
+    grid-template-columns: 1fr;
+  }
+}

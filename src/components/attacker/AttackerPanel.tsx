@@ -1,41 +1,11 @@
-import styled from 'styled-components';
 import { AttackerModelSelect } from '@/components/attacker/AttackerModelSelect';
+import styles from '@/components/attacker/AttackerPanel.module.css';
 import { AttackerPreAttackOptions } from '@/components/attacker/AttackerPreAttackOptions';
 import { StepControl } from '@/components/ui/StepControl';
 import { Panel, PanelFooterSection, PanelTitle } from '@/components/ui/ui';
 import { INFLUENCE_MIN } from '@/core/shared/constants';
 import { formatSigned } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
-
-/**
- * Model spans the full width on its own row; the paired steppers (Influence /
- * Starting momentum, then Ganging Up / Crowding Out) line up in two columns
- * instead of flex-wrapping unaligned.
- */
-const ControlsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  align-items: start;
-
-  ${narrowViewport} {
-    gap: 0.55rem;
-  }
-
-  ${extraNarrowViewport} {
-    grid-template-columns: 1fr;
-  }
-`;
-
-/** A rule before the pre-attack toggles, which title their own groups. */
-const PreAttackSection = styled(PanelFooterSection)`
-  margin-top: 1rem;
-
-  ${narrowViewport} {
-    margin-top: 0.65rem;
-  }
-`;
 
 export const AttackerPanel = () => {
   const {
@@ -53,7 +23,7 @@ export const AttackerPanel = () => {
   return (
     <Panel>
       <PanelTitle>Attacker</PanelTitle>
-      <ControlsGrid>
+      <div className={styles.controlsGrid}>
         <AttackerModelSelect />
         <StepControl
           label="Influence"
@@ -89,10 +59,10 @@ export const AttackerPanel = () => {
           valueLabel={crowdingOutLabel}
           ariaSubject="Crowding Out"
         />
-      </ControlsGrid>
-      <PreAttackSection>
+      </div>
+      <PanelFooterSection className={styles.preAttackSection}>
         <AttackerPreAttackOptions />
-      </PreAttackSection>
+      </PanelFooterSection>
     </Panel>
   );
 };
