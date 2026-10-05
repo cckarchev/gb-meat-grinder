@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { attackKind, attackKindLabel } from '@/core/attacks/attackVariant';
+import { attackKind, attackKindLabel } from '@/core/attacks/attackKind';
 import { makeAttacker } from '@/core/testing/fixtures';
 
 const CHARGE_ROW = 0;

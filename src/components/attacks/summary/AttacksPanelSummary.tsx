@@ -19,7 +19,7 @@ import { SummaryStat } from '@/components/attacks/summary/SummaryStat';
 import { useActivationInput } from '@/components/attacks/useActivationInput';
 import { Mono } from '@/components/ui/ui';
 import { summarizeActivation } from '@/core/activation/summary/activationSummary';
-import { attackKindLabel } from '@/core/attacks/attackVariant';
+import { attackKindLabel } from '@/core/attacks/attackKind';
 import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
 import { rowHasWrapPick } from '@/core/playbook/wrapSlots';
 import { formatPercent, formatRange, formatSigned } from '@/core/shared/format';

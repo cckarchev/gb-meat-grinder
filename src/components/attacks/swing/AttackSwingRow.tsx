@@ -10,12 +10,12 @@ import {
 import { DicePoolStrip } from '@/components/attacks/swing/DicePoolStrip';
 import { CornerBrackets } from '@/components/ui/CornerBrackets';
 import { canAffordBonusTime } from '@/core/activation/bonusTimeFlags';
+import { attackKind, attackKindLabel } from '@/core/attacks/attackKind';
 import { attackRowIsBerserker } from '@/core/attacks/attackRows';
 import type {
   AttackKind,
   AttackRollContext,
 } from '@/core/attacks/attackSequence.types';
-import { attackKind, attackKindLabel } from '@/core/attacks/attackVariant';
 import { maxNetSuccessesForRoll } from '@/core/damage/probability';
 import { rowHasWrapContinuation } from '@/core/playbook/wrapSlots';
 import {
