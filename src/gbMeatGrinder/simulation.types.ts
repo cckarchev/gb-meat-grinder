@@ -24,7 +24,10 @@ export type MeatGrinderSimulation = ExposedState & {
   availableAttackers: readonly AttackerData[];
   /** Active base attacks this activation (derived from traits + influence). */
   activeBaseCount: number;
-  /** Charge row the engine uses: `chargeAttackIndex` while charging, else -1. */
+  /**
+   * Charge row the engine uses: `chargeAttackIndex` while charging, else
+   * `NO_ATTACK_INDEX`.
+   */
   effectiveChargeAttackIndex: number;
   wrapPicks: WrapPick[][];
   characterPlayPicks: CharacterPlayPickSlot[][];
@@ -39,7 +42,8 @@ export type MeatGrinderSimulation = ExposedState & {
   effectiveBonusTimeByAttack: boolean[];
   /**
    * Display index into `attacks` of the swing ignored by Resilience (always 0
-   * when active), or -1 when the target is not Resilient / has no attacks.
+   * when active), or `NO_ATTACK_INDEX` when the target is not Resilient / has
+   * no attacks.
    */
   ignoredDisplayIndex: number;
   attacks: AttackRollContext[];
@@ -49,9 +53,9 @@ export type MeatGrinderSimulation = ExposedState & {
   flatDamage: number;
   /**
    * Display index into `attacks` of the swing that drops the target to 0 HP in
-   * the deterministic all-hit projection, or -1 if it never falls. The
-   * activation ends here: this swing earns +1 momentum (killing blow) and every
-   * later swing can no longer be made.
+   * the deterministic all-hit projection, or `NO_ATTACK_INDEX` if it never
+   * falls. The activation ends here: this swing earns `KILLING_BLOW_MOMENTUM`
+   * and every later swing can no longer be made.
    */
   killingBlowIndex: number;
   dispatch: Dispatch<MeatGrinderAction>;

@@ -5,13 +5,13 @@ export const MeatGrinderSimulationContext =
   createContext<MeatGrinderSimulation | null>(null);
 
 export const useMeatGrinderSimulation = (): MeatGrinderSimulation => {
-  const ctx = useContext(MeatGrinderSimulationContext);
+  const simulation = useContext(MeatGrinderSimulationContext);
 
-  if (ctx == null) {
+  if (simulation == null) {
     throw new Error(
       'useMeatGrinderSimulation must be used within MeatGrinderSimulationContext.Provider',
     );
   }
 
-  return ctx;
+  return simulation;
 };

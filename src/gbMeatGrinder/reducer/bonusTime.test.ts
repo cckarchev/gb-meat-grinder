@@ -19,6 +19,10 @@ describe('Bonus Time', () => {
     return { type: 'bonusTime', attackIndex, value: true };
   };
 
+  const unspend = (attackIndex: number): MeatGrinderAction => {
+    return { type: 'bonusTime', attackIndex, value: false };
+  };
+
   it('refuses a spend without momentum', () => {
     const state = initialState(PICK_THRESHER);
 
@@ -45,11 +49,7 @@ describe('Bonus Time', () => {
       spend(0),
     );
 
-    const off = reduce(paid, {
-      type: 'bonusTime',
-      attackIndex: 0,
-      value: false,
-    });
+    const off = reduce(paid, unspend(0));
 
     expect(paid.bonusTimeByAttack[0]).toBe(true);
     expect(off.bonusTimeByAttack[0]).toBe(false);
@@ -112,11 +112,7 @@ describe('Bonus Time', () => {
     });
 
     it('drops when the spend is turned off', () => {
-      const off = reduce(reachedWithBonusTime(), {
-        type: 'bonusTime',
-        attackIndex: 0,
-        value: false,
-      });
+      const off = reduce(reachedWithBonusTime(), unspend(0));
 
       expect(off.attackPlan.wrapPicks[0]).not.toContain(BONUS_TIME_LINE);
     });

@@ -16,16 +16,13 @@ import {
   attackerOf,
 } from '@/gbMeatGrinder/reducer/stateSelectors';
 
-const sanitizedBonusTime = (
-  state: MeatGrinderState,
-  flags: boolean[],
-): boolean[] => {
+const sanitizedBonusTime = (state: MeatGrinderState): boolean[] => {
   return sanitizeBonusTimeFlags(
     attackerOf(state),
     state.attackPlan.wrapPicks,
     state.damageMods,
     state.startingMomentum,
-    flags,
+    state.bonusTimeByAttack,
     activeBaseCountOf(state),
   );
 };
@@ -67,7 +64,7 @@ export const toggleBonusTime = (
 export const resanitizeBonusTime = (
   state: MeatGrinderState,
 ): MeatGrinderState => {
-  const sanitized = sanitizedBonusTime(state, state.bonusTimeByAttack);
+  const sanitized = sanitizedBonusTime(state);
 
   if (rowEqual(sanitized, state.bonusTimeByAttack)) {
     return state;

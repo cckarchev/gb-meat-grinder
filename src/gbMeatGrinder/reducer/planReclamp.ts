@@ -9,8 +9,8 @@ import {
   clampParams,
 } from '@/gbMeatGrinder/reducer/stateSelectors';
 
-const clampPlan = (s: MeatGrinderState, plan: AttackPlan): AttackPlan => {
-  return clampAttackPlan(plan, clampParams(s));
+const clampPlan = (state: MeatGrinderState, plan: AttackPlan): AttackPlan => {
+  return clampAttackPlan(plan, clampParams(state));
 };
 
 /** Apply `patch`, then re-clamp the existing plan against the patched state. */
@@ -48,7 +48,7 @@ export const withReclampedCharge = (
 /** Adopt an edited plan (re-clamped), or keep the state when the edit was a no-op. */
 export const applyPlanEdit = (
   state: MeatGrinderState,
-  edited: AttackPlan | null | undefined,
+  edited: AttackPlan | null,
 ): MeatGrinderState => {
   if (edited == null) {
     return state;

@@ -3,7 +3,7 @@ import { deriveSimulation } from '@/core/activation/simulation';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import { activeBaseAttackCount } from '@/core/attacks/attackStructure';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
-import { HP_MIN } from '@/core/shared/constants';
+import { HP_MIN, NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
 import type {
   MeatGrinderAction,
@@ -52,7 +52,7 @@ describe('deriveSimulation', () => {
       state.armor,
       state.attackPlan.wrapPicks,
       state.attackPlan.characterPlayPicks,
-      -1,
+      NO_ATTACK_INDEX,
       state.enemyHasCover,
       state.enemyDefensiveStance,
       state.damageMods,
@@ -77,7 +77,7 @@ describe('deriveSimulation', () => {
       boarState({ type: 'charging', value: true }),
     );
 
-    expect(idle.effectiveChargeAttackIndex).toBe(-1);
+    expect(idle.effectiveChargeAttackIndex).toBe(NO_ATTACK_INDEX);
     expect(charging.effectiveChargeAttackIndex).toBe(0);
   });
 
@@ -104,13 +104,12 @@ describe('deriveSimulation', () => {
   });
 
   it('ignores no swing for a regular target', () => {
-    const derived = deriveSimulation(veteranBoar, boarState(pickDamage(0)));
+    const state = boarState(pickDamage(0));
+    const derived = deriveSimulation(veteranBoar, state);
 
-    expect(derived.ignoredAttackIndex).toBe(-1);
-    expect(derived.ignoredDisplayIndex).toBe(-1);
-    expect(derived.effectiveWrapPicks).toEqual(
-      boarState(pickDamage(0)).attackPlan.wrapPicks,
-    );
+    expect(derived.ignoredAttackIndex).toBe(NO_ATTACK_INDEX);
+    expect(derived.ignoredDisplayIndex).toBe(NO_ATTACK_INDEX);
+    expect(derived.effectiveWrapPicks).toEqual(state.attackPlan.wrapPicks);
   });
 
   it('finds the killing blow under the all-hit projection', () => {
@@ -119,7 +118,9 @@ describe('deriveSimulation', () => {
     const unpicked = boarState({ type: 'hp', value: HP_MIN });
 
     expect(deriveSimulation(veteranBoar, fragile).killingBlowIndex).toBe(0);
-    expect(deriveSimulation(veteranBoar, unpicked).killingBlowIndex).toBe(-1);
+    expect(deriveSimulation(veteranBoar, unpicked).killingBlowIndex).toBe(
+      NO_ATTACK_INDEX,
+    );
   });
 
   it('exposes the all-hit row damage and flat damage it projects with', () => {
