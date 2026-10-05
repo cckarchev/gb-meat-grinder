@@ -1,7 +1,4 @@
-import type {
-  CharacterPlaySlotRef,
-  SwingPlanBindings,
-} from '@/components/attacks/attacks.types';
+import type { CharacterPlaySlotRef } from '@/components/attacks/attacks.types';
 import { WrapSlotPickGrid } from '@/components/attacks/playbook/WrapSlotPickGrid';
 import { CharacterPlaySelection } from '@/components/attacks/plays/CharacterPlaySelection';
 import {
@@ -16,32 +13,18 @@ import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulati
 type SwingPlaybookProps = {
   attack: AttackRollContext;
   displayIdx: number;
-  armor: number;
   maxNet: number;
-  activeBaseCount: number;
-  wrapPicks: SwingPlanBindings['wrapPicks'];
-  characterPlayPicks: SwingPlanBindings['characterPlayPicks'];
-  damageMods: SwingPlanBindings['damageMods'];
   wrapOpen: boolean;
-  onChoiceChange: SwingPlanBindings['onChoiceChange'];
-  onCharacterPlayPickChange: SwingPlanBindings['onCharacterPlayPickChange'];
 };
 
 /** The swing's playbook picks: first slot, wrap slots and character plays. */
 export const SwingPlaybook = ({
   attack,
   displayIdx,
-  armor,
   maxNet,
-  activeBaseCount,
-  wrapPicks,
-  characterPlayPicks,
-  damageMods,
   wrapOpen,
-  onChoiceChange,
-  onCharacterPlayPickChange,
 }: SwingPlaybookProps) => {
-  const { attacker } = useMeatGrinderSimulation();
+  const { attacker, wrapPicks } = useMeatGrinderSimulation();
   const attackIndex = attack.attackIndex;
   const rowPicks = wrapPicks[attackIndex];
 
@@ -70,13 +53,9 @@ export const SwingPlaybook = ({
       pickIndex={pickIndex}
       tac={attack.tac}
       pHit={attack.pHit}
-      armor={armor}
+      armor={attack.armor}
       maxNet={maxNet}
-      wrapPicks={wrapPicks}
-      damageMods={damageMods}
-      activeBaseCount={activeBaseCount}
       firstSlotInSection={firstSlotInSection}
-      onChoiceChange={onChoiceChange}
     />
   );
 
@@ -98,13 +77,8 @@ export const SwingPlaybook = ({
       ) : null}
       <CharacterPlaySelection
         slots={characterPlaySlots}
-        wrapPicks={wrapPicks}
-        characterPlayPicks={characterPlayPicks}
-        damageMods={damageMods}
         attackIndex={attackIndex}
         displayIdx={displayIdx}
-        activeBaseCount={activeBaseCount}
-        onCharacterPlayPickChange={onCharacterPlayPickChange}
       />
     </>
   );

@@ -3,10 +3,7 @@ import {
   LineLabelStack,
 } from '@/components/attacks/playbook/playbookLineStyles';
 import { momentousLineStyle } from '@/core/activation/momentousLines';
-import type {
-  PlaybookChoiceId,
-  PlaybookDamageMods,
-} from '@/core/playbook/playbook.types';
+import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
 import { playbookLineDisplaySegments } from '@/core/playbook/playbookLabels';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
@@ -15,7 +12,6 @@ const KD_LOCKED_TITLE =
 
 type PlaybookLineButtonProps = {
   id: PlaybookChoiceId;
-  damageMods: PlaybookDamageMods;
   selected: boolean;
   /** Knock Down already applied earlier, so this line cannot be picked. */
   kdLocked: boolean;
@@ -27,13 +23,12 @@ type PlaybookLineButtonProps = {
 /** One playbook result, drawn as a round pick button. */
 export const PlaybookLineButton = ({
   id,
-  damageMods,
   selected,
   kdLocked,
   hitChanceLabel,
   onClick,
 }: PlaybookLineButtonProps) => {
-  const { attacker } = useMeatGrinderSimulation();
+  const { attacker, damageMods } = useMeatGrinderSimulation();
   const momentousStyle = momentousLineStyle(attacker, id, damageMods);
   const segments = playbookLineDisplaySegments(attacker, id, damageMods);
   const action = selected ? 'Selected' : 'Select';

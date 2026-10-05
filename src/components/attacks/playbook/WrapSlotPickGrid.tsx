@@ -1,4 +1,3 @@
-import type { SwingPlanBindings } from '@/components/attacks/attacks.types';
 import { PlaybookLineButton } from '@/components/attacks/playbook/PlaybookLineButton';
 import {
   ColumnBlock,
@@ -9,10 +8,6 @@ import {
 } from '@/components/attacks/playbook/playbookGridStyles';
 import { formatPercent, probAttackSucceeds } from '@/core/damage/probability';
 import { kdAlreadyTakenBeforePick } from '@/core/playbook/knockDown';
-import type {
-  PlaybookDamageMods,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
 import {
   wrapExtendedNetNeeded,
   wrapSlotBudget,
@@ -28,11 +23,7 @@ type WrapSlotPickGridProps = {
   pHit: number;
   armor: number;
   maxNet: number;
-  wrapPicks: WrapPick[][];
-  damageMods: PlaybookDamageMods;
-  activeBaseCount: number;
   firstSlotInSection: boolean;
-  onChoiceChange: SwingPlanBindings['onChoiceChange'];
 };
 
 /** The playbook columns one wrap slot can reach, with their hit chances. */
@@ -43,13 +34,17 @@ export const WrapSlotPickGrid = ({
   pHit,
   armor,
   maxNet,
-  wrapPicks,
-  damageMods,
-  activeBaseCount,
   firstSlotInSection,
-  onChoiceChange,
 }: WrapSlotPickGridProps) => {
-  const { attacker, enemyKnockedDown } = useMeatGrinderSimulation();
+  const {
+    attacker,
+    enemyKnockedDown,
+    wrapPicks,
+    damageMods,
+    activeBaseCount,
+    dispatch,
+  } = useMeatGrinderSimulation();
+
   const budget = wrapSlotBudget(attacker, maxNet, pickIndex);
 
   const visibleColumns = attacker.playbook.filter(
@@ -95,16 +90,16 @@ export const WrapSlotPickGrid = ({
                     <PlaybookLineButton
                       key={result.id}
                       id={result.id}
-                      damageMods={damageMods}
                       selected={selected}
                       kdLocked={result.appliesKnockDown === true && kdTaken}
                       hitChanceLabel={hitChanceLabel}
                       onClick={() =>
-                        onChoiceChange(
+                        dispatch({
+                          type: 'wrapChoice',
                           attackIndex,
                           pickIndex,
-                          clearsPick ? null : result.id,
-                        )
+                          id: clearsPick ? null : result.id,
+                        })
                       }
                     />
                   );

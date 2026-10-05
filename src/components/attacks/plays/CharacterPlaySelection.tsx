@@ -1,7 +1,4 @@
-import type {
-  CharacterPlaySlotRef,
-  SwingPlanBindings,
-} from '@/components/attacks/attacks.types';
+import type { CharacterPlaySlotRef } from '@/components/attacks/attacks.types';
 import {
   Pills,
   Section,
@@ -19,27 +16,24 @@ import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulati
 
 type CharacterPlaySelectionProps = {
   slots: CharacterPlaySlotRef[];
-  wrapPicks: SwingPlanBindings['wrapPicks'];
-  characterPlayPicks: SwingPlanBindings['characterPlayPicks'];
-  damageMods: SwingPlanBindings['damageMods'];
   attackIndex: number;
   displayIdx: number;
-  activeBaseCount: number;
-  onCharacterPlayPickChange: SwingPlanBindings['onCharacterPlayPickChange'];
 };
 
 /** Character-play options offered after a GB / 1GB playbook result. */
 export const CharacterPlaySelection = ({
   slots,
-  wrapPicks,
-  characterPlayPicks,
-  damageMods,
   attackIndex,
   displayIdx,
-  activeBaseCount,
-  onCharacterPlayPickChange,
 }: CharacterPlaySelectionProps) => {
-  const { attacker } = useMeatGrinderSimulation();
+  const {
+    attacker,
+    wrapPicks,
+    characterPlayPicks,
+    damageMods,
+    activeBaseCount,
+    dispatch,
+  } = useMeatGrinderSimulation();
 
   const actionable = slots
     .map(({ pickIndex }) => ({
@@ -88,7 +82,12 @@ export const CharacterPlaySelection = ({
                     description={summary}
                     ariaLabel={`${cp.label} (${summary}) for attack ${attackOrdinal}${slotSuffix}`}
                     onClick={() =>
-                      onCharacterPlayPickChange(attackIndex, pickIndex, cp.id)
+                      dispatch({
+                        type: 'characterPlayPick',
+                        attackIndex,
+                        pickIndex,
+                        pick: cp.id,
+                      })
                     }
                   >
                     {cp.label}

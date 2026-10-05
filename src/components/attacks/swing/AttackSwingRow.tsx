@@ -1,4 +1,3 @@
-import type { AttackSwingRowProps } from '@/components/attacks/attacks.types';
 import { SwingPlaybook } from '@/components/attacks/playbook/SwingPlaybook';
 import { AttackStatsAside } from '@/components/attacks/swing/AttackStatsAside';
 import {
@@ -11,7 +10,10 @@ import {
 import { DicePoolStrip } from '@/components/attacks/swing/DicePoolStrip';
 import { CornerBrackets } from '@/components/ui/CornerBrackets';
 import { attackRowIsBerserker } from '@/core/attacks/attackRows';
-import type { AttackBlockVariant } from '@/core/attacks/attackSequence.types';
+import type {
+  AttackBlockVariant,
+  AttackRollContext,
+} from '@/core/attacks/attackSequence.types';
 import {
   attackBlockVariant,
   attackKindLabel,
@@ -31,30 +33,37 @@ const CORNER_ACCENTS: Partial<Record<AttackBlockVariant, string>> = {
   berserker: 'var(--accent-berserker)',
 };
 
+/** Per-swing values only `AttacksPanel` knows; shared plan state comes from context. */
+type AttackSwingRowProps = {
+  attack: AttackRollContext;
+  displayIdx: number;
+  disabled: boolean;
+  isKillingBlow: boolean;
+  /** Charge row the engine uses: the chosen base, or none when not charging. */
+  chargeAttackIndex: number;
+  remainingHpIfHit: number;
+  momentum: number;
+  bonusTime: boolean;
+  bonusTimeMomentumPool: number;
+  wrapOpen: boolean;
+  onToggleWrapExpansion: () => void;
+};
+
 export const AttackSwingRow = ({
   attack,
   displayIdx,
   disabled,
   isKillingBlow,
-  charging,
   chargeAttackIndex,
-  activeBaseCount,
-  wrapPicks,
-  characterPlayPicks,
-  damageMods,
   remainingHpIfHit,
   momentum,
   bonusTime,
   bonusTimeMomentumPool,
-  onBonusTimeChange,
   wrapOpen,
-  onChargeAttackIndexChange,
-  onChoiceChange,
-  onCharacterPlayPickChange,
   onToggleWrapExpansion,
-  onWrapContinuationCleared,
 }: AttackSwingRowProps) => {
-  const { attacker } = useMeatGrinderSimulation();
+  const { attacker, charging, wrapPicks, dispatch } =
+    useMeatGrinderSimulation();
   const attackIndex = attack.attackIndex;
   const armor = attack.armor;
   const maxNet = maxNetSuccessesForRoll(attack.tac, armor);
@@ -67,10 +76,18 @@ export const AttackSwingRow = ({
 
   const handleWrapToggle = () => {
     if (wrapOpen) {
-      onWrapContinuationCleared(attackIndex);
+      dispatch({ type: 'clearWrapContinuation', attackIndex });
     }
 
     onToggleWrapExpansion();
+  };
+
+  const handleCharge = () => {
+    dispatch({ type: 'chargeAttackIndex', value: attackIndex });
+  };
+
+  const handleBonusTimeChange = (value: boolean) => {
+    dispatch({ type: 'bonusTime', attackIndex, value });
   };
 
   return (
@@ -93,10 +110,10 @@ export const AttackSwingRow = ({
             tac={attack.tac}
             canCharge={charging && !attackRowIsBerserker(attacker, attackIndex)}
             isCharge={chargeAttackIndex === attackIndex}
-            onCharge={() => onChargeAttackIndexChange(attackIndex)}
+            onCharge={handleCharge}
             bonusTime={bonusTime}
             bonusTimeDisabled={bonusTimeDisabled}
-            onBonusTimeChange={(value) => onBonusTimeChange(attackIndex, value)}
+            onBonusTimeChange={handleBonusTimeChange}
             canWrap={hasWrapContinuation && maxNet >= MIN_PLAYBOOK_NET}
             wrapOpen={wrapOpen}
             onWrapToggle={handleWrapToggle}
@@ -104,15 +121,8 @@ export const AttackSwingRow = ({
           <SwingPlaybook
             attack={attack}
             displayIdx={displayIdx}
-            armor={armor}
             maxNet={maxNet}
-            activeBaseCount={activeBaseCount}
-            wrapPicks={wrapPicks}
-            characterPlayPicks={characterPlayPicks}
-            damageMods={damageMods}
             wrapOpen={wrapOpen}
-            onChoiceChange={onChoiceChange}
-            onCharacterPlayPickChange={onCharacterPlayPickChange}
           />
         </AttackBlock>
       </AttackMain>
