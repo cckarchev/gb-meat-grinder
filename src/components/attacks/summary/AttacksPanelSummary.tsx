@@ -8,63 +8,32 @@ import {
 } from '@/components/attacks/summary/attacksSummaryCopy';
 import {
   OddsAggregateBlock,
-  SelectionLine,
-  SelectionPicksInline,
   Summary,
-  SummaryRow,
   SummarySectionTitle,
   TotalsSectionTitle,
 } from '@/components/attacks/summary/attacksSummaryStyles';
+import { SummaryOddsRow } from '@/components/attacks/summary/SummaryOddsRow';
 import { SummaryStat } from '@/components/attacks/summary/SummaryStat';
 import { useActivationInput } from '@/components/attacks/useActivationInput';
-import { Mono } from '@/components/ui/ui';
 import { summarizeActivation } from '@/core/activation/summary/activationSummary';
-import { attackKindLabel } from '@/core/attacks/attackKind';
-import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
-import { rowHasWrapPick } from '@/core/playbook/wrapSlots';
 import { formatPercent, formatRange, formatSigned } from '@/core/shared/format';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 const EXPECTED_VALUE_DIGITS = 1;
 
 export const AttacksPanelSummary = () => {
-  const {
-    attacker,
-    damageMods,
-    effectiveWrapPicks,
-    effectiveChargeAttackIndex,
-  } = useMeatGrinderSimulation();
-
   const input = useActivationInput();
   const summary = useMemo(() => summarizeActivation(input), [input]);
 
   return (
-    <Summary as="section" aria-label="Activation odds and totals">
+    <Summary aria-label="Activation odds and totals">
       <SummarySectionTitle>Odds</SummarySectionTitle>
       {summary.activeAttacks.map((swing, displayIndex) => (
-        <SummaryRow key={swing.attackIndex}>
-          <SelectionLine>
-            <Mono>{displayIndex + 1}</Mono>.{' '}
-            {attackKindLabel(
-              attacker,
-              swing.attackIndex,
-              effectiveChargeAttackIndex,
-            )}
-            {' -> '}
-            <SelectionPicksInline>
-              {formatWrapRowSelectionLabel(
-                attacker,
-                effectiveWrapPicks[swing.attackIndex] ?? [],
-                damageMods,
-              )}
-            </SelectionPicksInline>
-          </SelectionLine>
-          <Mono>
-            {rowHasWrapPick(effectiveWrapPicks[swing.attackIndex])
-              ? formatPercent(swing.prob)
-              : '-'}
-          </Mono>
-        </SummaryRow>
+        <SummaryOddsRow
+          key={swing.attackIndex}
+          attackIndex={swing.attackIndex}
+          displayIndex={displayIndex}
+          prob={swing.prob}
+        />
       ))}
       <OddsAggregateBlock>
         <SummaryStat label="Kills the target" tooltip={TOOLTIP_KILL}>

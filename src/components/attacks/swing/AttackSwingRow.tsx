@@ -5,6 +5,7 @@ import {
   AttackHeading,
   AttackMain,
   AttackRow,
+  KIND_ACCENTS,
   KillingBlowBadge,
 } from '@/components/attacks/swing/attackSwingRowStyles';
 import { DicePoolStrip } from '@/components/attacks/swing/DicePoolStrip';
@@ -12,10 +13,7 @@ import { CornerBrackets } from '@/components/ui/CornerBrackets';
 import { canAffordBonusTime } from '@/core/activation/bonusTimeFlags';
 import { attackKind, attackKindLabel } from '@/core/attacks/attackKind';
 import { attackRowIsBerserker } from '@/core/attacks/attackRows';
-import type {
-  AttackKind,
-  AttackRollContext,
-} from '@/core/attacks/attackSequence.types';
+import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { maxNetSuccessesForRoll } from '@/core/damage/probability';
 import { rowHasWrapContinuation } from '@/core/playbook/wrapSlots';
 import {
@@ -25,11 +23,6 @@ import {
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 const CORNER_BRACKET_SIZE = 16;
-
-const CORNER_ACCENTS: Partial<Record<AttackKind, string>> = {
-  charge: 'var(--accent-charge)',
-  berserker: 'var(--accent-berserker)',
-};
 
 /** Per-swing values only `AttacksPanel` knows; shared plan state comes from context. */
 type AttackSwingRowProps = {
@@ -67,8 +60,8 @@ export const AttackSwingRow = ({
   const maxNet = maxNetSuccessesForRoll(attack.tac, armor);
 
   const hasWrapContinuation = rowHasWrapContinuation(wrapPicks[attackIndex]);
-  const variant = attackKind(attacker, attackIndex, chargeAttackIndex);
-  const cornerAccent = CORNER_ACCENTS[variant];
+  const kind = attackKind(attacker, attackIndex, chargeAttackIndex);
+  const cornerAccent = KIND_ACCENTS[kind]?.accent;
   const bonusTimeDisabled =
     !bonusTime && !canAffordBonusTime(bonusTimeMomentumPool);
 
@@ -91,7 +84,7 @@ export const AttackSwingRow = ({
   return (
     <AttackRow>
       <AttackMain>
-        <AttackBlock $variant={variant} $disabled={disabled} inert={disabled}>
+        <AttackBlock $kind={kind} $disabled={disabled} inert={disabled}>
           {cornerAccent ? (
             <CornerBrackets accent={cornerAccent} size={CORNER_BRACKET_SIZE} />
           ) : null}

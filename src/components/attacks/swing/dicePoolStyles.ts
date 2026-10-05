@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Mono } from '@/components/ui/ui';
 import { narrowViewport } from '@/styles/breakpoints';
+import { monoCapsLabel } from '@/styles/mixins';
 
 export const DicePoolBar = styled.div`
   display: flex;
@@ -63,12 +64,8 @@ export const PoolReadout = styled.div`
 `;
 
 export const PoolReadoutLabel = styled.span`
-  font-family: var(--font-mono);
+  ${monoCapsLabel}
   font-size: 0.62rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-label);
-  color: var(--muted);
 `;
 
 export const PoolReadoutValue = styled(Mono)`

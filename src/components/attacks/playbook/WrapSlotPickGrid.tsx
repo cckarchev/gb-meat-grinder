@@ -6,12 +6,8 @@ import {
   ColumnResults,
   WrapSlotBlock,
 } from '@/components/attacks/playbook/playbookGridStyles';
-import { probAttackSucceeds } from '@/core/damage/probability';
 import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
-import {
-  wrapExtendedNetNeeded,
-  wrapSlotBudget,
-} from '@/core/playbook/wrapSlots';
+import { type SwingRoll, wrapSlotColumns } from '@/core/playbook/wrapSlots';
 import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
 import { formatPercent } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
@@ -21,9 +17,7 @@ const HIT_CHANCE_DIGITS = 1;
 type WrapSlotPickGridProps = {
   attackIndex: number;
   pickIndex: number;
-  tac: number;
-  pHit: number;
-  armor: number;
+  roll: SwingRoll;
   maxNet: number;
   firstSlotInSection: boolean;
 };
@@ -32,9 +26,7 @@ type WrapSlotPickGridProps = {
 export const WrapSlotPickGrid = ({
   attackIndex,
   pickIndex,
-  tac,
-  pHit,
-  armor,
+  roll,
   maxNet,
   firstSlotInSection,
 }: WrapSlotPickGridProps) => {
@@ -47,11 +39,8 @@ export const WrapSlotPickGrid = ({
     dispatch,
   } = useMeatGrinderSimulation();
 
-  const budget = wrapSlotBudget(attacker, maxNet, pickIndex);
-
-  const visibleColumns = attacker.playbook.filter(
-    (column) => column.netSuccesses <= budget,
-  );
+  const selectedId = wrapPicks[attackIndex][pickIndex];
+  const visibleColumns = wrapSlotColumns(attacker, roll, maxNet, pickIndex);
 
   const knockDownTaken = knockDownTakenBeforePick(
     attacker,
@@ -66,33 +55,15 @@ export const WrapSlotPickGrid = ({
   return (
     <WrapSlotBlock $first={firstSlotInSection}>
       <ColumnGrid $columnCount={visibleColumns.length}>
-        {visibleColumns.map((column) => {
-          const netNeeded = wrapExtendedNetNeeded(
-            attacker,
-            pickIndex,
-            column.netSuccesses,
-          );
-
-          const columnHitChance = probAttackSucceeds(
-            tac,
-            pHit,
-            armor,
-            netNeeded,
-          );
-          const hitChanceLabel = formatPercent(
-            columnHitChance,
-            HIT_CHANCE_DIGITS,
-          );
+        {visibleColumns.map(({ column, hitChance }) => {
+          const hitChanceLabel = formatPercent(hitChance, HIT_CHANCE_DIGITS);
 
           return (
             <ColumnBlock key={column.netSuccesses}>
-              <ColumnHead $hitChance={columnHitChance}>
-                {hitChanceLabel}
-              </ColumnHead>
+              <ColumnHead $hitChance={hitChance}>{hitChanceLabel}</ColumnHead>
               <ColumnResults>
                 {column.results.map((result) => {
-                  const selected =
-                    wrapPicks[attackIndex][pickIndex] === result.id;
+                  const selected = selectedId === result.id;
 
                   // Wrap slots can be cleared by clicking the pick again; the
                   // first slot always keeps a line.

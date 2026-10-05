@@ -111,8 +111,16 @@ const transition = (
 
       return withReclampedPlan(state, { crowdingOut });
     }
-    case 'damageMods': {
-      return withReclampedPlan(state, { damageMods: action.value });
+    case 'toughHide': {
+      const damageMods = { ...state.damageMods, toughHide: action.value };
+
+      return withReclampedPlan(state, { damageMods });
+    }
+    case 'guildBuff': {
+      const buffs = { ...state.damageMods.buffs, [action.id]: action.value };
+      const damageMods = { ...state.damageMods, buffs };
+
+      return withReclampedPlan(state, { damageMods });
     }
     case 'specialAbility': {
       const specialAbilities = {

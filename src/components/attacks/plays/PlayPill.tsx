@@ -5,7 +5,7 @@ import { TooltipBubble } from '@/components/ui/TooltipBubble';
 import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
 import { narrowViewport } from '@/styles/breakpoints';
 
-const PillWrap = styled.span`
+const PillAnchor = styled.span`
   position: relative;
   display: inline-flex;
 `;
@@ -43,7 +43,7 @@ export const PlayPill = ({
     useTooltipOpen<HTMLSpanElement>();
 
   return (
-    <PillWrap {...wrapperProps}>
+    <PillAnchor {...wrapperProps}>
       <PlayToggleButton
         type="button"
         $active={active}
@@ -59,6 +59,6 @@ export const PlayPill = ({
           {description}
         </TooltipBubble>
       ) : null}
-    </PillWrap>
+    </PillAnchor>
   );
 };

@@ -1,4 +1,3 @@
-import type { CharacterPlaySlotRef } from '@/components/attacks/attacks.types';
 import {
   Pills,
   Section,
@@ -12,17 +11,19 @@ import {
   characterPlayHasEffect,
 } from '@/core/characterPlays/characterPlayEffects';
 import { characterPlayAvailabilityForPick } from '@/core/characterPlays/characterPlayUsage';
+import { attackOrdinal } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 type CharacterPlaySelectionProps = {
-  slots: CharacterPlaySlotRef[];
+  /** Slots of this swing whose pick grants a character play. */
+  pickIndexes: number[];
   attackIndex: number;
   displayIndex: number;
 };
 
 /** Character-play options offered after a GB / 1GB playbook result. */
 export const CharacterPlaySelection = ({
-  slots,
+  pickIndexes,
   attackIndex,
   displayIndex,
 }: CharacterPlaySelectionProps) => {
@@ -35,8 +36,8 @@ export const CharacterPlaySelection = ({
     dispatch,
   } = useMeatGrinderSimulation();
 
-  const actionable = slots
-    .map(({ pickIndex }) => ({
+  const actionable = pickIndexes
+    .map((pickIndex) => ({
       pickIndex,
       ...characterPlayAvailabilityForPick(
         attacker,
@@ -55,10 +56,10 @@ export const CharacterPlaySelection = ({
   }
 
   const multipleSlots = actionable.length > 1;
-  const attackOrdinal = displayIndex + 1;
+  const attackNumber = attackOrdinal(displayIndex);
 
   return (
-    <Section aria-label={`Character play for attack ${attackOrdinal}`}>
+    <Section aria-label={`Character play for attack ${attackNumber}`}>
       <SectionHeading>Character Play</SectionHeading>
       {actionable.map(({ pickIndex, available }, slotIndex) => {
         const pick = characterPlayPicks[attackIndex]?.[pickIndex];
@@ -80,7 +81,7 @@ export const CharacterPlaySelection = ({
                     active={pick === play.id}
                     muted={!characterPlayHasEffect(play)}
                     description={summary}
-                    ariaLabel={`${play.label} (${summary}) for attack ${attackOrdinal}${slotSuffix}`}
+                    ariaLabel={`${play.label} (${summary}) for attack ${attackNumber}${slotSuffix}`}
                     onClick={() =>
                       dispatch({
                         type: 'characterPlayPick',

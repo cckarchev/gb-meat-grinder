@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { PanelTitle } from '@/components/ui/ui';
 
-export const Summary = styled.div`
+export const Summary = styled.section`
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid var(--border);

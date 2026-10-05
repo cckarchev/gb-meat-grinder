@@ -2,7 +2,6 @@ import type { ActivationScenario } from '@/core/activation/simulation.types';
 import type {
   CharacterPlayPick,
   PlaybookChoiceId,
-  PlaybookDamageMods,
 } from '@/core/playbook/playbook.types';
 
 /** The engine's scenario plus what only the app tracks. */
@@ -29,7 +28,8 @@ export type MeatGrinderAction =
   | { type: 'startingMomentum'; value: number }
   | { type: 'gangingUp'; value: number }
   | { type: 'crowdingOut'; value: number }
-  | { type: 'damageMods'; value: PlaybookDamageMods }
+  | { type: 'toughHide'; value: boolean }
+  | { type: 'guildBuff'; id: string; value: boolean }
   | { type: 'specialAbility'; id: string; value: boolean }
   | { type: 'bonusTime'; attackIndex: number; value: boolean }
   | {

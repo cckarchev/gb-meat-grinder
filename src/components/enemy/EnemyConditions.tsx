@@ -82,12 +82,7 @@ export const EnemyConditions = () => {
           </TooltipCheckbox>
           <TooltipCheckbox
             checked={damageMods.toughHide}
-            onChange={(toughHide) =>
-              dispatch({
-                type: 'damageMods',
-                value: { ...damageMods, toughHide },
-              })
-            }
+            onChange={(value) => dispatch({ type: 'toughHide', value })}
             tooltip={TOOLTIP_TOUGH_HIDE}
           >
             Tough Hide

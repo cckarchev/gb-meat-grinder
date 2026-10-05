@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { narrowViewport } from '@/styles/breakpoints';
+import { inputSurface, monoCapsLabel } from '@/styles/mixins';
 
 export const Panel = styled.section`
   border: 1px solid var(--border);
@@ -34,11 +35,8 @@ export const PanelFooterSection = styled.div`
 `;
 
 export const PanelTitle = styled.h2`
-  font-family: var(--font-mono);
+  ${monoCapsLabel}
   font-size: 0.7rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-label);
   color: var(--accent);
   margin: 0 0 0.75rem;
 
@@ -59,12 +57,8 @@ export const Row = styled.div`
 `;
 
 export const Select = styled.select`
-  font: inherit;
+  ${inputSurface}
   padding: 0.45rem 0.55rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--input-bg);
-  color: var(--text);
 `;
 
 export const Mono = styled.span`

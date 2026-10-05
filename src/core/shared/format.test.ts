@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { formatPercent, formatRange, formatSigned } from '@/core/shared/format';
+import {
+  attackOrdinal,
+  formatPercent,
+  formatRange,
+  formatSigned,
+} from '@/core/shared/format';
 
 describe('formatSigned', () => {
   it('prefixes a positive value with a plus sign', () => {
@@ -42,5 +47,12 @@ describe('formatRange', () => {
 
   it('collapses equal bounds to a single value', () => {
     expect(formatRange({ low: 4, high: 4 })).toBe('4');
+  });
+});
+
+describe('attackOrdinal', () => {
+  it('numbers attacks from 1 for display', () => {
+    expect(attackOrdinal(0)).toBe(1);
+    expect(attackOrdinal(2)).toBe(3);
   });
 });

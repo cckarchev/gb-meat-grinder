@@ -3,7 +3,7 @@ import { AttackerPanel } from '@/components/attacker/AttackerPanel';
 import { AttacksPanel } from '@/components/attacks/AttacksPanel';
 import { EnemyPanel } from '@/components/enemy/EnemyPanel';
 import { ToggleButton } from '@/components/ui/controls';
-import { TargetPanelsRow } from '@/components/ui/TargetPanelsRow';
+import { SetupPanelsRow } from '@/components/ui/SetupPanelsRow';
 import { MeatGrinderSimulationContext } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { useMeatGrinderSimulationState } from '@/gbMeatGrinder/useMeatGrinderSimulationState';
 import { narrowViewport } from '@/styles/breakpoints';
@@ -80,10 +80,10 @@ export const MeatGrinderRoot = () => {
           Reset
         </ResetButton>
       </Header>
-      <TargetPanelsRow>
+      <SetupPanelsRow>
         <AttackerPanel />
         <EnemyPanel />
-      </TargetPanelsRow>
+      </SetupPanelsRow>
       <AttacksPanel />
     </MeatGrinderSimulationContext.Provider>
   );

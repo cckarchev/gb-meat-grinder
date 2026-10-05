@@ -4,7 +4,7 @@ import { TooltipBubble } from '@/components/ui/TooltipBubble';
 import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
 import { focusRing } from '@/styles/mixins';
 
-const Wrap = styled.span`
+const InfoTipAnchor = styled.span`
   position: relative;
   display: inline;
 `;
@@ -45,7 +45,7 @@ export const InfoTip = ({ content, children }: InfoTipProps) => {
     useTooltipOpen<HTMLSpanElement>();
 
   return (
-    <Wrap {...wrapperProps}>
+    <InfoTipAnchor {...wrapperProps}>
       <Trigger
         type="button"
         {...triggerProps}
@@ -62,6 +62,6 @@ export const InfoTip = ({ content, children }: InfoTipProps) => {
           {content}
         </TooltipBubble>
       ) : null}
-    </Wrap>
+    </InfoTipAnchor>
   );
 };

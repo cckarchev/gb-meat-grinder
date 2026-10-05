@@ -23,23 +23,44 @@ export const AttackMain = styled.div`
   min-width: 0;
 `;
 
+type KindAccent = {
+  /** Border and corner-bracket color. */
+  accent: string;
+  /** Tint mixed into the block background. */
+  soft: string;
+};
+
+/** Accent colors for the attack kinds that stand out from a plain swing. */
+export const KIND_ACCENTS: Partial<Record<AttackKind, KindAccent>> = {
+  charge: {
+    accent: 'var(--accent-charge)',
+    soft: 'var(--accent-charge-soft)',
+  },
+  berserker: {
+    accent: 'var(--accent-berserker)',
+    soft: 'var(--accent-berserker-soft)',
+  },
+};
+
 /**
  * Focused attacks read via a crisp 1px accent border plus the corner brackets,
  * with no heavy halo, which clashed with the brackets.
  */
-const VARIANT_STYLES: Partial<Record<AttackKind, string>> = {
-  charge: `
-    border-color: var(--accent-charge);
-    background: color-mix(in srgb, var(--accent-charge-soft) 16%, var(--panel));
-  `,
-  berserker: `
-    border-color: var(--accent-berserker);
-    background: color-mix(in srgb, var(--accent-berserker-soft) 16%, var(--panel));
-  `,
+const kindStyles = (kind: AttackKind): string => {
+  const kindAccent = KIND_ACCENTS[kind];
+
+  if (!kindAccent) {
+    return '';
+  }
+
+  return `
+    border-color: ${kindAccent.accent};
+    background: color-mix(in srgb, ${kindAccent.soft} 16%, var(--panel));
+  `;
 };
 
 export const AttackBlock = styled.div<{
-  $variant: AttackKind;
+  $kind: AttackKind;
   $disabled: boolean;
 }>`
   position: relative;
@@ -57,7 +78,7 @@ export const AttackBlock = styled.div<{
   `
       : ''}
 
-  ${(props) => VARIANT_STYLES[props.$variant] ?? ''}
+  ${(props) => kindStyles(props.$kind)}
 
   ${narrowViewport} {
     ${PLAYBOOK_COLUMN_WIDTH_VAR}: clamp(2.15rem, 10.5vw, ${PLAYBOOK_COLUMN_TRACK});

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { probAttackSucceeds } from '@/core/damage/probability';
 import {
   defaultWrapPicks,
   rowHasWrapContinuation,
@@ -6,6 +7,7 @@ import {
   wrapExtendedNetNeeded,
   wrapNetThresholdAllHits,
   wrapSlotBudget,
+  wrapSlotColumns,
   wrapSlotCount,
 } from '@/core/playbook/wrapSlots';
 import { makeAttacker } from '@/core/testing/fixtures';
@@ -62,5 +64,30 @@ describe('rowHasWrapContinuation', () => {
 
   it('is false when the row only has the primary pick', () => {
     expect(rowHasWrapContinuation(['two'])).toBe(false);
+  });
+});
+
+describe('wrapSlotColumns', () => {
+  const attacker = makeAttacker();
+  const roll = { tac: 6, pHit: 0.5, armor: 1 };
+
+  it('keeps only the columns within the slot budget', () => {
+    const nets = (maxNet: number, pickIndex: number) => {
+      return wrapSlotColumns(attacker, roll, maxNet, pickIndex).map(
+        ({ column }) => column.netSuccesses,
+      );
+    };
+
+    expect(nets(2, 0)).toEqual([1, 2]);
+    expect(nets(9, 2)).toEqual([1]);
+  });
+
+  it('prices each column at the net the slot actually needs', () => {
+    const [first] = wrapSlotColumns(attacker, roll, 9, 1);
+    const netNeeded = wrapExtendedNetNeeded(attacker, 1, 1);
+
+    expect(first.hitChance).toBe(
+      probAttackSucceeds(roll.tac, roll.pHit, roll.armor, netNeeded),
+    );
   });
 });

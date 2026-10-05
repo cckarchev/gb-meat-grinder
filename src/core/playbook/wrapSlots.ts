@@ -1,7 +1,9 @@
 /** Wrap slot budgets: how many playbook results a roll resolves and what each slot can reach. */
 
+import { probAttackSucceeds } from '@/core/damage/probability';
 import type {
   CharacterPlayPickSlot,
+  PlaybookColumn,
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import {
@@ -115,4 +117,48 @@ export const rowHasWrapPick = (
 /** Whether a swing's wrap row has slots past the primary pick. */
 export const rowHasWrapContinuation = (picks: readonly WrapPick[]): boolean => {
   return picks.length > FIRST_WRAP_PICK_INDEX;
+};
+
+/** The dice a swing rolls against the target, as far as hit chances go. */
+export type SwingRoll = {
+  tac: number;
+  pHit: number;
+  armor: number;
+};
+
+export type WrapSlotColumn = {
+  column: PlaybookColumn;
+  /** Chance the roll reaches this column from this slot. */
+  hitChance: number;
+};
+
+/** The playbook columns one wrap slot can reach, each with its hit chance. */
+export const wrapSlotColumns = (
+  attacker: AttackerData,
+  roll: SwingRoll,
+  maxNet: number,
+  pickIndex: number,
+): WrapSlotColumn[] => {
+  const budget = wrapSlotBudget(attacker, maxNet, pickIndex);
+
+  const reachable = attacker.playbook.filter(
+    (column) => column.netSuccesses <= budget,
+  );
+
+  return reachable.map((column) => {
+    const netNeeded = wrapExtendedNetNeeded(
+      attacker,
+      pickIndex,
+      column.netSuccesses,
+    );
+
+    const hitChance = probAttackSucceeds(
+      roll.tac,
+      roll.pHit,
+      roll.armor,
+      netNeeded,
+    );
+
+    return { column, hitChance };
+  });
 };

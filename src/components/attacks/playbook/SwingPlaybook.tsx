@@ -1,13 +1,9 @@
-import type { CharacterPlaySlotRef } from '@/components/attacks/attacks.types';
-import {
-  PlaybookPrimarySlot,
-  UnreachableNote,
-} from '@/components/attacks/playbook/swingPlaybookStyles';
+import { UnreachableNote } from '@/components/attacks/playbook/swingPlaybookStyles';
 import { WrapSlotPickGrid } from '@/components/attacks/playbook/WrapSlotPickGrid';
 import { CharacterPlaySelection } from '@/components/attacks/plays/CharacterPlaySelection';
 import { wrapSectionId, wrapTriggerId } from '@/components/attacks/wrapIds';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
+import { characterPlayPickIndexes } from '@/core/characterPlays/characterPlayLookup';
 import { rowHasWrapContinuation } from '@/core/playbook/wrapSlots';
 import {
   FIRST_WRAP_PICK_INDEX,
@@ -37,19 +33,13 @@ export const SwingPlaybook = ({
   if (maxNet < MIN_PLAYBOOK_NET) {
     return (
       <UnreachableNote>
-        No playbook column reachable: TAC − ARM is {maxNet}. Raise TAC (charge,
+        No playbook column reachable: TAC - ARM is {maxNet}. Raise TAC (charge,
         Singled Out) or lower ARM.
       </UnreachableNote>
     );
   }
 
-  const characterPlaySlots = rowPicks
-    .map((choiceId, pickIndex) => ({ choiceId, pickIndex }))
-    .filter(
-      (slot): slot is CharacterPlaySlotRef =>
-        slot.choiceId != null &&
-        choiceUsesCharacterPlay(attacker, slot.choiceId),
-    );
+  const characterPlayIndexes = characterPlayPickIndexes(attacker, rowPicks);
 
   const hasWrapContinuation = rowHasWrapContinuation(rowPicks);
 
@@ -58,9 +48,7 @@ export const SwingPlaybook = ({
       key={pickIndex}
       attackIndex={attackIndex}
       pickIndex={pickIndex}
-      tac={attack.tac}
-      pHit={attack.pHit}
-      armor={attack.armor}
+      roll={attack}
       maxNet={maxNet}
       firstSlotInSection={firstSlotInSection}
     />
@@ -68,9 +56,7 @@ export const SwingPlaybook = ({
 
   return (
     <>
-      <PlaybookPrimarySlot>
-        {renderSlot(PRIMARY_PICK_INDEX, true)}
-      </PlaybookPrimarySlot>
+      {renderSlot(PRIMARY_PICK_INDEX, true)}
       {hasWrapContinuation ? (
         <section
           id={wrapSectionId(attackIndex)}
@@ -85,7 +71,7 @@ export const SwingPlaybook = ({
         </section>
       ) : null}
       <CharacterPlaySelection
-        slots={characterPlaySlots}
+        pickIndexes={characterPlayIndexes}
         attackIndex={attackIndex}
         displayIndex={displayIndex}
       />

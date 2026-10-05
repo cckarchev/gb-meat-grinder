@@ -19,8 +19,8 @@ import { isAttackIndex } from '@/core/shared/attackIndex';
 import { KILLING_BLOW_MOMENTUM } from '@/core/shared/constants';
 
 /** The damage range shown is the 10th to 90th percentile of outcomes. */
-const DAMAGE_RANGE_LOW_QUANTILE = 0.1;
-const DAMAGE_RANGE_HIGH_QUANTILE = 0.9;
+export const DAMAGE_RANGE_LOW_QUANTILE = 0.1;
+export const DAMAGE_RANGE_HIGH_QUANTILE = 0.9;
 
 /** Swings from after any ignored lead swing through the killing blow. */
 export const activeSwings = (

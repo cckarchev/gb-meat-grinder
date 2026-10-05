@@ -1,9 +1,16 @@
 import styled from 'styled-components';
+import {
+  LABEL_WRAP_CLOSE,
+  LABEL_WRAP_OPEN,
+  TITLE_WRAP_CLOSE,
+  TITLE_WRAP_OPEN,
+} from '@/components/attacks/swing/wrapToggleCopy';
 import { wrapSectionId, wrapTriggerId } from '@/components/attacks/wrapIds';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
-import { focusRing } from '@/styles/mixins';
+import { inputButton } from '@/styles/mixins';
 
 const WrapToggleButton = styled.button`
+  ${inputButton}
   display: inline-flex;
   flex-direction: row;
   align-items: center;
@@ -13,12 +20,6 @@ const WrapToggleButton = styled.button`
   box-sizing: border-box;
   margin: 0;
   padding: 0.28rem 0.45rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--input-bg);
-  color: var(--text);
-  cursor: pointer;
-  font: inherit;
   font-size: 0.72rem;
   font-weight: 600;
   line-height: 1.2;
@@ -27,13 +28,6 @@ const WrapToggleButton = styled.button`
   transition:
     background 0.12s ease,
     border-color 0.12s ease;
-
-  &:hover {
-    background: color-mix(in srgb, var(--input-bg) 88%, var(--text));
-    border-color: var(--muted);
-  }
-
-  ${focusRing}
 
   ${narrowViewport} {
     padding: 0.24rem 0.38rem;
@@ -86,14 +80,10 @@ export const WrapContinuationToggle = ({
       id={wrapTriggerId(attackIndex)}
       aria-expanded={wrapOpen}
       aria-controls={wrapSectionId(attackIndex)}
-      title={
-        wrapOpen
-          ? 'Close additional wrap and clear extra picks'
-          : 'Open additional wrap'
-      }
+      title={wrapOpen ? TITLE_WRAP_CLOSE : TITLE_WRAP_OPEN}
       onClick={onClick}
     >
-      <span>{wrapOpen ? 'Close' : 'Wrap'}</span>
+      <span>{wrapOpen ? LABEL_WRAP_CLOSE : LABEL_WRAP_OPEN}</span>
       <ChevronCaret $open={wrapOpen} aria-hidden />
     </WrapToggleButton>
   );

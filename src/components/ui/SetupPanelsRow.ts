@@ -3,7 +3,7 @@ import { Panel } from '@/components/ui/ui';
 import { narrowViewport } from '@/styles/breakpoints';
 
 /** Side-by-side row for the attacker and enemy panels, wrapping on narrow screens. */
-export const TargetPanelsRow = styled.div`
+export const SetupPanelsRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;

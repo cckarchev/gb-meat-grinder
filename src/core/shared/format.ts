@@ -36,3 +36,11 @@ export const formatRange = ({
 }): string => {
   return low === high ? `${low}` : `${low}-${high}`;
 };
+
+/** Display indexes are 0-based; attacks are numbered from 1 for players. */
+const FIRST_ATTACK_ORDINAL = 1;
+
+/** The 1-based number an attack is shown with. */
+export const attackOrdinal = (displayIndex: number): number => {
+  return displayIndex + FIRST_ATTACK_ORDINAL;
+};

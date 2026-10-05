@@ -6,7 +6,7 @@ import { narrowViewport } from '@/styles/breakpoints';
 const DISABLED_INPUT_OPACITY = 0.5;
 
 /** Label row holding the checkbox and its tooltip-trigger text. */
-const CheckOption = styled.label<{ $disabled?: boolean }>`
+const CheckOption = styled.label<{ $disabled: boolean }>`
   display: flex;
   align-items: flex-start;
   gap: 0.45rem;

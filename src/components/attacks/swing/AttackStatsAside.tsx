@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Mono } from '@/components/ui/ui';
 import { narrowViewport } from '@/styles/breakpoints';
+import { monoCapsLabel } from '@/styles/mixins';
 
 const AttackStatsRail = styled.aside`
   flex: 0 0 auto;
@@ -33,14 +34,11 @@ const StatRow = styled.div`
   }
 `;
 
+/** Sized in `em` so it scales with the rail's narrow-viewport font size. */
 const AttackStatCaption = styled.span`
+  ${monoCapsLabel}
   flex-shrink: 0;
-  font-family: var(--font-mono);
   font-size: 0.64em;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-label);
-  color: var(--muted);
 
   ${narrowViewport} {
     letter-spacing: 0.08em;

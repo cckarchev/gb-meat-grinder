@@ -1,9 +1,9 @@
 import { useId } from 'react';
 import styled from 'styled-components';
 import { narrowViewport } from '@/styles/breakpoints';
-import { focusRing } from '@/styles/mixins';
+import { inputButton } from '@/styles/mixins';
 
-const Wrap = styled.div`
+const StepControlField = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -26,29 +26,17 @@ const ControlRow = styled.div`
 `;
 
 const StepButton = styled.button`
-  font: inherit;
+  ${inputButton}
   font-size: 1.1rem;
   line-height: 1;
   width: 2.25rem;
   height: 2.25rem;
   padding: 0;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--input-bg);
-  color: var(--text);
-  cursor: pointer;
-
-  &:hover:not(:disabled) {
-    background: var(--panel);
-    border-color: var(--muted);
-  }
 
   &:disabled {
     opacity: 0.35;
     cursor: not-allowed;
   }
-
-  ${focusRing}
 
   ${narrowViewport} {
     width: 2rem;
@@ -106,7 +94,7 @@ export const StepControl = ({
   const canIncrease = value < max;
 
   return (
-    <Wrap>
+    <StepControlField>
       <LabelText id={labelId}>{label}</LabelText>
       <ControlRow role="group" aria-labelledby={labelId}>
         <StepButton
@@ -127,6 +115,6 @@ export const StepControl = ({
           +
         </StepButton>
       </ControlRow>
-    </Wrap>
+    </StepControlField>
   );
 };

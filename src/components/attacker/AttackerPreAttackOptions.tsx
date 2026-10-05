@@ -21,16 +21,6 @@ export const AttackerPreAttackOptions = () => {
     ? LABEL_CHARGE_COST_FURIOUS
     : LABEL_CHARGE_COST;
 
-  const setBuff = (buffId: string, value: boolean) => {
-    dispatch({
-      type: 'damageMods',
-      value: {
-        ...damageMods,
-        buffs: { ...damageMods.buffs, [buffId]: value },
-      },
-    });
-  };
-
   return (
     <>
       <TooltipCheckbox
@@ -52,7 +42,9 @@ export const AttackerPreAttackOptions = () => {
             key={buff.id}
             disabled={excluded}
             checked={!excluded && damageMods.buffs[buff.id] === true}
-            onChange={(value) => setBuff(buff.id, value)}
+            onChange={(value) =>
+              dispatch({ type: 'guildBuff', id: buff.id, value })
+            }
             tooltip={tooltip}
           >
             {buff.label}

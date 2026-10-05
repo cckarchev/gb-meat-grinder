@@ -45,8 +45,9 @@ describe('re-clamping the plan', () => {
 
   it('opens a wrap slot when a buff lowers ARM', () => {
     const state = reduce(withM4(), {
-      type: 'damageMods',
-      value: { toughHide: false, buffs: { weakPoint: true } },
+      type: 'guildBuff',
+      id: 'weakPoint',
+      value: true,
     });
 
     expect(state.attackPlan.wrapPicks[0]).toEqual(['m4', null]);

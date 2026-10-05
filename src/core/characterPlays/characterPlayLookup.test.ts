@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  characterPlayPickIndexes,
   defaultCharacterPlayId,
   effectivePlayForPick,
   getCharacterPlay,
@@ -75,5 +76,19 @@ describe('effectivePlayForPick', () => {
   it('falls back to the default play for an empty or missing slot', () => {
     expect(effectivePlayForPick(attacker, [[null]], 0, 0)).toBe('playTac');
     expect(effectivePlayForPick(attacker, [], 3, 0)).toBe('playTac');
+  });
+});
+
+describe('characterPlayPickIndexes', () => {
+  const attacker = makeAttacker();
+
+  it('lists the slots whose pick grants a character play', () => {
+    expect(
+      characterPlayPickIndexes(attacker, ['gb', null, 'one', 'gb']),
+    ).toEqual([0, 3]);
+  });
+
+  it('is empty when no pick grants a play', () => {
+    expect(characterPlayPickIndexes(attacker, ['two', null])).toEqual([]);
   });
 });

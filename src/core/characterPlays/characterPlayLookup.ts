@@ -69,3 +69,19 @@ export const initialCharacterPlayFor = (
 ): CharacterPlayPickSlot => {
   return playSlotForPick(attacker, id, null);
 };
+
+/** Slots of a swing's wrap row whose pick grants a character play. */
+export const characterPlayPickIndexes = (
+  attacker: AttackerData,
+  rowPicks: readonly WrapPick[],
+): number[] => {
+  const pickIndexes: number[] = [];
+
+  rowPicks.forEach((choiceId, pickIndex) => {
+    if (choiceId != null && choiceUsesCharacterPlay(attacker, choiceId)) {
+      pickIndexes.push(pickIndex);
+    }
+  });
+
+  return pickIndexes;
+};

@@ -65,10 +65,8 @@ describe('model selection', () => {
       { type: 'armor', value: 2 },
       { type: 'hp', value: 9 },
       { type: 'enemyHasCover', value: true },
-      {
-        type: 'damageMods',
-        value: { toughHide: true, buffs: { weakPoint: true } },
-      },
+      { type: 'toughHide', value: true },
+      { type: 'guildBuff', id: 'weakPoint', value: true },
       { type: 'specialAbility', id: 'dontFearTheReaper', value: true },
       { type: 'selectAttacker', id: veteranBoar.id },
     );
@@ -148,5 +146,34 @@ describe('attacker stat ranges', () => {
     expect(tooLow.startingMomentum).toBe(veteranBoar.startingMomentum.min);
     expect(tooLow.gangingUp).toBe(veteranBoar.gangingUp.min);
     expect(tooLow.crowdingOut).toBe(veteranBoar.crowdingOut.min);
+  });
+});
+
+describe('damage modifiers', () => {
+  it('toggles one guild buff and keeps the others', () => {
+    const state = reduce(
+      initialState(PICK_THRESHER),
+      { type: 'guildBuff', id: 'weakPoint', value: true },
+      { type: 'guildBuff', id: 'otherBuff', value: true },
+      { type: 'guildBuff', id: 'otherBuff', value: false },
+    );
+
+    expect(state.damageMods.buffs).toEqual({
+      weakPoint: true,
+      otherBuff: false,
+    });
+  });
+
+  it('toggles Tough Hide without touching the buffs', () => {
+    const state = reduce(
+      initialState(PICK_THRESHER),
+      { type: 'guildBuff', id: 'weakPoint', value: true },
+      { type: 'toughHide', value: true },
+    );
+
+    expect(state.damageMods).toEqual({
+      toughHide: true,
+      buffs: { weakPoint: true },
+    });
   });
 });
