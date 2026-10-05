@@ -67,6 +67,6 @@ describe('computeAttackSequence', () => {
       2,
     );
 
-    expect(attacks.map((a) => a.tac)).toEqual([6, 8]);
+    expect(attacks.map((attack) => attack.tac)).toEqual([6, 8]);
   });
 });

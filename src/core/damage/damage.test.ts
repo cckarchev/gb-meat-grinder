@@ -18,7 +18,7 @@ describe('buffs and damage', () => {
   it('excludes buffs the model is the source of', () => {
     const excluding = makeAttacker({ excludedGuildBuffs: ['sunder'] });
 
-    expect(availableBuffs(excluding).map((b) => b.id)).toEqual([
+    expect(availableBuffs(excluding).map((buff) => buff.id)).toEqual([
       'sharp',
       'condition',
     ]);

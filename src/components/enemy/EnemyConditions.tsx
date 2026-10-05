@@ -23,7 +23,7 @@ const ConditionsSection = styled(PanelFooterSection)`
   margin-top: auto;
 `;
 
-/** Cover/Defensive Stance/Tough Hide on the left, KD/Snared on the right. */
+/** Cover/Defensive Stance/Tough Hide on the left, KD/Snared/Resilience on the right. */
 const ConditionsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

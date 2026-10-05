@@ -6,7 +6,7 @@ import {
   nextPlanAfterClearWrapContinuation,
   nextPlanAfterWrapChoice,
 } from '@/core/plan/planEdits';
-import { clamp } from '@/core/shared/clamp';
+import { clamp, clampToRange } from '@/core/shared/clamp';
 import { INFLUENCE_MIN } from '@/core/shared/constants';
 import { attackerById } from '@/data/attackers/registry';
 import {
@@ -91,17 +91,23 @@ const transition = (
       return { ...state, enemyResilience: action.value };
     }
     case 'startingMomentum': {
-      return { ...state, startingMomentum: action.value };
+      const startingMomentum = clampToRange(
+        action.value,
+        attackerOf(state).startingMomentum,
+      );
+
+      return { ...state, startingMomentum };
     }
     case 'gangingUp': {
-      const range = attackerOf(state).gangingUp;
-      const gangingUp = clamp(action.value, range.min, range.max);
+      const gangingUp = clampToRange(action.value, attackerOf(state).gangingUp);
 
       return withReclampedPlan(state, { gangingUp });
     }
     case 'crowdingOut': {
-      const range = attackerOf(state).crowdingOut;
-      const crowdingOut = clamp(action.value, range.min, range.max);
+      const crowdingOut = clampToRange(
+        action.value,
+        attackerOf(state).crowdingOut,
+      );
 
       return withReclampedPlan(state, { crowdingOut });
     }

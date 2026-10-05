@@ -122,3 +122,31 @@ describe('influence and charge', () => {
     ).toBe(0);
   });
 });
+
+describe('attacker stat ranges', () => {
+  it('clamps each per-activation input to the model range', () => {
+    const start = initialState(PICK_VETERAN_BOAR);
+
+    const tooHigh = reduce(
+      start,
+      { type: 'startingMomentum', value: 99 },
+      { type: 'gangingUp', value: 99 },
+      { type: 'crowdingOut', value: 99 },
+    );
+
+    const tooLow = reduce(
+      start,
+      { type: 'startingMomentum', value: -3 },
+      { type: 'gangingUp', value: -3 },
+      { type: 'crowdingOut', value: -3 },
+    );
+
+    expect(tooHigh.startingMomentum).toBe(veteranBoar.startingMomentum.max);
+    expect(tooHigh.gangingUp).toBe(veteranBoar.gangingUp.max);
+    expect(tooHigh.crowdingOut).toBe(veteranBoar.crowdingOut.max);
+
+    expect(tooLow.startingMomentum).toBe(veteranBoar.startingMomentum.min);
+    expect(tooLow.gangingUp).toBe(veteranBoar.gangingUp.min);
+    expect(tooLow.crowdingOut).toBe(veteranBoar.crowdingOut.min);
+  });
+});

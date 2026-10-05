@@ -1,6 +1,6 @@
 import { attackArraySize } from '@/core/attacks/attackStructure';
 import { createInitialAttackPlan } from '@/core/plan/initialAttackPlan';
-import { clamp } from '@/core/shared/clamp';
+import { clampToRange } from '@/core/shared/clamp';
 import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 import { randomAttacker } from '@/data/attackers/registry';
@@ -16,22 +16,16 @@ export const stateForAttacker = (
   // over the prior toggle (or off for a fresh state).
   const charging = attacker.furious ? true : (prev?.charging ?? false);
 
-  const startingMomentum = clamp(
+  const startingMomentum = clampToRange(
     prev?.startingMomentum ?? 0,
-    attacker.startingMomentum.min,
-    attacker.startingMomentum.max,
+    attacker.startingMomentum,
   );
 
-  const gangingUp = clamp(
-    prev?.gangingUp ?? 0,
-    attacker.gangingUp.min,
-    attacker.gangingUp.max,
-  );
+  const gangingUp = clampToRange(prev?.gangingUp ?? 0, attacker.gangingUp);
 
-  const crowdingOut = clamp(
+  const crowdingOut = clampToRange(
     prev?.crowdingOut ?? 0,
-    attacker.crowdingOut.min,
-    attacker.crowdingOut.max,
+    attacker.crowdingOut,
   );
 
   const bonusTimeByAttack = Array.from(

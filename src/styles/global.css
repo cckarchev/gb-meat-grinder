@@ -15,20 +15,17 @@
   --text: rgba(243, 247, 248, 1);
   --muted: rgba(243, 247, 248, 0.62);
   --bg: #0a1a22;
-  --bg-deep: #070e12;
   --panel: rgba(13, 26, 31, 0.6);
   /** Opaque, slightly-elevated surface for floating popovers/tooltips so dense
       content behind them never bleeds through. */
   --popover-bg: #15303a;
   --border: rgba(255, 255, 255, 0.22);
-  --border-divider: rgba(255, 255, 255, 0.14);
   --border-hover: rgba(255, 255, 255, 0.34);
   --input-bg: #070e12;
 
   /* Brand */
   --accent: #d4623e;
   --accent-ink: #091418;
-  --teal: #1e6b78;
   --teal-bright: #2bb3c4;
   --ghost-border: rgba(43, 179, 196, 0.6);
   --ghost-border-hover: rgba(43, 179, 196, 0.9);
@@ -40,7 +37,7 @@
   --playbook-line-nm-fg: #070a0f;
   --playbook-line-nm-border: #a8b3c2;
   /** Shared keyboard focus indicator (CCK teal). */
-  --focus-ring: #2bb3c4;
+  --focus-ring: var(--teal-bright);
   /** Subtle row hover wash (ties a label to its value while scanning). */
   --row-hover: rgba(255, 255, 255, 0.06);
   /** Sharp corners everywhere to match CCK. Keys retained so existing
@@ -50,7 +47,7 @@
   --radius-sm: 0;
   --radius-xs: 0;
   /** Charge attack accent (CCK orange family). */
-  --accent-charge: #d4623e;
+  --accent-charge: var(--accent);
   --accent-charge-soft: #f0905f;
   /** Berserker attack accent (CCK error red). */
   --accent-berserker: #e05555;
@@ -64,7 +61,6 @@
 
   /* ── Letter-spacing tokens ── */
   --tracking-label: 0.2em;
-  --tracking-label-wide: 0.28em;
   --tracking-button: 0.12em;
   --tracking-heading: 0.04em;
   --tracking-caps: 0.05em;
