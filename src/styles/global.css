@@ -61,7 +61,6 @@
   --font-body: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
   --font-mono:
     'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
-  --mono: var(--font-mono);
 
   /* ── Letter-spacing tokens ── */
   --tracking-label: 0.2em;
