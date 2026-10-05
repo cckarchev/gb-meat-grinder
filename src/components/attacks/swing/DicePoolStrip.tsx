@@ -9,10 +9,10 @@ import {
 } from '@/components/attacks/swing/dicePoolStyles';
 import { WrapContinuationToggle } from '@/components/attacks/swing/WrapContinuationToggle';
 import { InfoTip } from '@/components/ui/InfoTip';
-import { CHARGE_TAC_BONUS } from '@/core/attacks/swingTac';
 import {
   BONUS_TIME_MOMENTUM_COST,
   BONUS_TIME_TAC_BONUS,
+  CHARGE_TAC_BONUS,
 } from '@/core/shared/constants';
 
 const BONUS_TIME_UNAFFORDABLE_TOOLTIP = `Bonus Time needs at least ${BONUS_TIME_MOMENTUM_COST} momentum before this attack (costs ${BONUS_TIME_MOMENTUM_COST} before the roll).`;

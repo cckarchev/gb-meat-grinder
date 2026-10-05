@@ -51,6 +51,9 @@ export const TOUGH_HIDE_DAMAGE_PENALTY = 1;
 /** Most ARM a whole activation's playbook lines can strip. */
 export const MAX_ARMOR_REDUCTION = 1;
 
+/** TAC a swing gains for being the charge. */
+export const CHARGE_TAC_BONUS = 4;
+
 /** Free base attacks a charge grants (also what Furious gets for free). */
 export const CHARGE_ATTACK_COUNT = 1;
 

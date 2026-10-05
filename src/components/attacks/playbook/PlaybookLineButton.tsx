@@ -8,7 +8,7 @@ import { playbookLineDisplaySegments } from '@/core/playbook/playbookLabels';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 const KNOCK_DOWN_LOCKED_TITLE =
-  'Knock Down unavailable: the target is already Knocked Down (only one KD applies)';
+  'Knock Down unavailable: the target is already Knocked Down or an earlier pick knocks it down (only one KD applies)';
 
 type PlaybookLineButtonProps = {
   id: PlaybookChoiceId;

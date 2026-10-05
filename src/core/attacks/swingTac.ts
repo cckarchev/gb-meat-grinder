@@ -15,10 +15,11 @@ import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { BONUS_TIME_TAC_BONUS } from '@/core/shared/constants';
+import {
+  BONUS_TIME_TAC_BONUS,
+  CHARGE_TAC_BONUS,
+} from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
-
-export const CHARGE_TAC_BONUS = 4;
 
 export const tacForAttack = (
   attacker: AttackerData,

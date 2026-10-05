@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import {
-  CHARGE_TAC_BONUS,
-  swingTacAndDef,
-  tacForAttack,
-} from '@/core/attacks/swingTac';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
+import { swingTacAndDef, tacForAttack } from '@/core/attacks/swingTac';
+import { CHARGE_TAC_BONUS, NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
 
 describe('tacForAttack', () => {
