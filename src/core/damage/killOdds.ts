@@ -36,7 +36,7 @@ const withFlatDamage = (
  * Convolves every swing's damage distribution, where each swing only deals the
  * damage of the lines actually picked, then reports the chance the activation
  * drops the target and the mean damage dealt. `flatDamage` is guaranteed
- * (special abilities) and applied as a baseline.
+ * (activated traits) and applied as a baseline.
  */
 export const planDamageOutcome = (
   attacker: AttackerData,

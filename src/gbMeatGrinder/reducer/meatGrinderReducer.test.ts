@@ -25,7 +25,7 @@ describe('initial state', () => {
       startingMomentum: 0,
       bonusTimeByAttack: [false, false, false, false, false],
       damageMods: { toughHide: false, buffs: {} },
-      specialAbilities: {},
+      activeTraits: {},
     });
 
     expect(state.attackPlan).toEqual(
@@ -67,7 +67,7 @@ describe('model selection', () => {
       { type: 'enemyHasCover', value: true },
       { type: 'toughHide', value: true },
       { type: 'guildBuff', id: 'weakPoint', value: true },
-      { type: 'specialAbility', id: 'dontFearTheReaper', value: true },
+      { type: 'activeTrait', id: 'dontFearTheReaper', value: true },
       { type: 'selectAttacker', id: veteranBoar.id },
     );
 
@@ -79,7 +79,7 @@ describe('model selection', () => {
       enemyHasCover: true,
       charging: true,
       damageMods: { toughHide: true, buffs: {} },
-      specialAbilities: {},
+      activeTraits: {},
     });
   });
 });

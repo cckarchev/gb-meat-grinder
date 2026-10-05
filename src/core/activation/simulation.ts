@@ -4,7 +4,7 @@ import type {
   DerivedSimulation,
 } from '@/core/activation/simulation.types';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
-import { specialAbilityFlatDamage } from '@/core/damage/damage';
+import { activeTraitFlatDamage } from '@/core/damage/damage';
 import { killingBlowDisplayIndex } from '@/core/damage/killingBlow';
 import {
   effectiveBonusTimeForResilience,
@@ -88,10 +88,7 @@ export const deriveSimulation = (
     activeBaseCount,
   );
 
-  const flatDamage = specialAbilityFlatDamage(
-    attacker,
-    scenario.specialAbilities,
-  );
+  const flatDamage = activeTraitFlatDamage(attacker, scenario.activeTraits);
 
   const killingBlowIndex = killingBlowDisplayIndex(
     attacks,

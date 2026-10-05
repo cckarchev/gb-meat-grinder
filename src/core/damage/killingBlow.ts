@@ -5,7 +5,7 @@ import { NO_ATTACK_INDEX } from '@/core/shared/constants';
  * Display index into `attacks` of the swing that first brings the target to 0
  * HP under the deterministic "every pick hits" projection, or
  * `NO_ATTACK_INDEX` if the target survives the whole activation. `flatDamage`
- * is guaranteed special-ability damage applied before any swing;
+ * is guaranteed activated-trait damage applied before any swing;
  * `rowDamageIfHit` is indexed by attackIndex.
  */
 export const killingBlowDisplayIndex = (

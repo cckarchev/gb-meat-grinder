@@ -55,12 +55,12 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
     }
   }
 
-  const activeAbilities = (input.attacker.specialAbilities ?? []).filter(
-    (ability) => input.specialAbilities[ability.id],
+  const activatedTraits = (input.attacker.characterTraits ?? []).filter(
+    (trait) => trait.active === true && input.activeTraits[trait.id] === true,
   );
 
-  for (const ability of activeAbilities) {
-    tooltip += `; +${ability.flatDamage} ${ability.label}`;
+  for (const trait of activatedTraits) {
+    tooltip += `; +${trait.flatDamage ?? 0} ${trait.label}`;
   }
 
   const totalDamage = breakdown.totalEffective + flatDamage;

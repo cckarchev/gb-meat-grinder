@@ -5,7 +5,7 @@ import type { SwingProjectionInput } from '@/core/attacks/swingProjections';
 export type ActivationSummaryInput = SwingProjectionInput & {
   /** Display index of the swing Resilience ignores, or `NO_ATTACK_INDEX`. */
   ignoredDisplayIndex: number;
-  specialAbilities: Record<string, boolean>;
+  activeTraits: Record<string, boolean>;
 };
 
 export type ActivationSummary = {

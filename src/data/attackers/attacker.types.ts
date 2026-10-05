@@ -2,23 +2,11 @@ import type {
   CharacterPlay,
   PlaybookColumn,
 } from '@/core/playbook/playbook.types';
+import type { CharacterTrait } from '@/data/characterTraits';
 import type { Guild } from '@/data/guilds/guild.types';
 
 /** Inclusive bounds for a per-activation input the model allows. */
 export type StatRange = { min: number; max: number };
-
-/**
- * A toggleable, model-specific ability that deals a flat amount of unmodified
- * damage at some point during the activation (independent of attack rolls,
- * ARM, Tough Hide and buffs), e.g. Thresher's Don't Fear The Reaper.
- */
-export type SpecialAbility = {
-  id: string;
-  label: string;
-  tooltip: string;
-  /** Guaranteed, unmodified damage added to the activation when active. */
-  flatDamage: number;
-};
 
 /**
  * A model's intrinsic data used by the calculations. Per-activation choices
@@ -51,8 +39,8 @@ export type AttackerData = {
    * model that is the source of the buff for the guild (applies it itself).
    */
   excludedGuildBuffs?: readonly string[];
-  /** Model-specific toggleable abilities that add flat, unmodified damage. */
-  specialAbilities?: readonly SpecialAbility[];
+  /** Character traits from the shared catalog that affect the attack math. */
+  characterTraits?: readonly CharacterTrait[];
   startingMomentum: StatRange;
   /** Extra attack dice from Ganging Up (added to TAC). */
   gangingUp: StatRange;

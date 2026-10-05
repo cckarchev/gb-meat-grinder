@@ -8,9 +8,9 @@ import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
 import { guildBuffIsExcluded } from '@/core/damage/damage';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
-/** Charging, guild buffs and special abilities toggled before the attack. */
+/** Charging, guild buffs and activated traits toggled before the attack. */
 export const AttackerPreAttackOptions = () => {
-  const { attacker, charging, damageMods, specialAbilities, dispatch } =
+  const { attacker, charging, damageMods, activeTraits, dispatch } =
     useMeatGrinderSimulation();
 
   const chargeTooltip = attacker.furious
@@ -51,18 +51,20 @@ export const AttackerPreAttackOptions = () => {
           </TooltipCheckbox>
         );
       })}
-      {(attacker.specialAbilities ?? []).map((ability) => (
-        <TooltipCheckbox
-          key={ability.id}
-          checked={specialAbilities[ability.id] === true}
-          onChange={(value) =>
-            dispatch({ type: 'specialAbility', id: ability.id, value })
-          }
-          tooltip={ability.tooltip}
-        >
-          {ability.label} (+{ability.flatDamage})
-        </TooltipCheckbox>
-      ))}
+      {(attacker.characterTraits ?? [])
+        .filter((trait) => trait.active === true)
+        .map((trait) => (
+          <TooltipCheckbox
+            key={trait.id}
+            checked={activeTraits[trait.id] === true}
+            onChange={(value) =>
+              dispatch({ type: 'activeTrait', id: trait.id, value })
+            }
+            tooltip={trait.tooltip}
+          >
+            {trait.label} (+{trait.flatDamage ?? 0})
+          </TooltipCheckbox>
+        ))}
     </>
   );
 };

@@ -56,7 +56,7 @@ describe('projectSwings', () => {
     expect(projection.bonusTimePool).toEqual([0, 1]);
   });
 
-  it('applies special-ability damage before the first swing', () => {
+  it('applies activated-trait damage before the first swing', () => {
     const projection = projectSwings(input({ flatDamage: 3 }));
 
     expect(projection.remainingHp).toEqual([5, 3]);

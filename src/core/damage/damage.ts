@@ -46,17 +46,19 @@ export const activeBuffs = (
 };
 
 /**
- * Flat, unmodified damage from the model's toggled special abilities (e.g.
- * Thresher's Don't Fear The Reaper). Independent of attack rolls and ARM /
- * Tough Hide / buffs, so it is simply added to the activation's damage.
+ * Flat, unmodified damage from the model's activated traits (e.g. Thresher's
+ * Don't Fear The Reaper). Character traits ignore Tough Hide and damage buffs,
+ * so it is simply added to the activation's damage.
  */
-export const specialAbilityFlatDamage = (
+export const activeTraitFlatDamage = (
   attacker: AttackerData,
-  toggled: Record<string, boolean>,
+  activeTraits: Record<string, boolean>,
 ): number => {
-  return (attacker.specialAbilities ?? [])
-    .filter((ability) => toggled[ability.id])
-    .reduce((sum, ability) => sum + ability.flatDamage, 0);
+  const activated = (attacker.characterTraits ?? []).filter((trait) => {
+    return trait.active === true && activeTraits[trait.id] === true;
+  });
+
+  return activated.reduce((sum, trait) => sum + (trait.flatDamage ?? 0), 0);
 };
 
 /** Sum of the +damage from selected buffs. */

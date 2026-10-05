@@ -122,13 +122,13 @@ const transition = (
 
       return withReclampedPlan(state, { damageMods });
     }
-    case 'specialAbility': {
-      const specialAbilities = {
-        ...state.specialAbilities,
+    case 'activeTrait': {
+      const activeTraits = {
+        ...state.activeTraits,
         [action.id]: action.value,
       };
 
-      return { ...state, specialAbilities };
+      return { ...state, activeTraits };
     }
     case 'bonusTime': {
       return toggleBonusTime(state, action.attackIndex, action.value);

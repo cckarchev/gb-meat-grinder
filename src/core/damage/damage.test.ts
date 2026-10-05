@@ -1,13 +1,23 @@
 import { describe, expect, it } from 'vitest';
 import {
+  activeTraitFlatDamage,
   availableBuffs,
   effectiveEnemyDef,
   effectivePlaybookDamage,
   guildBuffIsExcluded,
   playbookDamageBonusSum,
-  specialAbilityFlatDamage,
 } from '@/core/damage/damage';
 import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
+import type { CharacterTrait } from '@/data/characterTraits';
+import { dontFearTheReaper } from '@/data/characterTraits';
+
+/** A passive trait with flat damage that must never count as activated damage. */
+const PASSIVE_TRAIT: CharacterTrait = {
+  id: 'passive',
+  label: 'Passive',
+  tooltip: '',
+  flatDamage: 3,
+};
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
 
@@ -68,15 +78,15 @@ describe('buffs and damage', () => {
     expect(effectiveEnemyDef(7, false, false)).toBe(6);
   });
 
-  it('adds toggled special ability damage', () => {
-    const withAbilities = makeAttacker({
-      specialAbilities: [
-        { id: 'a', label: 'A', tooltip: '', flatDamage: 2 },
-        { id: 'b', label: 'B', tooltip: '', flatDamage: 3 },
-      ],
+  it('adds the flat damage of activated traits only', () => {
+    const attacker = makeAttacker({
+      characterTraits: [dontFearTheReaper, PASSIVE_TRAIT],
     });
 
-    expect(specialAbilityFlatDamage(withAbilities, { b: true })).toBe(3);
-    expect(specialAbilityFlatDamage(attacker, { b: true })).toBe(0);
+    expect(activeTraitFlatDamage(attacker, {})).toBe(0);
+    expect(activeTraitFlatDamage(attacker, { dontFearTheReaper: true })).toBe(
+      3,
+    );
+    expect(activeTraitFlatDamage(attacker, { passive: true })).toBe(0);
   });
 });

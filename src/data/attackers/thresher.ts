@@ -6,6 +6,7 @@ import {
   STARTING_MOMENTUM_RANGE,
 } from '@/data/attackers/statRanges';
 import { theyAintTough } from '@/data/characterPlays';
+import { dontFearTheReaper } from '@/data/characterTraits';
 import { farmers } from '@/data/guilds/farmers';
 
 /**
@@ -111,16 +112,7 @@ export const thresher: AttackerData = {
   // He is the guild's source of They Ain't Tough!; another captain grants Our
   // Tools Are Sharp. So neither can be pre-applied to him.
   excludedGuildBuffs: ['theyAintTough', 'ourToolsAreSharp'],
-  specialAbilities: [
-    {
-      id: 'dontFearTheReaper',
-      label: "Don't Fear The Reaper",
-      tooltip:
-        'Remove a Harvest marker to deal 3 unmodified damage (ignores ARM, ' +
-        'Tough Hide and buffs).',
-      flatDamage: 3,
-    },
-  ],
+  characterTraits: [dontFearTheReaper],
   startingMomentum: STARTING_MOMENTUM_RANGE,
   gangingUp: GANGING_UP_RANGE,
   crowdingOut: CROWDING_OUT_RANGE,

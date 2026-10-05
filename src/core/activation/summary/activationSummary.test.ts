@@ -6,7 +6,7 @@ import {
 } from '@/core/activation/summary/activationSummary';
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import { specialAbilityFlatDamage } from '@/core/damage/damage';
+import { activeTraitFlatDamage } from '@/core/damage/damage';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
 
@@ -38,7 +38,7 @@ const input = (
     wrapPicks: [['two'], ['two']],
     bonusTimeByAttack: [false, false],
     damageMods: NO_MODS,
-    specialAbilities: {},
+    activeTraits: {},
     startingMomentum: 0,
     activeBaseCount: 2,
     targetHp: 10,
@@ -53,9 +53,9 @@ const input = (
     scenario.activeBaseCount,
   );
 
-  const flatDamage = specialAbilityFlatDamage(
+  const flatDamage = activeTraitFlatDamage(
     scenario.attacker,
-    scenario.specialAbilities,
+    scenario.activeTraits,
   );
 
   return { rowDamageIfHit, flatDamage, ...scenario };
@@ -134,10 +134,10 @@ describe('summarizeActivation', () => {
     expect(summary.netMomentumIfAllHit).toBe(1);
   });
 
-  it('itemizes Tough Hide, buffs and special abilities', () => {
+  it('itemizes Tough Hide, buffs and activated traits', () => {
     const attacker = makeAttacker({
-      specialAbilities: [
-        { id: 'gore', label: 'Gore', tooltip: '', flatDamage: 2 },
+      characterTraits: [
+        { id: 'gore', label: 'Gore', tooltip: '', active: true, flatDamage: 2 },
       ],
     });
 
@@ -145,7 +145,7 @@ describe('summarizeActivation', () => {
       input({
         attacker,
         damageMods: modsWith({ toughHide: true, buffs: { sharp: true } }),
-        specialAbilities: { gore: true },
+        activeTraits: { gore: true },
       }),
     );
 

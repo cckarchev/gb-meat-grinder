@@ -36,8 +36,8 @@ export type ActivationScenario = {
   crowdingOut: number;
   bonusTimeByAttack: boolean[];
   damageMods: PlaybookDamageMods;
-  /** Toggled model-specific flat-damage abilities, by ability id. */
-  specialAbilities: Record<string, boolean>;
+  /** Activated traits (e.g. Don't Fear The Reaper), by trait id. */
+  activeTraits: Record<string, boolean>;
   attackPlan: AttackPlan;
 };
 
@@ -78,7 +78,7 @@ export type DerivedSimulation = {
   attacks: AttackRollContext[];
   /** Damage each attack row deals if every pick on it hits, by attack index. */
   rowDamageIfHit: number[];
-  /** Guaranteed damage from the toggled special abilities, applied before any swing. */
+  /** Guaranteed damage from the activated traits, applied before any swing. */
   flatDamage: number;
   /**
    * Display index into `attacks` of the swing that drops the target to 0 HP in

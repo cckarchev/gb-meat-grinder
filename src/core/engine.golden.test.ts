@@ -65,7 +65,7 @@ type Scenario = {
   enemyResilience: boolean;
   toughHide: boolean;
   allBuffs: boolean;
-  allSpecialAbilities: boolean;
+  allActiveTraits: boolean;
   startingMomentum: number;
   bonusTimeOnFirst: boolean;
   initialTacModifier: number;
@@ -86,7 +86,7 @@ const BASE_SCENARIO: Scenario = {
   enemyResilience: false,
   toughHide: false,
   allBuffs: false,
-  allSpecialAbilities: false,
+  allActiveTraits: false,
   startingMomentum: 0,
   bonusTimeOnFirst: false,
   initialTacModifier: 0,
@@ -120,7 +120,7 @@ const SCENARIOS: Scenario[] = [
     ...BASE_SCENARIO,
     name: 'resilient',
     enemyResilience: true,
-    allSpecialAbilities: true,
+    allActiveTraits: true,
   },
   {
     ...BASE_SCENARIO,
@@ -216,11 +216,10 @@ const runScenario = (
     ),
   };
 
-  const specialAbilities = Object.fromEntries(
-    (attacker.specialAbilities ?? []).map((ability) => [
-      ability.id,
-      scenario.allSpecialAbilities,
-    ]),
+  const activeTraits = Object.fromEntries(
+    (attacker.characterTraits ?? [])
+      .filter((trait) => trait.active === true)
+      .map((trait) => [trait.id, scenario.allActiveTraits]),
   );
 
   const armor = scenario.armor;
@@ -346,7 +345,7 @@ const runScenario = (
     crowdingOut: 0,
     bonusTimeByAttack,
     damageMods,
-    specialAbilities,
+    activeTraits,
     attackPlan: { wrapPicks, characterPlayPicks },
   };
 

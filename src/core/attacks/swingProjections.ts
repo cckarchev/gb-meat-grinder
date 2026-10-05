@@ -25,7 +25,7 @@ export type SwingProjectionInput = {
   damageMods: PlaybookDamageMods;
   /** Damage each attack row deals if every pick on it hits, by attack index. */
   rowDamageIfHit: readonly number[];
-  /** Guaranteed special-ability damage, applied before any swing. */
+  /** Guaranteed activated-trait damage, applied before any swing. */
   flatDamage: number;
   startingMomentum: number;
   activeBaseCount: number;
