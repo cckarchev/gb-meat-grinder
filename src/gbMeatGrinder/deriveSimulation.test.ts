@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { deriveSimulation } from '@/core/activation/simulation';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import { activeBaseAttackCount } from '@/core/attacks/attackStructure';
@@ -23,10 +23,6 @@ const boarState = (...actions: MeatGrinderAction[]): MeatGrinderState => {
 const pickDamage = (attackIndex: number): MeatGrinderAction => {
   return pick(attackIndex, 'dmg1');
 };
-
-afterEach(() => {
-  vi.restoreAllMocks();
-});
 
 describe('deriveSimulation', () => {
   it('runs the attack sequence on the effective enemy stats', () => {

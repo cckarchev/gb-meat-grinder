@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
   initialState,
   PICK_THRESHER,
@@ -6,10 +6,6 @@ import {
   pick,
   reduce,
 } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
-
-afterEach(() => {
-  vi.restoreAllMocks();
-});
 
 describe('plan edits', () => {
   it('ignores no-op wrap choices', () => {

@@ -1,14 +1,10 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   ATTACKERS,
   attackerById,
   DEFAULT_ATTACKER,
   randomAttacker,
 } from '@/data/attackers/registry';
-
-afterEach(() => {
-  vi.restoreAllMocks();
-});
 
 describe('attackerById', () => {
   it('finds every registered model', () => {

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import type {
   MeatGrinderAction,
   MeatGrinderState,
@@ -9,10 +9,6 @@ import {
   pick,
   reduce,
 } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
-
-afterEach(() => {
-  vi.restoreAllMocks();
-});
 
 describe('Bonus Time', () => {
   const spend = (attackIndex: number): MeatGrinderAction => {

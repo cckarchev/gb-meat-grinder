@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { thresher } from '@/data/attackers/thresher';
 import {
   initialState,
@@ -6,10 +6,6 @@ import {
   pick,
   reduce,
 } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
-
-afterEach(() => {
-  vi.restoreAllMocks();
-});
 
 describe('re-clamping the plan', () => {
   // Thresher: TAC 7 vs ARM 1 reaches 6 net, so `m4` (net 6) is legal.

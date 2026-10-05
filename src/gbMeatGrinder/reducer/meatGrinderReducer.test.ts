@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createInitialAttackPlan } from '@/core/plan/initialAttackPlan';
 import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from '@/core/shared/constants';
 import { thresher } from '@/data/attackers/thresher';
@@ -9,10 +9,6 @@ import {
   PICK_VETERAN_BOAR,
   reduce,
 } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
-
-afterEach(() => {
-  vi.restoreAllMocks();
-});
 
 describe('initial state', () => {
   it('starts a random model with all influence and default enemy stats', () => {
