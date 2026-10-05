@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatRange, formatSigned } from '@/core/shared/format';
+import { formatPercent, formatRange, formatSigned } from '@/core/shared/format';
 
 describe('formatSigned', () => {
   it('prefixes a positive value with a plus sign', () => {
@@ -16,6 +16,22 @@ describe('formatSigned', () => {
 
   it('shows negative zero without a sign', () => {
     expect(formatSigned(-0)).toBe('0');
+  });
+});
+
+describe('formatPercent', () => {
+  it('formats with one decimal by default', () => {
+    expect(formatPercent(0.5)).toBe('50.0%');
+    expect(formatPercent(0)).toBe('0.0%');
+  });
+
+  it('honors the digits argument', () => {
+    expect(formatPercent(0.1234, 2)).toBe('12.34%');
+  });
+
+  it('collapses tiny positive values and non-finite input', () => {
+    expect(formatPercent(0.00005)).toBe('<0.01%');
+    expect(formatPercent(Number.NaN)).toBe('-');
   });
 });
 

@@ -1,10 +1,5 @@
 const DIE_FACES = 6;
 
-/** Below this (but above 0), percentages render as a floor instead of 0.0%. */
-const TINY_PROBABILITY = 0.0001;
-const TINY_PROBABILITY_LABEL = '<0.01%';
-const PERCENT = 100;
-
 /** Binomial coefficient C(n,k). */
 const binomialCoeff = (n: number, k: number): number => {
   if (k < 0 || k > n) {
@@ -66,18 +61,6 @@ export const probAttackSucceeds = (
   }
 
   return tail;
-};
-
-export const formatPercent = (probability: number, digits = 1): string => {
-  if (!Number.isFinite(probability)) {
-    return '-';
-  }
-
-  if (probability < TINY_PROBABILITY && probability > 0) {
-    return TINY_PROBABILITY_LABEL;
-  }
-
-  return `${(PERCENT * probability).toFixed(digits)}%`;
 };
 
 /** Max net successes in one roll: all dice hit, then subtract ARM. */

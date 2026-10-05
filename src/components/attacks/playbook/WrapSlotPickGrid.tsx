@@ -6,12 +6,13 @@ import {
   ColumnResults,
   WrapSlotBlock,
 } from '@/components/attacks/playbook/playbookGridStyles';
-import { formatPercent, probAttackSucceeds } from '@/core/damage/probability';
+import { probAttackSucceeds } from '@/core/damage/probability';
 import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
 import {
   wrapExtendedNetNeeded,
   wrapSlotBudget,
 } from '@/core/playbook/wrapSlots';
+import { formatPercent } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 const HIT_CHANCE_DIGITS = 1;
@@ -99,7 +100,7 @@ export const WrapSlotPickGrid = ({
                       key={result.id}
                       id={result.id}
                       selected={selected}
-                      kdLocked={
+                      knockDownLocked={
                         result.appliesKnockDown === true && knockDownTaken
                       }
                       hitChanceLabel={hitChanceLabel}

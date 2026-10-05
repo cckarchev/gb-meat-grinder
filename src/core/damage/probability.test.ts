@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
   binomialPmf,
-  formatPercent,
   hitProbabilityPerDie,
   maxNetSuccessesForRoll,
   probAttackSucceeds,
@@ -41,22 +40,6 @@ describe('probAttackSucceeds', () => {
   it('sums the binomial tail from need + armor hits', () => {
     // 3 dice, ARM 1, need 1 net: P(hits >= 2) = (3 + 1) / 8.
     expect(probAttackSucceeds(3, COIN_FLIP, 1, 1)).toBeCloseTo(4 / 8);
-  });
-});
-
-describe('formatPercent', () => {
-  it('formats with one decimal by default', () => {
-    expect(formatPercent(0.5)).toBe('50.0%');
-    expect(formatPercent(0)).toBe('0.0%');
-  });
-
-  it('honors the digits argument', () => {
-    expect(formatPercent(0.1234, 2)).toBe('12.34%');
-  });
-
-  it('collapses tiny positive values and non-finite input', () => {
-    expect(formatPercent(0.00005)).toBe('<0.01%');
-    expect(formatPercent(Number.NaN)).toBe('-');
   });
 });
 

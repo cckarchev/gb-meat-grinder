@@ -7,14 +7,14 @@ import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
 import { playbookLineDisplaySegments } from '@/core/playbook/playbookLabels';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
-const KD_LOCKED_TITLE =
+const KNOCK_DOWN_LOCKED_TITLE =
   'Knock Down unavailable: the target is already Knocked Down (only one KD applies)';
 
 type PlaybookLineButtonProps = {
   id: PlaybookChoiceId;
   selected: boolean;
   /** Knock Down already applied earlier, so this line cannot be picked. */
-  kdLocked: boolean;
+  knockDownLocked: boolean;
   /** Formatted hit chance for this line's column, for the accessible label. */
   hitChanceLabel: string;
   onClick: () => void;
@@ -24,7 +24,7 @@ type PlaybookLineButtonProps = {
 export const PlaybookLineButton = ({
   id,
   selected,
-  kdLocked,
+  knockDownLocked,
   hitChanceLabel,
   onClick,
 }: PlaybookLineButtonProps) => {
@@ -36,14 +36,14 @@ export const PlaybookLineButton = ({
   return (
     <LineButton
       type="button"
-      disabled={kdLocked}
+      disabled={knockDownLocked}
       $momentous={momentousStyle === 'heat'}
       $momentousZeroed={momentousStyle === 'zeroed'}
       $momentousColor={attacker.guild.color}
       $selected={selected}
       aria-pressed={selected}
       aria-label={`${action} playbook result ${segments.join(' ')}, ${hitChanceLabel} to hit`}
-      title={kdLocked ? KD_LOCKED_TITLE : undefined}
+      title={knockDownLocked ? KNOCK_DOWN_LOCKED_TITLE : undefined}
       onClick={onClick}
     >
       {segments.length > 1 ? (

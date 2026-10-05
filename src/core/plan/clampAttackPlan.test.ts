@@ -65,16 +65,16 @@ describe('clampAttackPlan', () => {
   };
 
   /** Model whose only net-1 line is a KD and only net-2 line is a GB. */
-  const kdThenGbAttacker = (tac: number): AttackerData => {
+  const knockDownThenGbAttacker = (tac: number): AttackerData => {
     const fixture = makeAttacker();
-    const gb = getPlaybookResult(fixture, 'gb');
-    const kd = getPlaybookResult(fixture, 'kd');
+    const gbResult = getPlaybookResult(fixture, 'gb');
+    const knockDownResult = getPlaybookResult(fixture, 'kd');
 
     return makeAttacker({
       tac,
       playbook: [
-        { netSuccesses: 1, results: [kd] },
-        { netSuccesses: 2, results: [gb] },
+        { netSuccesses: 1, results: [knockDownResult] },
+        { netSuccesses: 2, results: [gbResult] },
       ],
     });
   };
@@ -184,7 +184,7 @@ describe('clampAttackPlan', () => {
   it('gives a GB replacement for a duplicate KD its default play', () => {
     expect(
       clamp({
-        attacker: kdThenGbAttacker(2),
+        attacker: knockDownThenGbAttacker(2),
         wrapPicks: [['kd'], ['kd']],
         activeBaseCount: 2,
       }),
@@ -199,7 +199,7 @@ describe('clampAttackPlan', () => {
     // which here is the KD itself, so the duplicate survives.
     expect(
       clamp({
-        attacker: kdThenGbAttacker(1),
+        attacker: knockDownThenGbAttacker(1),
         wrapPicks: [['kd'], ['kd']],
         activeBaseCount: 2,
       }).wrapPicks,

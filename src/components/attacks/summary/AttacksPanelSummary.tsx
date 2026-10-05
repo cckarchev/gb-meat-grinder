@@ -19,10 +19,9 @@ import { useActivationInput } from '@/components/attacks/useActivationInput';
 import { Mono, Summary } from '@/components/ui/ui';
 import { summarizeActivation } from '@/core/activation/summary/activationSummary';
 import { attackKindLabel } from '@/core/attacks/attackVariant';
-import { formatPercent } from '@/core/damage/probability';
 import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
 import { rowHasWrapPick } from '@/core/playbook/wrapSlots';
-import { formatRange, formatSigned } from '@/core/shared/format';
+import { formatPercent, formatRange, formatSigned } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 const EXPECTED_VALUE_DIGITS = 1;
