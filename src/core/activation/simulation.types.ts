@@ -61,6 +61,10 @@ export type DerivedSimulation = {
   effectiveCharacterPlayPicks: CharacterPlayPickSlot[][];
   effectiveBonusTimeByAttack: boolean[];
   attacks: AttackRollContext[];
+  /** Damage each attack row deals if every pick on it hits, by attack index. */
+  rowDamageIfHit: number[];
+  /** Guaranteed damage from the toggled special abilities, applied before any swing. */
+  flatDamage: number;
   /** Display index into `attacks` of the all-hit killing blow, or -1. */
   killingBlowIndex: number;
 };

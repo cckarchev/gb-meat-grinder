@@ -13,10 +13,8 @@ import {
   netMomentumTooltip,
 } from '@/core/activation/summary/summaryTooltips';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import { specialAbilityFlatDamage } from '@/core/damage/damage';
 import { damageQuantile } from '@/core/damage/damageDistribution';
 import { planDamageOutcome } from '@/core/damage/killOdds';
-import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
 import { isAttackIndex } from '@/core/shared/attackIndex';
 import { KILLING_BLOW_MOMENTUM } from '@/core/shared/constants';
 
@@ -63,17 +61,7 @@ export const summarizeActivation = (
     input.killingBlowIndex,
   );
 
-  const flatDamage = specialAbilityFlatDamage(
-    input.attacker,
-    input.specialAbilities,
-  );
-
-  const rowDamageIfHit = damageIfAllHitsWrap(
-    input.attacker,
-    input.wrapPicks,
-    input.damageMods,
-    input.activeBaseCount,
-  );
+  const { rowDamageIfHit, flatDamage } = input;
 
   const swingDamageIfAllHit = activeAttacks.reduce(
     (sum, swing) => sum + rowDamageIfHit[swing.attackIndex],
@@ -118,7 +106,7 @@ export const summarizeActivation = (
       killingBlowMomentum,
       bonusTimeSpends,
     ),
-    damageDealtTooltip: damageDealtTooltip(input, flatDamage),
+    damageDealtTooltip: damageDealtTooltip(input),
     planFailureProbability: 1 - planSuccessProbability,
     killProbability: outcome.killProbability,
     expectedDamage: outcome.expectedDamage,

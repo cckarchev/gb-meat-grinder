@@ -5,12 +5,10 @@ import {
   momentumPoolBeforeBonusTime,
 } from '@/core/activation/momentum';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import { specialAbilityFlatDamage } from '@/core/damage/damage';
 import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
 import { isAttackIndex } from '@/core/shared/attackIndex';
 import { KILLING_BLOW_MOMENTUM } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
@@ -25,7 +23,10 @@ export type SwingProjectionInput = {
   /** Effective (Resilience-applied) Bonus Time flags. */
   bonusTimeByAttack: boolean[];
   damageMods: PlaybookDamageMods;
-  specialAbilities: Record<string, boolean>;
+  /** Damage each attack row deals if every pick on it hits, by attack index. */
+  rowDamageIfHit: readonly number[];
+  /** Guaranteed special-ability damage, applied before any swing. */
+  flatDamage: number;
   startingMomentum: number;
   activeBaseCount: number;
   targetHp: number;
@@ -40,19 +41,12 @@ export type SwingProjection = {
 };
 
 const remainingHpAfterEachSwing = (input: SwingProjectionInput): number[] => {
-  const rowDamageIfHit = damageIfAllHitsWrap(
-    input.attacker,
-    input.wrapPicks,
-    input.damageMods,
-    input.activeBaseCount,
-  );
-
   // Special-ability damage is guaranteed and untied to a swing, so apply it
   // up front as a baseline before the per-swing chip damage.
-  let dealt = specialAbilityFlatDamage(input.attacker, input.specialAbilities);
+  let dealt = input.flatDamage;
 
   return input.attacks.map((swing) => {
-    dealt += rowDamageIfHit[swing.attackIndex];
+    dealt += input.rowDamageIfHit[swing.attackIndex];
 
     return Math.max(0, input.targetHp - dealt);
   });

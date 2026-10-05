@@ -128,6 +128,8 @@ export const deriveSimulation = (
     effectiveCharacterPlayPicks,
     effectiveBonusTimeByAttack,
     attacks,
+    rowDamageIfHit,
+    flatDamage,
     killingBlowIndex,
   };
 };

@@ -43,6 +43,10 @@ export type MeatGrinderSimulation = ExposedState & {
    */
   ignoredDisplayIndex: number;
   attacks: AttackRollContext[];
+  /** Damage each attack row deals if every pick on it hits, by attack index. */
+  rowDamageIfHit: number[];
+  /** Guaranteed special-ability damage, applied before any swing. */
+  flatDamage: number;
   /**
    * Display index into `attacks` of the swing that drops the target to 0 HP in
    * the deterministic all-hit projection, or -1 if it never falls. The

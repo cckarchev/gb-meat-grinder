@@ -35,6 +35,8 @@ export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
       effectiveBonusTimeByAttack: derived.effectiveBonusTimeByAttack,
       ignoredDisplayIndex: derived.ignoredDisplayIndex,
       attacks: derived.attacks,
+      rowDamageIfHit: derived.rowDamageIfHit,
+      flatDamage: derived.flatDamage,
       killingBlowIndex: derived.killingBlowIndex,
       dispatch,
     };

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { deriveSimulation } from '@/core/activation/simulation';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import { activeBaseAttackCount } from '@/core/attacks/attackStructure';
+import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
 import { HP_MIN } from '@/core/shared/constants';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
 import type {
@@ -119,5 +120,20 @@ describe('deriveSimulation', () => {
 
     expect(deriveSimulation(veteranBoar, fragile).killingBlowIndex).toBe(0);
     expect(deriveSimulation(veteranBoar, unpicked).killingBlowIndex).toBe(-1);
+  });
+
+  it('exposes the all-hit row damage and flat damage it projects with', () => {
+    const state = boarState(pickDamage(0));
+    const derived = deriveSimulation(veteranBoar, state);
+
+    const expectedRowDamage = damageIfAllHitsWrap(
+      veteranBoar,
+      derived.effectiveWrapPicks,
+      state.damageMods,
+      derived.activeBaseCount,
+    );
+
+    expect(derived.rowDamageIfHit).toEqual(expectedRowDamage);
+    expect(derived.flatDamage).toBe(0);
   });
 });

@@ -23,7 +23,6 @@ import {
   effectiveArmor,
   effectiveDamageForChoice,
   effectiveEnemyDef,
-  specialAbilityFlatDamage,
 } from '@/core/damage/damage';
 import { damageQuantile } from '@/core/damage/damageDistribution';
 import { planDamageOutcome } from '@/core/damage/killOdds';
@@ -36,10 +35,7 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
-import {
-  damageIfAllHitsWrap,
-  damageModifierBreakdownWrap,
-} from '@/core/playbook/rowDamage';
+import { damageModifierBreakdownWrap } from '@/core/playbook/rowDamage';
 import {
   choiceUsesCharacterPlay,
   defaultCharacterPlayPicksWrap,
@@ -353,17 +349,14 @@ const runScenario = (
     attackPlan: { wrapPicks, characterPlayPicks },
   };
 
-  const { ignoredAttackIndex, effectiveWrapPicks, attacks, killingBlowIndex } =
-    deriveSimulation(attacker, activation);
-
-  const flatDamage = specialAbilityFlatDamage(attacker, specialAbilities);
-
-  const damageIfAllHits = damageIfAllHitsWrap(
-    attacker,
+  const {
+    ignoredAttackIndex,
     effectiveWrapPicks,
-    damageMods,
-    activeBaseCount,
-  );
+    attacks,
+    rowDamageIfHit,
+    flatDamage,
+    killingBlowIndex,
+  } = deriveSimulation(attacker, activation);
 
   const outcome = planDamageOutcome(
     attacker,
@@ -400,7 +393,7 @@ const runScenario = (
         activeBaseCount,
       ),
     })),
-    damageIfAllHits,
+    damageIfAllHits: rowDamageIfHit,
     breakdown: damageModifierBreakdownWrap(
       attacker,
       effectiveWrapPicks,

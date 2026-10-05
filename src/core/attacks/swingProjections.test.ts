@@ -4,6 +4,7 @@ import {
   projectSwings,
   type SwingProjectionInput,
 } from '@/core/attacks/swingProjections';
+import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
 import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
 
 const swing = (attackIndex: number): AttackRollContext => {
@@ -21,19 +22,29 @@ const swing = (attackIndex: number): AttackRollContext => {
 const input = (
   overrides: Partial<SwingProjectionInput> = {},
 ): SwingProjectionInput => {
-  return {
+  const scenario = {
     attacker: makeAttacker(),
     attacks: [swing(0), swing(1)],
     killingBlowIndex: -1,
     wrapPicks: [['two'], ['two']],
     bonusTimeByAttack: [false, false],
     damageMods: NO_MODS,
-    specialAbilities: {},
+    flatDamage: 0,
     startingMomentum: 0,
     activeBaseCount: 2,
     targetHp: 10,
     ...overrides,
   };
+
+  // Derived the way `deriveSimulation` does, unless a test pins it.
+  const rowDamageIfHit = damageIfAllHitsWrap(
+    scenario.attacker,
+    scenario.wrapPicks,
+    scenario.damageMods,
+    scenario.activeBaseCount,
+  );
+
+  return { rowDamageIfHit, ...scenario };
 };
 
 describe('projectSwings', () => {
@@ -46,15 +57,7 @@ describe('projectSwings', () => {
   });
 
   it('applies special-ability damage before the first swing', () => {
-    const attacker = makeAttacker({
-      specialAbilities: [
-        { id: 'gore', label: 'Gore', tooltip: '', flatDamage: 3 },
-      ],
-    });
-
-    const projection = projectSwings(
-      input({ attacker, specialAbilities: { gore: true } }),
-    );
+    const projection = projectSwings(input({ flatDamage: 3 }));
 
     expect(projection.remainingHp).toEqual([5, 3]);
   });

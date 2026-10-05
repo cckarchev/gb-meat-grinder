@@ -6,6 +6,8 @@ import {
 } from '@/core/activation/summary/activationSummary';
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+import { specialAbilityFlatDamage } from '@/core/damage/damage';
+import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
 import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
 
 /** A swing that always rolls exactly `tac` net successes. */
@@ -28,7 +30,7 @@ const flaky = (attackIndex: number, prob: number): AttackRollContext => {
 const input = (
   overrides: Partial<ActivationSummaryInput> = {},
 ): ActivationSummaryInput => {
-  return {
+  const scenario = {
     attacker: makeAttacker(),
     attacks: [certainSwing(0, 2), certainSwing(1, 2)],
     ignoredDisplayIndex: -1,
@@ -42,6 +44,21 @@ const input = (
     targetHp: 10,
     ...overrides,
   };
+
+  // Derived the way `deriveSimulation` does, unless a test pins them.
+  const rowDamageIfHit = damageIfAllHitsWrap(
+    scenario.attacker,
+    scenario.wrapPicks,
+    scenario.damageMods,
+    scenario.activeBaseCount,
+  );
+
+  const flatDamage = specialAbilityFlatDamage(
+    scenario.attacker,
+    scenario.specialAbilities,
+  );
+
+  return { rowDamageIfHit, flatDamage, ...scenario };
 };
 
 describe('activeSwings', () => {

@@ -24,10 +24,9 @@ export const netMomentumTooltip = (
   return `${tooltip}.`;
 };
 
-export const damageDealtTooltip = (
-  input: ActivationSummaryInput,
-  flatDamage: number,
-): string => {
+export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
+  const { flatDamage } = input;
+
   const breakdown = damageModifierBreakdownWrap(
     input.attacker,
     input.wrapPicks,

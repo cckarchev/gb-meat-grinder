@@ -19,6 +19,8 @@ export const useActivationInput = () => {
     damageMods,
     specialAbilities,
     attacks,
+    rowDamageIfHit,
+    flatDamage,
     killingBlowIndex,
   } = useMeatGrinderSimulation();
 
@@ -32,6 +34,8 @@ export const useActivationInput = () => {
       bonusTimeByAttack: effectiveBonusTimeByAttack,
       damageMods,
       specialAbilities,
+      rowDamageIfHit,
+      flatDamage,
       startingMomentum,
       activeBaseCount,
       targetHp,
@@ -45,6 +49,8 @@ export const useActivationInput = () => {
       effectiveBonusTimeByAttack,
       damageMods,
       specialAbilities,
+      rowDamageIfHit,
+      flatDamage,
       startingMomentum,
       activeBaseCount,
       targetHp,

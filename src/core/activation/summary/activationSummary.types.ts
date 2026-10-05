@@ -18,6 +18,10 @@ export type ActivationSummaryInput = {
   bonusTimeByAttack: boolean[];
   damageMods: PlaybookDamageMods;
   specialAbilities: Record<string, boolean>;
+  /** Damage each attack row deals if every pick on it hits, by attack index. */
+  rowDamageIfHit: readonly number[];
+  /** Guaranteed special-ability damage, applied before any swing. */
+  flatDamage: number;
   startingMomentum: number;
   activeBaseCount: number;
   targetHp: number;
