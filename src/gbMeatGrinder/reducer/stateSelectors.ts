@@ -1,10 +1,7 @@
 /** Engine inputs derived from the app state: the model, its active bases, the clamp bounds. */
 
-import {
-  activeBaseAttackCount,
-  effectiveChargeIndex,
-} from '@/core/attacks/attackStructure';
-import { effectiveArmor, effectiveEnemyDef } from '@/core/damage/damage';
+import { scenarioEffectiveStats } from '@/core/activation/scenarioStats';
+import { activeBaseAttackCount } from '@/core/attacks/attackStructure';
 import type { AttackPlanClampParams } from '@/core/plan/attackPlan.types';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 import { attackerById } from '@/data/attackers/registry';
@@ -25,25 +22,19 @@ export const activeBaseCountOf = (state: MeatGrinderState): number => {
 
 export const clampParams = (state: MeatGrinderState): AttackPlanClampParams => {
   const attacker = attackerOf(state);
+  const stats = scenarioEffectiveStats(attacker, state);
 
   return {
     attacker,
-    chargeAttackIndex: effectiveChargeIndex(
-      state.charging,
-      state.chargeAttackIndex,
-    ),
-    armor: effectiveArmor(attacker, state.armor, state.damageMods),
+    chargeAttackIndex: stats.effectiveChargeAttackIndex,
+    armor: stats.effectiveArmor,
     enemyHasCover: state.enemyHasCover,
     enemyDefensiveStance: state.enemyDefensiveStance,
     damageMods: state.damageMods,
-    enemyDef: effectiveEnemyDef(
-      state.enemyDef,
-      state.enemyKnockedDown,
-      state.enemySnared,
-    ),
+    enemyDef: stats.effectiveEnemyDef,
     bonusTimeByAttack: state.bonusTimeByAttack,
-    initialTacModifier: state.gangingUp - state.crowdingOut,
+    initialTacModifier: stats.initialTacModifier,
     enemyKnockedDown: state.enemyKnockedDown,
-    activeBaseCount: activeBaseCountOf(state),
+    activeBaseCount: stats.activeBaseCount,
   };
 };

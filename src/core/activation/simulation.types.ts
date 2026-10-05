@@ -45,7 +45,10 @@ export type ActivationScenario = {
 export type DerivedSimulation = {
   /** Active base attacks this activation (derived from traits + influence). */
   activeBaseCount: number;
-  /** Charge row the engine uses: the chosen base, or -1 when not charging. */
+  /**
+   * Charge row the engine uses: `chargeAttackIndex` while charging, else
+   * `NO_ATTACK_INDEX`.
+   */
   effectiveChargeAttackIndex: number;
   /** Enemy ARM after attacker buffs (e.g. They Ain't Tough!). */
   effectiveArmor: number;
@@ -55,16 +58,32 @@ export type DerivedSimulation = {
   initialTacModifier: number;
   /** Attack-array index of the swing a Resilient target ignores, or -1. */
   ignoredAttackIndex: number;
-  /** Display index into `attacks` of the ignored swing (always 0), or -1. */
+  /**
+   * Display index into `attacks` of the swing ignored by Resilience (always 0
+   * when active), or `NO_ATTACK_INDEX` when the target is not Resilient / has
+   * no attacks.
+   */
   ignoredDisplayIndex: number;
+  /**
+   * Wrap picks as the engine sees them once Resilience is applied: identical to
+   * the plan's wrap picks unless the target is Resilient, in which case the
+   * ignored first swing's row is blanked. Use these for damage / momentum / odds
+   * math; use the raw plan picks only to render each swing's chosen lines.
+   */
   effectiveWrapPicks: WrapPick[][];
   effectiveCharacterPlayPicks: CharacterPlayPickSlot[][];
+  /** Bonus-Time flags with the Resilience-ignored swing forced off. */
   effectiveBonusTimeByAttack: boolean[];
   attacks: AttackRollContext[];
   /** Damage each attack row deals if every pick on it hits, by attack index. */
   rowDamageIfHit: number[];
   /** Guaranteed damage from the toggled special abilities, applied before any swing. */
   flatDamage: number;
-  /** Display index into `attacks` of the all-hit killing blow, or -1. */
+  /**
+   * Display index into `attacks` of the swing that drops the target to 0 HP in
+   * the deterministic all-hit projection, or `NO_ATTACK_INDEX` if it never
+   * falls. The activation ends here: this swing earns `KILLING_BLOW_MOMENTUM`
+   * and every later swing can no longer be made.
+   */
   killingBlowIndex: number;
 };

@@ -1,17 +1,10 @@
+import { scenarioEffectiveStats } from '@/core/activation/scenarioStats';
 import type {
   ActivationScenario,
   DerivedSimulation,
 } from '@/core/activation/simulation.types';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
-import {
-  activeBaseAttackCount,
-  effectiveChargeIndex,
-} from '@/core/attacks/attackStructure';
-import {
-  effectiveArmor,
-  effectiveEnemyDef,
-  specialAbilityFlatDamage,
-} from '@/core/damage/damage';
+import { specialAbilityFlatDamage } from '@/core/damage/damage';
 import { killingBlowDisplayIndex } from '@/core/damage/killingBlow';
 import {
   effectiveBonusTimeForResilience,
@@ -31,26 +24,15 @@ export const deriveSimulation = (
 ): DerivedSimulation => {
   const { wrapPicks, characterPlayPicks } = scenario.attackPlan;
 
-  const activeBaseCount = activeBaseAttackCount(
-    attacker,
-    scenario.influence,
-    scenario.charging,
-  );
+  const stats = scenarioEffectiveStats(attacker, scenario);
 
-  const effectiveChargeAttackIndex = effectiveChargeIndex(
-    scenario.charging,
-    scenario.chargeAttackIndex,
-  );
-
-  const armor = effectiveArmor(attacker, scenario.armor, scenario.damageMods);
-
-  const enemyDef = effectiveEnemyDef(
-    scenario.enemyDef,
-    scenario.enemyKnockedDown,
-    scenario.enemySnared,
-  );
-
-  const initialTacModifier = scenario.gangingUp - scenario.crowdingOut;
+  const {
+    activeBaseCount,
+    effectiveChargeAttackIndex,
+    effectiveArmor,
+    effectiveEnemyDef,
+    initialTacModifier,
+  } = stats;
 
   // The swing a Resilient target ignores, plus plan copies with that swing
   // blanked so every downstream calculation treats it as if it never happened.
@@ -79,8 +61,8 @@ export const deriveSimulation = (
 
   const { attacks } = computeAttackSequence(
     attacker,
-    enemyDef,
-    armor,
+    effectiveEnemyDef,
+    effectiveArmor,
     effectiveWrapPicks,
     effectiveCharacterPlayPicks,
     effectiveChargeAttackIndex,
@@ -117,11 +99,7 @@ export const deriveSimulation = (
   );
 
   return {
-    activeBaseCount,
-    effectiveChargeAttackIndex,
-    effectiveArmor: armor,
-    effectiveEnemyDef: enemyDef,
-    initialTacModifier,
+    ...stats,
     ignoredAttackIndex,
     ignoredDisplayIndex,
     effectiveWrapPicks,
