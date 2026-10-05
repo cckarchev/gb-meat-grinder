@@ -1,20 +1,18 @@
 /**
  * Golden characterization of the whole engine pipeline, run against the real
- * attacker data. It mirrors how `useMeatGrinderSimulationState` chains the core
- * calls, builds deterministic plans with a couple of pick strategies, and
- * snapshots every derived value. Its job is to catch behavior drift during
- * refactors: an intended rules change should update the snapshot on purpose.
+ * attacker data through `deriveSimulation`. It builds deterministic plans with
+ * a couple of pick strategies, and snapshots every derived value. Its job is to
+ * catch behavior drift during refactors: an intended rules change should
+ * update the snapshot on purpose.
  */
 
 import { describe, expect, it } from 'vitest';
 import { ATTACKERS } from '@/attackers/registry';
 import {
   clampAttackPlan,
-  computeAttackSequence,
   maxPlaybookColumnForRow,
 } from '@/core/attackSequence';
 import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
-import { killingBlowDisplayIndex } from '@/core/killingBlow';
 import { damageQuantile, planDamageOutcome } from '@/core/killOdds';
 import {
   activationAttackIndices,
@@ -34,12 +32,7 @@ import {
   specialAbilityFlatDamage,
   wrapSlotBudget,
 } from '@/core/playbook';
-import {
-  effectiveBonusTimeForResilience,
-  effectiveCharacterPlayPicksForResilience,
-  effectiveWrapPicksForResilience,
-  resilienceIgnoredAttackIndex,
-} from '@/core/resilience';
+import { deriveSimulation } from '@/core/simulation';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
   CharacterPlayPickSlot,
@@ -48,6 +41,7 @@ import type {
   PlaybookResult,
   WrapPick,
 } from '@/types/core/playbook';
+import type { MeatGrinderState } from '@/types/gbMeatGrinder/reducer';
 
 const ROUNDING_DIGITS = 6;
 const PLAN_SETTLE_PASSES = 6;
@@ -332,43 +326,30 @@ const runScenario = (
     activeBaseCount,
   );
 
-  const ignoredAttackIndex = resilienceIgnoredAttackIndex(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-    scenario.enemyResilience,
-  );
-
-  const effectiveWrapPicks = effectiveWrapPicksForResilience(
-    wrapPicks,
-    ignoredAttackIndex,
-  );
-
-  const effectiveCharacterPlayPicks = effectiveCharacterPlayPicksForResilience(
-    characterPlayPicks,
-    ignoredAttackIndex,
-  );
-
-  const effectiveBonusTime = effectiveBonusTimeForResilience(
+  const state: MeatGrinderState = {
+    attackerId: attacker.id,
+    enemyDef: scenario.enemyDef,
+    armor: scenario.armor,
+    hp: scenario.hp,
+    influence: attacker.inf,
+    charging: scenario.charging,
+    chargeAttackIndex: CHARGE_ROW,
+    enemyHasCover: scenario.enemyHasCover,
+    enemyDefensiveStance: scenario.enemyDefensiveStance,
+    enemyKnockedDown: scenario.enemyKnockedDown,
+    enemySnared: scenario.enemySnared,
+    enemyResilience: scenario.enemyResilience,
+    startingMomentum: scenario.startingMomentum,
+    gangingUp: scenario.initialTacModifier,
+    crowdingOut: 0,
     bonusTimeByAttack,
-    ignoredAttackIndex,
-  );
-
-  const { attacks } = computeAttackSequence(
-    attacker,
-    enemyDef,
-    armor,
-    effectiveWrapPicks,
-    effectiveCharacterPlayPicks,
-    chargeAttackIndex,
-    scenario.enemyHasCover,
-    scenario.enemyDefensiveStance,
     damageMods,
-    effectiveBonusTime,
-    scenario.initialTacModifier,
-    activeBaseCount,
-  );
+    specialAbilities,
+    attackPlan: { wrapPicks, characterPlayPicks },
+  };
+
+  const { ignoredAttackIndex, effectiveWrapPicks, attacks, killingBlowIndex } =
+    deriveSimulation(attacker, state);
 
   const flatDamage = specialAbilityFlatDamage(attacker, specialAbilities);
 
@@ -421,12 +402,7 @@ const runScenario = (
       damageMods,
       activeBaseCount,
     ),
-    killingBlowIndex: killingBlowDisplayIndex(
-      attacks,
-      damageIfAllHits,
-      flatDamage,
-      scenario.hp,
-    ),
+    killingBlowIndex,
     killProbability: round(outcome.killProbability),
     expectedDamage: round(outcome.expectedDamage),
     expectedHpRemaining: round(outcome.expectedHpRemaining),
