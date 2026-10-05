@@ -35,10 +35,10 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
-import { damageModifierBreakdownWrap } from '@/core/playbook/rowDamage';
+import { damageModifierBreakdown } from '@/core/playbook/rowDamage';
 import {
   choiceUsesCharacterPlay,
-  defaultCharacterPlayPicksWrap,
+  defaultCharacterPlayPicks,
   defaultWrapPicks,
   wrapSlotBudget,
 } from '@/core/playbook/wrapSlots';
@@ -239,7 +239,7 @@ const runScenario = (
   let wrapPicks: WrapPick[][] = defaultWrapPicks(size);
 
   let characterPlayPicks: CharacterPlayPickSlot[][] =
-    defaultCharacterPlayPicksWrap(size);
+    defaultCharacterPlayPicks(size);
 
   const clamp = () => {
     const clamped = clampAttackPlan(
@@ -394,7 +394,7 @@ const runScenario = (
       ),
     })),
     damageIfAllHits: rowDamageIfHit,
-    breakdown: damageModifierBreakdownWrap(
+    breakdown: damageModifierBreakdown(
       attacker,
       effectiveWrapPicks,
       damageMods,

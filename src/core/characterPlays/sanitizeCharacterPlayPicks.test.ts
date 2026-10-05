@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { sanitizeCharacterPlayPicksWrap } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
+import { sanitizeCharacterPlayPicks } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
 import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
 
-describe('sanitizeCharacterPlayPicksWrap', () => {
+describe('sanitizeCharacterPlayPicks', () => {
   const attacker = makeAttacker();
 
   it('sanitizes illegal and orphaned play picks', () => {
-    const result = sanitizeCharacterPlayPicksWrap(
+    const result = sanitizeCharacterPlayPicks(
       attacker,
       [['gb'], ['gb'], ['one']],
       [['playTac'], ['playTac'], ['playDef']],

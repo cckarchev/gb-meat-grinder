@@ -7,7 +7,7 @@ import {
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { specialAbilityFlatDamage } from '@/core/damage/damage';
-import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
+import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
 
 /** A swing that always rolls exactly `tac` net successes. */
@@ -46,7 +46,7 @@ const input = (
   };
 
   // Derived the way `deriveSimulation` does, unless a test pins them.
-  const rowDamageIfHit = damageIfAllHitsWrap(
+  const rowDamageIfHit = rowDamageIfAllHit(
     scenario.attacker,
     scenario.wrapPicks,
     scenario.damageMods,

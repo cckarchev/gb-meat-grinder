@@ -1,7 +1,7 @@
 /** Breakdown text for the momentum and damage totals in the attacks summary. */
 
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
-import { damageModifierBreakdownWrap } from '@/core/playbook/rowDamage';
+import { damageModifierBreakdown } from '@/core/playbook/rowDamage';
 
 const NO_DAMAGE_TOOLTIP =
   'No selected playbook lines deal card damage to HP (after Tough Hide).';
@@ -27,7 +27,7 @@ export const netMomentumTooltip = (
 export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
   const { flatDamage } = input;
 
-  const breakdown = damageModifierBreakdownWrap(
+  const breakdown = damageModifierBreakdown(
     input.attacker,
     input.wrapPicks,
     input.damageMods,

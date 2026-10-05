@@ -4,7 +4,7 @@ import {
   projectSwings,
   type SwingProjectionInput,
 } from '@/core/attacks/swingProjections';
-import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
+import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
 
 const swing = (attackIndex: number): AttackRollContext => {
@@ -37,7 +37,7 @@ const input = (
   };
 
   // Derived the way `deriveSimulation` does, unless a test pins it.
-  const rowDamageIfHit = damageIfAllHitsWrap(
+  const rowDamageIfHit = rowDamageIfAllHit(
     scenario.attacker,
     scenario.wrapPicks,
     scenario.damageMods,

@@ -19,7 +19,7 @@ import {
   effectiveWrapPicksForResilience,
   resilienceIgnoredAttackIndex,
 } from '@/core/damage/resilience';
-import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
+import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { isAttackIndex } from '@/core/shared/attackIndex';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
@@ -97,7 +97,7 @@ export const deriveSimulation = (
     isAttackIndex(ignoredAttackIndex) && attacks.length > 0;
   const ignoredDisplayIndex = hasIgnoredSwing ? 0 : NO_ATTACK_INDEX;
 
-  const rowDamageIfHit = damageIfAllHitsWrap(
+  const rowDamageIfHit = rowDamageIfAllHit(
     attacker,
     effectiveWrapPicks,
     scenario.damageMods,

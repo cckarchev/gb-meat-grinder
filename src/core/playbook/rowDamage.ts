@@ -13,9 +13,9 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
 /**
  * Sums card pip damage and the marginal effects of Tough Hide and each of the
  * attacker's damage buffs across all active rows (same scope as
- * {@link damageIfAllHitsWrap}).
+ * {@link rowDamageIfAllHit}).
  */
-export const damageModifierBreakdownWrap = (
+export const damageModifierBreakdown = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   damageMods: PlaybookDamageMods,
@@ -88,7 +88,7 @@ export const damageModifierBreakdownWrap = (
 };
 
 /** Damage per attack if every pick on that attack hits (playbook modifiers applied). */
-export const damageIfAllHitsWrap = (
+export const rowDamageIfAllHit = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   damageMods: PlaybookDamageMods,

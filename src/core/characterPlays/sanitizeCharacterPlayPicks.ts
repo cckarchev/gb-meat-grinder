@@ -16,7 +16,7 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
  * Fix play slots that no longer match their pick, or that hold a Once Per Turn
  * play an earlier pick already used.
  */
-export const sanitizeCharacterPlayPicksWrap = (
+export const sanitizeCharacterPlayPicks = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],

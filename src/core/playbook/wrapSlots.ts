@@ -133,7 +133,7 @@ const rowsWithOneEmptySlot = (size: number): null[][] => {
   return Array.from({ length: size }, () => [null]);
 };
 
-export const defaultCharacterPlayPicksWrap = (
+export const defaultCharacterPlayPicks = (
   size: number,
 ): CharacterPlayPickSlot[][] => {
   return rowsWithOneEmptySlot(size);

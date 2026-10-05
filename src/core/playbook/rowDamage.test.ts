@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { damageModifierBreakdownWrap } from '@/core/playbook/rowDamage';
+import { damageModifierBreakdown } from '@/core/playbook/rowDamage';
 import { makeAttacker, modsWith } from '@/core/testing/fixtures';
 
-describe('damageModifierBreakdownWrap', () => {
+describe('damageModifierBreakdown', () => {
   it('splits card damage into Tough Hide and per-buff contributions', () => {
     const attacker = makeAttacker();
     const mods = modsWith({ toughHide: true, buffs: { sharp: true } });
 
     expect(
-      damageModifierBreakdownWrap(attacker, [['two', 'gb'], ['one']], mods, 2),
+      damageModifierBreakdown(attacker, [['two', 'gb'], ['one']], mods, 2),
     ).toEqual({
       rawCardDamage: 4,
       toughHideReduction: 3,

@@ -15,7 +15,7 @@ import {
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
 import { coverSwingClockIndices } from '@/core/playbook/coverClearing';
 import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
-import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
+import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import {
   armorReductionBeforeAttack,
   rowEffectsForPick,
@@ -66,7 +66,7 @@ describe('activation order', () => {
   });
 
   it('projects damage per active row when every pick hits', () => {
-    expect(damageIfAllHitsWrap(berserker, wrapPicks, NO_MODS, 2)).toEqual([
+    expect(rowDamageIfAllHit(berserker, wrapPicks, NO_MODS, 2)).toEqual([
       2, 0, 0, 0,
     ]);
   });

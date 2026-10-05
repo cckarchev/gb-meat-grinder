@@ -2,7 +2,7 @@
  * Keeps a wrap / character-play plan legal as the inputs that bound it change.
  */
 
-import { sanitizeCharacterPlayPicksWrap } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
+import { sanitizeCharacterPlayPicks } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
 import type {
   AttackPlan,
   AttackPlanClampParams,
@@ -26,7 +26,7 @@ const sanitizeCharacterPlays = (
   draft: AttackPlan,
   params: AttackPlanClampParams,
 ): boolean => {
-  const sanitized = sanitizeCharacterPlayPicksWrap(
+  const sanitized = sanitizeCharacterPlayPicks(
     params.attacker,
     draft.wrapPicks,
     draft.characterPlayPicks,

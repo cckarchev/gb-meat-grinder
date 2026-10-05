@@ -8,7 +8,7 @@ import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from '@/core/damage/damage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
 import {
-  defaultCharacterPlayPicksWrap,
+  defaultCharacterPlayPicks,
   defaultWrapPicks,
 } from '@/core/playbook/wrapSlots';
 import {
@@ -27,7 +27,7 @@ export const createInitialAttackPlan = (
 
   const unclamped: AttackPlan = {
     wrapPicks: defaultWrapPicks(size),
-    characterPlayPicks: defaultCharacterPlayPicksWrap(size),
+    characterPlayPicks: defaultCharacterPlayPicks(size),
   };
 
   const noBonusTime = Array.from({ length: size }, () => false);

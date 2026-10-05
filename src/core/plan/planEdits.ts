@@ -1,7 +1,7 @@
 /** User edits to the plan: picking a line, clearing a continuation, choosing a play. */
 
 import { playSlotForPick } from '@/core/characterPlays/characterPlayLookup';
-import { sanitizeCharacterPlayPicksWrap } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
+import { sanitizeCharacterPlayPicks } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type {
   CharacterPlayPick,
@@ -124,7 +124,7 @@ export const nextPlanAfterCharacterPlayPick = (
     },
   );
 
-  const { characterPlayPicks: sanitized } = sanitizeCharacterPlayPicksWrap(
+  const { characterPlayPicks: sanitized } = sanitizeCharacterPlayPicks(
     attacker,
     prev.wrapPicks,
     nextCharacterPlay,
