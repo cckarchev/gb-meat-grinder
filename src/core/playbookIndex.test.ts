@@ -9,6 +9,7 @@ describe('playbookIndex', () => {
     expect([...index.byId.keys()].sort()).toEqual(
       ['dodge', 'four', 'gb', 'kd', 'one', 'push', 'two'].sort(),
     );
+
     expect(index.maxNet).toBe(4);
   });
 

@@ -110,6 +110,7 @@ export const AttacksPanelSummary = () => {
   const activeAttacks = useMemo(() => {
     const start = ignoredAttackIndex >= 0 ? ignoredAttackIndex + 1 : 0;
     const end = killingBlowIndex >= 0 ? killingBlowIndex + 1 : attacks.length;
+
     return attacks.slice(start, end);
   }, [attacks, ignoredAttackIndex, killingBlowIndex]);
 
@@ -138,6 +139,7 @@ export const AttacksPanelSummary = () => {
 
   const momentousMomentumIfAllHit = useMemo(() => {
     let m = 0;
+
     for (const ctx of activeAttacks) {
       for (const id of effectiveWrapPicks[ctx.attackIndex] ?? []) {
         if (id != null && pickGeneratesMomentum(attacker, id, damageMods)) {
@@ -145,6 +147,7 @@ export const AttacksPanelSummary = () => {
         }
       }
     }
+
     return m;
   }, [attacker, activeAttacks, effectiveWrapPicks, damageMods]);
 
@@ -161,7 +164,9 @@ export const AttacksPanelSummary = () => {
     if (activeAttacks.length === 0) {
       return killingBlowMomentum;
     }
+
     const lastIdx = activeAttacks[activeAttacks.length - 1].attackIndex;
+
     const end = momentumAfterAttackInclusive(
       attacker,
       effectiveWrapPicks,
@@ -171,6 +176,7 @@ export const AttacksPanelSummary = () => {
       effectiveBonusTimeByAttack,
       activeBaseCount,
     );
+
     return end + killingBlowMomentum - startingMomentum;
   }, [
     attacker,
@@ -185,12 +191,15 @@ export const AttacksPanelSummary = () => {
 
   const netMomentumTooltip = useMemo(() => {
     let t = `+${momentousMomentumIfAllHit} from momentous results`;
+
     if (killingBlowMomentum > 0) {
       t += `; +${killingBlowMomentum} killing blow`;
     }
+
     if (bonusTimeSpendsInActivation > 0) {
       t += `; -${bonusTimeSpendsInActivation} Bonus Time`;
     }
+
     return `${t}.`;
   }, [
     momentousMomentumIfAllHit,
@@ -211,22 +220,29 @@ export const AttacksPanelSummary = () => {
       damageMods,
       activeBaseCount,
     );
+
     if (b.rawCardDamage === 0 && b.totalEffective === 0 && flatDamage === 0) {
       return 'No selected playbook lines deal card damage to HP (after Tough Hide).';
     }
+
     let t = `${b.rawCardDamage} from card pips`;
+
     if (b.toughHideReduction > 0) {
       t += `; -${b.toughHideReduction} Tough Hide`;
     }
+
     for (const bb of b.buffBonuses) {
       if (bb.bonus > 0) {
         t += `; +${bb.bonus} ${bb.label}`;
       }
     }
+
     for (const a of activeFlatAbilities) {
       t += `; +${a.flatDamage} ${a.label}`;
     }
+
     t += ` = ${b.totalEffective + flatDamage}.`;
+
     return t;
   }, [
     attacker,
@@ -252,6 +268,7 @@ export const AttacksPanelSummary = () => {
         flatDamage,
         targetHp,
       );
+
       return {
         ...outcome,
         damageRange: {

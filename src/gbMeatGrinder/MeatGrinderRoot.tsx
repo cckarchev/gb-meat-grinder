@@ -65,6 +65,7 @@ const ResetButton = styled(ToggleButton)`
 
 export const MeatGrinderRoot = () => {
   const value = useMeatGrinderSimulationState();
+
   return (
     <MeatGrinderSimulationContext.Provider value={value}>
       <Header>

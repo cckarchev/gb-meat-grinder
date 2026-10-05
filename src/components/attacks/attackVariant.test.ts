@@ -16,6 +16,7 @@ describe('attack row kind', () => {
     expect(attackBlockVariant(attacker, BERSERKER_ROW, CHARGE_ROW)).toBe(
       'berserker',
     );
+
     expect(attackBlockVariant(attacker, CHARGE_ROW, CHARGE_ROW)).toBe('charge');
     expect(attackBlockVariant(attacker, BASE_ROW, CHARGE_ROW)).toBe('base');
   });
@@ -24,9 +25,11 @@ describe('attack row kind', () => {
     expect(attackKindLabel(attacker, BERSERKER_ROW, CHARGE_ROW)).toBe(
       'Berserker attack',
     );
+
     expect(attackKindLabel(attacker, CHARGE_ROW, CHARGE_ROW)).toBe(
       'Charge attack',
     );
+
     expect(attackKindLabel(attacker, BASE_ROW, CHARGE_ROW)).toBe('Base attack');
   });
 });

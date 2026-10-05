@@ -77,14 +77,17 @@ export const AttackerPanel = () => {
 
   const guildGroups = useMemo(() => {
     const byGuild = new Map<string, { name: string; models: AttackerData[] }>();
+
     for (const a of availableAttackers) {
       const group = byGuild.get(a.guild.id) ?? {
         name: a.guild.name,
         models: [],
       };
+
       group.models.push(a);
       byGuild.set(a.guild.id, group);
     }
+
     return [...byGuild.values()]
       .map((g) => ({
         name: g.name,
@@ -180,6 +183,7 @@ export const AttackerPanel = () => {
         {attacker.guild.buffs.map((buff) => {
           const disabled =
             attacker.excludedGuildBuffs?.includes(buff.id) ?? false;
+
           return (
             <CheckOption key={buff.id} $disabled={disabled}>
               <input

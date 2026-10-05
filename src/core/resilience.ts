@@ -32,12 +32,14 @@ export const resilienceIgnoredAttackIndex = (
   if (!enemyResilience) {
     return -1;
   }
+
   const order = activationAttackIndices(
     attacker,
     wrapPicks,
     damageMods,
     activeBaseCount,
   );
+
   return order.length > 0 ? order[0] : -1;
 };
 
@@ -49,6 +51,7 @@ export const effectiveWrapPicksForResilience = (
   if (ignoredIndex < 0) {
     return wrapPicks;
   }
+
   return wrapPicks.map((row, i) =>
     i === ignoredIndex ? row.map(() => null) : row,
   );
@@ -62,6 +65,7 @@ export const effectiveCharacterPlayPicksForResilience = (
   if (ignoredIndex < 0) {
     return characterPlayPicks;
   }
+
   return characterPlayPicks.map((row, i) =>
     i === ignoredIndex ? row.map(() => null) : row,
   );
@@ -73,8 +77,10 @@ export const effectiveBonusTimeForResilience = (
   ignoredIndex: number,
 ): boolean[] => {
   const base = bonusTimeByAttack.map((b) => b);
+
   if (ignoredIndex >= 0) {
     base[ignoredIndex] = false;
   }
+
   return base;
 };

@@ -28,10 +28,12 @@ export const createInitialAttackPlan = (
 ): AttackPlan => {
   const wp = defaultWrapPicks(attackArraySize(attacker));
   const cp = defaultCharacterPlayPicksWrap(attackArraySize(attacker));
+
   const noBonus = Array.from(
     { length: attackArraySize(attacker) },
     () => false,
   );
+
   const r = clampAttackPlan(
     attacker,
     wp,
@@ -47,6 +49,7 @@ export const createInitialAttackPlan = (
     activeBaseAttackCount(attacker, influence, charging),
     false,
   );
+
   return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
 };
 
@@ -69,12 +72,14 @@ export const clampAttackPlanState = (
     params.activeBaseCount,
     params.enemyKnockedDown,
   );
+
   if (
     r.wrapPicks === prev.wrapPicks &&
     r.characterPlayPicks === prev.characterPlayPicks
   ) {
     return prev;
   }
+
   return { wrapPicks: r.wrapPicks, characterPlayPicks: r.characterPlayPicks };
 };
 
@@ -89,6 +94,7 @@ export const nextPlanAfterWrapChoice = (
   if (pickIndex === 0 && id === null) {
     return null;
   }
+
   if (prev.wrapPicks[attackIndex][pickIndex] === id) {
     return null;
   }
@@ -98,19 +104,24 @@ export const nextPlanAfterWrapChoice = (
       ? row.map((cur, j) => (j === pickIndex ? id : cur))
       : [...row],
   );
+
   const nextCharacterPlay = prev.characterPlayPicks.map((row, idx) => {
     if (idx !== attackIndex) {
       return [...row];
     }
+
     const nr = [...row];
+
     while (nr.length < nextPicks[idx].length) {
       nr.push(null);
     }
+
     if (id === null || !choiceUsesCharacterPlay(attacker, id)) {
       nr[pickIndex] = null;
     } else if (nr[pickIndex] == null) {
       nr[pickIndex] = defaultCharacterPlayId(attacker);
     }
+
     return nr.slice(0, nextPicks[idx].length);
   });
 
@@ -124,13 +135,16 @@ export const nextPlanAfterClearWrapContinuation = (
   attackIndex: number,
 ): AttackPlan | null => {
   const row = prev.wrapPicks[attackIndex];
+
   if (row.length <= 1) {
     return null;
   }
 
   const pick0 = row[0];
+
   let cp0: CharacterPlayPickSlot =
     prev.characterPlayPicks[attackIndex]?.[0] ?? null;
+
   if (pick0 == null || !choiceUsesCharacterPlay(attacker, pick0)) {
     cp0 = null;
   }
@@ -138,6 +152,7 @@ export const nextPlanAfterClearWrapContinuation = (
   const nextPicks = prev.wrapPicks.map((r, idx) =>
     idx === attackIndex ? [pick0] : [...r],
   );
+
   const nextCharacterPlay = prev.characterPlayPicks.map((r, idx) =>
     idx === attackIndex ? [cp0] : [...r],
   );
@@ -163,10 +178,14 @@ export const nextPlanAfterCharacterPlayPick = (
     if (idx !== attackIndex) {
       return [...row];
     }
+
     const nr = [...row];
+
     nr[pickIndex] = pick;
+
     return nr;
   });
+
   const { characterPlayPicks: sanitized } = sanitizeCharacterPlayPicksWrap(
     attacker,
     prev.wrapPicks,
@@ -174,5 +193,6 @@ export const nextPlanAfterCharacterPlayPick = (
     damageMods,
     activeBaseCount,
   );
+
   return { wrapPicks: prev.wrapPicks, characterPlayPicks: sanitized };
 };

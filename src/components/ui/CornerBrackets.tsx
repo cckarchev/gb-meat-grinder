@@ -24,7 +24,9 @@ export const CornerBrackets = ({
     height: size,
     pointerEvents: 'none',
   };
+
   const line = `${thickness}px solid ${accent}`;
+
   return (
     <>
       <span

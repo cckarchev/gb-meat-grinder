@@ -10,14 +10,19 @@ const binomialCoeff = (n: number, k: number): number => {
   if (k < 0 || k > n) {
     return 0;
   }
+
   if (k === 0 || k === n) {
     return 1;
   }
+
   k = Math.min(k, n - k);
+
   let c = 1;
+
   for (let i = 0; i < k; i++) {
     c = (c * (n - i)) / (i + 1);
   }
+
   return c;
 };
 
@@ -46,15 +51,20 @@ export const probAttackSucceeds = (
   if (netSuccessesNeeded <= 0) {
     return 1;
   }
+
   const rawHitsNeeded = netSuccessesNeeded + armor;
+
   if (rawHitsNeeded > tac) {
     return 0;
   }
+
   // P(S >= rawHitsNeeded), S ~ Binomial(tac, p)
   let tail = 0;
+
   for (let k = rawHitsNeeded; k <= tac; k++) {
     tail += binomialPmf(tac, p, k);
   }
+
   return tail;
 };
 
@@ -62,9 +72,11 @@ export const formatPercent = (x: number, digits = 1): string => {
   if (!Number.isFinite(x)) {
     return '-';
   }
+
   if (x < TINY_PROBABILITY && x > 0) {
     return TINY_PROBABILITY_LABEL;
   }
+
   return `${(PERCENT * x).toFixed(digits)}%`;
 };
 

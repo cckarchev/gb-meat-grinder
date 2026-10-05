@@ -80,7 +80,7 @@ export const InfoTip = ({
     };
 
     document.addEventListener('mousedown', onPointerDown);
-    
+
     return () => document.removeEventListener('mousedown', onPointerDown);
   }, [open]);
 

@@ -185,6 +185,7 @@ export const CharacterPlaySelection = ({
 }) => {
   const { attacker } = useMeatGrinderSimulation();
   const i = attackIndex;
+
   const actionable = slots.filter(({ pickIndex }) => {
     const cpAvail = characterPlayAvailabilityForPick(
       attacker,
@@ -195,8 +196,10 @@ export const CharacterPlaySelection = ({
       damageMods,
       activeBaseCount,
     );
+
     return !cpAvail.depleted;
   });
+
   if (actionable.length === 0) {
     return null;
   }
@@ -217,6 +220,7 @@ export const CharacterPlaySelection = ({
           damageMods,
           activeBaseCount,
         );
+
         const pick = characterPlayPicks[i]?.[pickIndex];
         const slotOrdinal = slotIdx + 1;
 
@@ -229,6 +233,7 @@ export const CharacterPlaySelection = ({
               {available.map((cp) => {
                 const summary = characterPlayEffectSummary(cp);
                 const slotSuffix = multipleSlots ? `, play ${slotOrdinal}` : '';
+
                 return (
                   <PlayPill
                     key={cp.id}

@@ -55,6 +55,7 @@ import {
 import type { CharacterPlay } from '@/types/core/playbook';
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
+
 const NO_EFFECTS = {
   tacBonusForLater: 0,
   defReductionForLater: 0,
@@ -78,6 +79,7 @@ describe('lookups', () => {
 
   it('defaults to the first character play, or null without any', () => {
     expect(defaultCharacterPlayId(attacker)).toBe('playTac');
+
     expect(defaultCharacterPlayId(makeAttacker({ characterPlays: [] }))).toBe(
       null,
     );
@@ -102,6 +104,7 @@ describe('buffs and damage', () => {
 
   it('sums the damage bonus of active buffs only', () => {
     expect(playbookDamageBonusSum(attacker, NO_MODS)).toBe(0);
+
     expect(
       playbookDamageBonusSum(attacker, modsWith({ buffs: { sharp: true } })),
     ).toBe(1);
@@ -111,6 +114,7 @@ describe('buffs and damage', () => {
     expect(effectivePlaybookDamage(attacker, 0, TOUGH_HIDE)).toBe(0);
     expect(effectivePlaybookDamage(attacker, 2, TOUGH_HIDE)).toBe(1);
     expect(effectivePlaybookDamage(attacker, 1, TOUGH_HIDE)).toBe(0);
+
     expect(
       effectivePlaybookDamage(
         attacker,
@@ -227,6 +231,7 @@ describe('activation order', () => {
     expect(attackRowIsActive(berserker, wrapPicks, 1, NO_MODS, 1)).toBe(false);
     expect(attackRowIsActive(berserker, wrapPicks, 2, NO_MODS, 2)).toBe(true);
     expect(attackRowIsActive(berserker, wrapPicks, 3, NO_MODS, 2)).toBe(false);
+
     expect(attackRowIsActive(makeAttacker(), wrapPicks, 2, NO_MODS, 2)).toBe(
       false,
     );
@@ -243,6 +248,7 @@ describe('activation order', () => {
     expect(baseAttackDealtDamage(berserker, ['dodge', 'one'], NO_MODS)).toBe(
       true,
     );
+
     expect(baseAttackDealtDamage(berserker, ['one'], TOUGH_HIDE)).toBe(false);
   });
 
@@ -282,9 +288,11 @@ describe('Knock Down', () => {
     expect(
       kdAlreadyTakenBeforePick(attacker, wrapPicks, 0, 0, NO_MODS, 2),
     ).toBe(false);
+
     expect(
       kdAlreadyTakenBeforePick(attacker, wrapPicks, 1, 0, NO_MODS, 2),
     ).toBe(true);
+
     expect(
       kdAlreadyTakenBeforePick(attacker, wrapPicks, 0, 0, NO_MODS, 2, true),
     ).toBe(true);
@@ -294,6 +302,7 @@ describe('Knock Down', () => {
     expect(
       rowEffectsForPick(attacker, wrapPicks, noPlays, 0, 0, NO_MODS, 2),
     ).toEqual({ ...NO_EFFECTS, defReductionForLater: 1 });
+
     expect(
       rowEffectsForPick(attacker, wrapPicks, noPlays, 1, 0, NO_MODS, 2),
     ).toEqual(NO_EFFECTS);
@@ -320,6 +329,7 @@ describe('character plays', () => {
 
   it('never uses up repeatable plays', () => {
     const repeatable = makeAttacker({ characterPlays: [PLAY_REPEATABLE] });
+
     const used = characterPlayUsageBeforePick(
       repeatable,
       gbTwice,
@@ -345,6 +355,7 @@ describe('character plays', () => {
         2,
       ),
     ).toEqual(NO_EFFECTS);
+
     expect(
       rowEffectsForPick(
         attacker,
@@ -374,7 +385,9 @@ describe('character plays', () => {
       NO_MODS,
       2,
     );
+
     const single = makeAttacker({ characterPlays: [PLAY_TAC] });
+
     const depleted = characterPlayAvailabilityForPick(
       single,
       gbTwice,
@@ -406,16 +419,19 @@ describe('character plays', () => {
 
   it('caps ARM reduction from earlier plays at 1', () => {
     const repeatableArm: CharacterPlay = { ...PLAY_ARM, repeatable: true };
+
     const armAttacker = makeAttacker({
       inf: 3,
       characterPlays: [repeatableArm],
     });
+
     const wrapPicks = [['gb'], ['gb'], ['one']];
     const plays = [['playArm'], ['playArm'], [null]];
 
     expect(
       armorReductionBeforeAttack(armAttacker, wrapPicks, plays, NO_MODS, 0, 3),
     ).toBe(0);
+
     expect(
       armorReductionBeforeAttack(armAttacker, wrapPicks, plays, NO_MODS, 2, 3),
     ).toBe(1);
@@ -424,6 +440,7 @@ describe('character plays', () => {
   it('describes play effects and cadence', () => {
     expect(characterPlayHasEffect(PLAY_NOOP)).toBe(false);
     expect(characterPlayHasEffect(PLAY_ARM)).toBe(true);
+
     expect(
       characterPlayPickModifiers(
         makeAttacker({ characterPlays: [PLAY_ARM] }),
@@ -433,12 +450,15 @@ describe('character plays', () => {
       ...NO_EFFECTS,
       armorReduction: 1,
     });
+
     expect(characterPlayEffectSummary(PLAY_TAC)).toBe(
       '+2 TAC on later attacks. Once per turn.',
     );
+
     expect(characterPlayEffectSummary(PLAY_REPEATABLE)).toBe(
       '+1 TAC on later attacks. Repeatable.',
     );
+
     expect(characterPlayEffectSummary(PLAY_NOOP)).toBe(
       'No effect on the attack math. Once per turn.',
     );
@@ -450,6 +470,7 @@ describe('labels', () => {
 
   it('shows effective damage on numeric and GB lines', () => {
     expect(playbookLineDisplayLabel(attacker, 'two', TOUGH_HIDE)).toBe('1');
+
     expect(
       playbookLineDisplayLabel(
         attacker,
@@ -457,6 +478,7 @@ describe('labels', () => {
         modsWith({ buffs: { sharp: true } }),
       ),
     ).toBe('2GB');
+
     expect(playbookLineDisplayLabel(attacker, 'kd', NO_MODS)).toBe('KD<');
     expect(playbookLineDisplayLabel(attacker, 'push', NO_MODS)).toBe('>');
   });
@@ -466,10 +488,12 @@ describe('labels', () => {
       '1',
       'GB',
     ]);
+
     expect(playbookLineDisplaySegments(attacker, 'kd', NO_MODS)).toEqual([
       'KD',
       '<',
     ]);
+
     expect(playbookLineDisplaySegments(attacker, 'push', NO_MODS)).toEqual([
       '>',
     ]);
@@ -479,6 +503,7 @@ describe('labels', () => {
     expect(
       formatWrapRowSelectionLabel(attacker, ['push', null, 'two'], NO_MODS),
     ).toBe('> → 2');
+
     expect(formatWrapRowSelectionLabel(attacker, [null], NO_MODS)).toBe('-');
   });
 });
@@ -533,6 +558,7 @@ describe('rows outside the activation', () => {
         activeBaseCount,
       ),
     ).toBe(3);
+
     expect(
       momentumAfterAttackInclusive(
         attacker,
@@ -544,6 +570,7 @@ describe('rows outside the activation', () => {
         activeBaseCount,
       ),
     ).toBe(3);
+
     expect(
       armorReductionBeforeAttack(
         attacker,
@@ -554,6 +581,7 @@ describe('rows outside the activation', () => {
         activeBaseCount,
       ),
     ).toBe(0);
+
     expect(
       characterPlayUsageBeforePick(
         attacker,
@@ -565,6 +593,7 @@ describe('rows outside the activation', () => {
         activeBaseCount,
       ).size,
     ).toBe(0);
+
     expect(
       kdAlreadyTakenBeforePick(
         attacker,
@@ -603,9 +632,11 @@ describe('character play edge cases', () => {
     expect(characterPlayEffectSummary(PLAY_DEF)).toBe(
       '−1 enemy DEF on later attacks. Once per turn.',
     );
+
     expect(characterPlayEffectSummary(PLAY_ARM)).toBe(
       '−1 enemy ARM on later attacks. Once per turn.',
     );
+
     expect(characterPlayEffectSummary(combined)).toBe(
       '+1 TAC on later attacks; −1 enemy ARM on later attacks. Once per turn.',
     );

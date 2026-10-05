@@ -110,6 +110,7 @@ describe('nextPlanAfterCharacterPlayPick', () => {
 describe('clampAttackPlanState', () => {
   it('returns the previous plan object when clamping changes nothing', () => {
     const prev = plan([['one'], ['two']], [[null], [null]]);
+
     const result = clampAttackPlanState(prev, {
       attacker: makeAttacker({ tac: 4 }),
       chargeAttackIndex: -1,
@@ -155,6 +156,7 @@ describe('plan edge cases', () => {
 
   it('returns a new plan when clamping changes it', () => {
     const prev = plan([['four'], ['two']], [[null], [null]]);
+
     const result = clampAttackPlanState(prev, {
       attacker: makeAttacker({ tac: 2 }),
       chargeAttackIndex: -1,

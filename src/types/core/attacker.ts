@@ -4,7 +4,7 @@ import type { CharacterPlay, PlaybookColumn } from '@/types/core/playbook';
 /**
  * A toggleable, model-specific ability that deals a flat amount of unmodified
  * damage at some point during the activation (independent of attack rolls,
- * ARM, Tough Hide and buffs) — e.g. Thresher's Don't Fear The Reaper.
+ * ARM, Tough Hide and buffs), e.g. Thresher's Don't Fear The Reaper.
  */
 export type SpecialAbility = {
   id: string;
@@ -41,7 +41,7 @@ export type AttackerData = {
    */
   characterPlays?: readonly CharacterPlay[];
   /**
-   * Guild buff ids this model cannot receive as a pre-applied buff — e.g. the
+   * Guild buff ids this model cannot receive as a pre-applied buff, e.g. the
    * model that is the source of the buff for the guild (applies it itself).
    */
   excludedGuildBuffs?: readonly string[];

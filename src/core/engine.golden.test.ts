@@ -204,36 +204,44 @@ const runScenario = (
   strategy: Strategy,
 ) => {
   const size = attackArraySize(attacker);
+
   const activeBaseCount = activeBaseAttackCount(
     attacker,
     attacker.inf,
     scenario.charging,
   );
+
   const chargeAttackIndex = scenario.charging ? CHARGE_ROW : NO_CHARGE;
+
   const damageMods: PlaybookDamageMods = {
     toughHide: scenario.toughHide,
     buffs: Object.fromEntries(
       availableBuffs(attacker).map((buff) => [buff.id, scenario.allBuffs]),
     ),
   };
+
   const specialAbilities = Object.fromEntries(
     (attacker.specialAbilities ?? []).map((ability) => [
       ability.id,
       scenario.allSpecialAbilities,
     ]),
   );
+
   const armor = effectiveArmor(attacker, scenario.armor, damageMods);
+
   const enemyDef = effectiveEnemyDef(
     scenario.enemyDef,
     scenario.enemyKnockedDown,
     scenario.enemySnared,
   );
+
   const requestedBonusTime = Array.from(
     { length: size },
     (_, i) => scenario.bonusTimeOnFirst && i === 0,
   );
 
   let wrapPicks: WrapPick[][] = defaultWrapPicks(size);
+
   let characterPlayPicks: CharacterPlayPickSlot[][] =
     defaultCharacterPlayPicksWrap(size);
 
@@ -305,6 +313,7 @@ const runScenario = (
           damageMods,
           activeBaseCount,
         );
+
         const lastAvailable = available[available.length - 1];
 
         characterPlayPicks[row][slot] = lastAvailable?.id ?? null;
@@ -322,6 +331,7 @@ const runScenario = (
     requestedBonusTime,
     activeBaseCount,
   );
+
   const ignoredAttackIndex = resilienceIgnoredAttackIndex(
     attacker,
     wrapPicks,
@@ -329,18 +339,22 @@ const runScenario = (
     activeBaseCount,
     scenario.enemyResilience,
   );
+
   const effectiveWrapPicks = effectiveWrapPicksForResilience(
     wrapPicks,
     ignoredAttackIndex,
   );
+
   const effectiveCharacterPlayPicks = effectiveCharacterPlayPicksForResilience(
     characterPlayPicks,
     ignoredAttackIndex,
   );
+
   const effectiveBonusTime = effectiveBonusTimeForResilience(
     bonusTimeByAttack,
     ignoredAttackIndex,
   );
+
   const { attacks } = computeAttackSequence(
     attacker,
     enemyDef,
@@ -355,13 +369,16 @@ const runScenario = (
     scenario.initialTacModifier,
     activeBaseCount,
   );
+
   const flatDamage = specialAbilityFlatDamage(attacker, specialAbilities);
+
   const damageIfAllHits = damageIfAllHitsWrap(
     attacker,
     effectiveWrapPicks,
     damageMods,
     activeBaseCount,
   );
+
   const outcome = planDamageOutcome(
     attacker,
     attacks,
@@ -370,6 +387,7 @@ const runScenario = (
     flatDamage,
     scenario.hp,
   );
+
   const sortedDistribution = [...outcome.damageDistribution].sort(
     ([a], [b]) => a - b,
   );

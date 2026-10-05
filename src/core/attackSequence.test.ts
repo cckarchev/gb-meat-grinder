@@ -51,12 +51,14 @@ describe('tacForAttack', () => {
     const cover = 1;
     const bonusTime = 1;
     const crowdedOut = -1;
+
     const expected =
       6 + CHARGE_TAC_BONUS + singledOut - cover + bonusTime + crowdedOut;
 
     expect(
       tacForAttack(attacker, 0, 0, singledOut, 2, cover, bonusTime, crowdedOut),
     ).toBe(expected);
+
     expect(tacForAttack(attacker, 1, 0, 0, 2)).toBe(6);
   });
 });
@@ -68,9 +70,11 @@ describe('coverTacPenaltyForAttack', () => {
     expect(
       coverTacPenaltyForAttack(attacker, COVER, [['push'], ['one']], 0, 2),
     ).toBe(1);
+
     expect(
       coverTacPenaltyForAttack(attacker, COVER, [['push'], ['one']], 1, 2),
     ).toBe(0);
+
     expect(
       coverTacPenaltyForAttack(attacker, COVER, [['one'], ['push']], 1, 2),
     ).toBe(1);
@@ -183,6 +187,7 @@ describe('clampAttackPlan', () => {
     enemyKnockedDown = false,
   }: ClampOptions) => {
     const model = attacker ?? makeAttacker({ tac });
+
     const plays =
       characterPlayPicks ?? wrapPicks.map((row) => row.map(() => null));
 
@@ -241,6 +246,7 @@ describe('clampAttackPlan', () => {
 
   it('falls back to the first line when no column matches the budget', () => {
     const [netOne, , netThree] = TEST_PLAYBOOK;
+
     const gappedAttacker = makeAttacker({
       tac: 2,
       playbook: [netOne, netThree],
@@ -279,6 +285,7 @@ describe('clampAttackPlan', () => {
         activeBaseCount: 1,
       }).characterPlayPicks,
     ).toEqual([['playDef']]);
+
     expect(
       clamp({
         wrapPicks: [['one']],
@@ -308,6 +315,7 @@ describe('clampAttackPlan', () => {
     expect(
       clamp({ wrapPicks: [['kd'], ['kd']], activeBaseCount: 2 }).wrapPicks,
     ).toEqual([['kd'], ['one']]);
+
     expect(
       clamp({
         wrapPicks: [['kd'], ['kd']],
@@ -357,6 +365,7 @@ describe('rows outside the activation', () => {
 
   it('get the full cover penalty and no carry-over', () => {
     expect(coverTacPenaltyForAttack(attacker, COVER, [['push']], 5, 1)).toBe(1);
+
     expect(
       modifiersBeforeAttack(attacker, [['gb']], [['playTac']], 5, NO_MODS, 1),
     ).toEqual({ tacBonus: 0, defReduction: 0 });

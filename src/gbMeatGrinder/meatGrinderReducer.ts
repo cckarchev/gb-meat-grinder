@@ -65,6 +65,7 @@ const bonusTimeEqual = (
   if (a.length !== b.length) {
     return false;
   }
+
   return a.every((v, i) => v === b[i]);
 };
 
@@ -81,6 +82,7 @@ const stateForAttacker = (
   // Models with a free charge (Furious) default to charging; otherwise carry
   // over the prior toggle (or off for a fresh state).
   const charging = attacker.furious ? true : (prev?.charging ?? false);
+
   return {
     attackerId: attacker.id,
     enemyDef: prev?.enemyDef ?? DEF_DEFAULT,
@@ -135,11 +137,14 @@ export const meatGrinderReducer = (
       if (action.id === state.attackerId) {
         return state;
       }
+
       const attacker = attackerById(action.id);
+
       return stateForAttacker(attacker, state);
     }
     case 'enemyDef': {
       const next = { ...state, enemyDef: action.value };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -147,6 +152,7 @@ export const meatGrinderReducer = (
     }
     case 'armor': {
       const next = { ...state, armor: action.value };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -158,6 +164,7 @@ export const meatGrinderReducer = (
       const influence = clamp(action.value, 0, attackerOf(state).inf);
       const withInfluence = { ...state, influence };
       const baseCount = activeBaseCountOf(withInfluence);
+
       const next = {
         ...withInfluence,
         chargeAttackIndex: withInfluence.charging
@@ -167,6 +174,7 @@ export const meatGrinderReducer = (
             )
           : withInfluence.chargeAttackIndex,
       };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -175,12 +183,14 @@ export const meatGrinderReducer = (
     case 'charging': {
       const withCharging = { ...state, charging: action.value };
       const baseCount = activeBaseCountOf(withCharging);
+
       const next = {
         ...withCharging,
         chargeAttackIndex: action.value
           ? Math.max(0, Math.min(baseCount - 1, withCharging.chargeAttackIndex))
           : withCharging.chargeAttackIndex,
       };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -188,11 +198,14 @@ export const meatGrinderReducer = (
     }
     case 'chargeAttackIndex': {
       const baseCount = activeBaseCountOf(state);
+
       const chargeAttackIndex = Math.max(
         0,
         Math.min(baseCount - 1, action.value),
       );
+
       const next = { ...state, chargeAttackIndex };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -200,6 +213,7 @@ export const meatGrinderReducer = (
     }
     case 'enemyHasCover': {
       const next = { ...state, enemyHasCover: action.value };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -207,6 +221,7 @@ export const meatGrinderReducer = (
     }
     case 'enemyDefensiveStance': {
       const next = { ...state, enemyDefensiveStance: action.value };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -214,6 +229,7 @@ export const meatGrinderReducer = (
     }
     case 'enemyKnockedDown': {
       const next = { ...state, enemyKnockedDown: action.value };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -221,6 +237,7 @@ export const meatGrinderReducer = (
     }
     case 'enemySnared': {
       const next = { ...state, enemySnared: action.value };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -236,6 +253,7 @@ export const meatGrinderReducer = (
       const range = attackerOf(state).gangingUp;
       const gangingUp = clamp(action.value, range.min, range.max);
       const next = { ...state, gangingUp };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -245,6 +263,7 @@ export const meatGrinderReducer = (
       const range = attackerOf(state).crowdingOut;
       const crowdingOut = clamp(action.value, range.min, range.max);
       const next = { ...state, crowdingOut };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -252,6 +271,7 @@ export const meatGrinderReducer = (
     }
     case 'damageMods': {
       const next = { ...state, damageMods: action.value };
+
       return {
         ...next,
         attackPlan: clampPlan(next, state.attackPlan),
@@ -268,6 +288,7 @@ export const meatGrinderReducer = (
     case 'bonusTime': {
       const { attackIndex, value } = action;
       const activeBaseCount = activeBaseCountOf(state);
+
       if (value) {
         const pool = momentumPoolBeforeBonusTime(
           attackerOf(state),
@@ -278,12 +299,16 @@ export const meatGrinderReducer = (
           state.bonusTimeByAttack,
           activeBaseCount,
         );
+
         if (pool < 1) {
           return state;
         }
       }
+
       const nextFlags = [...state.bonusTimeByAttack];
+
       nextFlags[attackIndex] = value;
+
       const sanitized = sanitizeBonusTimeFlags(
         attackerOf(state),
         state.attackPlan.wrapPicks,
@@ -292,6 +317,7 @@ export const meatGrinderReducer = (
         nextFlags,
         activeBaseCount,
       );
+
       return { ...state, bonusTimeByAttack: sanitized };
     }
     case 'sanitizeBonusTime': {
@@ -303,9 +329,11 @@ export const meatGrinderReducer = (
         state.bonusTimeByAttack,
         activeBaseCountOf(state),
       );
+
       if (bonusTimeEqual(sanitized, state.bonusTimeByAttack)) {
         return state;
       }
+
       return { ...state, bonusTimeByAttack: sanitized };
     }
     case 'wrapChoice': {
@@ -316,9 +344,11 @@ export const meatGrinderReducer = (
         action.pickIndex,
         action.id,
       );
+
       if (merged == null) {
         return state;
       }
+
       return {
         ...state,
         attackPlan: clampPlan(state, merged),
@@ -330,9 +360,11 @@ export const meatGrinderReducer = (
         state.attackPlan,
         action.attackIndex,
       );
+
       if (merged == null) {
         return state;
       }
+
       return {
         ...state,
         attackPlan: clampPlan(state, merged),
@@ -348,9 +380,11 @@ export const meatGrinderReducer = (
         state.damageMods,
         activeBaseCountOf(state),
       );
+
       if (merged == null) {
         return state;
       }
+
       return {
         ...state,
         attackPlan: clampPlan(state, merged),
@@ -358,6 +392,7 @@ export const meatGrinderReducer = (
     }
     default: {
       const _exhaustive: never = action;
+
       return _exhaustive;
     }
   }

@@ -49,6 +49,7 @@ export const enemyDefBaseForAttackRow = (
     attackIndex === chargeAttackIndex
       ? 1
       : 0;
+
   return Math.min(DEF_MAX, enemyDef + stanceBonus);
 };
 
@@ -67,25 +68,31 @@ export const coverTacPenaltyForAttack = (
   if (!enemyHasCover) {
     return 0;
   }
+
   /* Use fixed base → berserker clock so > / >> are never skipped when a berserker
    * row is omitted from `activationAttackIndices` (damage-gated). */
   const clock = coverSwingClockIndices(attacker, activeBaseCount);
   const pos = clock.indexOf(attackIndex);
+
   if (pos < 0) {
     return 1;
   }
+
   for (let p = 0; p < pos; p++) {
     const j = clock[p];
     const row = wrapPicks[j];
+
     if (!row?.length) {
       continue;
     }
+
     for (let k = 0; k < row.length; k++) {
       if (wrapPickClearsCover(attacker, row[k])) {
         return 0;
       }
     }
   }
+
   return 1;
 };
 
@@ -111,19 +118,24 @@ export const modifiersBeforeAttack = (
     damageMods,
     activeBaseCount,
   );
+
   const targetPos = order.indexOf(attackIndex);
+
   if (targetPos < 0) {
     return { tacBonus: 0, defReduction: 0 };
   }
 
   let tacBonus = 0;
   let defReduction = 0;
+
   for (let oi = 0; oi < targetPos; oi++) {
     const j = order[oi];
+
     for (let k = 0; k < wrapPicks[j].length; k++) {
       if (wrapPicks[j][k] == null) {
         continue;
       }
+
       const m = rowEffectsForPick(
         attacker,
         wrapPicks,
@@ -133,10 +145,12 @@ export const modifiersBeforeAttack = (
         damageMods,
         activeBaseCount,
       );
+
       tacBonus += m.tacBonusForLater;
       defReduction += m.defReductionForLater;
     }
   }
+
   return { tacBonus, defReduction };
 };
 
@@ -149,9 +163,9 @@ export const effectiveDefMinRoll = (
 
 /**
  * Enemy DEF cannot be reduced below `DEF_MIN` on the dice (1s always miss). Each
- * point of DEF reduction past that floor — whether from playbook plays
+ * point of DEF reduction past that floor, whether from playbook plays
  * (`defReduction`) or from pre-attack conditions already baked into `baseDef`
- * (Knocked Down, Snared) — instead becomes +1 attack die. `baseDef` may be below
+ * (Knocked Down, Snared), instead becomes +1 attack die. `baseDef` may be below
  * `DEF_MIN` here; the surplus below the floor is the bonus.
  */
 export const tacBonusFromDefReductionCap = (
@@ -175,6 +189,7 @@ export const tacForAttack = (
     attackIndex < activeBaseCount && attackIndex === chargeAttackIndex
       ? CHARGE_TAC_BONUS
       : 0;
+
   return (
     attacker.tac +
     charge +
@@ -207,6 +222,7 @@ export const tacForAttackRow = (
     damageMods,
     activeBaseCount,
   );
+
   const defForRow = enemyDefBaseForAttackRow(
     baseDef,
     attackIndex,
@@ -214,7 +230,9 @@ export const tacForAttackRow = (
     enemyDefensiveStance,
     activeBaseCount,
   );
+
   const tacFromDefCap = tacBonusFromDefReductionCap(defForRow, defReduction);
+
   const coverPen = coverTacPenaltyForAttack(
     attacker,
     enemyHasCover,
@@ -222,8 +240,10 @@ export const tacForAttackRow = (
     attackIndex,
     activeBaseCount,
   );
+
   const bonusTimeTac =
     bonusTimeByAttack[attackIndex] === true ? BONUS_TIME_TAC_BONUS : 0;
+
   return tacForAttack(
     attacker,
     attackIndex,
@@ -266,6 +286,7 @@ export const maxPlaybookColumnForRow = (
     initialTacModifier,
     activeBaseCount,
   );
+
   const rowArmor = armorForAttackRow(
     attacker,
     armor,
@@ -275,6 +296,7 @@ export const maxPlaybookColumnForRow = (
     attackIndex,
     activeBaseCount,
   );
+
   return maxNetSuccessesForRoll(tac, rowArmor);
 };
 
@@ -309,8 +331,10 @@ const firstReachableChoiceId = (
   if (maxNet < 1) {
     return attacker.playbook[0].results[0].id;
   }
+
   const target = Math.min(maxNet, maxPlaybookNet(attacker));
   const col = attacker.playbook.find((c) => c.netSuccesses === target);
+
   return col?.results[0].id ?? attacker.playbook[0].results[0].id;
 };
 
@@ -322,20 +346,25 @@ const firstPickInBudgetExcludingKd = (
   if (budget < 1) {
     return attacker.playbook[0].results[0].id;
   }
+
   const cols = [...attacker.playbook].sort(
     (a, b) => a.netSuccesses - b.netSuccesses,
   );
+
   for (const col of cols) {
     if (col.netSuccesses > budget) {
       continue;
     }
+
     for (const r of col.results) {
       if (r.appliesKnockDown) {
         continue;
       }
+
       return r.id;
     }
   }
+
   return attacker.playbook[0].results[0].id;
 };
 
@@ -359,6 +388,7 @@ const stripDuplicateKd = (
   // A target that is already Knocked Down counts as the one allowed KD, so every
   // playbook KD pick is redundant and gets replaced.
   let kdSeen = enemyKnockedDown;
+
   for (const i of activationAttackIndices(
     attacker,
     next,
@@ -380,24 +410,32 @@ const stripDuplicateKd = (
       initialTacModifier,
       activeBaseCount,
     );
+
     for (let k = 0; k < next[i].length; k++) {
       const id = next[i][k];
+
       if (id == null || !getPlaybookResult(attacker, id).appliesKnockDown) {
         continue;
       }
+
       if (!kdSeen) {
         kdSeen = true;
         continue;
       }
+
       const b = wrapSlotBudget(attacker, maxNet, k);
       const rep = firstPickInBudgetExcludingKd(attacker, b);
+
       next[i][k] = rep;
+
       nextCharacterPlay[i][k] = choiceUsesCharacterPlay(attacker, rep)
         ? defaultCharacterPlayId(attacker)
         : null;
+
       changed = true;
     }
   }
+
   return changed;
 };
 
@@ -410,53 +448,67 @@ const clampRowPicks = (
   if (maxNet < 1) {
     return { picks: [null], characterPlayRow: [null] };
   }
+
   const n = wrapSlotCount(attacker, maxNet);
   const p: WrapPick[] = picks.slice(0, n);
   const g = characterPlayRow.slice(0, n);
+
   while (g.length < p.length) {
     g.push(null);
   }
+
   while (p.length < n) {
     p.push(null);
     g.push(null);
   }
+
   while (p.length > n) {
     p.pop();
     g.pop();
   }
+
   const b0 = wrapSlotBudget(attacker, maxNet, 0);
+
   if (p[0] != null && netSuccessesForChoice(attacker, p[0]) > b0) {
     const id = firstReachableChoiceId(attacker, b0);
+
     p[0] = id;
+
     g[0] = choiceUsesCharacterPlay(attacker, id)
       ? defaultCharacterPlayId(attacker)
       : null;
   }
+
   if (p[0] == null) {
     for (let s = 1; s < n; s++) {
       p[s] = null;
       g[s] = null;
     }
   }
+
   for (let s = 1; s < n; s++) {
     const b = wrapSlotBudget(attacker, maxNet, s);
     const id = p[s];
+
     if (id != null && netSuccessesForChoice(attacker, id) > b) {
       p[s] = null;
       g[s] = null;
     }
   }
+
   for (let s = 0; s < n; s++) {
     if (p[s] == null) {
       g[s] = null;
       continue;
     }
+
     if (!choiceUsesCharacterPlay(attacker, p[s])) {
       g[s] = null;
     } else if (g[s] == null) {
       g[s] = defaultCharacterPlayId(attacker);
     }
   }
+
   return { picks: p, characterPlayRow: g };
 };
 
@@ -464,16 +516,19 @@ const rows2dEqual = (a: WrapPick[][], b: WrapPick[][]): boolean => {
   if (a.length !== b.length) {
     return false;
   }
+
   for (let i = 0; i < a.length; i++) {
     if (a[i].length !== b[i].length) {
       return false;
     }
+
     for (let j = 0; j < a[i].length; j++) {
       if (a[i][j] !== b[i][j]) {
         return false;
       }
     }
   }
+
   return true;
 };
 
@@ -484,16 +539,19 @@ const characterPlay2dEqual = (
   if (a.length !== b.length) {
     return false;
   }
+
   for (let i = 0; i < a.length; i++) {
     if (a[i].length !== b[i].length) {
       return false;
     }
+
     for (let j = 0; j < a[i].length; j++) {
       if (a[i][j] !== b[i][j]) {
         return false;
       }
     }
   }
+
   return true;
 };
 
@@ -525,15 +583,18 @@ export const clampAttackPlan = (
 
   for (let pass = 0; pass < MAX_CLAMP_PASSES; pass++) {
     let passChanged = false;
+
     for (let i = 0; i < next.length; i++) {
       while (nextCharacterPlay[i].length > next[i].length) {
         nextCharacterPlay[i].pop();
         passChanged = true;
       }
+
       while (nextCharacterPlay[i].length < next[i].length) {
         nextCharacterPlay[i].push(null);
         passChanged = true;
       }
+
       const active = attackRowIsActive(
         attacker,
         next,
@@ -541,19 +602,23 @@ export const clampAttackPlan = (
         damageMods,
         activeBaseCount,
       );
+
       if (!active) {
         if (next[i].length > 0 || nextCharacterPlay[i].length > 0) {
           next[i] = [];
           nextCharacterPlay[i] = [];
           passChanged = true;
         }
+
         continue;
       }
+
       if (next[i].length === 0) {
         next[i] = [null];
         nextCharacterPlay[i] = [null];
         passChanged = true;
       }
+
       const maxNet = maxPlaybookColumnForRow(
         attacker,
         next,
@@ -569,18 +634,22 @@ export const clampAttackPlan = (
         initialTacModifier,
         activeBaseCount,
       );
+
       const r = clampRowPicks(attacker, next[i], nextCharacterPlay[i], maxNet);
+
       const rowSame =
         r.picks.length === next[i].length &&
         r.picks.every((id, j) => id === next[i][j]) &&
         r.characterPlayRow.length === nextCharacterPlay[i].length &&
         r.characterPlayRow.every((g, j) => g === nextCharacterPlay[i][j]);
+
       if (!rowSame) {
         next[i] = r.picks;
         nextCharacterPlay[i] = r.characterPlayRow;
         passChanged = true;
       }
     }
+
     if (
       stripDuplicateKd(
         attacker,
@@ -600,6 +669,7 @@ export const clampAttackPlan = (
     ) {
       passChanged = true;
     }
+
     const { characterPlayPicks: sanitized, changed: cpSan } =
       sanitizeCharacterPlayPicksWrap(
         attacker,
@@ -608,10 +678,12 @@ export const clampAttackPlan = (
         damageMods,
         activeBaseCount,
       );
+
     if (cpSan) {
       nextCharacterPlay = sanitized;
       passChanged = true;
     }
+
     if (!passChanged) {
       break;
     }
@@ -623,6 +695,7 @@ export const clampAttackPlan = (
   ) {
     return { wrapPicks, characterPlayPicks };
   }
+
   return { wrapPicks: next, characterPlayPicks: nextCharacterPlay };
 };
 
@@ -656,6 +729,7 @@ export const computeAttackSequence = (
       damageMods,
       activeBaseCount,
     );
+
     const defForRow = enemyDefBaseForAttackRow(
       baseDef,
       i,
@@ -663,8 +737,10 @@ export const computeAttackSequence = (
       enemyDefensiveStance,
       activeBaseCount,
     );
+
     const tacFromDefCap = tacBonusFromDefReductionCap(defForRow, defReduction);
     const defMin = effectiveDefMinRoll(defForRow, defReduction);
+
     const coverPen = coverTacPenaltyForAttack(
       attacker,
       enemyHasCover,
@@ -672,8 +748,10 @@ export const computeAttackSequence = (
       i,
       activeBaseCount,
     );
+
     const bonusTimeTac =
       bonusTimeByAttack[i] === true ? BONUS_TIME_TAC_BONUS : 0;
+
     const tac = tacForAttack(
       attacker,
       i,
@@ -684,6 +762,7 @@ export const computeAttackSequence = (
       bonusTimeTac,
       initialTacModifier,
     );
+
     const rowArmor = armorForAttackRow(
       attacker,
       armor,
@@ -693,9 +772,11 @@ export const computeAttackSequence = (
       i,
       activeBaseCount,
     );
+
     const pHit = hitProbabilityPerDie(defMin);
     const need = wrapNetThresholdAllHits(attacker, wrapPicks[i]);
     const prob = probAttackSucceeds(tac, pHit, rowArmor, need);
+
     attacks.push({
       attackIndex: i,
       tac,

@@ -2,7 +2,7 @@
 
 /**
  * Opaque, per-card identifier for a playbook result. It only keys selection
- * state — the engine reads effect flags on the result, never the id string.
+ * state: the engine reads effect flags on the result, never the id string.
  */
 export type PlaybookChoiceId = string;
 
@@ -55,7 +55,7 @@ export type PlaybookResult = {
   /** KD: applies Knocked Down; only the first one in the activation counts. */
   appliesKnockDown?: boolean;
   /**
-   * Card shows a dodge (`<`) on this result. Cosmetic only — dodges do nothing
+   * Card shows a dodge (`<`) on this result. Cosmetic only: dodges do nothing
    * for the attack math, but the symbol is still shown in the line label.
    */
   dodge?: boolean;

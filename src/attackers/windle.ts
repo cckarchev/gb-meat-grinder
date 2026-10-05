@@ -5,7 +5,7 @@ import type { PlaybookColumn } from '@/types/core/playbook';
 
 /**
  * Windle playbook. All damage results are momentous. The momentous-2 on column
- * 3 also has a GB triggering Snack Break (recover HP) — it still deals its 2
+ * 3 also has a GB triggering Snack Break (recover HP). It still deals its 2
  * damage, and the character play has no effect on the attack math, so it shows
  * as a 2 plus a (no-op) character-play menu.
  */

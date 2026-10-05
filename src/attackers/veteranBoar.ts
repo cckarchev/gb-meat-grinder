@@ -134,7 +134,7 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
 
 /**
  * Veteran Boar. Furious + Berserker, INF cap 2: with all 2 influence on attacks
- * and a (free) charge that is 3 base attacks, each able to spawn a Berserker —
+ * and a (free) charge that is 3 base attacks, each able to spawn a Berserker:
  * the 3-base / 6-max layout the calculator originally hardcoded.
  */
 export const veteranBoar: AttackerData = {

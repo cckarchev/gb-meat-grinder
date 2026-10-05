@@ -18,6 +18,7 @@ describe('chargeInfluenceCost', () => {
 
   it('is 2 for a normal charge and free for Furious models', () => {
     expect(chargeInfluenceCost(makeAttacker(), CHARGING)).toBe(2);
+
     expect(chargeInfluenceCost(makeAttacker({ furious: true }), CHARGING)).toBe(
       0,
     );

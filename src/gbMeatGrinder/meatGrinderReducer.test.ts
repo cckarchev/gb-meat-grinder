@@ -58,6 +58,7 @@ describe('initial state', () => {
       damageMods: { toughHide: false, buffs: {} },
       specialAbilities: {},
     });
+
     expect(state.attackPlan).toEqual(
       createInitialAttackPlan(thresher, thresher.inf, false),
     );
@@ -134,15 +135,18 @@ describe('influence and charge', () => {
       { type: 'charging', value: true },
       { type: 'chargeAttackIndex', value: 3 },
     );
+
     const lessInfluence = reduce(charging, { type: 'influence', value: 2 });
 
     // 5 INF: charge (2) + 3 bought = 4 bases. 2 INF: just the charge.
     expect(charging.chargeAttackIndex).toBe(3);
     expect(lessInfluence.chargeAttackIndex).toBe(0);
+
     expect(
       reduce(charging, { type: 'chargeAttackIndex', value: 9 })
         .chargeAttackIndex,
     ).toBe(3);
+
     expect(
       reduce(charging, { type: 'chargeAttackIndex', value: -2 })
         .chargeAttackIndex,
@@ -210,9 +214,11 @@ describe('re-clamping the plan', () => {
     expect(reduce(state, { type: 'enemySnared', value: true }).attackPlan).toBe(
       state.attackPlan,
     );
+
     expect(
       reduce(state, { type: 'enemyDefensiveStance', value: true }).attackPlan,
     ).toBe(state.attackPlan);
+
     expect(reduce(state, { type: 'enemyDef', value: 5 }).attackPlan).toBe(
       state.attackPlan,
     );
@@ -227,9 +233,11 @@ describe('re-clamping the plan', () => {
       enemyResilience: true,
       attackPlan: state.attackPlan,
     });
+
     expect(reduce(state, { type: 'hp', value: 3 }).attackPlan).toBe(
       state.attackPlan,
     );
+
     expect(reduce(state, { type: 'startingMomentum', value: 4 })).toMatchObject(
       {
         startingMomentum: 4,
@@ -269,11 +277,13 @@ describe('Bonus Time', () => {
       { type: 'startingMomentum', value: 1 },
       spend(0),
     );
+
     const broke = { ...paid, startingMomentum: 0 };
     const sanitized = reduce(broke, { type: 'sanitizeBonusTime' });
 
     expect(reduce(paid, { type: 'sanitizeBonusTime' })).toBe(paid);
     expect(sanitized.bonusTimeByAttack[0]).toBe(false);
+
     expect(
       reduce(paid, { type: 'bonusTime', attackIndex: 0, value: false })
         .bonusTimeByAttack[0],
@@ -311,6 +321,7 @@ describe('plan edits', () => {
       pick(0, 'm4'),
       pick(0, 'm2', 1),
     );
+
     const cleared = reduce(wrapped, {
       type: 'clearWrapContinuation',
       attackIndex: 0,
@@ -318,6 +329,7 @@ describe('plan edits', () => {
 
     expect(wrapped.attackPlan.wrapPicks[0]).toEqual(['m4', 'm2']);
     expect(cleared.attackPlan.wrapPicks[0]).toEqual(['m4', null]);
+
     expect(
       reduce(initialState(PICK_THRESHER), {
         type: 'clearWrapContinuation',
@@ -328,12 +340,14 @@ describe('plan edits', () => {
 
   it('changes a character play pick', () => {
     const withGb = reduce(initialState(PICK_VETERAN_BOAR), pick(0, 'gb'));
+
     const stagger = reduce(withGb, {
       type: 'characterPlayPick',
       attackIndex: 0,
       pickIndex: 0,
       pick: 'stagger',
     });
+
     const same = reduce(withGb, {
       type: 'characterPlayPick',
       attackIndex: 0,
@@ -346,6 +360,7 @@ describe('plan edits', () => {
       'singledOut',
       null,
     ]);
+
     expect(stagger.attackPlan.characterPlayPicks[0]).toEqual(['stagger', null]);
     expect(same).toBe(withGb);
   });

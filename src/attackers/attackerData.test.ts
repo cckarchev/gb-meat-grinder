@@ -11,6 +11,7 @@ import type { Guild } from '@/types/core/guild';
 const guildModules = import.meta.glob<Record<string, Guild>>('@/guilds/*.ts', {
   eager: true,
 });
+
 const GUILDS = Object.values(guildModules).flatMap((module) =>
   Object.values(module),
 );

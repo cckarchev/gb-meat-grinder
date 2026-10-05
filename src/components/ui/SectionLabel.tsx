@@ -22,7 +22,7 @@ const Label = styled.div`
   white-space: nowrap;
 `;
 
-/** Mono uppercase eyebrow with a leading chevron — the CCK section marker. */
+/** Mono uppercase eyebrow with a leading chevron: the CCK section marker. */
 export const SectionLabel = ({
   label,
   number,
@@ -30,6 +30,7 @@ export const SectionLabel = ({
   className,
 }: SectionLabelProps) => {
   const text = number ? `${number}: ${label}` : label;
+
   return (
     <Label className={className} style={{ color }}>
       <ChevronMark color={color} size={13} />

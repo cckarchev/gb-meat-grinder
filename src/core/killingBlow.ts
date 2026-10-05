@@ -13,11 +13,14 @@ export const killingBlowDisplayIndex = (
   targetHp: number,
 ): number => {
   let dealt = flatDamage;
+
   for (let idx = 0; idx < attacks.length; idx++) {
     dealt += rowDamageIfHit[attacks[idx].attackIndex] ?? 0;
+
     if (dealt >= targetHp) {
       return idx;
     }
   }
+
   return -1;
 };

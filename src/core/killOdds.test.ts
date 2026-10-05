@@ -57,6 +57,7 @@ describe('damageQuantile', () => {
 describe('planDamageOutcome', () => {
   it('convolves swings and folds in flat damage', () => {
     const attacker = makeAttacker();
+
     const swing: AttackRollContext = {
       attackIndex: 0,
       tac: 2,
@@ -66,6 +67,7 @@ describe('planDamageOutcome', () => {
       netSuccessesNeeded: 1,
       prob: 0.75,
     };
+
     const flatDamage = 1;
     const targetHp = 2;
 
@@ -82,6 +84,7 @@ describe('planDamageOutcome', () => {
     expect(outcome.killProbability).toBeCloseTo(0.75);
     expect(outcome.expectedDamage).toBeCloseTo(1.75);
     expect(outcome.expectedHpRemaining).toBeCloseTo(0.25);
+
     expect([...outcome.damageDistribution]).toEqual([
       [1, 0.25],
       [2, 0.75],

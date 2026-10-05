@@ -10,9 +10,11 @@ export const attackBlockVariant = (
   if (attackRowIsBerserker(attacker, attackIndex)) {
     return 'berserker';
   }
+
   if (attackIndex === chargeAttackIndex) {
     return 'charge';
   }
+
   return 'base';
 };
 
@@ -24,8 +26,10 @@ export const attackKindLabel = (
   if (attackRowIsBerserker(attacker, attackIndex)) {
     return 'Berserker attack';
   }
+
   if (attackIndex === chargeAttackIndex) {
     return 'Charge attack';
   }
+
   return 'Base attack';
 };

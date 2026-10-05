@@ -11,6 +11,7 @@ export const chargeInfluenceCost = (
   if (!charging) {
     return 0;
   }
+
   return attacker.furious ? 0 : 2;
 };
 
@@ -28,6 +29,7 @@ export const activeBaseAttackCount = (
     0,
     influence - chargeInfluenceCost(attacker, charging),
   );
+
   return (charging ? 1 : 0) + bought + (attacker.feral ? 1 : 0);
 };
 
@@ -48,5 +50,6 @@ export const berserkerRowOffset = (attacker: AttackerData): number => {
 /** Total rows the attack-plan arrays reserve (bases + one Berserker slot each). */
 export const attackArraySize = (attacker: AttackerData): number => {
   const base = maxBaseAttackCount(attacker);
+
   return attacker.berserker ? base * 2 : base;
 };

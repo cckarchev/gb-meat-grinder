@@ -247,6 +247,7 @@ export const WrapSlotPickGrid = ({
   const { attacker, enemyKnockedDown } = useMeatGrinderSimulation();
   const i = attackIndex;
   const budget = wrapSlotBudget(attacker, maxNet, pickIndex);
+
   const visibleColumns = attacker.playbook.filter(
     (c) => c.netSuccesses <= budget,
   );
@@ -260,7 +261,9 @@ export const WrapSlotPickGrid = ({
             pickIndex,
             col.netSuccesses,
           );
+
           const pCol = probAttackSucceeds(tac, pHit, armor, netForHeat);
+
           return (
             <ColumnBlock key={col.netSuccesses}>
               <ColumnHead $p={pCol}>{formatPercent(pCol, 1)}</ColumnHead>
@@ -268,11 +271,13 @@ export const WrapSlotPickGrid = ({
                 {col.results.map((e) => {
                   const selected = wrapPicks[i][pickIndex] === e.id;
                   const mStyle = momentousLineStyle(attacker, e.id, damageMods);
+
                   const segments = playbookLineDisplaySegments(
                     attacker,
                     e.id,
                     damageMods,
                   );
+
                   const kdLocked =
                     e.appliesKnockDown === true &&
                     kdAlreadyTakenBeforePick(
@@ -284,6 +289,7 @@ export const WrapSlotPickGrid = ({
                       activeBaseCount,
                       enemyKnockedDown,
                     );
+
                   return (
                     <LineButton
                       key={e.id}

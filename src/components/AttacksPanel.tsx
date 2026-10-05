@@ -44,11 +44,13 @@ export const AttacksPanel = () => {
   const toggleWrapExpanded = (attackIndex: number) => {
     setWrapExpanded((prev) => {
       const next = new Set(prev);
+
       if (next.has(attackIndex)) {
         next.delete(attackIndex);
       } else {
         next.add(attackIndex);
       }
+
       return next;
     });
   };
@@ -63,15 +65,18 @@ export const AttacksPanel = () => {
       ),
     [attacker, effectiveWrapPicks, damageMods, activeBaseCount],
   );
+
   const remainingHpAfterSwing = useMemo(() => {
     const out: number[] = [];
     // Special-ability damage is guaranteed and untied to a swing, so apply it
     // up front as a baseline before the per-swing chip damage.
     let dealt = specialAbilityFlatDamage(attacker, specialAbilities);
+
     for (const ctx of attacks) {
       dealt += rowDamageIfHit[ctx.attackIndex];
       out.push(Math.max(0, targetHp - dealt));
     }
+
     return out;
   }, [attacker, specialAbilities, attacks, rowDamageIfHit, targetHp]);
 
@@ -87,12 +92,15 @@ export const AttacksPanel = () => {
         activeBaseCount,
       ),
     );
+
     if (killingBlowIndex < 0) {
       return base;
     }
+
     // The activation ends on the killing blow: that swing earns +1 momentum and
     // later (disabled) swings freeze at the post-kill total.
     const afterKill = base[killingBlowIndex] + KILLING_BLOW_MOMENTUM;
+
     return base.map((m, idx) => (idx >= killingBlowIndex ? afterKill : m));
   }, [
     attacker,

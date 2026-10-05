@@ -62,7 +62,7 @@ const AttackBlock = styled.div<{
       : ''}
 
   /* Focused (charge/berserker) attacks read via a crisp 1px accent border plus
-     the corner brackets — no heavy halo, which clashed with the brackets. */
+     the corner brackets, with no heavy halo, which clashed with the brackets. */
   ${(p) =>
     p.$variant === 'charge'
       ? `
@@ -272,12 +272,14 @@ export const AttackSwingRow = ({
   const { attacker } = useMeatGrinderSimulation();
   const i = attack.attackIndex;
   const maxNet = maxNetSuccessesForRoll(attack.tac, armor);
+
   const characterPlaySlots = wrapPicks[i]
     .map((pid, pickIndex) => ({ pid, pickIndex }))
     .filter(
       (x): x is CharacterPlaySlotRef =>
         x.pid != null && choiceUsesCharacterPlay(attacker, x.pid),
     );
+
   const hasWrapContinuation = wrapPicks[i].length > 1;
   const variant = attackBlockVariant(attacker, i, chargeAttackIndex);
   const bonusTimeDisabled = !bonusTime && bonusTimeMomentumPool < 1;
@@ -337,6 +339,7 @@ export const AttackSwingRow = ({
                     if (wrapOpen) {
                       onWrapContinuationCleared(i);
                     }
+
                     onToggleWrapExpansion();
                   }}
                 />
@@ -378,6 +381,7 @@ export const AttackSwingRow = ({
                 >
                   {wrapPicks[i].slice(1).map((_, slot) => {
                     const pickIndex = slot + 1;
+
                     return (
                       <WrapSlotPickGrid
                         key={pickIndex}

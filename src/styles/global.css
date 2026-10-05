@@ -8,7 +8,7 @@
 
 :root {
   /* ── CCK Archev palette (dark-only) ──
-     Coherent with https://www.cckarchev.ar — sharp corners, dark teal base,
+     Coherent with https://www.cckarchev.ar: sharp corners, dark teal base,
      orange accent, teal brand. Text/border alphas run higher than the parent
      marketing site: this is a dense tool with small mono labels and needs more
      contrast than a sparse landing page. */
@@ -34,7 +34,7 @@
   --ghost-border-hover: rgba(43, 179, 196, 0.9);
   --ghost-bg: rgba(43, 179, 196, 0.1);
 
-  /** Playbook lines without momentum: light "paper" chip — kept light for
+  /** Playbook lines without momentum: light "paper" chip, kept light for
       tabular legibility against the dark panels (echoes the physical playbook). */
   --playbook-line-nm-bg: #d5dce6;
   --playbook-line-nm-fg: #070a0f;

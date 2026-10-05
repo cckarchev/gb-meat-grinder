@@ -31,6 +31,7 @@ describe('resilienceIgnoredAttackIndex', () => {
         NOT_RESILIENT,
       ),
     ).toBe(NONE_IGNORED);
+
     expect(
       resilienceIgnoredAttackIndex(attacker, wrapPicks, NO_MODS, 0, RESILIENT),
     ).toBe(NONE_IGNORED);
@@ -42,6 +43,7 @@ describe('effective plan copies', () => {
     expect(
       effectiveWrapPicksForResilience([['one', 'two'], ['four']], 0),
     ).toEqual([[null, null], ['four']]);
+
     expect(
       effectiveCharacterPlayPicksForResilience([['playTac'], ['playDef']], 1),
     ).toEqual([['playTac'], [null]]);
@@ -54,6 +56,7 @@ describe('effective plan copies', () => {
     expect(effectiveWrapPicksForResilience(wrapPicks, NONE_IGNORED)).toBe(
       wrapPicks,
     );
+
     expect(
       effectiveCharacterPlayPicksForResilience(
         characterPlayPicks,
@@ -69,10 +72,12 @@ describe('effective plan copies', () => {
       false,
       true,
     ]);
+
     expect(effectiveBonusTimeForResilience(bonusTime, NONE_IGNORED)).toEqual([
       true,
       true,
     ]);
+
     expect(bonusTime).toEqual([true, true]);
   });
 });

@@ -31,20 +31,25 @@ export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
   const { wrapPicks, characterPlayPicks } = state.attackPlan;
 
   const attacker = attackerById(state.attackerId);
+
   const activeBaseCount = activeBaseAttackCount(
     attacker,
     state.influence,
     state.charging,
   );
+
   const effectiveChargeAttackIndex = state.charging
     ? state.chargeAttackIndex
     : -1;
+
   const armor = effectiveArmor(attacker, state.armor, state.damageMods);
+
   const enemyDef = effectiveEnemyDef(
     state.enemyDef,
     state.enemyKnockedDown,
     state.enemySnared,
   );
+
   const initialTacModifier = state.gangingUp - state.crowdingOut;
 
   // The swing a Resilient target ignores, plus plan copies with that swing
@@ -56,10 +61,12 @@ export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
     activeBaseCount,
     state.enemyResilience,
   );
+
   const effectiveWrapPicks = useMemo(
     () => effectiveWrapPicksForResilience(wrapPicks, ignoredAttackIndex),
     [wrapPicks, ignoredAttackIndex],
   );
+
   const effectiveCharacterPlayPicks = useMemo(
     () =>
       effectiveCharacterPlayPicksForResilience(
@@ -68,6 +75,7 @@ export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
       ),
     [characterPlayPicks, ignoredAttackIndex],
   );
+
   const effectiveBonusTimeByAttack = useMemo(
     () =>
       effectiveBonusTimeForResilience(
