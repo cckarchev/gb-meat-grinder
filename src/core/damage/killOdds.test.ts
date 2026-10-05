@@ -1,58 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import {
-  damageQuantile,
-  pickedDamageForNet,
-  planDamageOutcome,
-} from '@/core/damage/killOdds';
+import { planDamageOutcome } from '@/core/damage/killOdds';
 import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
-
-describe('pickedDamageForNet', () => {
-  const attacker = makeAttacker();
-
-  it('deals the picked line once the roll reaches it', () => {
-    expect(pickedDamageForNet(attacker, NO_MODS, ['two'], 2)).toBe(2);
-    expect(pickedDamageForNet(attacker, NO_MODS, ['two'], 3)).toBe(2);
-  });
-
-  it('falls back to the best lower line on a short roll', () => {
-    expect(pickedDamageForNet(attacker, NO_MODS, ['two'], 1)).toBe(1);
-    expect(pickedDamageForNet(attacker, NO_MODS, ['two'], 0)).toBe(0);
-  });
-
-  it('resolves wrap slots past the card width', () => {
-    expect(pickedDamageForNet(attacker, NO_MODS, ['four', 'two'], 5)).toBe(5);
-    expect(pickedDamageForNet(attacker, NO_MODS, ['four', 'two'], 6)).toBe(6);
-  });
-});
-
-describe('damageQuantile', () => {
-  const distribution = new Map([
-    [0, 0.25],
-    [2, 0.5],
-    [5, 0.25],
-  ]);
-
-  it('returns the smallest damage whose cumulative probability reaches q', () => {
-    expect(damageQuantile(distribution, 0.1)).toBe(0);
-    expect(damageQuantile(distribution, 0.5)).toBe(2);
-    expect(damageQuantile(distribution, 0.76)).toBe(5);
-    expect(damageQuantile(distribution, 1)).toBe(5);
-  });
-
-  it('returns the largest damage when q exceeds the total mass', () => {
-    const partial = new Map([
-      [1, 0.4],
-      [3, 0.5],
-    ]);
-
-    expect(damageQuantile(partial, 0.95)).toBe(3);
-  });
-
-  it('is 0 for an empty distribution', () => {
-    expect(damageQuantile(new Map(), 0.5)).toBe(0);
-  });
-});
 
 describe('planDamageOutcome', () => {
   it('convolves swings and folds in flat damage', () => {

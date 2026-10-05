@@ -1,180 +1,35 @@
+/** Kill chance, expected damage and HP left for a whole activation. */
+
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import { effectiveDamageForChoice } from '@/core/damage/damage';
-import { binomialPmf } from '@/core/damage/probability';
+import type {
+  ActivationDamageOutcome,
+  DamageDistribution,
+  DamageForNet,
+} from '@/core/damage/damage.types';
+import {
+  addProbability,
+  convolve,
+  swingDamageDistribution,
+} from '@/core/damage/damageDistribution';
+import { pickedDamageForNet } from '@/core/damage/pickedDamage';
 import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { maxPlaybookNet } from '@/core/playbook/playbookIndex';
-import { netSuccessesForChoice } from '@/core/playbook/wrapSlots';
-import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
-/** A discrete damage distribution: damage value -> probability. */
-type DamageDistribution = Map<number, number>;
-
-/** Damage a single swing deals as a function of its net successes. */
-type DamageForNet = (net: number) => number;
-
-/** Most card damage reachable in a single playbook column within `budget` net. */
-const bestDamageWithinBudget = (
-  attacker: AttackerData,
-  mods: PlaybookDamageMods,
-  budget: number,
-): number => {
-  let best = 0;
-
-  for (const col of attacker.playbook) {
-    if (col.netSuccesses < MIN_PLAYBOOK_NET || col.netSuccesses > budget) {
-      continue;
-    }
-
-    for (const r of col.results) {
-      const d = effectiveDamageForChoice(attacker, r.id, mods);
-
-      if (d > best) {
-        best = d;
-      }
-    }
-  }
-
-  return best;
-};
-
-/**
- * Damage a roll of `net` net successes deals if you stick to the lines you
- * actually picked: each picked slot deals its line's damage once the roll
- * reaches it, otherwise the best lower column that slot can reach. Over-rolls
- * give nothing extra (you committed to these picks, not max damage).
- */
-export const pickedDamageForNet = (
-  attacker: AttackerData,
-  mods: PlaybookDamageMods,
-  picks: readonly WrapPick[],
-  net: number,
-): number => {
-  if (net < MIN_PLAYBOOK_NET) {
-    return 0;
-  }
-
-  const maxNet = maxPlaybookNet(attacker);
-  let total = 0;
-
-  for (let slot = 0; slot < picks.length; slot++) {
-    const slotBudget = Math.min(maxNet, net - slot * maxNet);
-
-    if (slotBudget < MIN_PLAYBOOK_NET) {
-      break;
-    }
-
-    const id = picks[slot];
-
-    if (id == null) {
-      continue;
-    }
-
-    const pickedCol = netSuccessesForChoice(attacker, id);
-
-    total +=
-      slotBudget >= pickedCol
-        ? effectiveDamageForChoice(attacker, id, mods)
-        : bestDamageWithinBudget(attacker, mods, slotBudget);
-  }
-
-  return total;
-};
-
-/**
- * Distribution of damage from one swing. Net successes are `max(0, hits - ARM)`
- * with hits ~ Binomial(tac, pHit); each net level maps to damage via `damageForNet`.
- */
-const swingDamageDistribution = (
-  attack: AttackRollContext,
-  damageForNet: DamageForNet,
+/** Shift every damage value by the guaranteed `flatDamage`. */
+const withFlatDamage = (
+  dist: DamageDistribution,
+  flatDamage: number,
 ): DamageDistribution => {
-  const { tac, armor, pHit } = attack;
-  const maxNet = Math.max(0, tac - armor);
-  const dist: DamageDistribution = new Map();
+  const shifted: DamageDistribution = new Map();
 
-  for (let net = 0; net <= maxNet; net++) {
-    let prob: number;
-
-    if (net === 0) {
-      prob = 0;
-
-      for (let h = 0; h <= armor; h++) {
-        prob += binomialPmf(tac, pHit, h);
-      }
-    } else {
-      prob = binomialPmf(tac, pHit, net + armor);
-    }
-
-    if (prob <= 0) {
-      continue;
-    }
-
-    const dmg = damageForNet(net);
-
-    dist.set(dmg, (dist.get(dmg) ?? 0) + prob);
+  for (const [dmg, prob] of dist) {
+    addProbability(shifted, dmg + flatDamage, prob);
   }
 
-  return dist;
-};
-
-const convolve = (
-  a: DamageDistribution,
-  b: DamageDistribution,
-): DamageDistribution => {
-  const out: DamageDistribution = new Map();
-
-  for (const [da, pa] of a) {
-    for (const [db, pb] of b) {
-      const d = da + db;
-
-      out.set(d, (out.get(d) ?? 0) + pa * pb);
-    }
-  }
-
-  return out;
-};
-
-export type ActivationDamageOutcome = {
-  /** P(total damage >= target HP). */
-  killProbability: number;
-  /** Mean total damage across the activation (including guaranteed flat damage). */
-  expectedDamage: number;
-  /** Mean target HP left afterwards: E[max(0, targetHp - total damage)]. */
-  expectedHpRemaining: number;
-  /** Total activation damage distribution (incl. flat damage): damage -> probability. */
-  damageDistribution: ReadonlyMap<number, number>;
-};
-
-/**
- * Smallest total damage whose cumulative probability reaches `quantile` (0..1).
- * Used for "likely damage" ranges (e.g. 10th/90th percentile) from a discrete
- * damage distribution. Returns 0 for an empty distribution.
- */
-export const damageQuantile = (
-  distribution: ReadonlyMap<number, number>,
-  quantile: number,
-): number => {
-  const damages = [...distribution.keys()].sort((a, b) => a - b);
-
-  if (damages.length === 0) {
-    return 0;
-  }
-
-  let cumulative = 0;
-
-  for (const dmg of damages) {
-    cumulative += distribution.get(dmg) ?? 0;
-
-    if (cumulative >= quantile) {
-      return dmg;
-    }
-  }
-
-  return damages[damages.length - 1];
+  return shifted;
 };
 
 /**
@@ -192,32 +47,24 @@ const activationOutcome = (
   let total: DamageDistribution = new Map([[0, 1]]);
 
   for (const attack of attacks) {
-    total = convolve(
-      total,
-      swingDamageDistribution(attack, damageForNetOf(attack)),
-    );
+    const swing = swingDamageDistribution(attack, damageForNetOf(attack));
+
+    total = convolve(total, swing);
   }
 
   // Fold guaranteed flat damage into the distribution so every stat below is
   // expressed in terms of total damage actually dealt to the target.
-  const damageDistribution: DamageDistribution = new Map();
-
-  for (const [dmg, prob] of total) {
-    const withFlat = dmg + flatDamage;
-
-    damageDistribution.set(
-      withFlat,
-      (damageDistribution.get(withFlat) ?? 0) + prob,
-    );
-  }
+  const damageDistribution = withFlatDamage(total, flatDamage);
 
   let expectedDamage = 0;
   let expectedHpRemaining = 0;
   let killProbability = 0;
 
   for (const [dmg, prob] of damageDistribution) {
+    const hpLeft = Math.max(0, targetHp - dmg);
+
     expectedDamage += dmg * prob;
-    expectedHpRemaining += Math.max(0, targetHp - dmg) * prob;
+    expectedHpRemaining += hpLeft * prob;
 
     if (dmg >= targetHp) {
       killProbability += prob;
@@ -241,16 +88,13 @@ export const planDamageOutcome = (
   flatDamage: number,
   targetHp: number,
 ): ActivationDamageOutcome => {
-  return activationOutcome(
-    attacks,
-    flatDamage,
-    targetHp,
-    (attack) => (net) =>
-      pickedDamageForNet(
-        attacker,
-        mods,
-        wrapPicks[attack.attackIndex] ?? [],
-        net,
-      ),
-  );
+  const pickedDamageOf = (attack: AttackRollContext): DamageForNet => {
+    const picks = wrapPicks[attack.attackIndex] ?? [];
+
+    return (net) => {
+      return pickedDamageForNet(attacker, mods, picks, net);
+    };
+  };
+
+  return activationOutcome(attacks, flatDamage, targetHp, pickedDamageOf);
 };

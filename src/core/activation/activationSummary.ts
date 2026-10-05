@@ -6,7 +6,8 @@ import {
 } from '@/core/activation/momentum';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { specialAbilityFlatDamage } from '@/core/damage/damage';
-import { damageQuantile, planDamageOutcome } from '@/core/damage/killOdds';
+import { damageQuantile } from '@/core/damage/damageDistribution';
+import { planDamageOutcome } from '@/core/damage/killOdds';
 import type {
   PlaybookDamageMods,
   WrapPick,

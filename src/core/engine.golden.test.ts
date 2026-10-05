@@ -25,7 +25,8 @@ import {
   effectiveEnemyDef,
   specialAbilityFlatDamage,
 } from '@/core/damage/damage';
-import { damageQuantile, planDamageOutcome } from '@/core/damage/killOdds';
+import { damageQuantile } from '@/core/damage/damageDistribution';
+import { planDamageOutcome } from '@/core/damage/killOdds';
 import { characterPlayAvailabilityForPick } from '@/core/plan/characterPlayPicks';
 import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
 import type {
