@@ -1,8 +1,8 @@
 /** Effects each pick carries into later swings: TAC, DEF and the ARM condition. */
 
 import { picksOnEarlierSwings } from '@/core/attacks/attackRows';
-import { characterPlayPickModifiers } from '@/core/characterPlays/characterPlayEffects';
-import { defaultCharacterPlayId } from '@/core/characterPlays/characterPlayLookup';
+import { characterPlayPickEffects } from '@/core/characterPlays/characterPlayEffects';
+import { effectivePlayForPick } from '@/core/characterPlays/characterPlayLookup';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
 import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
 import type {
@@ -14,7 +14,7 @@ import type {
 import {
   choiceUsesCharacterPlay,
   getPlaybookResult,
-} from '@/core/playbook/wrapSlots';
+} from '@/core/playbook/playbookIndex';
 import { MAX_ARMOR_REDUCTION } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
@@ -25,10 +25,10 @@ const NO_EFFECTS: PickEffects = {
 };
 
 /**
- * Modifiers this pick adds to later swings. A Knock Down after the first one, or
+ * Effects this pick carries into later swings. A Knock Down after the first one, or
  * a Once Per Turn play an earlier pick already used, adds nothing.
  */
-export const rowEffectsForPick = (
+export const pickEffectsForLaterSwings = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],
@@ -78,15 +78,18 @@ export const rowEffectsForPick = (
     activeBaseCount,
   );
 
-  const play =
-    characterPlayPicks[attackIndex]?.[pickIndex] ??
-    defaultCharacterPlayId(attacker);
+  const play = effectivePlayForPick(
+    attacker,
+    characterPlayPicks,
+    attackIndex,
+    pickIndex,
+  );
 
   if (play == null || used.has(play)) {
     return NO_EFFECTS;
   }
 
-  return characterPlayPickModifiers(attacker, play);
+  return characterPlayPickEffects(attacker, play);
 };
 
 /**
@@ -113,7 +116,7 @@ export const armorReductionBeforeAttack = (
   let reduction = 0;
 
   for (const earlier of earlierPicks) {
-    const effects = rowEffectsForPick(
+    const effects = pickEffectsForLaterSwings(
       attacker,
       wrapPicks,
       characterPlayPicks,

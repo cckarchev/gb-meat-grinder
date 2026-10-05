@@ -5,8 +5,10 @@ import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { maxPlaybookNet } from '@/core/playbook/playbookIndex';
-import { netSuccessesForChoice } from '@/core/playbook/wrapSlots';
+import {
+  maxPlaybookNet,
+  netSuccessesForChoice,
+} from '@/core/playbook/playbookIndex';
 import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 

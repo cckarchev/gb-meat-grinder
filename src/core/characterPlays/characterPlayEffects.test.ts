@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   characterPlayEffectSummary,
   characterPlayHasEffect,
-  characterPlayPickModifiers,
+  characterPlayPickEffects,
 } from '@/core/characterPlays/characterPlayEffects';
 import type { CharacterPlay } from '@/core/playbook/playbook.types';
 import {
@@ -26,7 +26,7 @@ describe('character play effects', () => {
     expect(characterPlayHasEffect(PLAY_ARM)).toBe(true);
 
     expect(
-      characterPlayPickModifiers(
+      characterPlayPickEffects(
         makeAttacker({ characterPlays: [PLAY_ARM] }),
         'playArm',
       ),

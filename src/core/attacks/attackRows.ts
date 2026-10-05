@@ -26,7 +26,7 @@ export const berserkerSourceBaseIndex = (
 };
 
 /** True if this base attack includes any non-null wrap line with modified playbook damage > 0. */
-export const baseAttackDealtDamage = (
+export const basePicksDealDamage = (
   attacker: AttackerData,
   picks: WrapPick[],
   damageMods: PlaybookDamageMods,
@@ -65,7 +65,7 @@ export const attackRowIsActive = (
     return false;
   }
 
-  return baseAttackDealtDamage(
+  return basePicksDealDamage(
     attacker,
     wrapPicks[sourceBaseIndex] ?? [],
     damageMods,

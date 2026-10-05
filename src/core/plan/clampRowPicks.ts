@@ -11,12 +11,9 @@ import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
 import {
   cheapestChoiceId,
   maxPlaybookNet,
-} from '@/core/playbook/playbookIndex';
-import {
   netSuccessesForChoice,
-  wrapSlotBudget,
-  wrapSlotCount,
-} from '@/core/playbook/wrapSlots';
+} from '@/core/playbook/playbookIndex';
+import { wrapSlotBudget, wrapSlotCount } from '@/core/playbook/wrapSlots';
 import {
   FIRST_WRAP_PICK_INDEX,
   MIN_PLAYBOOK_NET,

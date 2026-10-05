@@ -8,7 +8,7 @@ import type {
 } from '@/core/playbook/playbook.types';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
-export const characterPlayPickModifiers = (
+export const characterPlayPickEffects = (
   attacker: AttackerData,
   pick: CharacterPlayPick,
 ): PickEffects => {

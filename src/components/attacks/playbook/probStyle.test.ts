@@ -3,7 +3,7 @@ import {
   probHeatBackground,
   probHeatBorder,
   probHeatTextColor,
-} from '@/core/shared/probStyle';
+} from '@/components/attacks/playbook/probStyle';
 
 describe('probHeatBackground', () => {
   it('runs from red at 0 to green at 1 and clamps outside', () => {

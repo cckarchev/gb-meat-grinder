@@ -2,7 +2,7 @@
 
 import { berserkerRowOffset } from '@/core/attacks/attackStructure';
 import type { WrapPick } from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/wrapSlots';
+import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /** True if this pick removes the enemy's cover (a push / double push result). */

@@ -10,7 +10,7 @@ import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { rowEffectsForPick } from '@/core/playbook/rowEffects';
+import { pickEffectsForLaterSwings } from '@/core/playbook/rowEffects';
 import { COVER_TAC_PENALTY } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
@@ -39,29 +39,22 @@ export const coverTacPenaltyForAttack = (
     return COVER_TAC_PENALTY;
   }
 
-  for (let position = 0; position < clockPosition; position++) {
-    const earlierIndex = clock[position];
-    const row = wrapPicks[earlierIndex];
+  const earlierSwings = clock.slice(0, clockPosition);
 
-    if (!row?.length) {
-      continue;
-    }
+  const coverCleared = earlierSwings.some((earlierIndex) => {
+    const row = wrapPicks[earlierIndex] ?? [];
 
-    for (let pickIndex = 0; pickIndex < row.length; pickIndex++) {
-      if (wrapPickClearsCover(attacker, row[pickIndex])) {
-        return 0;
-      }
-    }
-  }
+    return row.some((id) => wrapPickClearsCover(attacker, id));
+  });
 
-  return COVER_TAC_PENALTY;
+  return coverCleared ? 0 : COVER_TAC_PENALTY;
 };
 
 /**
- * Modifiers from all picks on attacks strictly before `attackIndex` in activation order
- * (base → its berserker → next base → …).
+ * TAC and DEF effects carried from every pick on attacks strictly before
+ * `attackIndex` in activation order (base → its berserker → next base → …).
  */
-export const modifiersBeforeAttack = (
+export const carriedEffectsBeforeAttack = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],
@@ -81,7 +74,7 @@ export const modifiersBeforeAttack = (
   let defReduction = 0;
 
   for (const earlier of earlierPicks) {
-    const effects = rowEffectsForPick(
+    const effects = pickEffectsForLaterSwings(
       attacker,
       wrapPicks,
       characterPlayPicks,

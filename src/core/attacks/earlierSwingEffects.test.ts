@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
+  carriedEffectsBeforeAttack,
   coverTacPenaltyForAttack,
-  modifiersBeforeAttack,
 } from '@/core/attacks/earlierSwingEffects';
 import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
 
@@ -31,12 +31,12 @@ describe('coverTacPenaltyForAttack', () => {
   });
 });
 
-describe('modifiersBeforeAttack', () => {
+describe('carriedEffectsBeforeAttack', () => {
   it('collects TAC and DEF carry-over from earlier swings', () => {
     const attacker = makeAttacker({ inf: 3 });
 
     expect(
-      modifiersBeforeAttack(
+      carriedEffectsBeforeAttack(
         attacker,
         [['gb'], ['kd'], ['one']],
         [['playTac'], [null], [null]],
@@ -55,7 +55,14 @@ describe('rows outside the activation', () => {
     expect(coverTacPenaltyForAttack(attacker, COVER, [['push']], 5, 1)).toBe(1);
 
     expect(
-      modifiersBeforeAttack(attacker, [['gb']], [['playTac']], 5, NO_MODS, 1),
+      carriedEffectsBeforeAttack(
+        attacker,
+        [['gb']],
+        [['playTac']],
+        5,
+        NO_MODS,
+        1,
+      ),
     ).toEqual({ tacBonus: 0, defReduction: 0 });
   });
 });

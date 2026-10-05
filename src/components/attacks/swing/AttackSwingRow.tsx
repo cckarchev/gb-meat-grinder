@@ -12,13 +12,10 @@ import { CornerBrackets } from '@/components/ui/CornerBrackets';
 import { canAffordBonusTime } from '@/core/activation/bonusTimeFlags';
 import { attackRowIsBerserker } from '@/core/attacks/attackRows';
 import type {
-  AttackBlockVariant,
+  AttackKind,
   AttackRollContext,
 } from '@/core/attacks/attackSequence.types';
-import {
-  attackBlockVariant,
-  attackKindLabel,
-} from '@/core/attacks/attackVariant';
+import { attackKind, attackKindLabel } from '@/core/attacks/attackVariant';
 import { maxNetSuccessesForRoll } from '@/core/damage/probability';
 import { rowHasWrapContinuation } from '@/core/playbook/wrapSlots';
 import {
@@ -29,7 +26,7 @@ import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulati
 
 const CORNER_BRACKET_SIZE = 16;
 
-const CORNER_ACCENTS: Partial<Record<AttackBlockVariant, string>> = {
+const CORNER_ACCENTS: Partial<Record<AttackKind, string>> = {
   charge: 'var(--accent-charge)',
   berserker: 'var(--accent-berserker)',
 };
@@ -70,7 +67,7 @@ export const AttackSwingRow = ({
   const maxNet = maxNetSuccessesForRoll(attack.tac, armor);
 
   const hasWrapContinuation = rowHasWrapContinuation(wrapPicks[attackIndex]);
-  const variant = attackBlockVariant(attacker, attackIndex, chargeAttackIndex);
+  const variant = attackKind(attacker, attackIndex, chargeAttackIndex);
   const cornerAccent = CORNER_ACCENTS[variant];
   const bonusTimeDisabled =
     !bonusTime && !canAffordBonusTime(bonusTimeMomentumPool);

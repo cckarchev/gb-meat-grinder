@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { swingTacAndDef, tacForAttack } from '@/core/attacks/swingTac';
+import { sumSwingTac, swingTacAndDef } from '@/core/attacks/swingTac';
 import { CHARGE_TAC_BONUS, NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
 
-describe('tacForAttack', () => {
+describe('sumSwingTac', () => {
   it('sums base TAC, charge, bonuses and penalties', () => {
     const attacker = makeAttacker({ tac: 6 });
     const carriedBonus = 2;
@@ -15,7 +15,7 @@ describe('tacForAttack', () => {
       6 + CHARGE_TAC_BONUS + carriedBonus - cover + bonusTime + crowdedOut;
 
     expect(
-      tacForAttack(
+      sumSwingTac(
         attacker,
         0,
         0,
@@ -27,7 +27,7 @@ describe('tacForAttack', () => {
       ),
     ).toBe(expected);
 
-    expect(tacForAttack(attacker, 1, 0, 0, 2, 0, 0, 0)).toBe(6);
+    expect(sumSwingTac(attacker, 1, 0, 0, 2, 0, 0, 0)).toBe(6);
   });
 });
 

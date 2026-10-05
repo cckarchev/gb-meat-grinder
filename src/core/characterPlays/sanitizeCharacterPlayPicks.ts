@@ -1,15 +1,12 @@
 /** Repair character-play rows after the wrap picks or earlier plays changed. */
 
-import {
-  characterPlayUsageBeforePick,
-  unusedCharacterPlays,
-} from '@/core/characterPlays/characterPlayUsage';
+import { characterPlayAvailabilityForPick } from '@/core/characterPlays/characterPlayUsage';
 import type {
   CharacterPlayPickSlot,
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { choiceUsesCharacterPlay } from '@/core/playbook/wrapSlots';
+import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /**
@@ -45,7 +42,7 @@ export const sanitizeCharacterPlayPicks = (
         continue;
       }
 
-      const used = characterPlayUsageBeforePick(
+      const { available, depleted } = characterPlayAvailabilityForPick(
         attacker,
         wrapPicks,
         next,
@@ -55,9 +52,7 @@ export const sanitizeCharacterPlayPicks = (
         activeBaseCount,
       );
 
-      const available = unusedCharacterPlays(attacker, used);
-
-      if (available.length === 0) {
+      if (depleted) {
         continue;
       }
 

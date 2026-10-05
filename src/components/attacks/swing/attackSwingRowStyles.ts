@@ -3,7 +3,7 @@ import {
   PLAYBOOK_COLUMN_TRACK,
   PLAYBOOK_COLUMN_WIDTH_VAR,
 } from '@/components/attacks/playbook/playbookLayout';
-import type { AttackBlockVariant } from '@/core/attacks/attackSequence.types';
+import type { AttackKind } from '@/core/attacks/attackSequence.types';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 
 export const AttackRow = styled.div`
@@ -27,7 +27,7 @@ export const AttackMain = styled.div`
  * Focused attacks read via a crisp 1px accent border plus the corner brackets,
  * with no heavy halo, which clashed with the brackets.
  */
-const VARIANT_STYLES: Partial<Record<AttackBlockVariant, string>> = {
+const VARIANT_STYLES: Partial<Record<AttackKind, string>> = {
   charge: `
     border-color: var(--accent-charge);
     background: color-mix(in srgb, var(--accent-charge-soft) 16%, var(--panel));
@@ -39,7 +39,7 @@ const VARIANT_STYLES: Partial<Record<AttackBlockVariant, string>> = {
 };
 
 export const AttackBlock = styled.div<{
-  $variant: AttackBlockVariant;
+  $variant: AttackKind;
   $disabled: boolean;
 }>`
   position: relative;

@@ -20,7 +20,7 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
  * Effective enemy DEF stat for this row: the charge into Defensive Stance gains
  * `DEFENSIVE_STANCE_DEF_BONUS`, capped at `DEF_MAX`.
  */
-export const enemyDefBaseForAttackRow = (
+export const enemyDefForSwing = (
   enemyDef: number,
   attackIndex: number,
   chargeAttackIndex: number,

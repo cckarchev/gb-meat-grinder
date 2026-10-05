@@ -33,21 +33,29 @@ const withFlatDamage = (
 };
 
 /**
- * Convolves every swing's damage distribution, then reports the chance the
- * activation drops the target and the mean damage dealt. `damageForNetOf`
- * selects the per-swing damage model (play-to-kill vs. sticking to picks).
- * `flatDamage` is guaranteed (special abilities) and applied as a baseline.
+ * Convolves every swing's damage distribution, where each swing only deals the
+ * damage of the lines actually picked, then reports the chance the activation
+ * drops the target and the mean damage dealt. `flatDamage` is guaranteed
+ * (special abilities) and applied as a baseline.
  */
-const activationOutcome = (
+export const planDamageOutcome = (
+  attacker: AttackerData,
   attacks: readonly AttackRollContext[],
+  wrapPicks: readonly (readonly WrapPick[])[],
+  mods: PlaybookDamageMods,
   flatDamage: number,
   targetHp: number,
-  damageForNetOf: (attack: AttackRollContext) => DamageForNet,
 ): ActivationDamageOutcome => {
   let total: DamageDistribution = new Map([[0, 1]]);
 
   for (const attack of attacks) {
-    const swing = swingDamageDistribution(attack, damageForNetOf(attack));
+    const picks = wrapPicks[attack.attackIndex] ?? [];
+
+    const pickedDamage: DamageForNet = (net) => {
+      return pickedDamageForNet(attacker, mods, picks, net);
+    };
+
+    const swing = swingDamageDistribution(attack, pickedDamage);
 
     total = convolve(total, swing);
   }
@@ -77,24 +85,4 @@ const activationOutcome = (
     expectedHpRemaining,
     damageDistribution,
   };
-};
-
-/** Each swing only deals the damage of the lines you actually picked. */
-export const planDamageOutcome = (
-  attacker: AttackerData,
-  attacks: readonly AttackRollContext[],
-  wrapPicks: readonly (readonly WrapPick[])[],
-  mods: PlaybookDamageMods,
-  flatDamage: number,
-  targetHp: number,
-): ActivationDamageOutcome => {
-  const pickedDamageOf = (attack: AttackRollContext): DamageForNet => {
-    const picks = wrapPicks[attack.attackIndex] ?? [];
-
-    return (net) => {
-      return pickedDamageForNet(attacker, mods, picks, net);
-    };
-  };
-
-  return activationOutcome(attacks, flatDamage, targetHp, pickedDamageOf);
 };

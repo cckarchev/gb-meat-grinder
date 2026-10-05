@@ -1,61 +1,19 @@
-/**
- * Playbook lookups and wrap slot budgets. Everything model-specific comes from
- * the `attacker` argument; the engine reads effect flags on results, never their
- * id strings.
- */
+/** Wrap slot budgets: how many playbook results a roll resolves and what each slot can reach. */
 
 import type {
   CharacterPlayPickSlot,
-  PlaybookChoiceId,
-  PlaybookResult,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { maxPlaybookNet, playbookIndex } from '@/core/playbook/playbookIndex';
+import {
+  maxPlaybookNet,
+  netSuccessesForChoice,
+} from '@/core/playbook/playbookIndex';
 import {
   FIRST_WRAP_PICK_INDEX,
   MIN_PLAYBOOK_NET,
   MIN_WRAP_SLOTS,
 } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
-
-export const getPlaybookResult = (
-  attacker: AttackerData,
-  id: PlaybookChoiceId,
-): PlaybookResult => {
-  const result = playbookIndex(attacker).byId.get(id);
-
-  if (!result) {
-    throw new Error(`Unknown playbook id: ${id}`);
-  }
-
-  return result;
-};
-
-export const choiceUsesCharacterPlay = (
-  attacker: AttackerData,
-  id: WrapPick,
-): id is PlaybookChoiceId => {
-  if (id == null) {
-    return false;
-  }
-
-  return getPlaybookResult(attacker, id).picksCharacterPlay === true;
-};
-
-export const netSuccessesForChoice = (
-  attacker: AttackerData,
-  id: PlaybookChoiceId,
-): number => {
-  const column = attacker.playbook.find((candidate) => {
-    return candidate.results.some((result) => result.id === id);
-  });
-
-  if (!column) {
-    throw new Error(`No column for id ${id}`);
-  }
-
-  return column.netSuccesses;
-};
 
 /** How many playbook results this attack can resolve (ceil(maxNet / card cap)). */
 export const wrapSlotCount = (

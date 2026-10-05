@@ -34,10 +34,10 @@ import type {
   PlaybookResult,
   WrapPick,
 } from '@/core/playbook/playbook.types';
+import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
 import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
 import { damageModifierBreakdown } from '@/core/playbook/rowDamage';
 import {
-  choiceUsesCharacterPlay,
   defaultCharacterPlayPicks,
   defaultWrapPicks,
   wrapSlotBudget,

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { CharacterPlay } from '@/core/playbook/playbook.types';
 import {
   armorReductionBeforeAttack,
-  rowEffectsForPick,
+  pickEffectsForLaterSwings,
 } from '@/core/playbook/rowEffects';
 import { makeAttacker, NO_MODS, PLAY_ARM } from '@/core/testing/fixtures';
 
@@ -19,11 +19,11 @@ describe('Knock Down', () => {
 
   it('gives later swings -1 DEF only from the first KD', () => {
     expect(
-      rowEffectsForPick(attacker, wrapPicks, noPlays, 0, 0, NO_MODS, 2),
+      pickEffectsForLaterSwings(attacker, wrapPicks, noPlays, 0, 0, NO_MODS, 2),
     ).toEqual({ ...NO_EFFECTS, defReductionForLater: 1 });
 
     expect(
-      rowEffectsForPick(attacker, wrapPicks, noPlays, 1, 0, NO_MODS, 2),
+      pickEffectsForLaterSwings(attacker, wrapPicks, noPlays, 1, 0, NO_MODS, 2),
     ).toEqual(NO_EFFECTS);
   });
 });
@@ -34,7 +34,7 @@ describe('character plays in row effects', () => {
 
   it('applies a play once and ignores a repeated Once Per Turn pick', () => {
     expect(
-      rowEffectsForPick(
+      pickEffectsForLaterSwings(
         attacker,
         gbTwice,
         [['playTac'], ['playTac']],
@@ -46,7 +46,7 @@ describe('character plays in row effects', () => {
     ).toEqual(NO_EFFECTS);
 
     expect(
-      rowEffectsForPick(
+      pickEffectsForLaterSwings(
         attacker,
         gbTwice,
         [['playTac'], ['playDef']],
@@ -60,7 +60,15 @@ describe('character plays in row effects', () => {
 
   it('falls back to the default play on an empty slot', () => {
     expect(
-      rowEffectsForPick(attacker, gbTwice, [[null], [null]], 0, 0, NO_MODS, 2),
+      pickEffectsForLaterSwings(
+        attacker,
+        gbTwice,
+        [[null], [null]],
+        0,
+        0,
+        NO_MODS,
+        2,
+      ),
     ).toEqual({ ...NO_EFFECTS, tacBonusForLater: 2 });
   });
 

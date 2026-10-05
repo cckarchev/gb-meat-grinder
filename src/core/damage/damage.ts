@@ -6,7 +6,7 @@ import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
 } from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/wrapSlots';
+import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import {
   ARM_MIN,
   DEF_MAX,
@@ -83,7 +83,7 @@ const buffsIgnoreToughHide = (
 
 /**
  * Enemy DEF after pre-attack conditions. Knocked Down and Snared each give the
- * attacker −1 DEF. The result is intentionally NOT floored at {@link DEF_MIN}:
+ * attacker −1 DEF. The result is intentionally NOT floored at `DEF_MIN`:
  * the to-hit roll floors at 2+ elsewhere (see `effectiveDefMinRoll`), and any
  * reduction past that floor is surfaced here so the engine can convert the
  * surplus into bonus attack dice (see `tacBonusFromDefReductionCap`).

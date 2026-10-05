@@ -3,7 +3,7 @@
 import { picksBeforeInActivation } from '@/core/attacks/attackRows';
 import {
   characterPlaysForAttacker,
-  defaultCharacterPlayId,
+  effectivePlayForPick,
   getCharacterPlay,
 } from '@/core/characterPlays/characterPlayLookup';
 import type {
@@ -14,7 +14,7 @@ import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { choiceUsesCharacterPlay } from '@/core/playbook/wrapSlots';
+import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /**
@@ -46,9 +46,12 @@ export const characterPlayUsageBeforePick = (
       continue;
     }
 
-    const play =
-      characterPlayPicks[earlier.attackIndex]?.[earlier.pickIndex] ??
-      defaultCharacterPlayId(attacker);
+    const play = effectivePlayForPick(
+      attacker,
+      characterPlayPicks,
+      earlier.attackIndex,
+      earlier.pickIndex,
+    );
 
     // Repeatable plays may be taken again and stack, so they never count as
     // "used up": they stay available and keep applying on later swings.

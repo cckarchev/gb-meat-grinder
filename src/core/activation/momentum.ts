@@ -81,7 +81,7 @@ export const momentumPoolBeforeBonusTime = (
 /**
  * Total momentum after this attack in activation order: starting momentum,
  * plus heat picks through this attack, minus Bonus Time spends through this attack.
- * Earned momentum is not capped at 20.
+ * Earned momentum is not capped at `STARTING_MOMENTUM_RANGE.max`.
  */
 export const momentumAfterAttackInclusive = (
   attacker: AttackerData,

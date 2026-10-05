@@ -6,7 +6,7 @@ import type {
   PlaybookChoiceId,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { choiceUsesCharacterPlay } from '@/core/playbook/wrapSlots';
+import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /** Character plays this attacker's GB / 1GB results can trigger (from the catalog). */
@@ -32,6 +32,18 @@ export const defaultCharacterPlayId = (
   attacker: AttackerData,
 ): CharacterPlayPickSlot => {
   return characterPlaysForAttacker(attacker)[0]?.id ?? null;
+};
+
+/** The play a pick resolves to: the one in its slot, or the default when empty. */
+export const effectivePlayForPick = (
+  attacker: AttackerData,
+  characterPlayPicks: CharacterPlayPickSlot[][],
+  attackIndex: number,
+  pickIndex: number,
+): CharacterPlayPickSlot => {
+  const slot = characterPlayPicks[attackIndex]?.[pickIndex];
+
+  return slot ?? defaultCharacterPlayId(attacker);
 };
 
 /**

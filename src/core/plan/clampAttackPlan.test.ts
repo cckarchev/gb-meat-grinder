@@ -4,7 +4,7 @@ import type {
   CharacterPlayPickSlot,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/wrapSlots';
+import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { makeAttacker, NO_MODS, TEST_PLAYBOOK } from '@/core/testing/fixtures';
 import type { AttackerData } from '@/data/attackers/attacker.types';

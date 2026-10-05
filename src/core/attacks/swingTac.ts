@@ -2,12 +2,12 @@
 
 import { isChargeSwing } from '@/core/attacks/attackStructure';
 import {
+  carriedEffectsBeforeAttack,
   coverTacPenaltyForAttack,
-  modifiersBeforeAttack,
 } from '@/core/attacks/earlierSwingEffects';
 import {
   effectiveDefMinRoll,
-  enemyDefBaseForAttackRow,
+  enemyDefForSwing,
   tacBonusFromDefReductionCap,
 } from '@/core/attacks/swingDefense';
 import type {
@@ -21,7 +21,8 @@ import {
 } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
-export const tacForAttack = (
+/** A swing's base TAC plus the charge bonus and every already computed modifier. */
+export const sumSwingTac = (
   attacker: AttackerData,
   attackIndex: number,
   chargeAttackIndex: number,
@@ -66,7 +67,7 @@ export const swingTacAndDef = (
   initialTacModifier: number,
   activeBaseCount: number,
 ): SwingTacAndDef => {
-  const { tacBonus, defReduction } = modifiersBeforeAttack(
+  const { tacBonus, defReduction } = carriedEffectsBeforeAttack(
     attacker,
     wrapPicks,
     characterPlayPicks,
@@ -75,7 +76,7 @@ export const swingTacAndDef = (
     activeBaseCount,
   );
 
-  const defForRow = enemyDefBaseForAttackRow(
+  const defForRow = enemyDefForSwing(
     baseDef,
     attackIndex,
     chargeAttackIndex,
@@ -97,7 +98,7 @@ export const swingTacAndDef = (
   const bonusTimeTac =
     bonusTimeByAttack[attackIndex] === true ? BONUS_TIME_TAC_BONUS : 0;
 
-  const tac = tacForAttack(
+  const tac = sumSwingTac(
     attacker,
     attackIndex,
     chargeAttackIndex,

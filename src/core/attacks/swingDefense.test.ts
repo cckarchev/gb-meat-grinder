@@ -1,18 +1,18 @@
 import { describe, expect, it } from 'vitest';
 import {
   effectiveDefMinRoll,
-  enemyDefBaseForAttackRow,
+  enemyDefForSwing,
   tacBonusFromDefReductionCap,
 } from '@/core/attacks/swingDefense';
 
 const STANCE = true;
 
-describe('enemyDefBaseForAttackRow', () => {
+describe('enemyDefForSwing', () => {
   it('adds +1 DEF from Defensive Stance on the charge only, capped at 6', () => {
-    expect(enemyDefBaseForAttackRow(4, 0, 0, STANCE, 2)).toBe(5);
-    expect(enemyDefBaseForAttackRow(6, 0, 0, STANCE, 2)).toBe(6);
-    expect(enemyDefBaseForAttackRow(4, 1, 0, STANCE, 2)).toBe(4);
-    expect(enemyDefBaseForAttackRow(4, 0, 0, !STANCE, 2)).toBe(4);
+    expect(enemyDefForSwing(4, 0, 0, STANCE, 2)).toBe(5);
+    expect(enemyDefForSwing(6, 0, 0, STANCE, 2)).toBe(6);
+    expect(enemyDefForSwing(4, 1, 0, STANCE, 2)).toBe(4);
+    expect(enemyDefForSwing(4, 0, 0, !STANCE, 2)).toBe(4);
   });
 });
 

@@ -8,7 +8,7 @@ import {
   probHeatBackground,
   probHeatBorder,
   probHeatTextColor,
-} from '@/core/shared/probStyle';
+} from '@/components/attacks/playbook/probStyle';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 
 /** Rule and spacing that separate a wrap slot from the one above it. */

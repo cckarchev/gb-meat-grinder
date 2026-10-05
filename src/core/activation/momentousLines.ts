@@ -7,7 +7,7 @@ import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/wrapSlots';
+import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import { MOMENTOUS_PICK_MOMENTUM } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 

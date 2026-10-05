@@ -7,18 +7,17 @@ import {
   activationAttackIndices,
   attackRowIsActive,
   attackRowIsBerserker,
-  baseAttackDealtDamage,
+  basePicksDealDamage,
   berserkerSourceBaseIndex,
   picksBeforeInActivation,
   picksOnEarlierSwings,
 } from '@/core/attacks/attackRows';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
-import { coverSwingClockIndices } from '@/core/playbook/coverClearing';
 import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import {
   armorReductionBeforeAttack,
-  rowEffectsForPick,
+  pickEffectsForLaterSwings,
 } from '@/core/playbook/rowEffects';
 import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
 
@@ -50,19 +49,18 @@ describe('activation order', () => {
     );
   });
 
-  it('keeps a fixed base then Berserker clock for cover', () => {
-    expect(coverSwingClockIndices(berserker, 2)).toEqual([0, 2, 1, 3]);
+  it('maps Berserker rows to their source base', () => {
     expect(attackRowIsBerserker(berserker, 2)).toBe(true);
     expect(attackRowIsBerserker(berserker, 1)).toBe(false);
     expect(berserkerSourceBaseIndex(berserker, 3)).toBe(1);
   });
 
-  it('knows whether a base dealt damage', () => {
-    expect(baseAttackDealtDamage(berserker, ['dodge', 'one'], NO_MODS)).toBe(
+  it('knows whether base picks deal damage', () => {
+    expect(basePicksDealDamage(berserker, ['dodge', 'one'], NO_MODS)).toBe(
       true,
     );
 
-    expect(baseAttackDealtDamage(berserker, ['one'], TOUGH_HIDE)).toBe(false);
+    expect(basePicksDealDamage(berserker, ['one'], TOUGH_HIDE)).toBe(false);
   });
 
   it('projects damage per active row when every pick hits', () => {
@@ -141,7 +139,7 @@ describe('rows outside the activation', () => {
 
   it('give no effects for an empty pick', () => {
     expect(
-      rowEffectsForPick(attacker, [[null]], [[null]], 0, 0, NO_MODS, 1),
+      pickEffectsForLaterSwings(attacker, [[null]], [[null]], 0, 0, NO_MODS, 1),
     ).toEqual(NO_EFFECTS);
   });
 });

@@ -10,13 +10,16 @@ import type {
   AttackPlanClampParams,
 } from '@/core/plan/attackPlan.types';
 import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
-import { cheapestChoiceId } from '@/core/playbook/playbookIndex';
-import { getPlaybookResult, wrapSlotBudget } from '@/core/playbook/wrapSlots';
+import {
+  cheapestChoiceId,
+  getPlaybookResult,
+} from '@/core/playbook/playbookIndex';
+import { wrapSlotBudget } from '@/core/playbook/wrapSlots';
 import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /** Cheapest playbook line at or under `budget` that does not apply Knock Down. */
-const firstPickInBudgetExcludingKd = (
+const cheapestNonKnockDownChoice = (
   attacker: AttackerData,
   budget: number,
 ): PlaybookChoiceId => {
@@ -83,7 +86,7 @@ export const stripDuplicateKnockDown = (
       }
 
       const slotBudget = wrapSlotBudget(attacker, maxNet, slot);
-      const replacement = firstPickInBudgetExcludingKd(attacker, slotBudget);
+      const replacement = cheapestNonKnockDownChoice(attacker, slotBudget);
 
       picks[slot] = replacement;
       draft.characterPlayPicks[attackIndex][slot] = initialCharacterPlayFor(

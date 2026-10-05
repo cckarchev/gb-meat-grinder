@@ -56,7 +56,7 @@ export type PlaybookResult = {
   damage: number;
   /** True if this line generates momentum (momentous). */
   momentum?: boolean;
-  /** After GB / 1GB, pick a character play (once each per activation). */
+  /** After GB / 1GB, pick a character play (Once Per Turn unless `repeatable`). */
   picksCharacterPlay?: boolean;
   /** `>` / `>>`: removes the enemy's cover for later swings this activation. */
   clearsCover?: boolean;

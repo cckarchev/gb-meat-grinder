@@ -9,10 +9,8 @@ import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
 } from '@/core/playbook/playbook.types';
-import {
-  choiceUsesCharacterPlay,
-  rowHasWrapContinuation,
-} from '@/core/playbook/wrapSlots';
+import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
+import { rowHasWrapContinuation } from '@/core/playbook/wrapSlots';
 import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
