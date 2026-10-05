@@ -1,14 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import { AttackSwingRow } from '@/components/attacks/AttackSwingRow';
 import { AttacksPanelSummary } from '@/components/attacks/AttacksPanelSummary';
-import { KILLING_BLOW_MOMENTUM } from '@/core/constants';
-import { specialAbilityFlatDamage } from '@/core/damage';
-import {
-  momentumAfterAttackInclusive,
-  momentumPoolBeforeBonusTime,
-} from '@/core/momentum';
-import { damageIfAllHitsWrap } from '@/core/rowDamage';
+import { useWrapExpansion } from '@/components/attacks/useWrapExpansion';
+import { projectSwings } from '@/core/swingProjections';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 const AttacksList = styled.div`
@@ -38,104 +33,42 @@ export const AttacksPanel = () => {
   } = useMeatGrinderSimulation();
 
   const effectiveChargeAttackIndex = charging ? chargeAttackIndex : -1;
+  const wrapExpansion = useWrapExpansion();
 
-  const [wrapExpanded, setWrapExpanded] = useState(() => new Set<number>());
-
-  const toggleWrapExpanded = (attackIndex: number) => {
-    setWrapExpanded((prev) => {
-      const next = new Set(prev);
-
-      if (next.has(attackIndex)) {
-        next.delete(attackIndex);
-      } else {
-        next.add(attackIndex);
-      }
-
-      return next;
-    });
-  };
-
-  const rowDamageIfHit = useMemo(
+  const projection = useMemo(
     () =>
-      damageIfAllHitsWrap(
+      projectSwings({
         attacker,
-        effectiveWrapPicks,
+        attacks,
+        killingBlowIndex,
+        wrapPicks: effectiveWrapPicks,
+        bonusTimeByAttack: effectiveBonusTimeByAttack,
         damageMods,
-        activeBaseCount,
-      ),
-    [attacker, effectiveWrapPicks, damageMods, activeBaseCount],
-  );
-
-  const remainingHpAfterSwing = useMemo(() => {
-    const out: number[] = [];
-    // Special-ability damage is guaranteed and untied to a swing, so apply it
-    // up front as a baseline before the per-swing chip damage.
-    let dealt = specialAbilityFlatDamage(attacker, specialAbilities);
-
-    for (const ctx of attacks) {
-      dealt += rowDamageIfHit[ctx.attackIndex];
-      out.push(Math.max(0, targetHp - dealt));
-    }
-
-    return out;
-  }, [attacker, specialAbilities, attacks, rowDamageIfHit, targetHp]);
-
-  const momentumAfterSwing = useMemo(() => {
-    const base = attacks.map((ctx) =>
-      momentumAfterAttackInclusive(
-        attacker,
-        effectiveWrapPicks,
-        damageMods,
-        ctx.attackIndex,
+        specialAbilities,
         startingMomentum,
-        effectiveBonusTimeByAttack,
         activeBaseCount,
-      ),
-    );
-
-    if (killingBlowIndex < 0) {
-      return base;
-    }
-
-    // The activation ends on the killing blow: that swing earns +1 momentum and
-    // later (disabled) swings freeze at the post-kill total.
-    const afterKill = base[killingBlowIndex] + KILLING_BLOW_MOMENTUM;
-
-    return base.map((m, idx) => (idx >= killingBlowIndex ? afterKill : m));
-  }, [
-    attacker,
-    attacks,
-    effectiveWrapPicks,
-    damageMods,
-    startingMomentum,
-    effectiveBonusTimeByAttack,
-    activeBaseCount,
-    killingBlowIndex,
-  ]);
-
-  const bonusTimePoolBeforeSwing = useMemo(
-    () =>
-      attacks.map((ctx) =>
-        momentumPoolBeforeBonusTime(
-          attacker,
-          effectiveWrapPicks,
-          damageMods,
-          ctx.attackIndex,
-          startingMomentum,
-          effectiveBonusTimeByAttack,
-          activeBaseCount,
-        ),
-      ),
+        targetHp,
+      }),
     [
       attacker,
       attacks,
+      killingBlowIndex,
       effectiveWrapPicks,
-      damageMods,
-      startingMomentum,
       effectiveBonusTimeByAttack,
+      damageMods,
+      specialAbilities,
+      startingMomentum,
       activeBaseCount,
+      targetHp,
     ],
   );
+
+  const isSwingDisabled = (displayIdx: number): boolean => {
+    const ignored = displayIdx === ignoredAttackIndex;
+    const afterKill = killingBlowIndex >= 0 && displayIdx > killingBlowIndex;
+
+    return ignored || afterKill;
+  };
 
   return (
     <AttacksList>
@@ -144,10 +77,7 @@ export const AttacksPanel = () => {
           key={a.attackIndex}
           attack={a}
           displayIdx={displayIdx}
-          disabled={
-            displayIdx === ignoredAttackIndex ||
-            (killingBlowIndex >= 0 && displayIdx > killingBlowIndex)
-          }
+          disabled={isSwingDisabled(displayIdx)}
           isKillingBlow={displayIdx === killingBlowIndex}
           armor={a.armor}
           charging={charging}
@@ -156,14 +86,14 @@ export const AttacksPanel = () => {
           wrapPicks={wrapPicks}
           characterPlayPicks={characterPlayPicks}
           damageMods={damageMods}
-          remainingHpIfHit={remainingHpAfterSwing[displayIdx]}
-          momentum={momentumAfterSwing[displayIdx]}
+          remainingHpIfHit={projection.remainingHp[displayIdx]}
+          momentum={projection.momentum[displayIdx]}
           bonusTime={effectiveBonusTimeByAttack[a.attackIndex] === true}
-          bonusTimeMomentumPool={bonusTimePoolBeforeSwing[displayIdx]}
+          bonusTimeMomentumPool={projection.bonusTimePool[displayIdx]}
           onBonusTimeChange={(attackIndex, value) =>
             dispatch({ type: 'bonusTime', attackIndex, value })
           }
-          wrapOpen={wrapExpanded.has(a.attackIndex)}
+          wrapOpen={wrapExpansion.isOpen(a.attackIndex)}
           onChargeAttackIndexChange={(index) =>
             dispatch({ type: 'chargeAttackIndex', value: index })
           }
@@ -178,7 +108,7 @@ export const AttacksPanel = () => {
               pick,
             })
           }
-          onToggleWrapExpansion={() => toggleWrapExpanded(a.attackIndex)}
+          onToggleWrapExpansion={() => wrapExpansion.toggle(a.attackIndex)}
           onWrapContinuationCleared={(attackIndex) =>
             dispatch({ type: 'clearWrapContinuation', attackIndex })
           }

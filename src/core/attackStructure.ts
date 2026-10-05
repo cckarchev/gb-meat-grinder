@@ -1,3 +1,4 @@
+import { CHARGE_INFLUENCE_COST } from '@/core/constants';
 import type { AttackerData } from '@/types/core/attacker';
 
 /**
@@ -12,7 +13,7 @@ export const chargeInfluenceCost = (
     return 0;
   }
 
-  return attacker.furious ? 0 : 2;
+  return attacker.furious ? 0 : CHARGE_INFLUENCE_COST;
 };
 
 /**

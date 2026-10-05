@@ -1,12 +1,10 @@
-import { useMemo } from 'react';
 import styled from 'styled-components';
-import { InfoTip } from '@/components/InfoTip';
+import { AttackerModelSelect } from '@/components/AttackerModelSelect';
+import { AttackerPreAttackOptions } from '@/components/AttackerPreAttackOptions';
 import { StepControl } from '@/components/StepControl';
-import { CheckOption } from '@/components/targetPanelPrimitives';
-import { Panel, PanelTitle, Select } from '@/components/ui';
+import { Panel, PanelTitle } from '@/components/ui';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
-import type { AttackerData } from '@/types/core/attacker';
 
 /**
  * Model spans the full width on its own row; the paired steppers (Influence /
@@ -28,24 +26,6 @@ const ControlsGrid = styled.div`
   }
 `;
 
-const ModelField = styled.label`
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  grid-column: 1 / -1;
-`;
-
-const ModelFieldLabel = styled.span`
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--muted);
-`;
-
-const ModelSelect = styled(Select)`
-  width: 100%;
-`;
-
 /** Visual break before the pre-attack toggles; no heading, just a rule. */
 const PreAttackSection = styled.div`
   margin-top: 1rem;
@@ -61,65 +41,21 @@ const PreAttackSection = styled.div`
 export const AttackerPanel = () => {
   const {
     attacker,
-    availableAttackers,
-    damageMods,
-    specialAbilities,
     startingMomentum,
     gangingUp,
     crowdingOut,
     influence,
-    charging,
     dispatch,
   } = useMeatGrinderSimulation();
 
   const gangingUpLabel = gangingUp > 0 ? `+${gangingUp}` : '0';
   const crowdingOutLabel = crowdingOut > 0 ? `-${crowdingOut}` : '0';
 
-  const guildGroups = useMemo(() => {
-    const byGuild = new Map<string, { name: string; models: AttackerData[] }>();
-
-    for (const a of availableAttackers) {
-      const group = byGuild.get(a.guild.id) ?? {
-        name: a.guild.name,
-        models: [],
-      };
-
-      group.models.push(a);
-      byGuild.set(a.guild.id, group);
-    }
-
-    return [...byGuild.values()]
-      .map((g) => ({
-        name: g.name,
-        models: [...g.models].sort((x, y) => x.name.localeCompare(y.name)),
-      }))
-      .sort((x, y) => x.name.localeCompare(y.name));
-  }, [availableAttackers]);
-
   return (
     <Panel>
       <PanelTitle>Attacker</PanelTitle>
       <ControlsGrid>
-        <ModelField>
-          <ModelFieldLabel>Model</ModelFieldLabel>
-          <ModelSelect
-            value={attacker.id}
-            onChange={(e) =>
-              dispatch({ type: 'selectAttacker', id: e.target.value })
-            }
-            aria-label="Select attacker model"
-          >
-            {guildGroups.map((group) => (
-              <optgroup key={group.name} label={group.name}>
-                {group.models.map((a) => (
-                  <option key={a.id} value={a.id}>
-                    {a.name}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </ModelSelect>
-        </ModelField>
+        <AttackerModelSelect />
         <StepControl
           label="Influence"
           value={influence}
@@ -162,77 +98,7 @@ export const AttackerPanel = () => {
         />
       </ControlsGrid>
       <PreAttackSection>
-        <CheckOption>
-          <input
-            type="checkbox"
-            checked={charging}
-            onChange={(e) =>
-              dispatch({ type: 'charging', value: e.target.checked })
-            }
-          />
-          <InfoTip
-            content={
-              attacker.furious
-                ? 'Charge this activation (free for Furious).'
-                : 'Charge this activation (costs 2 influence).'
-            }
-          >
-            Charging{attacker.furious ? ' (free)' : ' (-2 influence)'}
-          </InfoTip>
-        </CheckOption>
-        {attacker.guild.buffs.map((buff) => {
-          const disabled =
-            attacker.excludedGuildBuffs?.includes(buff.id) ?? false;
-
-          return (
-            <CheckOption key={buff.id} $disabled={disabled}>
-              <input
-                type="checkbox"
-                disabled={disabled}
-                checked={!disabled && damageMods.buffs[buff.id] === true}
-                onChange={(e) =>
-                  dispatch({
-                    type: 'damageMods',
-                    value: {
-                      ...damageMods,
-                      buffs: {
-                        ...damageMods.buffs,
-                        [buff.id]: e.target.checked,
-                      },
-                    },
-                  })
-                }
-              />
-              <InfoTip
-                content={
-                  disabled
-                    ? `${buff.tooltip} (not available to ${attacker.name})`
-                    : buff.tooltip
-                }
-              >
-                {buff.label}
-              </InfoTip>
-            </CheckOption>
-          );
-        })}
-        {(attacker.specialAbilities ?? []).map((ability) => (
-          <CheckOption key={ability.id}>
-            <input
-              type="checkbox"
-              checked={specialAbilities[ability.id] === true}
-              onChange={(e) =>
-                dispatch({
-                  type: 'specialAbility',
-                  id: ability.id,
-                  value: e.target.checked,
-                })
-              }
-            />
-            <InfoTip content={ability.tooltip}>
-              {ability.label} (+{ability.flatDamage})
-            </InfoTip>
-          </CheckOption>
-        ))}
+        <AttackerPreAttackOptions />
       </PreAttackSection>
     </Panel>
   );
