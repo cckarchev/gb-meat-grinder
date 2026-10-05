@@ -7,6 +7,7 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/wrapSlots';
+import { EMPTY_VALUE_LABEL } from '@/core/shared/format';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /**
@@ -64,5 +65,5 @@ export const formatWrapRowSelectionLabel = (
     labels.push(playbookLineDisplayLabel(attacker, id, damageMods));
   }
 
-  return labels.length > 0 ? labels.join(' → ') : '-';
+  return labels.length > 0 ? labels.join(' → ') : EMPTY_VALUE_LABEL;
 };

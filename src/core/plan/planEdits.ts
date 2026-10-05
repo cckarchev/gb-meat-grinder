@@ -9,7 +9,10 @@ import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
 } from '@/core/playbook/playbook.types';
-import { choiceUsesCharacterPlay } from '@/core/playbook/wrapSlots';
+import {
+  choiceUsesCharacterPlay,
+  rowHasWrapContinuation,
+} from '@/core/playbook/wrapSlots';
 import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
@@ -72,16 +75,16 @@ export const nextPlanAfterClearWrapContinuation = (
 ): AttackPlan | null => {
   const row = prev.wrapPicks[attackIndex];
 
-  if (row.length <= 1) {
+  if (!rowHasWrapContinuation(row)) {
     return null;
   }
 
-  const firstPick = row[0];
+  const firstPick = row[PRIMARY_PICK_INDEX];
   const keepsPlay =
     firstPick != null && choiceUsesCharacterPlay(attacker, firstPick);
 
   const firstPlay: CharacterPlayPickSlot = keepsPlay
-    ? (prev.characterPlayPicks[attackIndex]?.[0] ?? null)
+    ? (prev.characterPlayPicks[attackIndex]?.[PRIMARY_PICK_INDEX] ?? null)
     : null;
 
   const nextPicks = withRowReplaced(prev.wrapPicks, attackIndex, () => {

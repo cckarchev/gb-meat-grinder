@@ -37,11 +37,11 @@ export const characterPlayEffectSummary = (play: CharacterPlay): string => {
   }
 
   if (play.defReductionForLater) {
-    effects.push(`−${play.defReductionForLater} enemy DEF on later attacks`);
+    effects.push(`-${play.defReductionForLater} enemy DEF on later attacks`);
   }
 
   if (play.armorReduction) {
-    effects.push(`−${play.armorReduction} enemy ARM on later attacks`);
+    effects.push(`-${play.armorReduction} enemy ARM on later attacks`);
   }
 
   const effect = effects.length

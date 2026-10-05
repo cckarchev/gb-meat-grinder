@@ -57,15 +57,15 @@ describe('character play effects', () => {
     };
 
     expect(characterPlayEffectSummary(PLAY_DEF)).toBe(
-      '−1 enemy DEF on later attacks. Once per turn.',
+      '-1 enemy DEF on later attacks. Once per turn.',
     );
 
     expect(characterPlayEffectSummary(PLAY_ARM)).toBe(
-      '−1 enemy ARM on later attacks. Once per turn.',
+      '-1 enemy ARM on later attacks. Once per turn.',
     );
 
     expect(characterPlayEffectSummary(combined)).toBe(
-      '+1 TAC on later attacks; −1 enemy ARM on later attacks. Once per turn.',
+      '+1 TAC on later attacks; -1 enemy ARM on later attacks. Once per turn.',
     );
   });
 });
