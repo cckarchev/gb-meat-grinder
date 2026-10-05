@@ -68,6 +68,3 @@ export type MeatGrinderSimulation = {
   killingBlowIndex: number;
   dispatch: Dispatch<MeatGrinderAction>;
 };
-
-/** Momentum gained for taking the target out (killing blow). */
-export const KILLING_BLOW_MOMENTUM = 1;

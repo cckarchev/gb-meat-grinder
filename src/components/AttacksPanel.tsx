@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { AttackSwingRow } from '@/components/attacks/AttackSwingRow';
 import { AttacksPanelSummary } from '@/components/attacks/AttacksPanelSummary';
+import { KILLING_BLOW_MOMENTUM } from '@/core/constants';
 import { specialAbilityFlatDamage } from '@/core/damage';
 import {
   momentumAfterAttackInclusive,
@@ -9,7 +10,6 @@ import {
 } from '@/core/momentum';
 import { damageIfAllHitsWrap } from '@/core/rowDamage';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-import { KILLING_BLOW_MOMENTUM } from '@/types/gbMeatGrinder/simulation';
 
 const AttacksList = styled.div`
   display: flex;

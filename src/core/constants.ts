@@ -14,3 +14,6 @@ export const HP_DEFAULT = 14;
 /** Enemy stats a fresh calculator starts with. */
 export const DEF_DEFAULT = 4;
 export const ARM_DEFAULT = 1;
+
+/** Momentum gained for taking the target out (killing blow). */
+export const KILLING_BLOW_MOMENTUM = 1;
