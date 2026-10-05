@@ -1,16 +1,10 @@
-/** What earlier swings in the activation leave behind for a later one: cover cleared, TAC and DEF carry-over. */
+/** What earlier swings in the activation leave behind for a later one: cover cleared. */
 
-import { picksOnEarlierSwings } from '@/core/attacks/attackRows';
 import {
   coverSwingClockIndices,
   wrapPickClearsCover,
 } from '@/core/playbook/coverClearing';
-import type {
-  CharacterPlayPickSlot,
-  PlaybookDamageMods,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
-import { pickEffectsForLaterSwings } from '@/core/playbook/rowEffects';
+import type { WrapPick } from '@/core/playbook/playbook.types';
 import { COVER_TAC_PENALTY } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
@@ -48,45 +42,4 @@ export const coverTacPenaltyForAttack = (
   });
 
   return coverCleared ? 0 : COVER_TAC_PENALTY;
-};
-
-/**
- * TAC and DEF effects carried from every pick on attacks strictly before
- * `attackIndex` in activation order (base → its berserker → next base → …).
- */
-export const carriedEffectsBeforeAttack = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
-  attackIndex: number,
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
-): { tacBonus: number; defReduction: number } => {
-  const earlierPicks = picksOnEarlierSwings(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-    attackIndex,
-  );
-
-  let tacBonus = 0;
-  let defReduction = 0;
-
-  for (const earlier of earlierPicks) {
-    const effects = pickEffectsForLaterSwings(
-      attacker,
-      wrapPicks,
-      characterPlayPicks,
-      earlier.attackIndex,
-      earlier.pickIndex,
-      damageMods,
-      activeBaseCount,
-    );
-
-    tacBonus += effects.tacBonusForLater;
-    defReduction += effects.defReductionForLater;
-  }
-
-  return { tacBonus, defReduction };
 };

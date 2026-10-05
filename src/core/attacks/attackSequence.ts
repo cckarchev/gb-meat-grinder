@@ -1,5 +1,9 @@
 /** Roll context and hit odds for every swing in the activation. */
 
+import {
+  activationTimeline,
+  swingStateAt,
+} from '@/core/attacks/activationTimeline';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
 import type {
   ActivationRollParams,
@@ -18,7 +22,7 @@ export const computeAttackSequence = (
   plan: AttackPlan,
   params: ActivationRollParams,
 ): { attacks: AttackRollContext[] } => {
-  const { wrapPicks, characterPlayPicks } = plan;
+  const { wrapPicks } = plan;
   const { attacker, armor, damageMods, activeBaseCount } = params;
 
   const attacks: AttackRollContext[] = [];
@@ -30,17 +34,19 @@ export const computeAttackSequence = (
     activeBaseCount,
   );
 
+  const timeline = activationTimeline(plan, params);
+
   for (const attackIndex of order) {
-    const { tac, defMinRoll } = swingTacAndDef(plan, attackIndex, params);
+    const { tac, defMinRoll } = swingTacAndDef(
+      plan,
+      attackIndex,
+      params,
+      timeline,
+    );
 
     const rowArmor = armorForAttackRow(
-      attacker,
       armor,
-      wrapPicks,
-      characterPlayPicks,
-      damageMods,
-      attackIndex,
-      activeBaseCount,
+      swingStateAt(timeline, attackIndex),
     );
 
     const pHit = hitProbabilityPerDie(defMinRoll);

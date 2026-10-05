@@ -1,5 +1,9 @@
 /** Highest playbook column a swing can reach, from its TAC and the enemy ARM. */
 
+import {
+  activationTimeline,
+  swingStateAt,
+} from '@/core/attacks/activationTimeline';
 import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
 import { armorForAttackRow } from '@/core/attacks/swingDefense';
 import { swingTacAndDef } from '@/core/attacks/swingTac';
@@ -12,16 +16,13 @@ export const maxPlaybookColumnForRow = (
   attackIndex: number,
   params: ActivationRollParams,
 ): number => {
-  const { tac } = swingTacAndDef(plan, attackIndex, params);
+  const timeline = activationTimeline(plan, params);
+
+  const { tac } = swingTacAndDef(plan, attackIndex, params, timeline);
 
   const rowArmor = armorForAttackRow(
-    params.attacker,
     params.armor,
-    plan.wrapPicks,
-    plan.characterPlayPicks,
-    params.damageMods,
-    attackIndex,
-    params.activeBaseCount,
+    swingStateAt(timeline, attackIndex),
   );
 
   return maxNetSuccessesForRoll(tac, rowArmor);

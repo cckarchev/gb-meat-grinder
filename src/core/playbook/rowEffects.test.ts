@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { CharacterPlay } from '@/core/playbook/playbook.types';
-import {
-  armorReductionBeforeAttack,
-  pickEffectsForLaterSwings,
-} from '@/core/playbook/rowEffects';
-import { makeAttacker, NO_MODS, PLAY_ARM } from '@/core/testing/fixtures';
+import { pickEffectsForLaterSwings } from '@/core/playbook/rowEffects';
+import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
 
 const NO_EFFECTS = {
   tacBonusForLater: 0,
@@ -95,25 +91,5 @@ describe('character plays in row effects', () => {
         2,
       ),
     ).toEqual({ ...NO_EFFECTS, tacBonusForLater: 2 });
-  });
-
-  it('caps ARM reduction from earlier plays at 1', () => {
-    const repeatableArm: CharacterPlay = { ...PLAY_ARM, repeatable: true };
-
-    const armAttacker = makeAttacker({
-      inf: 3,
-      characterPlays: [repeatableArm],
-    });
-
-    const wrapPicks = [['gb'], ['gb'], ['one']];
-    const plays = [['playArm'], ['playArm'], [null]];
-
-    expect(
-      armorReductionBeforeAttack(armAttacker, wrapPicks, plays, NO_MODS, 0, 3),
-    ).toBe(0);
-
-    expect(
-      armorReductionBeforeAttack(armAttacker, wrapPicks, plays, NO_MODS, 2, 3),
-    ).toBe(1);
   });
 });

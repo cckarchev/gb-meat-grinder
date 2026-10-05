@@ -1,6 +1,5 @@
 /** Effects each pick carries into later swings: TAC, DEF and the ARM condition. */
 
-import { picksOnEarlierSwings } from '@/core/attacks/attackRows';
 import { characterPlayPickEffects } from '@/core/characterPlays/characterPlayEffects';
 import { effectivePlayForPick } from '@/core/characterPlays/characterPlayLookup';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
@@ -15,7 +14,6 @@ import {
   choiceUsesCharacterPlay,
   getPlaybookResult,
 } from '@/core/playbook/playbookIndex';
-import { MAX_ARMOR_REDUCTION } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 const NO_EFFECTS: PickEffects = {
@@ -90,44 +88,4 @@ export const pickEffectsForLaterSwings = (
   }
 
   return characterPlayPickEffects(attacker, play);
-};
-
-/**
- * ARM this swing loses because an earlier swing's GB triggered a character play
- * that reduces ARM (e.g. They Ain't Tough!), in activation order (strictly
- * earlier). A condition, so it never stacks past `MAX_ARMOR_REDUCTION`.
- */
-export const armorReductionBeforeAttack = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
-  damageMods: PlaybookDamageMods,
-  attackIndex: number,
-  activeBaseCount: number,
-): number => {
-  const earlierPicks = picksOnEarlierSwings(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-    attackIndex,
-  );
-
-  let reduction = 0;
-
-  for (const earlier of earlierPicks) {
-    const effects = pickEffectsForLaterSwings(
-      attacker,
-      wrapPicks,
-      characterPlayPicks,
-      earlier.attackIndex,
-      earlier.pickIndex,
-      damageMods,
-      activeBaseCount,
-    );
-
-    reduction += effects.armorReduction;
-  }
-
-  return Math.min(MAX_ARMOR_REDUCTION, reduction);
 };
