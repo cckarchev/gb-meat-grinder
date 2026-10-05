@@ -1,5 +1,10 @@
 import type { PlaybookColumn } from '@/core/playbook/playbook.types';
 import type { AttackerData } from '@/data/attackers/attacker.types';
+import {
+  CROWDING_OUT_RANGE,
+  GANGING_UP_RANGE,
+  STARTING_MOMENTUM_RANGE,
+} from '@/data/attackers/statRanges';
 import { singledOut, stagger } from '@/data/characterPlays';
 import { butchers } from '@/data/guilds/butchers';
 
@@ -130,12 +135,11 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       },
     ],
   },
-] as const;
+];
 
 /**
  * Veteran Boar. Furious + Berserker, INF cap 2: with all 2 influence on attacks
- * and a (free) charge that is 3 base attacks, each able to spawn a Berserker:
- * the 3-base / 6-max layout the calculator originally hardcoded.
+ * and a (free) charge that is 3 base attacks, each able to spawn a Berserker.
  */
 export const veteranBoar: AttackerData = {
   id: 'veteran-boar',
@@ -148,7 +152,7 @@ export const veteranBoar: AttackerData = {
   playbook: PLAYBOOK,
   guild: butchers,
   characterPlays: [singledOut, stagger],
-  startingMomentum: { min: 0, max: 20 },
-  gangingUp: { min: 0, max: 5 },
-  crowdingOut: { min: 0, max: 5 },
+  startingMomentum: STARTING_MOMENTUM_RANGE,
+  gangingUp: GANGING_UP_RANGE,
+  crowdingOut: CROWDING_OUT_RANGE,
 };

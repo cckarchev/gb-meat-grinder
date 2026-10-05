@@ -25,7 +25,7 @@ const duplicatesOf = (values: readonly string[]): string[] => {
 
 describe('attacker registry', () => {
   it('has unique model ids', () => {
-    expect(duplicatesOf(ATTACKERS.map((a) => a.id))).toEqual([]);
+    expect(duplicatesOf(ATTACKERS.map((attacker) => attacker.id))).toEqual([]);
   });
 });
 
@@ -55,7 +55,7 @@ describe.each(ATTACKERS)('$name data', (attacker) => {
   });
 
   it('has unique result ids with non-negative damage and a label', () => {
-    expect(duplicatesOf(results.map((r) => r.id))).toEqual([]);
+    expect(duplicatesOf(results.map((result) => result.id))).toEqual([]);
 
     for (const result of results) {
       expect(result.damage).toBeGreaterThanOrEqual(0);
@@ -64,7 +64,7 @@ describe.each(ATTACKERS)('$name data', (attacker) => {
   });
 
   it('lists character plays when any result picks one', () => {
-    const picksPlay = results.some((r) => r.picksCharacterPlay);
+    const picksPlay = results.some((result) => result.picksCharacterPlay);
 
     if (!picksPlay) {
       return;
@@ -74,7 +74,7 @@ describe.each(ATTACKERS)('$name data', (attacker) => {
   });
 
   it('only excludes buffs its guild actually grants', () => {
-    const guildBuffIds = attacker.guild.buffs.map((b) => b.id);
+    const guildBuffIds = attacker.guild.buffs.map((buff) => buff.id);
 
     for (const excluded of attacker.excludedGuildBuffs ?? []) {
       expect(guildBuffIds).toContain(excluded);
@@ -84,7 +84,7 @@ describe.each(ATTACKERS)('$name data', (attacker) => {
   it('has uniquely named special abilities that deal damage', () => {
     const abilities = attacker.specialAbilities ?? [];
 
-    expect(duplicatesOf(abilities.map((a) => a.id))).toEqual([]);
+    expect(duplicatesOf(abilities.map((ability) => ability.id))).toEqual([]);
 
     for (const ability of abilities) {
       expect(ability.flatDamage).toBeGreaterThan(0);
@@ -98,7 +98,7 @@ describe('guild data', () => {
   });
 
   it('has unique guild ids and hex colors', () => {
-    expect(duplicatesOf(GUILDS.map((g) => g.id))).toEqual([]);
+    expect(duplicatesOf(GUILDS.map((guild) => guild.id))).toEqual([]);
 
     for (const guild of GUILDS) {
       expect(guild.color).toMatch(/^#[0-9a-f]{6}$/i);
@@ -106,6 +106,6 @@ describe('guild data', () => {
   });
 
   it.each(GUILDS)('$name has unique buff ids', (guild) => {
-    expect(duplicatesOf(guild.buffs.map((b) => b.id))).toEqual([]);
+    expect(duplicatesOf(guild.buffs.map((buff) => buff.id))).toEqual([]);
   });
 });

@@ -4,6 +4,9 @@ import type {
 } from '@/core/playbook/playbook.types';
 import type { Guild } from '@/data/guilds/guild.types';
 
+/** Inclusive bounds for a per-activation input the model allows. */
+export type StatRange = { min: number; max: number };
+
 /**
  * A toggleable, model-specific ability that deals a flat amount of unmodified
  * damage at some point during the activation (independent of attack rolls,
@@ -50,9 +53,9 @@ export type AttackerData = {
   excludedGuildBuffs?: readonly string[];
   /** Model-specific toggleable abilities that add flat, unmodified damage. */
   specialAbilities?: readonly SpecialAbility[];
-  startingMomentum: { min: number; max: number };
+  startingMomentum: StatRange;
   /** Extra attack dice from Ganging Up (added to TAC). */
-  gangingUp: { min: number; max: number };
+  gangingUp: StatRange;
   /** Attack dice lost to Crowding Out (subtracted from TAC). */
-  crowdingOut: { min: number; max: number };
+  crowdingOut: StatRange;
 };

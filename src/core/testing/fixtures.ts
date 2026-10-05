@@ -6,6 +6,11 @@ import type {
   PlaybookResult,
 } from '@/core/playbook/playbook.types';
 import type { AttackerData } from '@/data/attackers/attacker.types';
+import {
+  CROWDING_OUT_RANGE,
+  GANGING_UP_RANGE,
+  STARTING_MOMENTUM_RANGE,
+} from '@/data/attackers/statRanges';
 import type { Guild } from '@/data/guilds/guild.types';
 
 /**
@@ -124,9 +129,9 @@ export const makeAttacker = (
     playbook: TEST_PLAYBOOK,
     guild: TEST_GUILD,
     characterPlays: [PLAY_TAC, PLAY_DEF],
-    startingMomentum: { min: 0, max: 20 },
-    gangingUp: { min: 0, max: 5 },
-    crowdingOut: { min: 0, max: 5 },
+    startingMomentum: STARTING_MOMENTUM_RANGE,
+    gangingUp: GANGING_UP_RANGE,
+    crowdingOut: CROWDING_OUT_RANGE,
     ...overrides,
   };
 };

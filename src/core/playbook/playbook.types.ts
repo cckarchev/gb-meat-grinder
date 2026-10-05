@@ -10,8 +10,9 @@ export type PlaybookChoiceId = string;
 export type WrapPick = PlaybookChoiceId | null;
 
 /**
- * A character play a GB / 1GB playbook result can trigger. Defined per guild;
- * each can be used once per activation, applying its effect to later swings.
+ * A character play a GB / 1GB playbook result can trigger. Shared across guilds
+ * and models (see `src/data/characterPlays.ts`); each model lists the ones its
+ * card offers. Applies its effect to later swings of the activation.
  */
 export type CharacterPlay = {
   id: string;

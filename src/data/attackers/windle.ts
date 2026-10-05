@@ -1,5 +1,10 @@
 import type { PlaybookColumn } from '@/core/playbook/playbook.types';
 import type { AttackerData } from '@/data/attackers/attacker.types';
+import {
+  CROWDING_OUT_RANGE,
+  GANGING_UP_RANGE,
+  STARTING_MOMENTUM_RANGE,
+} from '@/data/attackers/statRanges';
 import { snackBreak } from '@/data/characterPlays';
 import { farmers } from '@/data/guilds/farmers';
 
@@ -100,7 +105,7 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
       },
     ],
   },
-] as const;
+];
 
 export const windle: AttackerData = {
   id: 'windle',
@@ -113,7 +118,7 @@ export const windle: AttackerData = {
   playbook: PLAYBOOK,
   guild: farmers,
   characterPlays: [snackBreak],
-  startingMomentum: { min: 0, max: 20 },
-  gangingUp: { min: 0, max: 5 },
-  crowdingOut: { min: 0, max: 5 },
+  startingMomentum: STARTING_MOMENTUM_RANGE,
+  gangingUp: GANGING_UP_RANGE,
+  crowdingOut: CROWDING_OUT_RANGE,
 };

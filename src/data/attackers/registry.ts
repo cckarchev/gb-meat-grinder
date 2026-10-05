@@ -14,7 +14,7 @@ export const ATTACKERS: readonly AttackerData[] = [
 export const DEFAULT_ATTACKER: AttackerData = veteranBoar;
 
 export const attackerById = (id: string): AttackerData => {
-  return ATTACKERS.find((a) => a.id === id) ?? DEFAULT_ATTACKER;
+  return ATTACKERS.find((attacker) => attacker.id === id) ?? DEFAULT_ATTACKER;
 };
 
 /** A random model, used to pick which one is selected on first load. */
