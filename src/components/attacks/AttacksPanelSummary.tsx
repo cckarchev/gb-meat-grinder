@@ -3,16 +3,18 @@ import styled from 'styled-components';
 import { InfoTip } from '@/components/InfoTip';
 import { Mono, PanelTitle, Summary } from '@/components/ui';
 import { attackKindLabel } from '@/core/attackVariant';
+import { specialAbilityFlatDamage } from '@/core/damage';
 import { damageQuantile, planDamageOutcome } from '@/core/killOdds';
+import {
+  momentumAfterAttackInclusive,
+  pickGeneratesMomentum,
+} from '@/core/momentum';
+import { formatWrapRowSelectionLabel } from '@/core/playbookLabels';
+import { formatPercent } from '@/core/probability';
 import {
   damageIfAllHitsWrap,
   damageModifierBreakdownWrap,
-  formatWrapRowSelectionLabel,
-  momentumAfterAttackInclusive,
-  pickGeneratesMomentum,
-  specialAbilityFlatDamage,
-} from '@/core/playbook';
-import { formatPercent } from '@/core/probability';
+} from '@/core/rowDamage';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import type { WrapPick } from '@/types/core/playbook';
 import { KILLING_BLOW_MOMENTUM } from '@/types/gbMeatGrinder/simulation';

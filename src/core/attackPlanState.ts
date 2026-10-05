@@ -1,14 +1,16 @@
 import { clampAttackPlan } from '@/core/attackSequence';
 import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
+import {
+  defaultCharacterPlayId,
+  sanitizeCharacterPlayPicksWrap,
+} from '@/core/characterPlayPicks';
 import { ARM_DEFAULT, DEF_DEFAULT } from '@/core/constants';
+import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from '@/core/damage';
 import {
   choiceUsesCharacterPlay,
-  DEFAULT_PLAYBOOK_DAMAGE_MODS,
-  defaultCharacterPlayId,
   defaultCharacterPlayPicksWrap,
   defaultWrapPicks,
-  sanitizeCharacterPlayPicksWrap,
-} from '@/core/playbook';
+} from '@/core/wrapSlots';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
   AttackPlan,

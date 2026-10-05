@@ -8,31 +8,37 @@
 
 import { describe, expect, it } from 'vitest';
 import { ATTACKERS } from '@/attackers/registry';
+import { activationAttackIndices } from '@/core/attackRows';
 import {
   clampAttackPlan,
   maxPlaybookColumnForRow,
 } from '@/core/attackSequence';
 import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
-import { damageQuantile, planDamageOutcome } from '@/core/killOdds';
+import { characterPlayAvailabilityForPick } from '@/core/characterPlayPicks';
 import {
-  activationAttackIndices,
   availableBuffs,
-  characterPlayAvailabilityForPick,
-  choiceUsesCharacterPlay,
-  damageIfAllHitsWrap,
-  damageModifierBreakdownWrap,
-  defaultCharacterPlayPicksWrap,
-  defaultWrapPicks,
   effectiveArmor,
   effectiveDamageForChoice,
   effectiveEnemyDef,
-  formatWrapRowSelectionLabel,
+  specialAbilityFlatDamage,
+} from '@/core/damage';
+import { damageQuantile, planDamageOutcome } from '@/core/killOdds';
+import {
   momentumAfterAttackInclusive,
   sanitizeBonusTimeFlags,
-  specialAbilityFlatDamage,
-  wrapSlotBudget,
-} from '@/core/playbook';
+} from '@/core/momentum';
+import { formatWrapRowSelectionLabel } from '@/core/playbookLabels';
+import {
+  damageIfAllHitsWrap,
+  damageModifierBreakdownWrap,
+} from '@/core/rowDamage';
 import { deriveSimulation } from '@/core/simulation';
+import {
+  choiceUsesCharacterPlay,
+  defaultCharacterPlayPicksWrap,
+  defaultWrapPicks,
+  wrapSlotBudget,
+} from '@/core/wrapSlots';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
   CharacterPlayPickSlot,

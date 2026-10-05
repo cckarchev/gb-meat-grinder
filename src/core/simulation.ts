@@ -1,18 +1,18 @@
 import { computeAttackSequence } from '@/core/attackSequence';
 import { activeBaseAttackCount } from '@/core/attackStructure';
-import { killingBlowDisplayIndex } from '@/core/killingBlow';
 import {
-  damageIfAllHitsWrap,
   effectiveArmor,
   effectiveEnemyDef,
   specialAbilityFlatDamage,
-} from '@/core/playbook';
+} from '@/core/damage';
+import { killingBlowDisplayIndex } from '@/core/killingBlow';
 import {
   effectiveBonusTimeForResilience,
   effectiveCharacterPlayPicksForResilience,
   effectiveWrapPicksForResilience,
   resilienceIgnoredAttackIndex,
 } from '@/core/resilience';
+import { damageIfAllHitsWrap } from '@/core/rowDamage';
 import type { AttackerData } from '@/types/core/attacker';
 import type { DerivedSimulation } from '@/types/core/simulation';
 import type { MeatGrinderState } from '@/types/gbMeatGrinder/reducer';

@@ -1,4 +1,4 @@
-import { attackRowIsBerserker } from '@/core/playbook';
+import { attackRowIsBerserker } from '@/core/attackRows';
 import type { AttackerData } from '@/types/core/attacker';
 import type { AttackBlockVariant } from '@/types/core/attackSequence';
 

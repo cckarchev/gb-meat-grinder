@@ -4,19 +4,16 @@ import {
   PLAYBOOK_COLUMN_WIDTH_VAR,
   PLAYBOOK_GRID_GAP,
 } from '@/components/attacks/playbookLayout';
-import {
-  kdAlreadyTakenBeforePick,
-  momentousLineStyle,
-  playbookLineDisplaySegments,
-  wrapExtendedNetNeeded,
-  wrapSlotBudget,
-} from '@/core/playbook';
+import { momentousLineStyle } from '@/core/momentum';
+import { playbookLineDisplaySegments } from '@/core/playbookLabels';
 import { formatPercent, probAttackSucceeds } from '@/core/probability';
 import {
   probHeatBackground,
   probHeatBorder,
   probHeatTextColor,
 } from '@/core/probStyle';
+import { kdAlreadyTakenBeforePick } from '@/core/rowEffects';
+import { wrapExtendedNetNeeded, wrapSlotBudget } from '@/core/wrapSlots';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import { focusRing } from '@/styles/mixins';

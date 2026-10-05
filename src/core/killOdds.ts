@@ -1,9 +1,7 @@
-import {
-  effectiveDamageForChoice,
-  netSuccessesForChoice,
-} from '@/core/playbook';
+import { effectiveDamageForChoice } from '@/core/damage';
 import { maxPlaybookNet } from '@/core/playbookIndex';
 import { binomialPmf } from '@/core/probability';
+import { netSuccessesForChoice } from '@/core/wrapSlots';
 import type { AttackerData } from '@/types/core/attacker';
 import type { AttackRollContext } from '@/types/core/attackSequence';
 import type { PlaybookDamageMods, WrapPick } from '@/types/core/playbook';

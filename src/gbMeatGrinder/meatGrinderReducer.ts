@@ -8,12 +8,11 @@ import {
 } from '@/core/attackPlanState';
 import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
 import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from '@/core/constants';
+import { effectiveArmor, effectiveEnemyDef } from '@/core/damage';
 import {
-  effectiveArmor,
-  effectiveEnemyDef,
   momentumPoolBeforeBonusTime,
   sanitizeBonusTimeFlags,
-} from '@/core/playbook';
+} from '@/core/momentum';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
   AttackPlan,

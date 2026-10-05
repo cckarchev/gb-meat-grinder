@@ -5,7 +5,7 @@ import {
   characterPlayAvailabilityForPick,
   characterPlayEffectSummary,
   characterPlayHasEffect,
-} from '@/core/playbook';
+} from '@/core/characterPlayPicks';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { narrowViewport } from '@/styles/breakpoints';
 import type {

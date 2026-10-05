@@ -10,9 +10,10 @@ import { WrapContinuationToggle } from '@/components/attacks/WrapContinuationTog
 import { InfoTip } from '@/components/InfoTip';
 import { Mono } from '@/components/ui';
 import { CornerBrackets } from '@/components/ui/CornerBrackets';
+import { attackRowIsBerserker } from '@/core/attackRows';
 import { attackBlockVariant, attackKindLabel } from '@/core/attackVariant';
-import { attackRowIsBerserker, choiceUsesCharacterPlay } from '@/core/playbook';
 import { maxNetSuccessesForRoll } from '@/core/probability';
+import { choiceUsesCharacterPlay } from '@/core/wrapSlots';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import type {

@@ -2,12 +2,12 @@ import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { AttackSwingRow } from '@/components/attacks/AttackSwingRow';
 import { AttacksPanelSummary } from '@/components/attacks/AttacksPanelSummary';
+import { specialAbilityFlatDamage } from '@/core/damage';
 import {
-  damageIfAllHitsWrap,
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
-  specialAbilityFlatDamage,
-} from '@/core/playbook';
+} from '@/core/momentum';
+import { damageIfAllHitsWrap } from '@/core/rowDamage';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { KILLING_BLOW_MOMENTUM } from '@/types/gbMeatGrinder/simulation';
 

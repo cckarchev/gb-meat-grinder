@@ -10,8 +10,8 @@ import {
   tacBonusFromDefReductionCap,
   tacForAttack,
 } from '@/core/attackSequence';
-import { getPlaybookResult } from '@/core/playbook';
 import { makeAttacker, NO_MODS, TEST_PLAYBOOK } from '@/core/testing/fixtures';
+import { getPlaybookResult } from '@/core/wrapSlots';
 import type { AttackerData } from '@/types/core/attacker';
 import type { CharacterPlayPickSlot, WrapPick } from '@/types/core/playbook';
 

@@ -9,7 +9,7 @@
  * blank row makes the swing contribute nothing and carry nothing forward.
  */
 
-import { activationAttackIndices } from '@/core/playbook';
+import { activationAttackIndices } from '@/core/attackRows';
 import type { AttackerData } from '@/types/core/attacker';
 import type {
   CharacterPlayPickSlot,
