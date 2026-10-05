@@ -4,6 +4,8 @@
  * availability is scoped to the model's guild.
  */
 
+import type { CharacterTrait } from '@/data/characterTraits';
+
 /** Which side a guild effect lands on, and so which panel shows it. */
 export type GuildBuffTarget = 'attacker' | 'enemy';
 
@@ -19,6 +21,12 @@ export type GuildBuff = {
   armorReduction?: number;
   /** Playbook damage becomes Condition Damage, ignoring the enemy's Tough Hide. */
   ignoresToughHide?: boolean;
+  /** +TAC on every attack this activation (e.g. Tempered Steel). */
+  tacBonus?: number;
+  /** Traits the attacker gains while the buff is on (Tempered Steel grants Searing Strike). */
+  grantsTraits?: readonly CharacterTrait[];
+  /** The target is Burning from the start of the activation. */
+  appliesBurning?: boolean;
   /**
    * Where the effect lands: `'attacker'` (default) buffs the attacker and shows on
    * the Attacker panel; `'enemy'` is a condition on the target (e.g. -ARM) and

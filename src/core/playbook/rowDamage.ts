@@ -10,6 +10,7 @@ import {
   availableBuffs,
   effectiveDamageForChoice,
   effectivePlaybookDamage,
+  withSwingDamageBonus,
 } from '@/core/damage/damage';
 import type {
   DamageModifierBreakdown,
@@ -18,6 +19,9 @@ import type {
 } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import type { AttackerData } from '@/data/attackers/attacker.types';
+
+const BURNING_PASSION_ID = 'burningPassion';
+const BURNING_PASSION_LABEL = 'Burning Passion';
 
 /** A damage source the breakdown itemizes, at its printed amount. */
 export type PrintedDamageSource = { label: string; amount: number };
@@ -66,6 +70,7 @@ export const damageModifierBreakdown = (
   let rawCardDamage = 0;
   let toughHideReduction = 0;
   let totalEffective = 0;
+  let passionBonus = 0;
 
   const buffBonuses = availableBuffs(attacker).map((buff) => ({
     id: buff.id,
@@ -86,7 +91,13 @@ export const damageModifierBreakdown = (
       continue;
     }
 
-    const printedAmounts: number[] = [];
+    const state = swingStateAt(timeline, attackIndex);
+    const swingMods = withSwingDamageBonus(
+      damageMods,
+      state.playbookDamageBonus,
+    );
+
+    const printedAmounts: { printed: number; mods: PlaybookDamageMods }[] = [];
 
     for (const id of wrapPicks[attackIndex]) {
       if (id == null) {
@@ -100,22 +111,27 @@ export const damageModifierBreakdown = (
       }
 
       rawCardDamage += cardDamage;
-      printedAmounts.push(cardDamage);
+      printedAmounts.push({ printed: cardDamage, mods: swingMods });
+
+      passionBonus +=
+        effectivePlaybookDamage(attacker, cardDamage, swingMods) -
+        effectivePlaybookDamage(attacker, cardDamage, damageMods);
     }
 
-    for (const play of swingStateAt(timeline, attackIndex).damagingPlayBySlot) {
+    // Play damage is not a playbook damage result: no Burning Passion.
+    for (const play of state.damagingPlayBySlot) {
       if (play != null) {
-        printedAmounts.push(play.damage ?? 0);
+        printedAmounts.push({ printed: play.damage ?? 0, mods: damageMods });
       }
     }
 
-    for (const printed of printedAmounts) {
-      const effective = effectivePlaybookDamage(attacker, printed, damageMods);
+    for (const { printed, mods } of printedAmounts) {
+      const effective = effectivePlaybookDamage(attacker, printed, mods);
 
       totalEffective += effective;
 
       const withoutToughHide: PlaybookDamageMods = {
-        ...damageMods,
+        ...mods,
         toughHide: false,
       };
 
@@ -125,14 +141,23 @@ export const damageModifierBreakdown = (
 
       for (const buffBonus of buffBonuses) {
         const withoutBuff: PlaybookDamageMods = {
-          ...damageMods,
-          buffs: { ...damageMods.buffs, [buffBonus.id]: false },
+          ...mods,
+          buffs: { ...mods.buffs, [buffBonus.id]: false },
         };
 
         buffBonus.bonus +=
           effective - effectivePlaybookDamage(attacker, printed, withoutBuff);
       }
     }
+  }
+
+  // Listed only when it adds damage, so breakdowns without it keep their shape.
+  if (passionBonus > 0) {
+    buffBonuses.push({
+      id: BURNING_PASSION_ID,
+      label: BURNING_PASSION_LABEL,
+      bonus: passionBonus,
+    });
   }
 
   return {
@@ -154,12 +179,12 @@ export const rowDamageIfAllHit = (
   activeBaseCount: number,
   timeline: ActivationTimeline,
 ): number[] => {
-  const pickDamage = (id: WrapPick): number => {
+  const pickDamage = (id: WrapPick, mods: PlaybookDamageMods): number => {
     if (id == null) {
       return 0;
     }
 
-    return effectiveDamageForChoice(attacker, id, damageMods);
+    return effectiveDamageForChoice(attacker, id, mods);
   };
 
   return wrapPicks.map((picks, attackIndex) => {
@@ -175,8 +200,17 @@ export const rowDamageIfAllHit = (
       return 0;
     }
 
-    const cardDamage = picks.reduce((sum, id) => sum + pickDamage(id), 0);
-    const playDamage = swingPlayDamage(swingStateAt(timeline, attackIndex));
+    const state = swingStateAt(timeline, attackIndex);
+    const swingMods = withSwingDamageBonus(
+      damageMods,
+      state.playbookDamageBonus,
+    );
+
+    const cardDamage = picks.reduce((sum, id) => {
+      return sum + pickDamage(id, swingMods);
+    }, 0);
+
+    const playDamage = swingPlayDamage(state);
 
     return cardDamage + playDamage;
   });

@@ -14,6 +14,7 @@ import {
   TOUGH_HIDE_DAMAGE_PENALTY,
 } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { CharacterTrait } from '@/data/characterTraits';
 import type { GuildBuff, GuildBuffTarget } from '@/data/guilds/guild.types';
 
 export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
@@ -76,6 +77,38 @@ export const activeTraitFlatDamage = (
   return activated.reduce((sum, trait) => sum + (trait.flatDamage ?? 0), 0);
 };
 
+/** The attacker's traits plus those granted by active buffs, once each. */
+export const attackerTraits = (
+  attacker: AttackerData,
+  mods: PlaybookDamageMods,
+): readonly CharacterTrait[] => {
+  const granted = activeBuffs(attacker, mods).flatMap((buff) => {
+    return buff.grantsTraits ?? [];
+  });
+
+  const byId = new Map<string, CharacterTrait>();
+
+  for (const trait of [...(attacker.characterTraits ?? []), ...granted]) {
+    if (!byId.has(trait.id)) {
+      byId.set(trait.id, trait);
+    }
+  }
+
+  return [...byId.values()];
+};
+
+/** `mods` with one swing's engine-injected playbook damage bonus. */
+export const withSwingDamageBonus = (
+  mods: PlaybookDamageMods,
+  bonus: number,
+): PlaybookDamageMods => {
+  if (bonus === 0) {
+    return mods;
+  }
+
+  return { ...mods, swingDamageBonus: bonus };
+};
+
 /** Sum of the +damage from selected buffs. */
 export const playbookDamageBonusSum = (
   attacker: AttackerData,
@@ -132,8 +165,9 @@ export const effectivePlaybookDamage = (
     mods.toughHide && !buffsIgnoreToughHide(attacker, mods);
   const toughHidePenalty = toughHideApplies ? TOUGH_HIDE_DAMAGE_PENALTY : 0;
   const buffBonus = playbookDamageBonusSum(attacker, mods);
+  const swingBonus = mods.swingDamageBonus ?? 0;
 
-  return Math.max(0, cardDamage - toughHidePenalty + buffBonus);
+  return Math.max(0, cardDamage - toughHidePenalty + buffBonus + swingBonus);
 };
 
 export const effectiveDamageForChoice = (

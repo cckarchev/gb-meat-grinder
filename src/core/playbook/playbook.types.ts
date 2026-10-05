@@ -90,6 +90,11 @@ export type PlaybookDamageMods = {
    * not fixed. Each active buff adds its `damageBonus` to selected damage pips.
    */
   buffs: Record<string, boolean>;
+  /**
+   * Engine-injected +DMG for one swing's playbook damage results (Burning
+   * Passion while the target is Burning). Never user state.
+   */
+  swingDamageBonus?: number;
 };
 
 /** Playbook line button look for momentous damage pips (after Tough Hide / buffs). */

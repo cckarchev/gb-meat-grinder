@@ -3,6 +3,7 @@
 import { swingStateAt } from '@/core/attacks/activationTimeline';
 import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+import { withSwingDamageBonus } from '@/core/damage/damage';
 import type {
   ActivationDamageOutcome,
   DamageDistribution,
@@ -55,9 +56,10 @@ export const planDamageOutcome = (
     const picks = wrapPicks[attack.attackIndex] ?? [];
     const state = swingStateAt(timeline, attack.attackIndex);
     const extras = { playDamageBySlot: state.playDamageBySlot };
+    const swingMods = withSwingDamageBonus(mods, state.playbookDamageBonus);
 
     const pickedDamage: DamageForNet = (net) => {
-      return pickedDamageForNet(attacker, mods, picks, net, extras);
+      return pickedDamageForNet(attacker, swingMods, picks, net, extras);
     };
 
     const swing = swingDamageDistribution(attack, pickedDamage);

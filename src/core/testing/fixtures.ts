@@ -11,6 +11,7 @@ import {
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
 } from '@/data/attackers/statRanges';
+import { searingStrike } from '@/data/characterTraits';
 import type { Guild } from '@/data/guilds/guild.types';
 
 /**
@@ -80,6 +81,37 @@ export const TEST_GUILD: Guild = {
       tooltip: '',
       ignoresToughHide: true,
     },
+  ],
+};
+
+/** A guild with condition-driven buffs: Tempered Steel-like, Burning and Searing Strike. */
+export const CONDITION_GUILD: Guild = {
+  id: 'conditioners',
+  name: 'Conditioners',
+  color: '#654321',
+  buffs: [
+    {
+      id: 'steel',
+      label: 'Steel',
+      tooltip: '',
+      tacBonus: 1,
+      grantsTraits: [searingStrike],
+    },
+    {
+      id: 'burning',
+      label: 'Burning',
+      tooltip: '',
+      target: 'enemy',
+      appliesBurning: true,
+    },
+    {
+      id: 'searingStrike',
+      label: 'Searing Strike',
+      tooltip: '',
+      target: 'enemy',
+      armorReduction: 1,
+    },
+    { id: 'sharp', label: 'Sharp', tooltip: '', damageBonus: 1 },
   ],
 };
 

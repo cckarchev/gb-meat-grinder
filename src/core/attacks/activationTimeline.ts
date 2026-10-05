@@ -11,9 +11,15 @@ import {
   effectivePlayForPick,
   getCharacterPlay,
 } from '@/core/characterPlays/characterPlayLookup';
-import { activeBuffs, effectivePlaybookDamage } from '@/core/damage/damage';
+import {
+  activeBuffs,
+  attackerTraits,
+  effectiveDamageForChoice,
+  effectivePlaybookDamage,
+  withSwingDamageBonus,
+} from '@/core/damage/damage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
-import type { CharacterPlay } from '@/core/playbook/playbook.types';
+import type { CharacterPlay, WrapPick } from '@/core/playbook/playbook.types';
 import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
 import {
   pickEffectName,
@@ -30,6 +36,8 @@ const EMPTY_SWING_STATE: SwingState = {
   effectsBefore: NO_CARRIED_EFFECTS,
   damagingPlayBySlot: [],
   playDamageBySlot: [],
+  targetBurningBefore: false,
+  playbookDamageBonus: 0,
 };
 
 /** A row's state, or an empty one for a row past the end of the plan. */
@@ -57,6 +65,7 @@ const preAppliedEffects = (
   for (const buff of activeBuffs(params.attacker, params.damageMods)) {
     const effects: CarriedEffects = {
       ...NO_CARRIED_EFFECTS,
+      tacBonus: buff.tacBonus ?? 0,
       armorReduction: buff.armorReduction ?? 0,
     };
 
@@ -83,6 +92,41 @@ const sumEffects = (
   }
 
   return { tacBonus, defReduction, armorReduction };
+};
+
+/** Whether the target is Burning before the first swing (a pre-applied debuff). */
+const startsBurning = (params: TimelineParams): boolean => {
+  const buffs = activeBuffs(params.attacker, params.damageMods);
+
+  return buffs.some((buff) => buff.appliesBurning === true);
+};
+
+/** +DMG Burning Passion-like traits add to playbook damage against a Burning target. */
+const damageBonusVsBurning = (params: TimelineParams): number => {
+  const traits = attackerTraits(params.attacker, params.damageMods);
+
+  return traits.reduce((sum, trait) => {
+    return sum + (trait.playbookDamageVsBurning ?? 0);
+  }, 0);
+};
+
+/**
+ * Whether a swing causes damage when every pick lands: a card result above 0
+ * after its modifiers, or a damaging play. Damage reduced to 0 is no damage.
+ */
+const swingCausesDamage = (
+  params: TimelineParams,
+  row: readonly WrapPick[],
+  state: SwingState,
+): boolean => {
+  const { attacker, damageMods } = params;
+  const swingMods = withSwingDamageBonus(damageMods, state.playbookDamageBonus);
+
+  const cardDamage = row.some((id) => {
+    return id != null && effectiveDamageForChoice(attacker, id, swingMods) > 0;
+  });
+
+  return cardDamage || swingPlayDamage(state) > 0;
 };
 
 /** Total play damage a swing deals when every pick on it lands. */
@@ -161,9 +205,20 @@ export const activationTimeline = (
 
   // Effects of the same name never stack, so each name keeps its first value.
   const named = preAppliedEffects(params);
+  const passionBonus = damageBonusVsBurning(params);
+  const onDamageTraits = attackerTraits(attacker, damageMods).filter(
+    (trait) => {
+      return trait.onDamage != null;
+    },
+  );
+
+  let burning = startsBurning(params);
+
   const preAppliedState: SwingState = {
     ...EMPTY_SWING_STATE,
     effectsBefore: sumEffects(named),
+    targetBurningBefore: burning,
+    playbookDamageBonus: burning ? passionBonus : 0,
   };
 
   const usedOncePerTurn = new Set<string>();
@@ -178,10 +233,14 @@ export const activationTimeline = (
   );
 
   for (const attackIndex of order) {
-    states[attackIndex] = {
+    const state: SwingState = {
       effectsBefore: sumEffects(named),
       ...swingPlayDamageFor(plan, params, attackIndex, usedOncePerTurn),
+      targetBurningBefore: burning,
+      playbookDamageBonus: burning ? passionBonus : 0,
     };
+
+    states[attackIndex] = state;
 
     const row = wrapPicks[attackIndex] ?? [];
 
@@ -214,6 +273,24 @@ export const activationTimeline = (
 
       if (hasAnyEffect(effects) && !alreadyApplied) {
         named.set(name, effects);
+      }
+    }
+
+    // On-damage traits (Searing Strike) only help the swings after this one.
+    if (!swingCausesDamage(params, row, state)) {
+      continue;
+    }
+
+    for (const trait of onDamageTraits) {
+      const armorReduction = trait.onDamage?.armorReduction ?? 0;
+      const effects: CarriedEffects = { ...NO_CARRIED_EFFECTS, armorReduction };
+
+      if (hasAnyEffect(effects) && !named.has(trait.id)) {
+        named.set(trait.id, effects);
+      }
+
+      if (trait.onDamage?.burning === true) {
+        burning = true;
       }
     }
   }

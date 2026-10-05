@@ -13,6 +13,10 @@ export type CharacterTrait = {
   active?: boolean;
   /** Unmodified DMG dealt when an active trait is activated. */
   flatDamage?: number;
+  /** What a target damaged by this model suffers for the later swings (Searing Strike). */
+  onDamage?: { armorReduction?: number; burning?: boolean };
+  /** +DMG to playbook damage results while the target is Burning (Burning Passion). */
+  playbookDamageVsBurning?: number;
 };
 
 /** Thresher's Don't Fear The... (activated, Once Per Turn). */
@@ -24,4 +28,20 @@ export const dontFearTheReaper: CharacterTrait = {
     'Tough Hide and damage buffs do not apply).',
   active: true,
   flatDamage: 3,
+};
+
+export const searingStrike: CharacterTrait = {
+  id: 'searingStrike',
+  label: 'Searing Strike',
+  tooltip:
+    'Enemy models damaged by this model suffer -1 ARM for the rest of the ' +
+    'turn and the burning condition. Only later attacks benefit.',
+  onDamage: { armorReduction: 1, burning: true },
+};
+
+export const burningPassion: CharacterTrait = {
+  id: 'burningPassion',
+  label: 'Burning Passion',
+  tooltip: '+1 DMG to playbook damage results while attacking a Burning enemy.',
+  playbookDamageVsBurning: 1,
 };
