@@ -1,11 +1,11 @@
-import type { AttackerData } from '@/types/core/attacker';
-import type { Guild } from '@/types/core/guild';
 import type {
   CharacterPlay,
   PlaybookColumn,
   PlaybookDamageMods,
   PlaybookResult,
-} from '@/types/core/playbook';
+} from '@/core/playbook/playbook.types';
+import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { Guild } from '@/data/guilds/guild.types';
 
 /**
  * Synthetic model for core tests. Its playbook is small and every result has a

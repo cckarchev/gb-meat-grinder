@@ -1,14 +1,14 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { thresher } from '@/attackers/thresher';
-import { veteranBoar } from '@/attackers/veteranBoar';
-import { createInitialAttackPlan } from '@/core/attackPlanState';
-import { HP_DEFAULT } from '@/core/constants';
+import { createInitialAttackPlan } from '@/core/plan/attackPlanState';
+import { HP_DEFAULT } from '@/core/shared/constants';
+import { thresher } from '@/data/attackers/thresher';
+import { veteranBoar } from '@/data/attackers/veteranBoar';
 import { createInitialMeatGrinderState } from '@/gbMeatGrinder/meatGrinderInitialState';
 import { meatGrinderReducer } from '@/gbMeatGrinder/meatGrinderReducer';
 import type {
   MeatGrinderAction,
   MeatGrinderState,
-} from '@/types/gbMeatGrinder/reducer';
+} from '@/gbMeatGrinder/reducer.types';
 
 /** `Math.random` values that make `randomAttacker` pick each registry entry. */
 const PICK_VETERAN_BOAR = 0;

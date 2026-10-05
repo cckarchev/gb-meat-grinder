@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { AttackerPanel } from '@/components/AttackerPanel';
-import { AttacksPanel } from '@/components/AttacksPanel';
-import { ToggleButton } from '@/components/controls';
-import { EnemyPanel } from '@/components/EnemyPanel';
-import { TargetPanelsRow } from '@/components/TargetPanelsRow';
+import { AttackerPanel } from '@/components/attacker/AttackerPanel';
+import { AttacksPanel } from '@/components/attacks/AttacksPanel';
+import { EnemyPanel } from '@/components/enemy/EnemyPanel';
+import { TargetPanelsRow } from '@/components/enemy/TargetPanelsRow';
+import { ToggleButton } from '@/components/ui/controls';
 import { MeatGrinderSimulationContext } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { useMeatGrinderSimulationState } from '@/gbMeatGrinder/useMeatGrinderSimulationState';
 import { narrowViewport } from '@/styles/breakpoints';

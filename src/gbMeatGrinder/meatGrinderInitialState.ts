@@ -1,10 +1,10 @@
-import { randomAttacker } from '@/attackers/registry';
-import { createInitialAttackPlan } from '@/core/attackPlanState';
-import { attackArraySize } from '@/core/attackStructure';
-import { clamp } from '@/core/clamp';
-import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from '@/core/constants';
-import type { AttackerData } from '@/types/core/attacker';
-import type { MeatGrinderState } from '@/types/gbMeatGrinder/reducer';
+import { attackArraySize } from '@/core/attacks/attackStructure';
+import { createInitialAttackPlan } from '@/core/plan/attackPlanState';
+import { clamp } from '@/core/shared/clamp';
+import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from '@/core/shared/constants';
+import type { AttackerData } from '@/data/attackers/attacker.types';
+import { randomAttacker } from '@/data/attackers/registry';
+import type { MeatGrinderState } from '@/gbMeatGrinder/reducer.types';
 
 /** Fresh attacker-side state for a model, preserving enemy stats from `prev`. */
 export const stateForAttacker = (

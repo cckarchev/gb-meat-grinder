@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import type { MeatGrinderSimulation } from '@/types/gbMeatGrinder/simulation';
+import type { MeatGrinderSimulation } from '@/gbMeatGrinder/simulation.types';
 
 export const MeatGrinderSimulationContext =
   createContext<MeatGrinderSimulation | null>(null);

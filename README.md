@@ -43,15 +43,25 @@ update it with `npx vitest run -u`.
 
 ```
 src/
-  core/         attack math: probability, playbook, sequencing, kill odds
-  attackers/    beater definitions + registry.ts (the simulatable models)
-  guilds/       per-guild buffs and character plays, one file per guild
-  components/   UI panels, attack widgets, and ui/ primitives
-  types/        shared type definitions
+  core/           pure engine logic, one folder per domain
+    plan/         the attack plan and the clamp that keeps it legal
+    attacks/      attack rows, sequencing, swing modifiers and projections
+    playbook/     playbook lookups, labels, wrap slots, row effects
+    damage/       damage, kill odds, killing blow, resilience, probability
+    activation/   momentum, activation summary, simulation
+    shared/       constants and small helpers
+  data/
+    attackers/    beater definitions + registry.ts (the simulatable models)
+    guilds/       per-guild buffs and character plays, one file per guild
+  components/     UI panels (attacker/, enemy/, attacks/) and ui/ primitives
+  gbMeatGrinder/  app state: reducer, initial state, simulation hooks
 ```
 
-Adding a beater means writing a file in `src/attackers/` and registering it in
-`src/attackers/registry.ts`. Guild buffs live in their own file under `src/guilds/`.
+Types live next to their domain as `*.types.ts`.
+
+Adding a beater means writing a file in `src/data/attackers/` and registering it
+in `src/data/attackers/registry.ts`. Guild buffs live in their own file under
+`src/data/guilds/`.
 
 ## Disclaimer
 

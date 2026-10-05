@@ -1,31 +1,34 @@
-import { attackerById } from '@/attackers/registry';
+import {
+  momentumPoolBeforeBonusTime,
+  sanitizeBonusTimeFlags,
+} from '@/core/activation/momentum';
+import {
+  activeBaseAttackCount,
+  clampChargeAttackIndex,
+} from '@/core/attacks/attackStructure';
+import { effectiveArmor, effectiveEnemyDef } from '@/core/damage/damage';
+import type {
+  AttackPlan,
+  AttackPlanClampParams,
+} from '@/core/plan/attackPlan.types';
 import {
   nextPlanAfterCharacterPlayPick,
   nextPlanAfterClearWrapContinuation,
   nextPlanAfterWrapChoice,
-} from '@/core/attackPlanState';
+} from '@/core/plan/attackPlanState';
+import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
+import { clamp } from '@/core/shared/clamp';
 import {
-  activeBaseAttackCount,
-  clampChargeAttackIndex,
-} from '@/core/attackStructure';
-import { clamp } from '@/core/clamp';
-import { clampAttackPlan } from '@/core/clampAttackPlan';
-import { BONUS_TIME_MOMENTUM_COST, NO_ATTACK_INDEX } from '@/core/constants';
-import { effectiveArmor, effectiveEnemyDef } from '@/core/damage';
-import {
-  momentumPoolBeforeBonusTime,
-  sanitizeBonusTimeFlags,
-} from '@/core/momentum';
+  BONUS_TIME_MOMENTUM_COST,
+  NO_ATTACK_INDEX,
+} from '@/core/shared/constants';
+import type { AttackerData } from '@/data/attackers/attacker.types';
+import { attackerById } from '@/data/attackers/registry';
 import { stateForAttacker } from '@/gbMeatGrinder/meatGrinderInitialState';
-import type { AttackerData } from '@/types/core/attacker';
-import type {
-  AttackPlan,
-  AttackPlanClampParams,
-} from '@/types/core/attackPlan';
 import type {
   MeatGrinderAction,
   MeatGrinderState,
-} from '@/types/gbMeatGrinder/reducer';
+} from '@/gbMeatGrinder/reducer.types';
 
 const attackerOf = (s: MeatGrinderState): AttackerData => {
   return attackerById(s.attackerId);

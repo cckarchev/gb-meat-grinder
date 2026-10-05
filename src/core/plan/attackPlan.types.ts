@@ -1,0 +1,37 @@
+import type {
+  CharacterPlayPickSlot,
+  PlaybookDamageMods,
+  WrapPick,
+} from '@/core/playbook/playbook.types';
+import type { AttackerData } from '@/data/attackers/attacker.types';
+
+export type AttackPlan = {
+  wrapPicks: WrapPick[][];
+  characterPlayPicks: CharacterPlayPickSlot[][];
+};
+
+/** One attack's wrap picks with the character-play slot for each pick. */
+export type AttackPlanRow = {
+  picks: WrapPick[];
+  plays: CharacterPlayPickSlot[];
+};
+
+/** Inputs that bound a legal attack plan; see `clampAttackPlan`. */
+export type AttackPlanClampParams = {
+  /** The model being clamped. */
+  attacker: AttackerData;
+  /** Effective charge row, or -1 when the model is not charging. */
+  chargeAttackIndex: number;
+  armor: number;
+  enemyHasCover: boolean;
+  /** +1 enemy DEF only on the attack that has the charge. */
+  enemyDefensiveStance: boolean;
+  damageMods: PlaybookDamageMods;
+  enemyDef: number;
+  bonusTimeByAttack: readonly boolean[];
+  initialTacModifier: number;
+  /** Target is already Knocked Down (disables the playbook KD). */
+  enemyKnockedDown: boolean;
+  /** Active base attacks this activation (derived from traits + influence). */
+  activeBaseCount: number;
+};

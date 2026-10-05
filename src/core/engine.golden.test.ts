@@ -7,45 +7,48 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { ATTACKERS } from '@/attackers/registry';
-import { activationAttackIndices } from '@/core/attackRows';
-import { activeBaseAttackCount, attackArraySize } from '@/core/attackStructure';
-import { characterPlayAvailabilityForPick } from '@/core/characterPlayPicks';
-import { clampAttackPlan } from '@/core/clampAttackPlan';
+import {
+  momentumAfterAttackInclusive,
+  sanitizeBonusTimeFlags,
+} from '@/core/activation/momentum';
+import { deriveSimulation } from '@/core/activation/simulation';
+import { activationAttackIndices } from '@/core/attacks/attackRows';
+import {
+  activeBaseAttackCount,
+  attackArraySize,
+} from '@/core/attacks/attackStructure';
+import { maxPlaybookColumnForRow } from '@/core/attacks/swingModifiers';
 import {
   availableBuffs,
   effectiveArmor,
   effectiveDamageForChoice,
   effectiveEnemyDef,
   specialAbilityFlatDamage,
-} from '@/core/damage';
-import { damageQuantile, planDamageOutcome } from '@/core/killOdds';
-import {
-  momentumAfterAttackInclusive,
-  sanitizeBonusTimeFlags,
-} from '@/core/momentum';
-import { formatWrapRowSelectionLabel } from '@/core/playbookLabels';
-import {
-  damageIfAllHitsWrap,
-  damageModifierBreakdownWrap,
-} from '@/core/rowDamage';
-import { deriveSimulation } from '@/core/simulation';
-import { maxPlaybookColumnForRow } from '@/core/swingModifiers';
-import {
-  choiceUsesCharacterPlay,
-  defaultCharacterPlayPicksWrap,
-  defaultWrapPicks,
-  wrapSlotBudget,
-} from '@/core/wrapSlots';
-import type { AttackerData } from '@/types/core/attacker';
+} from '@/core/damage/damage';
+import { damageQuantile, planDamageOutcome } from '@/core/damage/killOdds';
+import { characterPlayAvailabilityForPick } from '@/core/plan/characterPlayPicks';
+import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
 import type {
   CharacterPlayPickSlot,
   PlaybookChoiceId,
   PlaybookDamageMods,
   PlaybookResult,
   WrapPick,
-} from '@/types/core/playbook';
-import type { MeatGrinderState } from '@/types/gbMeatGrinder/reducer';
+} from '@/core/playbook/playbook.types';
+import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
+import {
+  damageIfAllHitsWrap,
+  damageModifierBreakdownWrap,
+} from '@/core/playbook/rowDamage';
+import {
+  choiceUsesCharacterPlay,
+  defaultCharacterPlayPicksWrap,
+  defaultWrapPicks,
+  wrapSlotBudget,
+} from '@/core/playbook/wrapSlots';
+import type { AttackerData } from '@/data/attackers/attacker.types';
+import { ATTACKERS } from '@/data/attackers/registry';
+import type { MeatGrinderState } from '@/gbMeatGrinder/reducer.types';
 
 const ROUNDING_DIGITS = 6;
 const PLAN_SETTLE_PASSES = 6;
