@@ -48,7 +48,7 @@ import {
 } from '@/core/playbook/wrapSlots';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 import { ATTACKERS } from '@/data/attackers/registry';
-import type { MeatGrinderState } from '@/gbMeatGrinder/reducer.types';
+import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
 
 const ROUNDING_DIGITS = 6;
 const PLAN_SETTLE_PASSES = 6;

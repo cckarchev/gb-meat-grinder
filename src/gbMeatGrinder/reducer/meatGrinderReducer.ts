@@ -1,0 +1,159 @@
+/** App state transitions: each action patches the state and keeps the plan legal. */
+
+import { clampChargeAttackIndex } from '@/core/attacks/attackStructure';
+import {
+  nextPlanAfterCharacterPlayPick,
+  nextPlanAfterClearWrapContinuation,
+  nextPlanAfterWrapChoice,
+} from '@/core/plan/attackPlanState';
+import { clamp } from '@/core/shared/clamp';
+import { attackerById } from '@/data/attackers/registry';
+import {
+  resanitizeBonusTime,
+  toggleBonusTime,
+} from '@/gbMeatGrinder/reducer/bonusTime';
+import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
+import {
+  applyPlanEdit,
+  withReclampedCharge,
+  withReclampedPlan,
+} from '@/gbMeatGrinder/reducer/planReclamp';
+import type {
+  MeatGrinderAction,
+  MeatGrinderState,
+} from '@/gbMeatGrinder/reducer/reducer.types';
+import {
+  activeBaseCountOf,
+  attackerOf,
+} from '@/gbMeatGrinder/reducer/stateSelectors';
+
+export const meatGrinderReducer = (
+  state: MeatGrinderState,
+  action: MeatGrinderAction,
+): MeatGrinderState => {
+  switch (action.type) {
+    case 'reset': {
+      // Reset everything to defaults but keep the currently selected model.
+      return stateForAttacker(attackerOf(state));
+    }
+    case 'selectAttacker': {
+      if (action.id === state.attackerId) {
+        return state;
+      }
+
+      return stateForAttacker(attackerById(action.id), state);
+    }
+    case 'enemyDef': {
+      return withReclampedPlan(state, { enemyDef: action.value });
+    }
+    case 'armor': {
+      return withReclampedPlan(state, { armor: action.value });
+    }
+    case 'hp': {
+      return { ...state, hp: action.value };
+    }
+    case 'influence': {
+      const influence = clamp(action.value, 0, attackerOf(state).inf);
+
+      return withReclampedCharge(state, { influence });
+    }
+    case 'charging': {
+      return withReclampedCharge(state, { charging: action.value });
+    }
+    case 'chargeAttackIndex': {
+      const chargeAttackIndex = clampChargeAttackIndex(
+        action.value,
+        activeBaseCountOf(state),
+      );
+
+      return withReclampedPlan(state, { chargeAttackIndex });
+    }
+    case 'enemyHasCover': {
+      return withReclampedPlan(state, { enemyHasCover: action.value });
+    }
+    case 'enemyDefensiveStance': {
+      return withReclampedPlan(state, { enemyDefensiveStance: action.value });
+    }
+    case 'enemyKnockedDown': {
+      return withReclampedPlan(state, { enemyKnockedDown: action.value });
+    }
+    case 'enemySnared': {
+      return withReclampedPlan(state, { enemySnared: action.value });
+    }
+    case 'enemyResilience': {
+      // Resilience only changes which swings are *ignored* downstream; it never
+      // alters the editable plan's validity, so no re-clamp is needed.
+      return { ...state, enemyResilience: action.value };
+    }
+    case 'startingMomentum': {
+      return { ...state, startingMomentum: action.value };
+    }
+    case 'gangingUpRaw': {
+      const range = attackerOf(state).gangingUp;
+      const gangingUp = clamp(action.value, range.min, range.max);
+
+      return withReclampedPlan(state, { gangingUp });
+    }
+    case 'crowdingOutRaw': {
+      const range = attackerOf(state).crowdingOut;
+      const crowdingOut = clamp(action.value, range.min, range.max);
+
+      return withReclampedPlan(state, { crowdingOut });
+    }
+    case 'damageMods': {
+      return withReclampedPlan(state, { damageMods: action.value });
+    }
+    case 'specialAbility': {
+      const specialAbilities = {
+        ...state.specialAbilities,
+        [action.id]: action.value,
+      };
+
+      return { ...state, specialAbilities };
+    }
+    case 'bonusTime': {
+      return toggleBonusTime(state, action.attackIndex, action.value);
+    }
+    case 'sanitizeBonusTime': {
+      return resanitizeBonusTime(state);
+    }
+    case 'wrapChoice': {
+      const edited = nextPlanAfterWrapChoice(
+        attackerOf(state),
+        state.attackPlan,
+        action.attackIndex,
+        action.pickIndex,
+        action.id,
+      );
+
+      return applyPlanEdit(state, edited);
+    }
+    case 'clearWrapContinuation': {
+      const edited = nextPlanAfterClearWrapContinuation(
+        attackerOf(state),
+        state.attackPlan,
+        action.attackIndex,
+      );
+
+      return applyPlanEdit(state, edited);
+    }
+    case 'characterPlayPick': {
+      const edited = nextPlanAfterCharacterPlayPick(
+        attackerOf(state),
+        state.attackPlan,
+        action.attackIndex,
+        action.pickIndex,
+        action.pick,
+        state.damageMods,
+        activeBaseCountOf(state),
+      );
+
+      return applyPlanEdit(state, edited);
+    }
+    default: {
+      const _exhaustive: never = action;
+
+      return _exhaustive;
+    }
+  }
+};

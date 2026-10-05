@@ -16,7 +16,7 @@ import {
 import { damageIfAllHitsWrap } from '@/core/playbook/rowDamage';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
-import type { MeatGrinderState } from '@/gbMeatGrinder/reducer.types';
+import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
 
 /** Run the whole engine pipeline for one editable state. */
 export const deriveSimulation = (

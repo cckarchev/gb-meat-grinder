@@ -6,7 +6,7 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import type { AttackerData } from '@/data/attackers/attacker.types';
-import type { MeatGrinderAction } from '@/gbMeatGrinder/reducer.types';
+import type { MeatGrinderAction } from '@/gbMeatGrinder/reducer/reducer.types';
 
 /** React hook + context value for the Meat Grinder simulation. */
 export type MeatGrinderSimulation = {
