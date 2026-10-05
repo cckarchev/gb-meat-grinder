@@ -1,35 +1,26 @@
 /** Roll context and hit odds for every swing in the activation. */
 
 import { activationAttackIndices } from '@/core/attacks/attackRows';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+import type {
+  ActivationRollParams,
+  AttackRollContext,
+} from '@/core/attacks/attackSequence.types';
 import { armorForAttackRow } from '@/core/attacks/swingDefense';
 import { swingTacAndDef } from '@/core/attacks/swingTac';
 import {
   hitProbabilityPerDie,
   probAttackSucceeds,
 } from '@/core/damage/probability';
-import type {
-  CharacterPlayPickSlot,
-  PlaybookDamageMods,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
+import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import { wrapNetThresholdAllHits } from '@/core/playbook/wrapSlots';
-import type { AttackerData } from '@/data/attackers/attacker.types';
 
 export const computeAttackSequence = (
-  attacker: AttackerData,
-  baseDef: number,
-  armor: number,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
-  chargeAttackIndex: number,
-  enemyHasCover: boolean,
-  enemyDefensiveStance: boolean,
-  damageMods: PlaybookDamageMods,
-  bonusTimeByAttack: readonly boolean[],
-  initialTacModifier: number,
-  activeBaseCount: number,
+  plan: AttackPlan,
+  params: ActivationRollParams,
 ): { attacks: AttackRollContext[] } => {
+  const { wrapPicks, characterPlayPicks } = plan;
+  const { attacker, armor, damageMods, activeBaseCount } = params;
+
   const attacks: AttackRollContext[] = [];
 
   const order = activationAttackIndices(
@@ -40,20 +31,7 @@ export const computeAttackSequence = (
   );
 
   for (const attackIndex of order) {
-    const { tac, defMinRoll } = swingTacAndDef(
-      attacker,
-      wrapPicks,
-      characterPlayPicks,
-      attackIndex,
-      chargeAttackIndex,
-      enemyHasCover,
-      enemyDefensiveStance,
-      damageMods,
-      baseDef,
-      bonusTimeByAttack,
-      initialTacModifier,
-      activeBaseCount,
-    );
+    const { tac, defMinRoll } = swingTacAndDef(plan, attackIndex, params);
 
     const rowArmor = armorForAttackRow(
       attacker,

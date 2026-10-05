@@ -35,21 +35,26 @@ describe('swingTacAndDef', () => {
   const attacker = makeAttacker({ tac: 6 });
   const FLOOR_DEF = 2;
 
+  const plan = {
+    wrapPicks: [['kd'], ['one']],
+    characterPlayPicks: [[null], [null]],
+  };
+
+  const params = {
+    attacker,
+    chargeAttackIndex: NO_ATTACK_INDEX,
+    armor: 0,
+    enemyHasCover: false,
+    enemyDefensiveStance: false,
+    damageMods: NO_MODS,
+    enemyDef: FLOOR_DEF,
+    bonusTimeByAttack: [false, false],
+    initialTacModifier: 0,
+    activeBaseCount: 2,
+  };
+
   const swing = (attackIndex: number) => {
-    return swingTacAndDef(
-      attacker,
-      [['kd'], ['one']],
-      [[null], [null]],
-      attackIndex,
-      NO_ATTACK_INDEX,
-      false,
-      false,
-      NO_MODS,
-      FLOOR_DEF,
-      [false, false],
-      0,
-      2,
-    );
+    return swingTacAndDef(plan, attackIndex, params);
   };
 
   it('reads the plain TAC and DEF on the first swing', () => {

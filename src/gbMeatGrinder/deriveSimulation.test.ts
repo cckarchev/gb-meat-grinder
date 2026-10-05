@@ -42,20 +42,18 @@ describe('deriveSimulation', () => {
       state.charging,
     );
 
-    const expected = computeAttackSequence(
-      veteranBoar,
-      3,
-      state.armor,
-      state.attackPlan.wrapPicks,
-      state.attackPlan.characterPlayPicks,
-      NO_ATTACK_INDEX,
-      state.enemyHasCover,
-      state.enemyDefensiveStance,
-      state.damageMods,
-      state.bonusTimeByAttack,
-      0,
+    const expected = computeAttackSequence(state.attackPlan, {
+      attacker: veteranBoar,
+      chargeAttackIndex: NO_ATTACK_INDEX,
+      armor: state.armor,
+      enemyHasCover: state.enemyHasCover,
+      enemyDefensiveStance: state.enemyDefensiveStance,
+      damageMods: state.damageMods,
+      enemyDef: 3,
+      bonusTimeByAttack: state.bonusTimeByAttack,
+      initialTacModifier: 0,
       activeBaseCount,
-    );
+    });
 
     expect(derived.effectiveEnemyDef).toBe(3);
     expect(derived.activeBaseCount).toBe(activeBaseCount);

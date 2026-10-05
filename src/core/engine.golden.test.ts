@@ -26,6 +26,7 @@ import {
 } from '@/core/damage/damage';
 import { damageQuantile } from '@/core/damage/damageDistribution';
 import { planDamageOutcome } from '@/core/damage/killOdds';
+import type { AttackPlanClampParams } from '@/core/plan/attackPlan.types';
 import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
 import type {
   CharacterPlayPickSlot,
@@ -241,22 +242,24 @@ const runScenario = (
   let characterPlayPicks: CharacterPlayPickSlot[][] =
     defaultCharacterPlayPicks(size);
 
+  const clampParams: AttackPlanClampParams = {
+    attacker,
+    chargeAttackIndex,
+    armor,
+    enemyHasCover: scenario.enemyHasCover,
+    enemyDefensiveStance: scenario.enemyDefensiveStance,
+    damageMods,
+    enemyDef,
+    bonusTimeByAttack: requestedBonusTime,
+    initialTacModifier: scenario.initialTacModifier,
+    enemyKnockedDown: scenario.enemyKnockedDown,
+    activeBaseCount,
+  };
+
   const clamp = () => {
     const clamped = clampAttackPlan(
       { wrapPicks, characterPlayPicks },
-      {
-        attacker,
-        chargeAttackIndex,
-        armor,
-        enemyHasCover: scenario.enemyHasCover,
-        enemyDefensiveStance: scenario.enemyDefensiveStance,
-        damageMods,
-        enemyDef,
-        bonusTimeByAttack: requestedBonusTime,
-        initialTacModifier: scenario.initialTacModifier,
-        enemyKnockedDown: scenario.enemyKnockedDown,
-        activeBaseCount,
-      },
+      clampParams,
     );
 
     wrapPicks = clamped.wrapPicks;
@@ -275,19 +278,9 @@ const runScenario = (
 
     for (const row of order) {
       const maxNet = maxPlaybookColumnForRow(
-        attacker,
-        wrapPicks,
-        characterPlayPicks,
+        { wrapPicks, characterPlayPicks },
         row,
-        chargeAttackIndex,
-        armor,
-        scenario.enemyHasCover,
-        scenario.enemyDefensiveStance,
-        damageMods,
-        enemyDef,
-        requestedBonusTime,
-        scenario.initialTacModifier,
-        activeBaseCount,
+        clampParams,
       );
 
       for (let slot = 0; slot < wrapPicks[row].length; slot++) {

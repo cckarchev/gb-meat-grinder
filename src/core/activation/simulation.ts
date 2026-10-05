@@ -59,20 +59,23 @@ export const deriveSimulation = (
     ignoredAttackIndex,
   );
 
-  const { attacks } = computeAttackSequence(
+  const effectivePlan = {
+    wrapPicks: effectiveWrapPicks,
+    characterPlayPicks: effectiveCharacterPlayPicks,
+  };
+
+  const { attacks } = computeAttackSequence(effectivePlan, {
     attacker,
-    effectiveEnemyDef,
-    effectiveArmor,
-    effectiveWrapPicks,
-    effectiveCharacterPlayPicks,
-    effectiveChargeAttackIndex,
-    scenario.enemyHasCover,
-    scenario.enemyDefensiveStance,
-    scenario.damageMods,
-    effectiveBonusTimeByAttack,
+    chargeAttackIndex: effectiveChargeAttackIndex,
+    armor: effectiveArmor,
+    enemyHasCover: scenario.enemyHasCover,
+    enemyDefensiveStance: scenario.enemyDefensiveStance,
+    damageMods: scenario.damageMods,
+    enemyDef: effectiveEnemyDef,
+    bonusTimeByAttack: effectiveBonusTimeByAttack,
     initialTacModifier,
     activeBaseCount,
-  );
+  });
 
   // The ignored swing is always first in activation order.
   const hasIgnoredSwing =

@@ -1,5 +1,6 @@
 /** Per-swing TAC after charge, cover, Bonus Time and everything earlier swings carried over. */
 
+import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
 import { isChargeSwing } from '@/core/attacks/attackStructure';
 import {
   carriedEffectsBeforeAttack,
@@ -10,11 +11,7 @@ import {
   enemyDefForSwing,
   tacBonusFromDefReductionCap,
 } from '@/core/attacks/swingDefense';
-import type {
-  CharacterPlayPickSlot,
-  PlaybookDamageMods,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
+import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import {
   BONUS_TIME_TAC_BONUS,
   CHARGE_TAC_BONUS,
@@ -54,19 +51,24 @@ export type SwingTacAndDef = {
 
 /** TAC and to-hit DEF for one row: carry-over, DEF-floor dice, cover and Bonus Time combined. */
 export const swingTacAndDef = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
+  plan: AttackPlan,
   attackIndex: number,
-  chargeAttackIndex: number,
-  enemyHasCover: boolean,
-  enemyDefensiveStance: boolean,
-  damageMods: PlaybookDamageMods,
-  baseDef: number,
-  bonusTimeByAttack: readonly boolean[],
-  initialTacModifier: number,
-  activeBaseCount: number,
+  params: ActivationRollParams,
 ): SwingTacAndDef => {
+  const { wrapPicks, characterPlayPicks } = plan;
+
+  const {
+    attacker,
+    chargeAttackIndex,
+    enemyHasCover,
+    enemyDefensiveStance,
+    damageMods,
+    enemyDef,
+    bonusTimeByAttack,
+    initialTacModifier,
+    activeBaseCount,
+  } = params;
+
   const { tacBonus, defReduction } = carriedEffectsBeforeAttack(
     attacker,
     wrapPicks,
@@ -77,7 +79,7 @@ export const swingTacAndDef = (
   );
 
   const defForRow = enemyDefForSwing(
-    baseDef,
+    enemyDef,
     attackIndex,
     chargeAttackIndex,
     enemyDefensiveStance,
@@ -110,37 +112,4 @@ export const swingTacAndDef = (
   );
 
   return { tac, defMinRoll };
-};
-
-/** Full TAC for one row; see `swingTacAndDef`. */
-export const tacForAttackRow = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
-  attackIndex: number,
-  chargeAttackIndex: number,
-  enemyHasCover: boolean,
-  enemyDefensiveStance: boolean,
-  damageMods: PlaybookDamageMods,
-  baseDef: number,
-  bonusTimeByAttack: readonly boolean[],
-  initialTacModifier: number,
-  activeBaseCount: number,
-): number => {
-  const { tac } = swingTacAndDef(
-    attacker,
-    wrapPicks,
-    characterPlayPicks,
-    attackIndex,
-    chargeAttackIndex,
-    enemyHasCover,
-    enemyDefensiveStance,
-    damageMods,
-    baseDef,
-    bonusTimeByAttack,
-    initialTacModifier,
-    activeBaseCount,
-  );
-
-  return tac;
 };

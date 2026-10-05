@@ -3,7 +3,7 @@
  */
 
 import { attackRowIsActive } from '@/core/attacks/attackRows';
-import { maxPlaybookColumnForPlan } from '@/core/attacks/maxPlaybookColumn';
+import { maxPlaybookColumnForRow } from '@/core/attacks/maxPlaybookColumn';
 import type {
   AttackPlan,
   AttackPlanClampParams,
@@ -77,7 +77,7 @@ export const clampAttackRow = (
     plays: draft.characterPlayPicks[attackIndex],
   };
 
-  const maxNet = maxPlaybookColumnForPlan(draft, attackIndex, params);
+  const maxNet = maxPlaybookColumnForRow(draft, attackIndex, params);
   const clamped = clampRowPicks(params.attacker, current, maxNet);
 
   const rowSame =

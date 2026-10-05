@@ -3,7 +3,7 @@
  */
 
 import { activationAttackIndices } from '@/core/attacks/attackRows';
-import { maxPlaybookColumnForPlan } from '@/core/attacks/maxPlaybookColumn';
+import { maxPlaybookColumnForRow } from '@/core/attacks/maxPlaybookColumn';
 import { initialCharacterPlayFor } from '@/core/characterPlays/characterPlayLookup';
 import type {
   AttackPlan,
@@ -70,7 +70,7 @@ export const stripDuplicateKnockDown = (
   );
 
   for (const attackIndex of activationOrder) {
-    const maxNet = maxPlaybookColumnForPlan(draft, attackIndex, params);
+    const maxNet = maxPlaybookColumnForRow(draft, attackIndex, params);
     const picks = draft.wrapPicks[attackIndex];
 
     for (let slot = 0; slot < picks.length; slot++) {
