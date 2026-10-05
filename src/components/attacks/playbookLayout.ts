@@ -1,6 +1,6 @@
 /**
  * Grid track width for each playbook column (net-success column).
- * Keep in sync with `ColumnGrid` in PlaybookGrid.tsx.
+ * Keep in sync with `ColumnGrid` in playbookGridStyles.ts.
  */
 export const PLAYBOOK_COLUMN_TRACK = '3.65rem';
 
@@ -10,5 +10,5 @@ export const PLAYBOOK_COLUMN_TRACK = '3.65rem';
  */
 export const PLAYBOOK_COLUMN_WIDTH_VAR = '--playbook-column-width';
 
-/** Gap between playbook columns; keep in sync with `ColumnGrid` in PlaybookGrid.tsx. */
+/** Gap between playbook columns; keep in sync with `ColumnGrid` in playbookGridStyles.ts. */
 export const PLAYBOOK_GRID_GAP = '0.4rem';

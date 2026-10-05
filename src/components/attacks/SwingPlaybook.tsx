@@ -3,7 +3,7 @@ import {
   UnreachableNote,
 } from '@/components/attacks/attackSwingRowStyles';
 import { CharacterPlaySelection } from '@/components/attacks/CharacterPlaySelection';
-import { WrapSlotPickGrid } from '@/components/attacks/PlaybookGrid';
+import { WrapSlotPickGrid } from '@/components/attacks/WrapSlotPickGrid';
 import { choiceUsesCharacterPlay } from '@/core/wrapSlots';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import type {
