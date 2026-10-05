@@ -22,7 +22,7 @@ import type {
 } from '@/types/core/playbook';
 
 /** Character plays this attacker's GB / 1GB results can trigger (from the catalog). */
-export const characterPlaysForAttacker = (
+const characterPlaysForAttacker = (
   attacker: AttackerData,
 ): readonly CharacterPlay[] => {
   return attacker.characterPlays ?? [];
@@ -72,10 +72,7 @@ export const availableBuffs = (attacker: AttackerData) => {
 };
 
 /** The attacker's available buffs that are currently toggled on. */
-export const activeBuffs = (
-  attacker: AttackerData,
-  mods: PlaybookDamageMods,
-) => {
+const activeBuffs = (attacker: AttackerData, mods: PlaybookDamageMods) => {
   return availableBuffs(attacker).filter((b) => mods.buffs[b.id]);
 };
 
@@ -108,7 +105,7 @@ export const playbookDamageBonusSum = (
 };
 
 /** True if a selected buff turns playbook damage into Tough-Hide-ignoring Condition Damage. */
-export const buffsIgnoreToughHide = (
+const buffsIgnoreToughHide = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
 ): boolean => {

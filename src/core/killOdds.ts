@@ -20,10 +20,6 @@ const bestDamageWithinBudget = (
   mods: PlaybookDamageMods,
   budget: number,
 ): number => {
-  if (budget < 1) {
-    return 0;
-  }
-
   let best = 0;
 
   for (const col of attacker.playbook) {

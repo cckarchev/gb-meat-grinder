@@ -200,7 +200,7 @@ export const tacForAttack = (
   );
 };
 
-export const tacForAttackRow = (
+const tacForAttackRow = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],
@@ -460,11 +460,6 @@ const clampRowPicks = (
   while (p.length < n) {
     p.push(null);
     g.push(null);
-  }
-
-  while (p.length > n) {
-    p.pop();
-    g.pop();
   }
 
   const b0 = wrapSlotBudget(attacker, maxNet, 0);
