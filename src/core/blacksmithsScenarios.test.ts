@@ -162,7 +162,8 @@ describe('Cast and Tempered Steel', () => {
 
   it('feeds Burning Passion once Searing Strike lights the target', () => {
     const steelAndBurning = modsWith({
-      buffs: { temperedSteel: true, burning: true },
+      targetBurning: true,
+      buffs: { temperedSteel: true },
     });
 
     expect(allHitDamage(cast, threeOf('dmg1'), { mods: steel })).toEqual([
@@ -181,7 +182,7 @@ describe('Cast and Tempered Steel', () => {
     expect(
       allHitDamage(cast, plan, {
         ...single,
-        mods: modsWith({ buffs: { burning: true, tooledUp: true } }),
+        mods: modsWith({ targetBurning: true, buffs: { tooledUp: true } }),
       })[0],
     ).toBe(4);
     expect(

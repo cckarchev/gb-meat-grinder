@@ -113,9 +113,9 @@ describe('Burning Passion', () => {
   });
 
   it('adds +1 to every swing when the target starts Burning', () => {
-    expect(
-      damageFor(passionate, modsWith({ buffs: { burning: true } })),
-    ).toEqual([3, 3, 3]);
+    expect(damageFor(passionate, modsWith({ targetBurning: true }))).toEqual([
+      3, 3, 3,
+    ]);
   });
 
   it('starts on the swing after Searing Strike lights the target', () => {
@@ -128,7 +128,7 @@ describe('Burning Passion', () => {
     expect(
       damageFor(
         passionate,
-        modsWith({ buffs: { burning: true, sharp: true } }),
+        modsWith({ targetBurning: true, buffs: { sharp: true } }),
       ),
     ).toEqual([4, 4, 4]);
   });
@@ -146,7 +146,7 @@ describe('Burning Passion', () => {
       characterPlayPicks: [['playDamage']],
     };
 
-    const mods = modsWith({ buffs: { burning: true } });
+    const mods = modsWith({ targetBurning: true });
 
     const timeline = activationTimeline(plan, {
       attacker: withPlay,
@@ -168,7 +168,7 @@ describe('buffs of another guild', () => {
       inf: SWINGS,
       characterTraits: [burningPassion],
     });
-    const staleMods = modsWith({ buffs: { steel: true, burning: true } });
+    const staleMods = modsWith({ buffs: { steel: true } });
 
     const timeline = timelineFor(otherGuild, threeOf('two'), staleMods);
 
@@ -179,6 +179,24 @@ describe('buffs of another guild', () => {
       false,
       false,
       false,
+    ]);
+  });
+});
+
+describe('the Burning condition', () => {
+  it('lights the target whatever the attacker guild', () => {
+    const otherGuild = makeAttacker({
+      inf: SWINGS,
+      characterTraits: [burningPassion],
+    });
+    const mods = modsWith({ targetBurning: true });
+
+    const timeline = timelineFor(otherGuild, threeOf('two'), mods);
+
+    expect(timeline.map((state) => state.targetBurningBefore)).toEqual([
+      true,
+      true,
+      true,
     ]);
   });
 });
@@ -204,7 +222,7 @@ describe('Burning Passion in the breakdown', () => {
   };
 
   it('itemizes its lift as its own line', () => {
-    const breakdown = breakdownFor(modsWith({ buffs: { burning: true } }));
+    const breakdown = breakdownFor(modsWith({ targetBurning: true }));
 
     expect(breakdown.totalEffective).toBe(9);
     expect(breakdown.buffBonuses.at(-1)).toEqual({

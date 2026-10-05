@@ -158,7 +158,11 @@ describe('one named source across a guild buff and a play', () => {
     const derived = deriveSimulation(attacker, {
       ...base,
       armor: 3,
-      damageMods: { toughHide: false, buffs: { theyAintTough: true } },
+      damageMods: {
+        toughHide: false,
+        targetBurning: false,
+        buffs: { theyAintTough: true },
+      },
       attackPlan: { wrapPicks, characterPlayPicks },
     });
 

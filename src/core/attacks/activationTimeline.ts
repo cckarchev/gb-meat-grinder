@@ -101,11 +101,9 @@ const sumEffects = (
   return { tacBonus, defReduction, armorReduction };
 };
 
-/** Whether the target is Burning before the first swing (a pre-applied debuff). */
+/** Whether the target is Burning before the first swing (the Burning condition). */
 const startsBurning = (params: TimelineParams): boolean => {
-  const buffs = activeBuffs(params.attacker, params.damageMods);
-
-  return buffs.some((buff) => buff.appliesBurning === true);
+  return params.damageMods.targetBurning;
 };
 
 /** +DMG Burning Passion-like traits add to playbook damage against a Burning target. */

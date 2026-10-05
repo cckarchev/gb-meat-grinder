@@ -211,6 +211,9 @@ const runScenario = (
 
   const damageMods: PlaybookDamageMods = {
     toughHide: scenario.toughHide,
+    // Burning was a Blacksmiths buff; it rides with the buffs so the
+    // Burning Passion snapshots keep their coverage.
+    targetBurning: scenario.allBuffs,
     buffs: Object.fromEntries(
       availableBuffs(attacker).map((buff) => [buff.id, scenario.allBuffs]),
     ),

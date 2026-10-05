@@ -84,6 +84,8 @@ export type PlaybookColumn = {
 export type PlaybookDamageMods = {
   /** Enemy Tough Hide: −1 to each **selected** playbook line that has card damage. */
   toughHide: boolean;
+  /** The target starts the activation with the Burning condition. */
+  targetBurning: boolean;
   /**
    * Attacker damage buffs by id, toggled on/off. These are external (teammate /
    * guild-granted) and defined per attacker in its data file, so the keys are

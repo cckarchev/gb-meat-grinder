@@ -25,12 +25,5 @@ export const blacksmiths: Guild = {
       armorReduction: 1,
     },
     weakPoint,
-    {
-      id: 'burning',
-      label: 'Burning',
-      tooltip: 'The target starts the activation Burning.',
-      target: 'enemy',
-      appliesBurning: true,
-    },
   ],
 };

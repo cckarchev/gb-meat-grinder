@@ -20,6 +20,9 @@ export const TOOLTIP_KNOCKED_DOWN = `Target starts the activation Knocked Down: 
 
 export const TOOLTIP_SNARED = `Target starts the activation Snared: -${SNARED_DEF_PENALTY} DEF.`;
 
+export const TOOLTIP_BURNING =
+  'Target starts the activation Burning. Matters to attackers with Burning Passion.';
+
 export const TOOLTIP_RESILIENCE =
   'Resilience: the activation’s first attack is wholly ignored (no damage, effects, wraps, momentum, or Berserker trigger) and carries nothing over to later attacks. That swing is shown but disabled.';
 

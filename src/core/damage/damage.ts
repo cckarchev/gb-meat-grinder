@@ -19,6 +19,7 @@ import type { GuildBuff, GuildBuffTarget } from '@/data/guilds/guild.types';
 
 export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
   toughHide: false,
+  targetBurning: false,
   buffs: {},
 };
 

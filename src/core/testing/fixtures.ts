@@ -84,7 +84,7 @@ export const TEST_GUILD: Guild = {
   ],
 };
 
-/** A guild with condition-driven buffs: Tempered Steel-like, Burning and Searing Strike. */
+/** A guild with condition-driven buffs: Tempered Steel-like and Searing Strike. */
 export const CONDITION_GUILD: Guild = {
   id: 'conditioners',
   name: 'Conditioners',
@@ -96,13 +96,6 @@ export const CONDITION_GUILD: Guild = {
       tooltip: '',
       tacBonus: 1,
       grantsTraits: [searingStrike],
-    },
-    {
-      id: 'burning',
-      label: 'Burning',
-      tooltip: '',
-      target: 'enemy',
-      appliesBurning: true,
     },
     {
       id: 'searingStrike',

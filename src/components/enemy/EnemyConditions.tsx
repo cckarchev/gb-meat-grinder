@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import {
   LABEL_KNOCKED_DOWN,
   LABEL_SNARED,
+  TOOLTIP_BURNING,
   TOOLTIP_COVER,
   TOOLTIP_DEFENSIVE_STANCE,
   TOOLTIP_KNOCKED_DOWN,
@@ -102,6 +103,13 @@ export const EnemyConditions = () => {
             tooltip={TOOLTIP_SNARED}
           >
             {LABEL_SNARED}
+          </TooltipCheckbox>
+          <TooltipCheckbox
+            checked={damageMods.targetBurning}
+            onChange={(value) => dispatch({ type: 'targetBurning', value })}
+            tooltip={TOOLTIP_BURNING}
+          >
+            Burning
           </TooltipCheckbox>
           <TooltipCheckbox
             checked={enemyResilience}

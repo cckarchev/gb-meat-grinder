@@ -25,8 +25,6 @@ export type GuildBuff = {
   tacBonus?: number;
   /** Traits the attacker gains while the buff is on (Tempered Steel grants Searing Strike). */
   grantsTraits?: readonly CharacterTrait[];
-  /** The target is Burning from the start of the activation. */
-  appliesBurning?: boolean;
   /**
    * Where the effect lands: `'attacker'` (default) buffs the attacker and shows on
    * the Attacker panel; `'enemy'` is a condition on the target (e.g. -ARM) and
