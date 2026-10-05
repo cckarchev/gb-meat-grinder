@@ -34,8 +34,8 @@ const CORNER_ACCENTS: Partial<Record<AttackBlockVariant, string>> = {
 export const AttackSwingRow = ({
   attack,
   displayIdx,
-  disabled = false,
-  isKillingBlow = false,
+  disabled,
+  isKillingBlow,
   armor,
   charging,
   chargeAttackIndex,

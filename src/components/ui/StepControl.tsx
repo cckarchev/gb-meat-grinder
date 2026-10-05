@@ -78,11 +78,6 @@ const ValueDisplay = styled.span`
   }
 `;
 
-const Hint = styled.span`
-  font-size: 0.72rem;
-  color: var(--muted);
-`;
-
 export const StepControl = ({
   label,
   value,
@@ -90,24 +85,17 @@ export const StepControl = ({
   max,
   onChange,
   valueLabel,
-  hint,
   decrementAriaLabel,
   incrementAriaLabel,
 }: StepControlProps) => {
-  const uid = useId();
-  const labelId = `${uid}-label`;
-  const hintId = `${uid}-hint`;
+  const labelId = useId();
   const canDec = value > min;
   const canInc = value < max;
 
   return (
     <Wrap>
       <LabelText id={labelId}>{label}</LabelText>
-      <ControlRow
-        role="group"
-        aria-labelledby={labelId}
-        aria-describedby={hint ? hintId : undefined}
-      >
+      <ControlRow role="group" aria-labelledby={labelId}>
         <StepButton
           type="button"
           aria-label={decrementAriaLabel}
@@ -126,7 +114,6 @@ export const StepControl = ({
           +
         </StepButton>
       </ControlRow>
-      {hint ? <Hint id={hintId}>{hint}</Hint> : null}
     </Wrap>
   );
 };

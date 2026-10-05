@@ -8,13 +8,7 @@ import type {
 } from '@/core/playbook/playbook.types';
 
 export type AttacksPanelProps = {
-  targetHp: number;
-  armor: number;
-  chargeAttackIndex: number;
   onChargeAttackIndexChange: (index: number) => void;
-  /** Momentum at the start of the activation (clamped 0–20 in the target panel). */
-  startingMomentum: number;
-  bonusTimeByAttack: boolean[];
   onBonusTimeChange: (attackIndex: number, value: boolean) => void;
   wrapPicks: WrapPick[][];
   characterPlayPicks: CharacterPlayPickSlot[][];
@@ -30,7 +24,6 @@ export type AttacksPanelProps = {
     pick: CharacterPlayPick,
   ) => void;
   onWrapContinuationCleared: (attackIndex: number) => void;
-  attacks: AttackRollContext[];
 };
 
 export type CharacterPlaySlotRef = { pid: PlaybookChoiceId; pickIndex: number };
@@ -38,8 +31,8 @@ export type CharacterPlaySlotRef = { pid: PlaybookChoiceId; pickIndex: number };
 export type AttackSwingRowProps = {
   attack: AttackRollContext;
   displayIdx: number;
-  disabled?: boolean;
-  isKillingBlow?: boolean;
+  disabled: boolean;
+  isKillingBlow: boolean;
   armor: number;
   charging: boolean;
   chargeAttackIndex: number;

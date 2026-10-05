@@ -58,11 +58,9 @@ const Bubble = styled.span`
 export const InfoTip = ({
   content,
   children,
-  className,
 }: {
   content: string;
   children: ReactNode;
-  className?: string;
 }) => {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLSpanElement>(null);
@@ -87,7 +85,6 @@ export const InfoTip = ({
   return (
     <Wrap
       ref={wrapRef}
-      className={className}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >

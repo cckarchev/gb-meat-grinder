@@ -1,9 +1,9 @@
 import type { CSSProperties } from 'react';
 
 interface CornerBracketsProps {
-  /** Bracket color. Defaults to the CCK brand teal. */
-  accent?: string;
-  size?: number;
+  /** Bracket color, as any CSS color value. */
+  accent: string;
+  size: number;
   thickness?: number;
   inset?: number;
 }
@@ -13,8 +13,8 @@ interface CornerBracketsProps {
  * inside a `position: relative` parent and is purely decorative.
  */
 export const CornerBrackets = ({
-  accent = 'var(--teal-bright)',
-  size = 14,
+  accent,
+  size,
   thickness = 2,
   inset = -1,
 }: CornerBracketsProps) => {
