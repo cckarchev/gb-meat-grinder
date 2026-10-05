@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { AttackerModelSelect } from '@/components/attacker/AttackerModelSelect';
 import { AttackerPreAttackOptions } from '@/components/attacker/AttackerPreAttackOptions';
 import { StepControl } from '@/components/ui/StepControl';
-import { Panel, PanelTitle } from '@/components/ui/ui';
+import { Panel, PanelFooterSection, PanelTitle } from '@/components/ui/ui';
 import { INFLUENCE_MIN } from '@/core/shared/constants';
 import { formatSigned } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
@@ -29,14 +29,11 @@ const ControlsGrid = styled.div`
 `;
 
 /** Visual break before the pre-attack toggles; no heading, just a rule. */
-const PreAttackSection = styled.div`
+const PreAttackSection = styled(PanelFooterSection)`
   margin-top: 1rem;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--border);
 
   ${narrowViewport} {
     margin-top: 0.65rem;
-    padding-top: 0.6rem;
   }
 `;
 

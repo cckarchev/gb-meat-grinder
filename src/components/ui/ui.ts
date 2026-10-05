@@ -20,6 +20,19 @@ export const Panel = styled.section`
   }
 `;
 
+/**
+ * Closing section of a panel, set off by a rule. Shared so the attacker and
+ * enemy toggles line up when the panels sit side by side.
+ */
+export const PanelFooterSection = styled.div`
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+
+  ${narrowViewport} {
+    padding-top: 0.6rem;
+  }
+`;
+
 export const PanelTitle = styled.h2`
   font-family: var(--font-mono);
   font-size: 0.7rem;

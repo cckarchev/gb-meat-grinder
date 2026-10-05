@@ -10,6 +10,7 @@ import {
   TOOLTIP_TOUGH_HIDE,
 } from '@/components/enemy/enemyPanelCopy';
 import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
+import { PanelFooterSection } from '@/components/ui/ui';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 
@@ -18,14 +19,8 @@ import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
  * `margin-top: auto` pins the group to the bottom so it aligns with the
  * attacker panel's toggles in the same row.
  */
-const ConditionsSection = styled.div`
+const ConditionsSection = styled(PanelFooterSection)`
   margin-top: auto;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--border);
-
-  ${narrowViewport} {
-    padding-top: 0.6rem;
-  }
 `;
 
 /** Cover/Defensive Stance/Tough Hide on the left, KD/Snared on the right. */
