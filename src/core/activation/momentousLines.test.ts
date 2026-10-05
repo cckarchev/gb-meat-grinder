@@ -32,3 +32,27 @@ describe('momentumEarnedBySwing', () => {
     expect(momentumEarnedBySwing(attacker, ['two', 'one'], TOUGH_HIDE)).toBe(1);
   });
 });
+
+describe('momentous results without printed damage', () => {
+  const attacker = makeAttacker({
+    playbook: [
+      {
+        netSuccesses: 1,
+        results: [
+          { id: 'mgb', label: 'GB', damage: 0, momentum: true },
+          { id: 'm1', label: '1', damage: 1, momentum: true },
+        ],
+      },
+    ],
+  });
+
+  it('always earn momentum and show as heat', () => {
+    expect(momentousLineStyle(attacker, 'mgb', TOUGH_HIDE)).toBe('heat');
+    expect(pickGeneratesMomentum(attacker, 'mgb', NO_MODS)).toBe(true);
+  });
+
+  it('leave a zeroed damage result without momentum', () => {
+    expect(momentousLineStyle(attacker, 'm1', TOUGH_HIDE)).toBe('zeroed');
+    expect(pickGeneratesMomentum(attacker, 'm1', TOUGH_HIDE)).toBe(false);
+  });
+});
