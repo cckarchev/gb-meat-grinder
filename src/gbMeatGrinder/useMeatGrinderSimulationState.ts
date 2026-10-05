@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer } from 'react';
+import { useMemo, useReducer } from 'react';
 import { deriveSimulation } from '@/core/activation/simulation';
 import { ATTACKERS, attackerById } from '@/data/attackers/registry';
 import { createInitialMeatGrinderState } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
@@ -18,15 +18,6 @@ export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
     () => deriveSimulation(attacker, state),
     [attacker, state],
   );
-
-  const { wrapPicks } = state.attackPlan;
-  const { activeBaseCount } = derived;
-
-  useEffect(() => {
-    queueMicrotask(() => {
-      dispatch({ type: 'sanitizeBonusTime' });
-    });
-  }, [wrapPicks, state.damageMods, state.startingMomentum, activeBaseCount]);
 
   return useMemo(() => {
     const { attackerId, attackPlan, bonusTimeByAttack, ...exposedState } =

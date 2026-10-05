@@ -27,7 +27,7 @@ import {
   attackerOf,
 } from '@/gbMeatGrinder/reducer/stateSelectors';
 
-export const meatGrinderReducer = (
+const transition = (
   state: MeatGrinderState,
   action: MeatGrinderAction,
 ): MeatGrinderState => {
@@ -114,9 +114,6 @@ export const meatGrinderReducer = (
     case 'bonusTime': {
       return toggleBonusTime(state, action.attackIndex, action.value);
     }
-    case 'sanitizeBonusTime': {
-      return resanitizeBonusTime(state);
-    }
     case 'wrapChoice': {
       const edited = nextPlanAfterWrapChoice(
         attackerOf(state),
@@ -156,4 +153,16 @@ export const meatGrinderReducer = (
       return _exhaustive;
     }
   }
+};
+
+/**
+ * Every transition ends by dropping Bonus Time spends it left unpaid (less
+ * momentum, a momentous line unpicked, fewer bases), so no render ever shows
+ * a spend the pool cannot cover.
+ */
+export const meatGrinderReducer = (
+  state: MeatGrinderState,
+  action: MeatGrinderAction,
+): MeatGrinderState => {
+  return resanitizeBonusTime(transition(state, action));
 };

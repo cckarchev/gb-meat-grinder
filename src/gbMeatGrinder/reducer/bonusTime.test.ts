@@ -35,22 +35,44 @@ describe('Bonus Time', () => {
     expect(state.bonusTimeByAttack.slice(0, 2)).toEqual([true, true]);
   });
 
-  it('clears spends that can no longer be paid', () => {
+  it('turns a spend off', () => {
     const paid = reduce(
       initialState(PICK_THRESHER),
       { type: 'startingMomentum', value: 1 },
       spend(0),
     );
 
-    const broke = { ...paid, startingMomentum: 0 };
-    const sanitized = reduce(broke, { type: 'sanitizeBonusTime' });
+    const off = reduce(paid, {
+      type: 'bonusTime',
+      attackIndex: 0,
+      value: false,
+    });
 
-    expect(reduce(paid, { type: 'sanitizeBonusTime' })).toBe(paid);
-    expect(sanitized.bonusTimeByAttack[0]).toBe(false);
+    expect(paid.bonusTimeByAttack[0]).toBe(true);
+    expect(off.bonusTimeByAttack[0]).toBe(false);
+  });
 
-    expect(
-      reduce(paid, { type: 'bonusTime', attackIndex: 0, value: false })
-        .bonusTimeByAttack[0],
-    ).toBe(false);
+  it('clears a spend in the same transition that drops its momentum', () => {
+    const broke = reduce(
+      initialState(PICK_THRESHER),
+      { type: 'startingMomentum', value: 1 },
+      spend(0),
+      { type: 'startingMomentum', value: 0 },
+    );
+
+    expect(broke.bonusTimeByAttack[0]).toBe(false);
+  });
+
+  it('clears a later spend in the same transition that replaces its momentous line', () => {
+    const unpicked = reduce(
+      initialState(PICK_THRESHER),
+      { type: 'startingMomentum', value: 1 },
+      pick(0, 'm2'),
+      spend(0),
+      spend(1),
+      pick(0, 'tackle'),
+    );
+
+    expect(unpicked.bonusTimeByAttack.slice(0, 2)).toEqual([true, false]);
   });
 });

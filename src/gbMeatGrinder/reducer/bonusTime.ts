@@ -59,9 +59,10 @@ export const toggleBonusTime = (
 
   nextFlags[attackIndex] = value;
 
-  return { ...state, bonusTimeByAttack: sanitizedBonusTime(state, nextFlags) };
+  return { ...state, bonusTimeByAttack: nextFlags };
 };
 
+/** Drop the spends the state can no longer pay for, keeping the same state when none drop. */
 export const resanitizeBonusTime = (
   state: MeatGrinderState,
 ): MeatGrinderState => {

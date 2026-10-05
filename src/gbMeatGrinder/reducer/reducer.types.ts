@@ -62,7 +62,6 @@ export type MeatGrinderAction =
   | { type: 'damageMods'; value: PlaybookDamageMods }
   | { type: 'specialAbility'; id: string; value: boolean }
   | { type: 'bonusTime'; attackIndex: number; value: boolean }
-  | { type: 'sanitizeBonusTime' }
   | {
       type: 'wrapChoice';
       attackIndex: number;
