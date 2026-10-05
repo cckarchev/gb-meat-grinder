@@ -1,6 +1,7 @@
-import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 import styled from 'styled-components';
 import { TooltipBubble } from '@/components/ui/TooltipBubble';
+import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
 import { focusRing } from '@/styles/mixins';
 
 const Wrap = styled.span`
@@ -40,46 +41,18 @@ type InfoTipProps = {
  * `<button>` is interactive content (clicking it does not toggle the control).
  */
 export const InfoTip = ({ content, children }: InfoTipProps) => {
-  const [open, setOpen] = useState(false);
-  const wrapRef = useRef<HTMLSpanElement>(null);
-  const tooltipId = useId();
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    const onPointerDown = (e: MouseEvent) => {
-      if (!wrapRef.current?.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', onPointerDown);
-
-    return () => document.removeEventListener('mousedown', onPointerDown);
-  }, [open]);
+  const { open, tooltipId, toggle, wrapperProps, triggerProps } =
+    useTooltipOpen<HTMLSpanElement>();
 
   return (
-    <Wrap
-      ref={wrapRef}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
+    <Wrap {...wrapperProps}>
       <Trigger
         type="button"
-        aria-describedby={open ? tooltipId : undefined}
+        {...triggerProps}
         aria-expanded={open}
         onClick={(e) => {
           e.stopPropagation();
-          setOpen((wasOpen) => !wasOpen);
-        }}
-        onFocus={() => setOpen(true)}
-        onBlur={() => setOpen(false)}
-        onKeyDown={(e) => {
-          if (e.key === 'Escape') {
-            setOpen(false);
-          }
+          toggle();
         }}
       >
         {children}

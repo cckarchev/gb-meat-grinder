@@ -67,7 +67,7 @@ export const AttackStatsAside = ({
   remainingHpIfHit,
 }: AttackStatsAsideProps) => {
   return (
-    <AttackStatsRail aria-label="Defense, armor, momentum, and HP after this swing">
+    <AttackStatsRail aria-label="Defense, armor, HP after this swing, and momentum">
       <StatRow>
         <AttackStatCaption>DEF</AttackStatCaption>
         <AttackStatMono>{defMinRoll}+</AttackStatMono>

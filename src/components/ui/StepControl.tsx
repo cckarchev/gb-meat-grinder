@@ -77,16 +77,19 @@ const ValueDisplay = styled.span`
   }
 `;
 
+/** How far one button press moves the value. */
+const STEP = 1;
+
 type StepControlProps = {
   label: string;
   value: number;
   min: number;
   max: number;
   onChange: (next: number) => void;
-  /** Shown inside the value box, e.g. `4+` or `2` */
-  valueLabel: string;
-  decrementAriaLabel: string;
-  incrementAriaLabel: string;
+  /** What the buttons change, for their labels: `armor` reads "Decrease armor". */
+  ariaSubject: string;
+  /** Shown inside the value box, e.g. `4+`. Defaults to the plain value. */
+  valueLabel?: string;
 };
 
 export const StepControl = ({
@@ -95,9 +98,8 @@ export const StepControl = ({
   min,
   max,
   onChange,
-  valueLabel,
-  decrementAriaLabel,
-  incrementAriaLabel,
+  ariaSubject,
+  valueLabel = String(value),
 }: StepControlProps) => {
   const labelId = useId();
   const canDec = value > min;
@@ -109,18 +111,18 @@ export const StepControl = ({
       <ControlRow role="group" aria-labelledby={labelId}>
         <StepButton
           type="button"
-          aria-label={decrementAriaLabel}
+          aria-label={`Decrease ${ariaSubject}`}
           disabled={!canDec}
-          onClick={() => onChange(Math.max(min, value - 1))}
+          onClick={() => onChange(Math.max(min, value - STEP))}
         >
           -
         </StepButton>
         <ValueDisplay>{valueLabel}</ValueDisplay>
         <StepButton
           type="button"
-          aria-label={incrementAriaLabel}
+          aria-label={`Increase ${ariaSubject}`}
           disabled={!canInc}
-          onClick={() => onChange(Math.min(max, value + 1))}
+          onClick={() => onChange(Math.min(max, value + STEP))}
         >
           +
         </StepButton>

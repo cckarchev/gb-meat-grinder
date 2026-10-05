@@ -32,8 +32,7 @@ export const EnemyPanel = () => {
           max={DEF_MAX}
           onChange={(value) => dispatch({ type: 'enemyDef', value })}
           valueLabel={`${enemyDef}+`}
-          decrementAriaLabel="Decrease defense threshold"
-          incrementAriaLabel="Increase defense threshold"
+          ariaSubject="defense threshold"
         />
         <StepControl
           label="Armor"
@@ -41,9 +40,7 @@ export const EnemyPanel = () => {
           min={ARM_MIN}
           max={ARM_MAX}
           onChange={(value) => dispatch({ type: 'armor', value })}
-          valueLabel={String(armor)}
-          decrementAriaLabel="Decrease armor"
-          incrementAriaLabel="Increase armor"
+          ariaSubject="armor"
         />
         <StepControl
           label="HP"
@@ -51,9 +48,7 @@ export const EnemyPanel = () => {
           min={HP_MIN}
           max={HP_MAX}
           onChange={(value) => dispatch({ type: 'hp', value })}
-          valueLabel={String(hp)}
-          decrementAriaLabel="Decrease target HP"
-          incrementAriaLabel="Increase target HP"
+          ariaSubject="target HP"
         />
       </Row>
       <EnemyConditions />

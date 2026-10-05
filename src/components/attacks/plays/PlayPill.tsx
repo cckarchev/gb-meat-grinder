@@ -1,7 +1,8 @@
-import { type ReactNode, useId, useState } from 'react';
+import type { ReactNode } from 'react';
 import styled from 'styled-components';
 import { ToggleButton } from '@/components/ui/controls';
 import { TooltipBubble } from '@/components/ui/TooltipBubble';
+import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
 import { narrowViewport } from '@/styles/breakpoints';
 
 const PillWrap = styled.span`
@@ -38,22 +39,17 @@ export const PlayPill = ({
   onClick,
   children,
 }: PlayPillProps) => {
-  const [open, setOpen] = useState(false);
-  const tooltipId = useId();
+  const { open, tooltipId, wrapperProps, triggerProps } =
+    useTooltipOpen<HTMLSpanElement>();
 
   return (
-    <PillWrap
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
+    <PillWrap {...wrapperProps}>
       <SelectionBtn
         type="button"
         $active={active}
         $muted={muted}
         aria-label={ariaLabel}
-        aria-describedby={open ? tooltipId : undefined}
-        onFocus={() => setOpen(true)}
-        onBlur={() => setOpen(false)}
+        {...triggerProps}
         onClick={onClick}
       >
         {children}

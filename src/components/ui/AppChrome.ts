@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
 import styled from 'styled-components';
 import { narrowViewport } from '@/styles/breakpoints';
 
-const Shell = styled.div`
+/** Centered, width-capped page shell around the whole app. */
+export const AppChrome = styled.div`
   box-sizing: border-box;
   width: 100%;
   max-width: 880px;
@@ -14,11 +14,3 @@ const Shell = styled.div`
     padding: 0.75rem 0.5rem 1.5rem;
   }
 `;
-
-type AppChromeProps = {
-  children: ReactNode;
-};
-
-export const AppChrome = ({ children }: AppChromeProps) => {
-  return <Shell>{children}</Shell>;
-};

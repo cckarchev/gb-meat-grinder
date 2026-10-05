@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Panel } from '@/components/ui/ui';
 import { narrowViewport } from '@/styles/breakpoints';
 
-const Row = styled.div`
+/** Side-by-side row for the attacker and enemy panels, wrapping on narrow screens. */
+export const TargetPanelsRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -20,11 +20,3 @@ const Row = styled.div`
     margin-bottom: 0.65rem;
   }
 `;
-
-type TargetPanelsRowProps = {
-  children: ReactNode;
-};
-
-export const TargetPanelsRow = ({ children }: TargetPanelsRowProps) => {
-  return <Row>{children}</Row>;
-};

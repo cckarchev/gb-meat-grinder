@@ -63,9 +63,7 @@ export const AttackerPanel = () => {
           min={0}
           max={attacker.inf}
           onChange={(value) => dispatch({ type: 'influence', value })}
-          valueLabel={String(influence)}
-          decrementAriaLabel="Decrease influence"
-          incrementAriaLabel="Increase influence"
+          ariaSubject="influence"
         />
         <StepControl
           label="Starting momentum"
@@ -73,9 +71,7 @@ export const AttackerPanel = () => {
           min={attacker.startingMomentum.min}
           max={attacker.startingMomentum.max}
           onChange={(value) => dispatch({ type: 'startingMomentum', value })}
-          valueLabel={String(startingMomentum)}
-          decrementAriaLabel="Decrease starting momentum"
-          incrementAriaLabel="Increase starting momentum"
+          ariaSubject="starting momentum"
         />
         <StepControl
           label="Ganging Up"
@@ -84,8 +80,7 @@ export const AttackerPanel = () => {
           max={attacker.gangingUp.max}
           onChange={(value) => dispatch({ type: 'gangingUpRaw', value })}
           valueLabel={gangingUpLabel}
-          decrementAriaLabel="Decrease Ganging Up"
-          incrementAriaLabel="Increase Ganging Up"
+          ariaSubject="Ganging Up"
         />
         <StepControl
           label="Crowding Out"
@@ -94,8 +89,7 @@ export const AttackerPanel = () => {
           max={attacker.crowdingOut.max}
           onChange={(value) => dispatch({ type: 'crowdingOutRaw', value })}
           valueLabel={crowdingOutLabel}
-          decrementAriaLabel="Decrease Crowding Out"
-          incrementAriaLabel="Increase Crowding Out"
+          ariaSubject="Crowding Out"
         />
       </ControlsGrid>
       <PreAttackSection>

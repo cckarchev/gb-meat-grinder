@@ -35,7 +35,7 @@ export const AttacksPanelSummary = () => {
   const summary = useMemo(() => summarizeActivation(input), [input]);
 
   return (
-    <Summary as="section" aria-label="Per-swing hit odds">
+    <Summary as="section" aria-label="Activation odds and totals">
       <SummarySectionTitle>Odds</SummarySectionTitle>
       {summary.activeAttacks.map((swing, displayIndex) => (
         <SummaryRow key={swing.attackIndex}>
