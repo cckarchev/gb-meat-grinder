@@ -31,7 +31,7 @@ const input = (
   return {
     attacker: makeAttacker(),
     attacks: [certainSwing(0, 2), certainSwing(1, 2)],
-    ignoredAttackIndex: -1,
+    ignoredDisplayIndex: -1,
     killingBlowIndex: -1,
     wrapPicks: [['two'], ['two']],
     bonusTimeByAttack: [false, false],

@@ -26,7 +26,7 @@ export const useActivationInput = () => {
     () => ({
       attacker,
       attacks,
-      ignoredAttackIndex: ignoredDisplayIndex,
+      ignoredDisplayIndex,
       killingBlowIndex,
       wrapPicks: effectiveWrapPicks,
       bonusTimeByAttack: effectiveBonusTimeByAttack,

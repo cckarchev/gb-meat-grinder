@@ -26,10 +26,10 @@ const DAMAGE_RANGE_HIGH_QUANTILE = 0.9;
 /** Swings from after any ignored lead swing through the killing blow. */
 export const activeSwings = (
   attacks: readonly AttackRollContext[],
-  ignoredAttackIndex: number,
+  ignoredDisplayIndex: number,
   killingBlowIndex: number,
 ): AttackRollContext[] => {
-  const start = ignoredAttackIndex >= 0 ? ignoredAttackIndex + 1 : 0;
+  const start = ignoredDisplayIndex >= 0 ? ignoredDisplayIndex + 1 : 0;
   const end = killingBlowIndex >= 0 ? killingBlowIndex + 1 : attacks.length;
 
   return attacks.slice(start, end);
@@ -38,10 +38,10 @@ export const activeSwings = (
 /** Whether the swing at `displayIdx` is ignored by Resilience or comes after the killing blow. */
 export const swingIsSkipped = (
   displayIdx: number,
-  ignoredAttackIndex: number,
+  ignoredDisplayIndex: number,
   killingBlowIndex: number,
 ): boolean => {
-  const ignored = displayIdx === ignoredAttackIndex;
+  const ignored = displayIdx === ignoredDisplayIndex;
   const afterKill = killingBlowIndex >= 0 && displayIdx > killingBlowIndex;
 
   return ignored || afterKill;
@@ -52,7 +52,7 @@ export const summarizeActivation = (
 ): ActivationSummary => {
   const activeAttacks = activeSwings(
     input.attacks,
-    input.ignoredAttackIndex,
+    input.ignoredDisplayIndex,
     input.killingBlowIndex,
   );
 

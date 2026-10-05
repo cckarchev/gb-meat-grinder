@@ -9,7 +9,7 @@ export type ActivationSummaryInput = {
   attacker: AttackerData;
   attacks: readonly AttackRollContext[];
   /** Display index of the swing Resilience ignores, or -1. */
-  ignoredAttackIndex: number;
+  ignoredDisplayIndex: number;
   /** Display index of the all-hit killing blow, or -1. */
   killingBlowIndex: number;
   /** Effective (Resilience-applied) wrap picks. */
