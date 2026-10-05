@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  attackBlockVariant,
-  attackKindLabel,
-} from '@/components/attacks/attackVariant';
+import { attackBlockVariant, attackKindLabel } from '@/core/attackVariant';
 import { makeAttacker } from '@/core/testing/fixtures';
 
 const CHARGE_ROW = 0;

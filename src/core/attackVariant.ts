@@ -1,6 +1,6 @@
 import { attackRowIsBerserker } from '@/core/playbook';
-import type { AttackBlockVariant } from '@/types/components/attacks';
 import type { AttackerData } from '@/types/core/attacker';
+import type { AttackBlockVariant } from '@/types/core/attackSequence';
 
 export const attackBlockVariant = (
   attacker: AttackerData,

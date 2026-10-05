@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { attackKindLabel } from '@/components/attacks/attackVariant';
 import { InfoTip } from '@/components/InfoTip';
 import { Mono, PanelTitle, Summary } from '@/components/ui';
+import { attackKindLabel } from '@/core/attackVariant';
 import { damageQuantile, planDamageOutcome } from '@/core/killOdds';
 import {
   damageIfAllHitsWrap,

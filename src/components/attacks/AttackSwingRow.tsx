@@ -1,9 +1,5 @@
 import styled from 'styled-components';
 import { AttackStatsAside } from '@/components/attacks/AttackStatsAside';
-import {
-  attackBlockVariant,
-  attackKindLabel,
-} from '@/components/attacks/attackVariant';
 import { CharacterPlaySelection } from '@/components/attacks/CharacterPlaySelection';
 import { WrapSlotPickGrid } from '@/components/attacks/PlaybookGrid';
 import {
@@ -14,16 +10,19 @@ import { WrapContinuationToggle } from '@/components/attacks/WrapContinuationTog
 import { InfoTip } from '@/components/InfoTip';
 import { Mono } from '@/components/ui';
 import { CornerBrackets } from '@/components/ui/CornerBrackets';
+import { attackBlockVariant, attackKindLabel } from '@/core/attackVariant';
 import { attackRowIsBerserker, choiceUsesCharacterPlay } from '@/core/playbook';
 import { maxNetSuccessesForRoll } from '@/core/probability';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 import type {
-  AttackBlockVariant,
   AttacksPanelProps,
   CharacterPlaySlotRef,
 } from '@/types/components/attacks';
-import type { AttackRollContext } from '@/types/core/attackSequence';
+import type {
+  AttackBlockVariant,
+  AttackRollContext,
+} from '@/types/core/attackSequence';
 
 const AttackRow = styled.div`
   display: flex;

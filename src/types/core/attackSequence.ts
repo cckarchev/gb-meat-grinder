@@ -10,3 +10,6 @@ export type AttackRollContext = {
   netSuccessesNeeded: number;
   prob: number;
 };
+
+/** Kind of swing a row represents (charge / berserker / base). */
+export type AttackBlockVariant = 'charge' | 'berserker' | 'base';

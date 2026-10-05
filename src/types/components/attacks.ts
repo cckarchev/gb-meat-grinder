@@ -34,6 +34,3 @@ export type AttacksPanelProps = {
 };
 
 export type CharacterPlaySlotRef = { pid: PlaybookChoiceId; pickIndex: number };
-
-/** Visual variant for the attack block (charge / berserker / base). */
-export type AttackBlockVariant = 'charge' | 'berserker' | 'base';
