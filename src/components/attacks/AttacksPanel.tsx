@@ -16,13 +16,14 @@ const AttacksList = styled.div`
 
 export const AttacksPanel = () => {
   const {
+    effectiveChargeAttackIndex,
     effectiveBonusTimeByAttack,
     ignoredDisplayIndex,
     attacks,
     killingBlowIndex,
   } = useMeatGrinderSimulation();
 
-  const { input, effectiveChargeAttackIndex } = useActivationInput();
+  const input = useActivationInput();
   const wrapExpansion = useWrapExpansion();
   const projection = useMemo(() => projectSwings(input), [input]);
 

@@ -4,13 +4,12 @@ import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulati
 
 /**
  * Engine input shared by the swing projections and the activation summary,
- * memoized on its fields, plus the charge row the engine should use.
+ * memoized on its fields.
  */
-export const useActivationInput = () => {
+export const useActivationInput = (): ActivationSummaryInput => {
   const {
     attacker,
     hp: targetHp,
-    effectiveChargeAttackIndex,
     activeBaseCount,
     startingMomentum,
     effectiveWrapPicks,
@@ -57,5 +56,5 @@ export const useActivationInput = () => {
     ],
   );
 
-  return { input, effectiveChargeAttackIndex };
+  return input;
 };

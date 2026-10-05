@@ -27,10 +27,14 @@ import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulati
 const EXPECTED_VALUE_DIGITS = 1;
 
 export const AttacksPanelSummary = () => {
-  const { attacker, damageMods, effectiveWrapPicks } =
-    useMeatGrinderSimulation();
+  const {
+    attacker,
+    damageMods,
+    effectiveWrapPicks,
+    effectiveChargeAttackIndex,
+  } = useMeatGrinderSimulation();
 
-  const { input, effectiveChargeAttackIndex } = useActivationInput();
+  const input = useActivationInput();
   const summary = useMemo(() => summarizeActivation(input), [input]);
 
   return (
