@@ -1,6 +1,11 @@
+import {
+  LABEL_CHARGE_COST,
+  LABEL_CHARGE_COST_FURIOUS,
+  TOOLTIP_CHARGE,
+  TOOLTIP_CHARGE_FURIOUS,
+} from '@/components/attacker/attackerPanelCopy';
 import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
 import { guildBuffIsExcluded } from '@/core/damage/damage';
-import { CHARGE_INFLUENCE_COST } from '@/core/shared/constants';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 /** Charging, guild buffs and special abilities toggled before the attack. */
@@ -9,12 +14,12 @@ export const AttackerPreAttackOptions = () => {
     useMeatGrinderSimulation();
 
   const chargeTooltip = attacker.furious
-    ? 'Charge this activation (free for Furious).'
-    : `Charge this activation (costs ${CHARGE_INFLUENCE_COST} influence).`;
+    ? TOOLTIP_CHARGE_FURIOUS
+    : TOOLTIP_CHARGE;
 
   const chargeCostLabel = attacker.furious
-    ? ' (free)'
-    : ` (-${CHARGE_INFLUENCE_COST} influence)`;
+    ? LABEL_CHARGE_COST_FURIOUS
+    : LABEL_CHARGE_COST;
 
   const setBuff = (buffId: string, value: boolean) => {
     dispatch({
