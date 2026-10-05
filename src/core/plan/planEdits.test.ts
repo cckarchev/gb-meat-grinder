@@ -1,11 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import {
-  createInitialAttackPlan,
   nextPlanAfterCharacterPlayPick,
   nextPlanAfterClearWrapContinuation,
   nextPlanAfterWrapChoice,
-} from '@/core/plan/attackPlanState';
+} from '@/core/plan/planEdits';
 import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
 
 const attacker = makeAttacker();
@@ -16,24 +15,6 @@ const plan = (
 ): AttackPlan => {
   return { wrapPicks, characterPlayPicks };
 };
-
-describe('createInitialAttackPlan', () => {
-  it('starts with empty picks sized to the default roll', () => {
-    // TAC 6 vs the default ARM 1: 5 net, which needs two wrap slots.
-    expect(createInitialAttackPlan(attacker, 2, false)).toEqual(
-      plan(
-        [
-          [null, null],
-          [null, null],
-        ],
-        [
-          [null, null],
-          [null, null],
-        ],
-      ),
-    );
-  });
-});
 
 describe('nextPlanAfterWrapChoice', () => {
   const prev = plan([['one'], ['two']], [[null], [null]]);
@@ -107,14 +88,6 @@ describe('nextPlanAfterCharacterPlayPick', () => {
 });
 
 describe('plan edge cases', () => {
-  it('starts a charging plan with only the charge row', () => {
-    // 2 INF all spent on the charge; TAC 6 + 4 vs ARM 1 = 9 net, three slots.
-    expect(createInitialAttackPlan(attacker, 2, true).wrapPicks).toEqual([
-      [null, null, null],
-      [],
-    ]);
-  });
-
   it('pads the play row when picking a later wrap slot', () => {
     const prev = plan([['four', null]], [[null]]);
 

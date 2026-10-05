@@ -1,5 +1,5 @@
 import { attackArraySize } from '@/core/attacks/attackStructure';
-import { createInitialAttackPlan } from '@/core/plan/attackPlanState';
+import { createInitialAttackPlan } from '@/core/plan/initialAttackPlan';
 import { clamp } from '@/core/shared/clamp';
 import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';

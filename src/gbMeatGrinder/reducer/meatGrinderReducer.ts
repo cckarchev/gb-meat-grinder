@@ -5,7 +5,7 @@ import {
   nextPlanAfterCharacterPlayPick,
   nextPlanAfterClearWrapContinuation,
   nextPlanAfterWrapChoice,
-} from '@/core/plan/attackPlanState';
+} from '@/core/plan/planEdits';
 import { clamp } from '@/core/shared/clamp';
 import { attackerById } from '@/data/attackers/registry';
 import {

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createInitialAttackPlan } from '@/core/plan/attackPlanState';
+import { createInitialAttackPlan } from '@/core/plan/initialAttackPlan';
 import { HP_DEFAULT } from '@/core/shared/constants';
 import { thresher } from '@/data/attackers/thresher';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
