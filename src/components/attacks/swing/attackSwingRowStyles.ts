@@ -23,6 +23,21 @@ export const AttackMain = styled.div`
   min-width: 0;
 `;
 
+/**
+ * Focused attacks read via a crisp 1px accent border plus the corner brackets,
+ * with no heavy halo, which clashed with the brackets.
+ */
+const VARIANT_STYLES: Partial<Record<AttackBlockVariant, string>> = {
+  charge: `
+    border-color: var(--accent-charge);
+    background: color-mix(in srgb, var(--accent-charge-soft) 16%, var(--panel));
+  `,
+  berserker: `
+    border-color: var(--accent-berserker);
+    background: color-mix(in srgb, var(--accent-berserker-soft) 16%, var(--panel));
+  `,
+};
+
 export const AttackBlock = styled.div<{
   $variant: AttackBlockVariant;
   $disabled: boolean;
@@ -34,28 +49,15 @@ export const AttackBlock = styled.div<{
   border: 1px solid var(--border);
   background: var(--panel);
 
-  ${(p) =>
-    p.$disabled
+  ${(props) =>
+    props.$disabled
       ? `
     opacity: 0.5;
     filter: grayscale(0.6);
   `
       : ''}
 
-  /* Focused (charge/berserker) attacks read via a crisp 1px accent border plus
-     the corner brackets, with no heavy halo, which clashed with the brackets. */
-  ${(p) =>
-    p.$variant === 'charge'
-      ? `
-    border-color: var(--accent-charge);
-    background: color-mix(in srgb, var(--accent-charge-soft) 16%, var(--panel));
-  `
-      : p.$variant === 'berserker'
-        ? `
-    border-color: var(--accent-berserker);
-    background: color-mix(in srgb, var(--accent-berserker-soft) 16%, var(--panel));
-  `
-        : ''}
+  ${(props) => VARIANT_STYLES[props.$variant] ?? ''}
 
   ${narrowViewport} {
     ${PLAYBOOK_COLUMN_WIDTH_VAR}: clamp(2.15rem, 10.5vw, ${PLAYBOOK_COLUMN_TRACK});
@@ -78,7 +80,7 @@ export const AttackHeading = styled.div`
   font-size: 0.95rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-heading);
   color: var(--text);
   margin-bottom: 0.45rem;
 

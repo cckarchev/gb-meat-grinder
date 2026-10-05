@@ -51,7 +51,7 @@ export const TooltipCheckbox = ({
         type="checkbox"
         checked={checked}
         disabled={disabled}
-        onChange={(e) => onChange(e.target.checked)}
+        onChange={(event) => onChange(event.target.checked)}
       />
       <InfoTip content={tooltip}>{children}</InfoTip>
     </CheckOption>

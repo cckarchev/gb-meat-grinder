@@ -16,15 +16,15 @@ export const useTooltipOpen = <TWrapper extends HTMLElement>() => {
       return;
     }
 
-    const onPointerDown = (e: MouseEvent) => {
-      if (!wrapperRef.current?.contains(e.target as Node)) {
+    const closeOnOutsideClick = (event: MouseEvent) => {
+      if (!wrapperRef.current?.contains(event.target as Node)) {
         setOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', onPointerDown);
+    document.addEventListener('mousedown', closeOnOutsideClick);
 
-    return () => document.removeEventListener('mousedown', onPointerDown);
+    return () => document.removeEventListener('mousedown', closeOnOutsideClick);
   }, [open]);
 
   const wrapperProps = {
@@ -37,8 +37,8 @@ export const useTooltipOpen = <TWrapper extends HTMLElement>() => {
     'aria-describedby': open ? tooltipId : undefined,
     onFocus: () => setOpen(true),
     onBlur: () => setOpen(false),
-    onKeyDown: (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+    onKeyDown: (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
         setOpen(false);
       }
     },

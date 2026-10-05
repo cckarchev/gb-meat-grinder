@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   PLAYBOOK_COLUMN_TRACK,
   PLAYBOOK_COLUMN_WIDTH_VAR,
@@ -11,29 +11,35 @@ import {
 } from '@/core/shared/probStyle';
 import { extraNarrowViewport, narrowViewport } from '@/styles/breakpoints';
 
+/** Rule and spacing that separate a wrap slot from the one above it. */
+const wrapSlotSeparator = css`
+  margin-top: 0.85rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border);
+
+  ${narrowViewport} {
+    margin-top: 0.55rem;
+    padding-top: 0.45rem;
+  }
+
+  ${extraNarrowViewport} {
+    margin-top: 0.45rem;
+    padding-top: 0.38rem;
+  }
+`;
+
 export const WrapSlotBlock = styled.div<{ $first: boolean }>`
-  margin-top: ${(p) => (p.$first ? 0 : '0.85rem')};
-  padding-top: ${(p) => (p.$first ? 0 : '0.65rem')};
-  border-top: ${(p) => (p.$first ? 'none' : '1px solid var(--border)')};
   overflow-x: auto;
   /* Keep vertical overflow clipped (no phantom scrollbar with overflow-x: auto). */
   overflow-y: hidden;
 
-  ${narrowViewport} {
-    margin-top: ${(p) => (p.$first ? 0 : '0.55rem')};
-    padding-top: ${(p) => (p.$first ? 0 : '0.45rem')};
-  }
-
-  ${extraNarrowViewport} {
-    margin-top: ${(p) => (p.$first ? 0 : '0.45rem')};
-    padding-top: ${(p) => (p.$first ? 0 : '0.38rem')};
-  }
+  ${(props) => (props.$first ? '' : wrapSlotSeparator)}
 `;
 
 export const ColumnGrid = styled.div<{ $columnCount: number }>`
   display: grid;
   grid-template-columns: repeat(
-    ${(p) => Math.max(1, p.$columnCount)},
+    ${(props) => Math.max(1, props.$columnCount)},
     var(${PLAYBOOK_COLUMN_WIDTH_VAR}, ${PLAYBOOK_COLUMN_TRACK})
   );
   gap: ${PLAYBOOK_GRID_GAP};
@@ -89,13 +95,13 @@ export const ColumnHead = styled.div<{ $p: number }>`
   font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-heading);
   text-align: center;
   padding: 0.4rem 0.35rem;
   line-height: 1.25;
-  background: ${(p) => probHeatBackground(p.$p)};
-  color: ${(p) => probHeatTextColor(p.$p)};
-  border-bottom: 1px solid ${(p) => probHeatBorder(p.$p)};
+  background: ${(props) => probHeatBackground(props.$p)};
+  color: ${(props) => probHeatTextColor(props.$p)};
+  border-bottom: 1px solid ${(props) => probHeatBorder(props.$p)};
 
   ${narrowViewport} {
     font-size: 0.62rem;

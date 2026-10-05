@@ -66,7 +66,7 @@ export const WrapSlotPickGrid = ({
     <WrapSlotBlock $first={firstSlotInSection}>
       <ColumnGrid $columnCount={visibleColumns.length}>
         {visibleColumns.map((column) => {
-          const netForHeat = wrapExtendedNetNeeded(
+          const netNeeded = wrapExtendedNetNeeded(
             attacker,
             pickIndex,
             column.netSuccesses,
@@ -76,7 +76,7 @@ export const WrapSlotPickGrid = ({
             tac,
             pHit,
             armor,
-            netForHeat,
+            netNeeded,
           );
           const hitChanceLabel = formatPercent(
             columnHitChance,

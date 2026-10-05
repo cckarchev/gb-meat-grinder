@@ -31,18 +31,18 @@ const TOOLTIP_BUBBLE_METRICS: Record<TooltipBubbleSize, TooltipBubbleMetrics> =
  */
 export const TooltipBubble = styled.span<{ $size: TooltipBubbleSize }>`
   position: absolute;
-  top: calc(100% + ${(p) => TOOLTIP_BUBBLE_METRICS[p.$size].offset});
+  top: calc(100% + ${(props) => TOOLTIP_BUBBLE_METRICS[props.$size].offset});
   left: 0;
   z-index: 20;
   width: max-content;
-  max-width: min(${(p) => TOOLTIP_BUBBLE_METRICS[p.$size].maxWidth}, 80vw);
-  padding: ${(p) => TOOLTIP_BUBBLE_METRICS[p.$size].padding};
+  max-width: min(${(props) => TOOLTIP_BUBBLE_METRICS[props.$size].maxWidth}, 80vw);
+  padding: ${(props) => TOOLTIP_BUBBLE_METRICS[props.$size].padding};
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--popover-bg);
   color: var(--text);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-  font-size: ${(p) => TOOLTIP_BUBBLE_METRICS[p.$size].fontSize};
+  font-size: ${(props) => TOOLTIP_BUBBLE_METRICS[props.$size].fontSize};
   font-weight: 400;
   line-height: 1.4;
   white-space: normal;

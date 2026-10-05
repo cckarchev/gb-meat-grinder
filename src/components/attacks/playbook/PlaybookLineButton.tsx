@@ -48,9 +48,9 @@ export const PlaybookLineButton = ({
     >
       {segments.length > 1 ? (
         <LineLabelStack>
-          {segments.map((segment, idx) => (
+          {segments.map((segment, segmentIndex) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: label segments are static and may repeat
-            <span key={idx}>{segment}</span>
+            <span key={segmentIndex}>{segment}</span>
           ))}
         </LineLabelStack>
       ) : (

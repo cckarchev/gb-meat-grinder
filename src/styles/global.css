@@ -66,6 +66,7 @@
   --tracking-label: 0.2em;
   --tracking-label-wide: 0.28em;
   --tracking-button: 0.12em;
+  --tracking-heading: 0.04em;
 
   font-family: var(--font-body);
   font-size: 16px;

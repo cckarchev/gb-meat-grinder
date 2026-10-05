@@ -10,11 +10,11 @@ const PillWrap = styled.span`
   display: inline-flex;
 `;
 
-const SelectionBtn = styled(ToggleButton)<{ $muted: boolean }>`
+const PlayToggleButton = styled(ToggleButton)<{ $muted: boolean }>`
   min-width: 8.5rem;
 
   /* No-op plays (e.g. Snack Break) read as cosmetic via a dashed outline. */
-  ${(p) => (p.$muted && !p.$active ? 'border-style: dashed;' : '')}
+  ${(props) => (props.$muted && !props.$active ? 'border-style: dashed;' : '')}
 
   ${narrowViewport} {
     min-width: 6.75rem;
@@ -44,7 +44,7 @@ export const PlayPill = ({
 
   return (
     <PillWrap {...wrapperProps}>
-      <SelectionBtn
+      <PlayToggleButton
         type="button"
         $active={active}
         $muted={muted}
@@ -53,7 +53,7 @@ export const PlayPill = ({
         onClick={onClick}
       >
         {children}
-      </SelectionBtn>
+      </PlayToggleButton>
       {open ? (
         <TooltipBubble $size="compact" id={tooltipId} role="tooltip">
           {description}

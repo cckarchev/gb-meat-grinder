@@ -68,7 +68,7 @@ export const DicePoolStrip = ({
             type="checkbox"
             checked={bonusTime}
             disabled={bonusTimeDisabled}
-            onChange={(e) => onBonusTimeChange(e.target.checked)}
+            onChange={(event) => onBonusTimeChange(event.target.checked)}
           />
           <InfoTip
             content={

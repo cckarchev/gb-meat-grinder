@@ -60,9 +60,9 @@ export const CharacterPlaySelection = ({
   return (
     <Section aria-label={`Character play for attack ${attackOrdinal}`}>
       <SectionHeading>Character Play</SectionHeading>
-      {actionable.map(({ pickIndex, available }, slotIdx) => {
+      {actionable.map(({ pickIndex, available }, slotIndex) => {
         const pick = characterPlayPicks[attackIndex]?.[pickIndex];
-        const slotOrdinal = slotIdx + 1;
+        const slotOrdinal = slotIndex + 1;
         const slotSuffix = multipleSlots ? `, play ${slotOrdinal}` : '';
 
         return (

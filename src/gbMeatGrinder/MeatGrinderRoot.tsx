@@ -48,7 +48,7 @@ const Title = styled.h1`
   font-size: 1.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--tracking-heading);
   line-height: 1;
   margin: 0;
 
@@ -64,10 +64,10 @@ const ResetButton = styled(ToggleButton)`
 `;
 
 export const MeatGrinderRoot = () => {
-  const value = useMeatGrinderSimulationState();
+  const simulation = useMeatGrinderSimulationState();
 
   return (
-    <MeatGrinderSimulationContext.Provider value={value}>
+    <MeatGrinderSimulationContext.Provider value={simulation}>
       <Header>
         <TitleGroup>
           <TitleIcon src="/favicon.svg" alt="" aria-hidden="true" />
@@ -75,7 +75,7 @@ export const MeatGrinderRoot = () => {
         </TitleGroup>
         <ResetButton
           type="button"
-          onClick={() => value.dispatch({ type: 'reset' })}
+          onClick={() => simulation.dispatch({ type: 'reset' })}
         >
           Reset
         </ResetButton>

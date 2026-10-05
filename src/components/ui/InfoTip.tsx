@@ -9,7 +9,7 @@ const Wrap = styled.span`
   display: inline;
 `;
 
-/** Inline text trigger: keeps the look of the prior dotted-underline hint. */
+/** Inline text trigger, styled as plain text with a dotted underline hint. */
 const Trigger = styled.button`
   font: inherit;
   color: inherit;
@@ -50,8 +50,8 @@ export const InfoTip = ({ content, children }: InfoTipProps) => {
         type="button"
         {...triggerProps}
         aria-expanded={open}
-        onClick={(e) => {
-          e.stopPropagation();
+        onClick={(event) => {
+          event.stopPropagation();
           toggle();
         }}
       >

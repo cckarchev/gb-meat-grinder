@@ -88,8 +88,8 @@ export const PoolToggle = styled.label<{ $disabled?: boolean }>`
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  cursor: ${(p) => (p.$disabled ? 'not-allowed' : 'pointer')};
-  color: ${(p) => (p.$disabled ? 'var(--muted)' : 'var(--text)')};
+  cursor: ${(props) => (props.$disabled ? 'not-allowed' : 'pointer')};
+  color: ${(props) => (props.$disabled ? 'var(--muted)' : 'var(--text)')};
   font-size: 0.85rem;
   user-select: none;
 `;

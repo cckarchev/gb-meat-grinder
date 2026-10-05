@@ -17,18 +17,18 @@ export const ToggleButton = styled.button<{ $active?: boolean }>`
   cursor: pointer;
   white-space: nowrap;
   /* Active = accent fill (CCK primary); inactive = teal-outline ghost. */
-  background: ${(p) => (p.$active ? 'var(--accent)' : 'transparent')};
-  color: ${(p) => (p.$active ? 'var(--accent-ink)' : 'var(--teal-bright)')};
+  background: ${(props) => (props.$active ? 'var(--accent)' : 'transparent')};
+  color: ${(props) => (props.$active ? 'var(--accent-ink)' : 'var(--teal-bright)')};
   border: 1px solid
-    ${(p) => (p.$active ? 'transparent' : 'var(--ghost-border)')};
+    ${(props) => (props.$active ? 'transparent' : 'var(--ghost-border)')};
   transition:
     opacity 0.15s ease,
     background 0.15s ease,
     border-color 0.15s ease;
 
   &:hover:not(:disabled) {
-    ${(p) =>
-      p.$active
+    ${(props) =>
+      props.$active
         ? 'opacity: 0.9;'
         : 'border-color: var(--ghost-border-hover); background: var(--ghost-bg);'}
   }

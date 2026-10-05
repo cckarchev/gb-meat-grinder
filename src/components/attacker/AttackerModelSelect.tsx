@@ -36,8 +36,8 @@ export const AttackerModelSelect = () => {
       <ModelFieldLabel>Model</ModelFieldLabel>
       <ModelSelect
         value={attacker.id}
-        onChange={(e) =>
-          dispatch({ type: 'selectAttacker', id: e.target.value })
+        onChange={(event) =>
+          dispatch({ type: 'selectAttacker', id: event.target.value })
         }
         aria-label="Select attacker model"
       >

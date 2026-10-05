@@ -102,8 +102,8 @@ export const StepControl = ({
   valueLabel = String(value),
 }: StepControlProps) => {
   const labelId = useId();
-  const canDec = value > min;
-  const canInc = value < max;
+  const canDecrease = value > min;
+  const canIncrease = value < max;
 
   return (
     <Wrap>
@@ -112,7 +112,7 @@ export const StepControl = ({
         <StepButton
           type="button"
           aria-label={`Decrease ${ariaSubject}`}
-          disabled={!canDec}
+          disabled={!canDecrease}
           onClick={() => onChange(Math.max(min, value - STEP))}
         >
           -
@@ -121,7 +121,7 @@ export const StepControl = ({
         <StepButton
           type="button"
           aria-label={`Increase ${ariaSubject}`}
-          disabled={!canInc}
+          disabled={!canIncrease}
           onClick={() => onChange(Math.min(max, value + STEP))}
         >
           +
