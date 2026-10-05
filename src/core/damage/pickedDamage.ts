@@ -6,6 +6,7 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import {
+  getPlaybookResult,
   maxPlaybookNet,
   netSuccessesForChoice,
 } from '@/core/playbook/playbookIndex';
@@ -16,9 +17,24 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
 export type SwingDamageExtras = {
   /** Effective play damage triggered on each slot, added when that slot reaches its line. */
   playDamageBySlot: readonly number[];
+  /** Unmodified charge damage (Sweeping Charge), added when the roll lands on a damage result. */
+  chargeDamage: number;
 };
 
-const NO_EXTRAS: SwingDamageExtras = { playDamageBySlot: [] };
+const NO_EXTRAS: SwingDamageExtras = { playDamageBySlot: [], chargeDamage: 0 };
+
+/** Whether any line in a column within `budget` has printed damage. */
+const damageLineWithinBudget = (
+  attacker: AttackerData,
+  budget: number,
+): boolean => {
+  return attacker.playbook.some((column) => {
+    const affordable =
+      column.netSuccesses >= MIN_PLAYBOOK_NET && column.netSuccesses <= budget;
+
+    return affordable && column.results.some((result) => result.damage > 0);
+  });
+};
 
 /** Most card damage reachable in a single playbook column within `budget` net. */
 const bestDamageWithinBudget = (
@@ -67,6 +83,7 @@ export const pickedDamageForNet = (
 
   const maxNet = maxPlaybookNet(attacker);
   let total = 0;
+  let reachedDamageResult = false;
 
   for (let slot = 0; slot < picks.length; slot++) {
     const netSpentOnEarlierSlots = slot * maxNet;
@@ -87,13 +104,21 @@ export const pickedDamageForNet = (
     if (!reachesPickedLine) {
       total += bestDamageWithinBudget(attacker, mods, slotBudget);
 
+      if (damageLineWithinBudget(attacker, slotBudget)) {
+        reachedDamageResult = true;
+      }
+
       continue;
     }
 
     const playDamage = extras.playDamageBySlot[slot] ?? 0;
 
     total += effectiveDamageForChoice(attacker, id, mods) + playDamage;
+
+    if (getPlaybookResult(attacker, id).damage > 0) {
+      reachedDamageResult = true;
+    }
   }
 
-  return total;
+  return reachedDamageResult ? total + extras.chargeDamage : total;
 };

@@ -19,6 +19,13 @@ export type SwingState = {
   targetBurningBefore: boolean;
   /** +DMG on this swing's playbook damage results (Burning Passion). */
   playbookDamageBonus: number;
+  /**
+   * The traits' charge damage (Sweeping Charge) when this is the charge swing,
+   * whatever it picks; 0 elsewhere. The odds add it per roll.
+   */
+  chargeTraitDamage: number;
+  /** All-hit charge damage: `chargeTraitDamage` when a pick has printed damage, else 0. */
+  chargeDamage: number;
 };
 
 /** Per-swing state, indexed by attack index (one entry per plan row). */

@@ -1,6 +1,8 @@
 /** Breakdown text for the momentum and damage totals in the attacks summary. */
 
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
+import { swingStateAt } from '@/core/attacks/activationTimeline';
+import { attackerTraits } from '@/core/damage/damage';
 import {
   characterPlayDamageSources,
   damageModifierBreakdown,
@@ -38,10 +40,17 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
     input.timeline,
   );
 
+  const activeIndexes = input.attacks.map((swing) => swing.attackIndex);
+
+  const chargeDamage = activeIndexes.reduce((sum, attackIndex) => {
+    return sum + swingStateAt(input.timeline, attackIndex).chargeDamage;
+  }, 0);
+
   const dealsNothing =
     breakdown.rawCardDamage === 0 &&
     breakdown.totalEffective === 0 &&
-    flatDamage === 0;
+    flatDamage === 0 &&
+    chargeDamage === 0;
 
   if (dealsNothing) {
     return NO_DAMAGE_TOOLTIP;
@@ -51,8 +60,6 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
 
   // Printed play damage sits beside the card pips; Tough Hide and buffs on
   // both are itemized on their own lines below.
-  const activeIndexes = input.attacks.map((swing) => swing.attackIndex);
-
   const playSources = characterPlayDamageSources(input.timeline, activeIndexes);
 
   for (const source of playSources) {
@@ -69,6 +76,17 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
     }
   }
 
+  // Unmodified charge damage (Sweeping Charge), named after its trait.
+  if (chargeDamage > 0) {
+    const chargeTraits = attackerTraits(input.attacker, input.damageMods);
+
+    const labels = chargeTraits
+      .filter((trait) => (trait.chargeDamage ?? 0) > 0)
+      .map((trait) => trait.label);
+
+    tooltip += `; +${chargeDamage} ${labels.join(' + ')}`;
+  }
+
   const activatedTraits = (input.attacker.characterTraits ?? []).filter(
     (trait) => trait.active === true && input.activeTraits[trait.id] === true,
   );
@@ -77,7 +95,7 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
     tooltip += `; +${trait.flatDamage ?? 0} ${trait.label}`;
   }
 
-  const totalDamage = breakdown.totalEffective + flatDamage;
+  const totalDamage = breakdown.totalEffective + flatDamage + chargeDamage;
 
   return `${tooltip} = ${totalDamage}.`;
 };

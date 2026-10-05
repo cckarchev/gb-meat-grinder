@@ -11,6 +11,7 @@ import { activeTraitFlatDamage } from '@/core/damage/damage';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
+import { sweepingCharge } from '@/data/characterTraits';
 
 /** A swing that always rolls exactly `tac` net successes. */
 const certainSwing = (attackIndex: number, tac: number): AttackRollContext => {
@@ -149,6 +150,40 @@ describe('summarizeActivation', () => {
     );
 
     expect(summary.netMomentumIfAllHit).toBe(1);
+  });
+
+  it('itemizes Sweeping Charge on a charge that picks damage', () => {
+    const attacker = makeAttacker({ characterTraits: [sweepingCharge] });
+    const wrapPicks = [['two'], ['two']];
+    const chargeRow = 0;
+
+    const timeline = activationTimeline(
+      { wrapPicks, characterPlayPicks: [[null], [null]] },
+      {
+        attacker,
+        damageMods: NO_MODS,
+        activeBaseCount: 2,
+        chargeAttackIndex: chargeRow,
+      },
+    );
+
+    const rowDamageIfHit = rowDamageIfAllHit(
+      attacker,
+      wrapPicks,
+      NO_MODS,
+      2,
+      timeline,
+    );
+
+    const summary = summarizeActivation(
+      input({ attacker, wrapPicks, timeline, rowDamageIfHit }),
+    );
+
+    expect(summary.totalDamageIfAllHit).toBe(7);
+
+    expect(summary.damageDealtTooltip).toBe(
+      '4 from card pips; +3 Sweeping Charge = 7.',
+    );
   });
 
   it('itemizes Tough Hide, buffs and activated traits', () => {

@@ -97,6 +97,16 @@ export const attackerTraits = (
   return [...byId.values()];
 };
 
+/** Unmodified DMG the attacker's traits add to a charge that picks a damage result. */
+export const chargeTraitDamage = (
+  attacker: AttackerData,
+  mods: PlaybookDamageMods,
+): number => {
+  return attackerTraits(attacker, mods).reduce((sum, trait) => {
+    return sum + (trait.chargeDamage ?? 0);
+  }, 0);
+};
+
 /** `mods` with one swing's engine-injected playbook damage bonus. */
 export const withSwingDamageBonus = (
   mods: PlaybookDamageMods,

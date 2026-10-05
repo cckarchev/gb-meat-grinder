@@ -17,6 +17,8 @@ export type CharacterTrait = {
   onDamage?: { armorReduction?: number; burning?: boolean };
   /** +DMG to playbook damage results while the target is Burning (Burning Passion). */
   playbookDamageVsBurning?: number;
+  /** Unmodified DMG added to the charge attack when it picks a playbook damage result (Sweeping Charge). */
+  chargeDamage?: number;
 };
 
 /** Thresher's Don't Fear The... (activated, Once Per Turn). */
@@ -44,4 +46,15 @@ export const burningPassion: CharacterTrait = {
   label: 'Burning Passion',
   tooltip: '+1 DMG to playbook damage results while attacking a Burning enemy.',
   playbookDamageVsBurning: 1,
+};
+
+export const sweepingCharge: CharacterTrait = {
+  id: 'sweepingCharge',
+  label: 'Sweeping Charge',
+  tooltip:
+    'When the charge attack picks a playbook damage result, models in her ' +
+    'melee zone suffer 3 DMG (a character trait: Tough Hide and damage buffs ' +
+    'do not apply). It lands with the charge attack, so later attacks see ' +
+    'Searing Strike.',
+  chargeDamage: 3,
 };

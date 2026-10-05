@@ -55,7 +55,10 @@ export const planDamageOutcome = (
   for (const attack of attacks) {
     const picks = wrapPicks[attack.attackIndex] ?? [];
     const state = swingStateAt(timeline, attack.attackIndex);
-    const extras = { playDamageBySlot: state.playDamageBySlot };
+    const extras = {
+      playDamageBySlot: state.playDamageBySlot,
+      chargeDamage: state.chargeTraitDamage,
+    };
     const swingMods = withSwingDamageBonus(mods, state.playbookDamageBonus);
 
     const pickedDamage: DamageForNet = (net) => {

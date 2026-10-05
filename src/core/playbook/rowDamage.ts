@@ -212,6 +212,6 @@ export const rowDamageIfAllHit = (
 
     const playDamage = swingPlayDamage(state);
 
-    return cardDamage + playDamage;
+    return cardDamage + playDamage + state.chargeDamage;
   });
 };

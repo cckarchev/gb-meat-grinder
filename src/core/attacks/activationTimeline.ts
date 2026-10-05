@@ -7,6 +7,7 @@ import type {
   TimelineParams,
 } from '@/core/attacks/activationTimeline.types';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
+import { isChargeSwing } from '@/core/attacks/attackStructure';
 import {
   effectivePlayForPick,
   getCharacterPlay,
@@ -14,13 +15,17 @@ import {
 import {
   activeBuffs,
   attackerTraits,
+  chargeTraitDamage,
   effectiveDamageForChoice,
   effectivePlaybookDamage,
   withSwingDamageBonus,
 } from '@/core/damage/damage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type { CharacterPlay, WrapPick } from '@/core/playbook/playbook.types';
-import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
+import {
+  choiceUsesCharacterPlay,
+  getPlaybookResult,
+} from '@/core/playbook/playbookIndex';
 import {
   pickEffectName,
   pickEffectsForLaterSwings,
@@ -38,6 +43,8 @@ const EMPTY_SWING_STATE: SwingState = {
   playDamageBySlot: [],
   targetBurningBefore: false,
   playbookDamageBonus: 0,
+  chargeTraitDamage: 0,
+  chargeDamage: 0,
 };
 
 /** A row's state, or an empty one for a row past the end of the plan. */
@@ -126,7 +133,39 @@ const swingCausesDamage = (
     return id != null && effectiveDamageForChoice(attacker, id, swingMods) > 0;
   });
 
-  return cardDamage || swingPlayDamage(state) > 0;
+  return cardDamage || swingPlayDamage(state) > 0 || state.chargeDamage > 0;
+};
+
+type SwingChargeDamage = Pick<SwingState, 'chargeTraitDamage' | 'chargeDamage'>;
+
+/**
+ * Sweeping Charge-like damage on the charge swing. It triggers when the charge
+ * picks a playbook damage result, even one Tough Hide zeroes; it is unmodified.
+ */
+const swingChargeDamageFor = (
+  plan: AttackPlan,
+  params: TimelineParams,
+  attackIndex: number,
+): SwingChargeDamage => {
+  const { attacker, damageMods, chargeAttackIndex, activeBaseCount } = params;
+
+  const charge = isChargeSwing(attackIndex, chargeAttackIndex, activeBaseCount);
+
+  if (!charge) {
+    return { chargeTraitDamage: 0, chargeDamage: 0 };
+  }
+
+  const traitDamage = chargeTraitDamage(attacker, damageMods);
+  const row = plan.wrapPicks[attackIndex] ?? [];
+
+  const picksDamageResult = row.some((id) => {
+    return id != null && getPlaybookResult(attacker, id).damage > 0;
+  });
+
+  return {
+    chargeTraitDamage: traitDamage,
+    chargeDamage: picksDamageResult ? traitDamage : 0,
+  };
 };
 
 /** Total play damage a swing deals when every pick on it lands. */
@@ -238,6 +277,7 @@ export const activationTimeline = (
       ...swingPlayDamageFor(plan, params, attackIndex, usedOncePerTurn),
       targetBurningBefore: burning,
       playbookDamageBonus: burning ? passionBonus : 0,
+      ...swingChargeDamageFor(plan, params, attackIndex),
     };
 
     states[attackIndex] = state;
