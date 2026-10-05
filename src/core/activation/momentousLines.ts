@@ -33,7 +33,7 @@ export const momentousLineStyle = (
  */
 export const pickGeneratesMomentum = (
   attacker: AttackerData,
-  id: WrapPick | null | undefined,
+  id: WrapPick,
   mods: PlaybookDamageMods,
 ): boolean => {
   if (id == null) {

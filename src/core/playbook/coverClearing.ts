@@ -8,7 +8,7 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
 /** True if this pick removes the enemy's cover (a push / double push result). */
 export const wrapPickClearsCover = (
   attacker: AttackerData,
-  id: WrapPick | null | undefined,
+  id: WrapPick,
 ): boolean => {
   if (id == null) {
     return false;

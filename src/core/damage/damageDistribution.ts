@@ -4,6 +4,7 @@ import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import type {
   DamageDistribution,
   DamageForNet,
+  ReadonlyDamageDistribution,
 } from '@/core/damage/damage.types';
 import { binomialPmf } from '@/core/damage/probability';
 
@@ -83,7 +84,7 @@ export const convolve = (
  * damage distribution. Returns 0 for an empty distribution.
  */
 export const damageQuantile = (
-  distribution: ReadonlyMap<number, number>,
+  distribution: ReadonlyDamageDistribution,
   quantile: number,
 ): number => {
   const damages = [...distribution.keys()].sort((a, b) => a - b);

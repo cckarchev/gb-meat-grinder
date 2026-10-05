@@ -8,6 +8,7 @@ import {
 } from '@/core/characterPlays/characterPlayLookup';
 import type {
   CharacterPlay,
+  CharacterPlayPick,
   CharacterPlayPickSlot,
   CharacterPlayUsage,
   PlaybookDamageMods,
@@ -29,7 +30,7 @@ export const characterPlayUsageBeforePick = (
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
 ): CharacterPlayUsage => {
-  const used = new Set<string>();
+  const used = new Set<CharacterPlayPick>();
 
   const earlierPicks = picksBeforeInActivation(
     attacker,

@@ -2,7 +2,6 @@
 
 import type {
   CharacterPlay,
-  CharacterPlayPick,
   CharacterPlayPickSlot,
   PlaybookChoiceId,
   WrapPick,
@@ -19,7 +18,7 @@ export const characterPlaysForAttacker = (
 
 export const getCharacterPlay = (
   attacker: AttackerData,
-  id: CharacterPlayPick | null,
+  id: CharacterPlayPickSlot,
 ): CharacterPlay | undefined => {
   if (id == null) {
     return undefined;
@@ -31,7 +30,7 @@ export const getCharacterPlay = (
 /** Play picked by default when a GB result is chosen: the first guild play. */
 export const defaultCharacterPlayId = (
   attacker: AttackerData,
-): CharacterPlayPick | null => {
+): CharacterPlayPickSlot => {
   return characterPlaysForAttacker(attacker)[0]?.id ?? null;
 };
 
