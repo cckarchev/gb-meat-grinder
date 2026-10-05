@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import { Select } from '@/components/ui/ui';
-import { groupAttackersByGuild } from '@/data/attackers/attackerGroups';
+import { groupAttackersByGuild } from '@/core/attackers/attackerGroups';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 const ModelField = styled.label`

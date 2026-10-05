@@ -154,15 +154,11 @@ const transition = (
       return applyPlanEdit(state, edited);
     }
     case 'characterPlayPick': {
-      const edited = nextPlanAfterCharacterPlayPick(
-        attackerOf(state),
-        state.attackPlan,
-        action.attackIndex,
-        action.pickIndex,
-        action.pick,
-        state.damageMods,
-        activeBaseCountOf(state),
-      );
+      const edited = nextPlanAfterCharacterPlayPick(state.attackPlan, action, {
+        attacker: attackerOf(state),
+        damageMods: state.damageMods,
+        activeBaseCount: activeBaseCountOf(state),
+      });
 
       return applyPlanEdit(state, edited);
     }

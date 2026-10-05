@@ -1,13 +1,9 @@
 /** Momentum pool through the activation: earned by heat picks, spent on Bonus Time. */
 
 import { momentumEarnedBySwing } from '@/core/activation/momentousLines';
+import type { MomentumParams } from '@/core/activation/momentum.types';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
-import type {
-  PlaybookDamageMods,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
 import { BONUS_TIME_MOMENTUM_COST } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /**
  * Starting momentum plus heat picks minus Bonus Time spends, over the swings in
@@ -15,15 +11,19 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
  * outside the activation see just the starting momentum.
  */
 const momentumAcrossSwings = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
   attackIndex: number,
-  startingMomentum: number,
-  bonusTimeByAttack: readonly boolean[],
-  activeBaseCount: number,
+  params: MomentumParams,
   inclusive: boolean,
 ): number => {
+  const {
+    attacker,
+    wrapPicks,
+    damageMods,
+    startingMomentum,
+    bonusTimeByAttack,
+    activeBaseCount,
+  } = params;
+
   const order = activationAttackIndices(
     attacker,
     wrapPicks,
@@ -58,24 +58,10 @@ const momentumAcrossSwings = (
  * picks and their Bonus Time spends, not including this attack’s wrap or spend).
  */
 export const momentumPoolBeforeBonusTime = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
   attackIndex: number,
-  startingMomentum: number,
-  bonusTimeByAttack: readonly boolean[],
-  activeBaseCount: number,
+  params: MomentumParams,
 ): number => {
-  return momentumAcrossSwings(
-    attacker,
-    wrapPicks,
-    damageMods,
-    attackIndex,
-    startingMomentum,
-    bonusTimeByAttack,
-    activeBaseCount,
-    false,
-  );
+  return momentumAcrossSwings(attackIndex, params, false);
 };
 
 /**
@@ -84,22 +70,8 @@ export const momentumPoolBeforeBonusTime = (
  * Earned momentum is not capped at `STARTING_MOMENTUM_RANGE.max`.
  */
 export const momentumAfterAttackInclusive = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
   attackIndex: number,
-  startingMomentum: number,
-  bonusTimeByAttack: readonly boolean[],
-  activeBaseCount: number,
+  params: MomentumParams,
 ): number => {
-  return momentumAcrossSwings(
-    attacker,
-    wrapPicks,
-    damageMods,
-    attackIndex,
-    startingMomentum,
-    bonusTimeByAttack,
-    activeBaseCount,
-    true,
-  );
+  return momentumAcrossSwings(attackIndex, params, true);
 };

@@ -8,6 +8,7 @@ import {
   sanitizeBonusTimeFlags,
 } from '@/core/activation/bonusTimeFlags';
 import { momentumPoolBeforeBonusTime } from '@/core/activation/momentum';
+import type { MomentumParams } from '@/core/activation/momentum.types';
 import { rowEqual } from '@/core/shared/gridEqual';
 import { withReclampedPlan } from '@/gbMeatGrinder/reducer/planReclamp';
 import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
@@ -16,15 +17,19 @@ import {
   attackerOf,
 } from '@/gbMeatGrinder/reducer/stateSelectors';
 
+const momentumParams = (state: MeatGrinderState): MomentumParams => {
+  return {
+    attacker: attackerOf(state),
+    wrapPicks: state.attackPlan.wrapPicks,
+    damageMods: state.damageMods,
+    startingMomentum: state.startingMomentum,
+    bonusTimeByAttack: state.bonusTimeByAttack,
+    activeBaseCount: activeBaseCountOf(state),
+  };
+};
+
 const sanitizedBonusTime = (state: MeatGrinderState): boolean[] => {
-  return sanitizeBonusTimeFlags(
-    attackerOf(state),
-    state.attackPlan.wrapPicks,
-    state.damageMods,
-    state.startingMomentum,
-    state.bonusTimeByAttack,
-    activeBaseCountOf(state),
-  );
+  return sanitizeBonusTimeFlags(momentumParams(state));
 };
 
 export const toggleBonusTime = (
@@ -34,13 +39,8 @@ export const toggleBonusTime = (
 ): MeatGrinderState => {
   if (value) {
     const pool = momentumPoolBeforeBonusTime(
-      attackerOf(state),
-      state.attackPlan.wrapPicks,
-      state.damageMods,
       attackIndex,
-      state.startingMomentum,
-      state.bonusTimeByAttack,
-      activeBaseCountOf(state),
+      momentumParams(state),
     );
 
     if (!canAffordBonusTime(pool)) {

@@ -57,32 +57,21 @@ describe('nextPlanAfterClearWrapContinuation', () => {
 
 describe('nextPlanAfterCharacterPlayPick', () => {
   const prev = plan([['gb'], ['gb']], [['playTac'], ['playDef']]);
+  const params = { attacker, damageMods: NO_MODS, activeBaseCount: 2 };
+
+  const firstSlot = (pick: string) => {
+    return { attackIndex: 0, pickIndex: 0, pick };
+  };
 
   it('is a no-op for the same play', () => {
     expect(
-      nextPlanAfterCharacterPlayPick(
-        attacker,
-        prev,
-        0,
-        0,
-        'playTac',
-        NO_MODS,
-        2,
-      ),
+      nextPlanAfterCharacterPlayPick(prev, firstSlot('playTac'), params),
     ).toBeNull();
   });
 
   it('re-sanitizes later picks that became illegal', () => {
     expect(
-      nextPlanAfterCharacterPlayPick(
-        attacker,
-        prev,
-        0,
-        0,
-        'playDef',
-        NO_MODS,
-        2,
-      ),
+      nextPlanAfterCharacterPlayPick(prev, firstSlot('playDef'), params),
     ).toEqual(plan([['gb'], ['gb']], [['playDef'], ['playTac']]));
   });
 });

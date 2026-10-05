@@ -36,13 +36,8 @@ export const netMomentumIfAllHit = (
   const lastSwing = activeAttacks[activeAttacks.length - 1];
 
   const endMomentum = momentumAfterAttackInclusive(
-    input.attacker,
-    input.wrapPicks,
-    input.damageMods,
     lastSwing.attackIndex,
-    input.startingMomentum,
-    input.bonusTimeByAttack,
-    input.activeBaseCount,
+    input,
   );
 
   return endMomentum + killingBlowMomentum - input.startingMomentum;

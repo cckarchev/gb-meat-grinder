@@ -54,15 +54,7 @@ const remainingHpAfterEachSwing = (input: SwingProjectionInput): number[] => {
 
 const momentumAfterEachSwing = (input: SwingProjectionInput): number[] => {
   const momentum = input.attacks.map((swing) =>
-    momentumAfterAttackInclusive(
-      input.attacker,
-      input.wrapPicks,
-      input.damageMods,
-      swing.attackIndex,
-      input.startingMomentum,
-      input.bonusTimeByAttack,
-      input.activeBaseCount,
-    ),
+    momentumAfterAttackInclusive(swing.attackIndex, input),
   );
 
   const { killingBlowIndex } = input;
@@ -84,15 +76,7 @@ const bonusTimePoolBeforeEachSwing = (
   input: SwingProjectionInput,
 ): number[] => {
   return input.attacks.map((swing) =>
-    momentumPoolBeforeBonusTime(
-      input.attacker,
-      input.wrapPicks,
-      input.damageMods,
-      swing.attackIndex,
-      input.startingMomentum,
-      input.bonusTimeByAttack,
-      input.activeBaseCount,
-    ),
+    momentumPoolBeforeBonusTime(swing.attackIndex, input),
   );
 };
 

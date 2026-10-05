@@ -78,29 +78,18 @@ describe('rows outside the activation', () => {
   const activeBaseCount = 1;
 
   it('fall back to neutral values', () => {
-    expect(
-      momentumPoolBeforeBonusTime(
-        attacker,
-        wrapPicks,
-        NO_MODS,
-        inactiveRow,
-        3,
-        [false, false],
-        activeBaseCount,
-      ),
-    ).toBe(3);
+    const momentumParams = {
+      attacker,
+      wrapPicks,
+      damageMods: NO_MODS,
+      startingMomentum: 3,
+      bonusTimeByAttack: [false, false],
+      activeBaseCount,
+    };
 
-    expect(
-      momentumAfterAttackInclusive(
-        attacker,
-        wrapPicks,
-        NO_MODS,
-        inactiveRow,
-        3,
-        [false, false],
-        activeBaseCount,
-      ),
-    ).toBe(3);
+    expect(momentumPoolBeforeBonusTime(inactiveRow, momentumParams)).toBe(3);
+
+    expect(momentumAfterAttackInclusive(inactiveRow, momentumParams)).toBe(3);
 
     expect(
       armorReductionBeforeAttack(

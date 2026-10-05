@@ -1,8 +1,11 @@
 import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
 import type {
+  CharacterPlayPick,
   CharacterPlayPickSlot,
+  PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
+import type { AttackerData } from '@/data/attackers/attacker.types';
 
 export type AttackPlan = {
   wrapPicks: WrapPick[][];
@@ -13,6 +16,20 @@ export type AttackPlan = {
 export type AttackPlanRow = {
   picks: WrapPick[];
   plays: CharacterPlayPickSlot[];
+};
+
+/** A character play chosen for one wrap slot of one attack. */
+export type CharacterPlayPickEdit = {
+  attackIndex: number;
+  pickIndex: number;
+  pick: CharacterPlayPick;
+};
+
+/** What a character play edit needs to re-check the later plays. */
+export type CharacterPlayEditParams = {
+  attacker: AttackerData;
+  damageMods: PlaybookDamageMods;
+  activeBaseCount: number;
 };
 
 /** Inputs that bound a legal attack plan; see `clampAttackPlan`. */

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { groupAttackersByGuild } from '@/core/attackers/attackerGroups';
 import { makeAttacker, TEST_GUILD } from '@/core/testing/fixtures';
-import { groupAttackersByGuild } from '@/data/attackers/attackerGroups';
 
 const OTHER_GUILD = { ...TEST_GUILD, id: 'alpha', name: 'Alpha' };
 

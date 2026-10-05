@@ -19,14 +19,14 @@ describe('sanitizeBonusTimeFlags', () => {
 
   it('clears Bonus Time flags that cannot be paid', () => {
     expect(
-      sanitizeBonusTimeFlags(
+      sanitizeBonusTimeFlags({
         attacker,
-        [['dodge'], ['one'], ['dodge']],
-        NO_MODS,
-        0,
-        [true, true, true],
+        wrapPicks: [['dodge'], ['one'], ['dodge']],
+        damageMods: NO_MODS,
+        startingMomentum: 0,
+        bonusTimeByAttack: [true, true, true],
         activeBaseCount,
-      ),
+      }),
     ).toEqual([false, false, true]);
   });
 });

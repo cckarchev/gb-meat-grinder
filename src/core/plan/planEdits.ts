@@ -2,12 +2,14 @@
 
 import { playSlotForPick } from '@/core/characterPlays/characterPlayLookup';
 import { sanitizeCharacterPlayPicks } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
-import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type {
-  CharacterPlayPick,
+  AttackPlan,
+  CharacterPlayEditParams,
+  CharacterPlayPickEdit,
+} from '@/core/plan/attackPlan.types';
+import type {
   CharacterPlayPickSlot,
   PlaybookChoiceId,
-  PlaybookDamageMods,
 } from '@/core/playbook/playbook.types';
 import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
 import { rowHasWrapContinuation } from '@/core/playbook/wrapSlots';
@@ -102,14 +104,12 @@ export const nextPlanAfterClearWrapContinuation = (
 
 /** Returns `null` when the pick is unchanged. */
 export const nextPlanAfterCharacterPlayPick = (
-  attacker: AttackerData,
   prev: AttackPlan,
-  attackIndex: number,
-  pickIndex: number,
-  pick: CharacterPlayPick,
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
+  edit: CharacterPlayPickEdit,
+  params: CharacterPlayEditParams,
 ): AttackPlan | null => {
+  const { attackIndex, pickIndex, pick } = edit;
+
   if (prev.characterPlayPicks[attackIndex]?.[pickIndex] === pick) {
     return null;
   }
@@ -127,11 +127,11 @@ export const nextPlanAfterCharacterPlayPick = (
   );
 
   const { characterPlayPicks: sanitized } = sanitizeCharacterPlayPicks(
-    attacker,
+    params.attacker,
     prev.wrapPicks,
     nextCharacterPlay,
-    damageMods,
-    activeBaseCount,
+    params.damageMods,
+    params.activeBaseCount,
   );
 
   return { wrapPicks: prev.wrapPicks, characterPlayPicks: sanitized };

@@ -1,13 +1,9 @@
 /** Drops Bonus Time spends the momentum pool can no longer pay for. */
 
 import { momentumPoolBeforeBonusTime } from '@/core/activation/momentum';
+import type { MomentumParams } from '@/core/activation/momentum.types';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
-import type {
-  PlaybookDamageMods,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
 import { BONUS_TIME_MOMENTUM_COST } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /** Passes beyond one per swing, as a safety margin for the settle loop. */
 const EXTRA_SETTLE_PASSES = 2;
@@ -18,22 +14,15 @@ export const canAffordBonusTime = (pool: number): boolean => {
 };
 
 /** Clears Bonus Time flags that can no longer be paid (pool below `BONUS_TIME_MOMENTUM_COST` before that swing). */
-export const sanitizeBonusTimeFlags = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
-  startingMomentum: number,
-  bonusTimeByAttack: readonly boolean[],
-  activeBaseCount: number,
-): boolean[] => {
+export const sanitizeBonusTimeFlags = (params: MomentumParams): boolean[] => {
   const order = activationAttackIndices(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
+    params.attacker,
+    params.wrapPicks,
+    params.damageMods,
+    params.activeBaseCount,
   );
 
-  const next = [...bonusTimeByAttack];
+  const next = [...params.bonusTimeByAttack];
   const maxPasses = order.length + EXTRA_SETTLE_PASSES;
 
   for (let pass = 0; pass < maxPasses; pass++) {
@@ -44,15 +33,11 @@ export const sanitizeBonusTimeFlags = (
         continue;
       }
 
-      const pool = momentumPoolBeforeBonusTime(
-        attacker,
-        wrapPicks,
-        damageMods,
-        attackIndex,
-        startingMomentum,
-        next,
-        activeBaseCount,
-      );
+      // Each check sees the spends this pass already dropped.
+      const pool = momentumPoolBeforeBonusTime(attackIndex, {
+        ...params,
+        bonusTimeByAttack: next,
+      });
 
       if (!canAffordBonusTime(pool)) {
         next[attackIndex] = false;

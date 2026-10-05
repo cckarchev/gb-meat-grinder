@@ -313,14 +313,23 @@ const runScenario = (
     clamp();
   }
 
-  const bonusTimeByAttack = sanitizeBonusTimeFlags(
+  const bonusTimeByAttack = sanitizeBonusTimeFlags({
     attacker,
     wrapPicks,
     damageMods,
-    scenario.startingMomentum,
-    requestedBonusTime,
+    startingMomentum: scenario.startingMomentum,
+    bonusTimeByAttack: requestedBonusTime,
     activeBaseCount,
-  );
+  });
+
+  const momentumParams = {
+    attacker,
+    wrapPicks,
+    damageMods,
+    startingMomentum: scenario.startingMomentum,
+    bonusTimeByAttack,
+    activeBaseCount,
+  };
 
   const activation: ActivationScenario = {
     enemyDef: scenario.enemyDef,
@@ -377,13 +386,8 @@ const runScenario = (
       pHit: round(attack.pHit),
       prob: round(attack.prob),
       momentumAfter: momentumAfterAttackInclusive(
-        attacker,
-        wrapPicks,
-        damageMods,
         attack.attackIndex,
-        scenario.startingMomentum,
-        bonusTimeByAttack,
-        activeBaseCount,
+        momentumParams,
       ),
     })),
     damageIfAllHits: rowDamageIfHit,
