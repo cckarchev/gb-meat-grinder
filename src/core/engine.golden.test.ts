@@ -19,8 +19,8 @@ import {
 import { maxPlaybookColumnForRow } from '@/core/attacks/maxPlaybookColumn';
 import { characterPlayAvailabilityForPick } from '@/core/characterPlays/characterPlayUsage';
 import {
+  activatableTraits,
   availableBuffs,
-  effectiveArmor,
   effectiveDamageForChoice,
   effectiveEnemyDef,
 } from '@/core/damage/damage';
@@ -66,7 +66,7 @@ type Scenario = {
   enemyResilience: boolean;
   toughHide: boolean;
   allBuffs: boolean;
-  allSpecialAbilities: boolean;
+  allActiveTraits: boolean;
   startingMomentum: number;
   bonusTimeOnFirst: boolean;
   initialTacModifier: number;
@@ -87,7 +87,7 @@ const BASE_SCENARIO: Scenario = {
   enemyResilience: false,
   toughHide: false,
   allBuffs: false,
-  allSpecialAbilities: false,
+  allActiveTraits: false,
   startingMomentum: 0,
   bonusTimeOnFirst: false,
   initialTacModifier: 0,
@@ -121,7 +121,7 @@ const SCENARIOS: Scenario[] = [
     ...BASE_SCENARIO,
     name: 'resilient',
     enemyResilience: true,
-    allSpecialAbilities: true,
+    allActiveTraits: true,
   },
   {
     ...BASE_SCENARIO,
@@ -212,19 +212,22 @@ const runScenario = (
 
   const damageMods: PlaybookDamageMods = {
     toughHide: scenario.toughHide,
+    // Burning was a Blacksmiths buff; it rides with the buffs so the
+    // Burning Passion snapshots keep their coverage.
+    targetBurning: scenario.allBuffs,
     buffs: Object.fromEntries(
       availableBuffs(attacker).map((buff) => [buff.id, scenario.allBuffs]),
     ),
   };
 
-  const specialAbilities = Object.fromEntries(
-    (attacker.specialAbilities ?? []).map((ability) => [
-      ability.id,
-      scenario.allSpecialAbilities,
+  const activeTraits = Object.fromEntries(
+    activatableTraits(attacker).map((trait) => [
+      trait.id,
+      scenario.allActiveTraits,
     ]),
   );
 
-  const armor = effectiveArmor(attacker, scenario.armor, damageMods);
+  const armor = scenario.armor;
 
   const enemyDef = effectiveEnemyDef(
     scenario.enemyDef,
@@ -347,7 +350,7 @@ const runScenario = (
     crowdingOut: 0,
     bonusTimeByAttack,
     damageMods,
-    specialAbilities,
+    activeTraits,
     attackPlan: { wrapPicks, characterPlayPicks },
   };
 
@@ -355,6 +358,7 @@ const runScenario = (
     ignoredAttackIndex,
     effectiveWrapPicks,
     attacks,
+    timeline,
     rowDamageIfHit,
     flatDamage,
     killingBlowIndex,
@@ -367,6 +371,7 @@ const runScenario = (
     damageMods,
     flatDamage,
     scenario.hp,
+    timeline,
   );
 
   const sortedDistribution = [...outcome.damageDistribution].sort(
@@ -396,6 +401,7 @@ const runScenario = (
       effectiveWrapPicks,
       damageMods,
       activeBaseCount,
+      timeline,
     ),
     killingBlowIndex,
     killProbability: round(outcome.killProbability),

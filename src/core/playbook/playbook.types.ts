@@ -21,15 +21,20 @@ export type CharacterPlay = {
   tacBonusForLater?: number;
   /** −enemy DEF on later attacks (e.g. Stagger). */
   defReductionForLater?: number;
-  /** −enemy ARM on later attacks (e.g. They Ain't Tough!). A condition; caps at 1. */
+  /** −enemy ARM on later attacks (e.g. They Ain't Tough!). A named condition: it applies once. */
   armorReduction?: number;
   /**
-   * When omitted/false (the default), the play is Once Per Turn: picking it on
-   * one swing removes it from later swings this activation, and its effect does
-   * not re-apply ("effects from the same source do not stack"). Set true for
-   * plays that may be taken on multiple swings and stack each time.
+   * DMG the play causes when triggered (e.g. Impale = 3). Modified like a
+   * playbook damage result by Tough Hide and +DMG buffs, but not by effects
+   * limited to playbook damage results (Burning Passion).
    */
-  repeatable?: boolean;
+  damage?: number;
+  /**
+   * Once Per Turn, copied from the card: picking it on one swing removes it from
+   * later swings. It only limits availability; effects of the same name never
+   * stack either way (see MODELING.md, "Stacking").
+   */
+  oncePerTurn: boolean;
 };
 
 /** A chosen character play, keyed by {@link CharacterPlay.id}. */
@@ -56,7 +61,7 @@ export type PlaybookResult = {
   damage: number;
   /** True if this line generates momentum (momentous). */
   momentum?: boolean;
-  /** After GB / 1GB, pick a character play (Once Per Turn unless `repeatable`). */
+  /** After GB / 1GB, pick a character play. */
   picksCharacterPlay?: boolean;
   /** `>` / `>>`: removes the enemy's cover for later swings this activation. */
   clearsCover?: boolean;
@@ -79,12 +84,19 @@ export type PlaybookColumn = {
 export type PlaybookDamageMods = {
   /** Enemy Tough Hide: −1 to each **selected** playbook line that has card damage. */
   toughHide: boolean;
+  /** The target starts the activation with the Burning condition. */
+  targetBurning: boolean;
   /**
    * Attacker damage buffs by id, toggled on/off. These are external (teammate /
    * guild-granted) and defined per attacker in its data file, so the keys are
    * not fixed. Each active buff adds its `damageBonus` to selected damage pips.
    */
   buffs: Record<string, boolean>;
+  /**
+   * Engine-injected +DMG for one swing's playbook damage results (Burning
+   * Passion while the target is Burning). Never user state.
+   */
+  swingDamageBonus?: number;
 };
 
 /** Playbook line button look for momentous damage pips (after Tough Hide / buffs). */

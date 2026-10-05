@@ -81,13 +81,13 @@ describe.each(ATTACKERS)('$name data', (attacker) => {
     }
   });
 
-  it('has uniquely named special abilities that deal damage', () => {
-    const abilities = attacker.specialAbilities ?? [];
+  it('has unique traits, and every active trait deals damage', () => {
+    const traits = attacker.characterTraits ?? [];
 
-    expect(duplicatesOf(abilities.map((ability) => ability.id))).toEqual([]);
+    expect(duplicatesOf(traits.map((trait) => trait.id))).toEqual([]);
 
-    for (const ability of abilities) {
-      expect(ability.flatDamage).toBeGreaterThan(0);
+    for (const trait of traits.filter((candidate) => candidate.active)) {
+      expect(trait.flatDamage ?? 0).toBeGreaterThan(0);
     }
   });
 });

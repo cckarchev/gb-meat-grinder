@@ -1,5 +1,6 @@
 /**
  * Keeps at most one Knock Down in a plan: only the first in activation order counts.
+ * A later KD line with other effects stays, since those still apply.
  */
 
 import { activationAttackIndices } from '@/core/attacks/attackRows';
@@ -9,6 +10,7 @@ import type {
   AttackPlan,
   AttackPlanClampParams,
 } from '@/core/plan/attackPlan.types';
+import { knockDownIsOnlyEffect } from '@/core/playbook/knockDown';
 import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
 import {
   cheapestChoiceId,
@@ -49,8 +51,8 @@ const cheapestNonKnockDownChoice = (
 };
 
 /**
- * Replace every KD pick after the first in activation order with the cheapest
- * non-KD line in its slot budget. Mutates `draft`; returns whether anything changed.
+ * Replace every KD-only pick after the first KD in activation order with the
+ * cheapest non-KD line in its slot budget. Mutates `draft`; returns whether anything changed.
  */
 export const stripDuplicateKnockDown = (
   draft: AttackPlan,
@@ -59,7 +61,7 @@ export const stripDuplicateKnockDown = (
   const { attacker } = params;
   let changed = false;
   // A target that is already Knocked Down counts as the one allowed KD, so every
-  // playbook KD pick is redundant and gets replaced.
+  // playbook KD pick is redundant.
   let knockDownSeen = params.enemyKnockedDown;
 
   const activationOrder = activationAttackIndices(
@@ -76,12 +78,22 @@ export const stripDuplicateKnockDown = (
     for (let slot = 0; slot < picks.length; slot++) {
       const id = picks[slot];
 
-      if (id == null || !getPlaybookResult(attacker, id).appliesKnockDown) {
+      if (id == null) {
+        continue;
+      }
+
+      const result = getPlaybookResult(attacker, id);
+
+      if (!result.appliesKnockDown) {
         continue;
       }
 
       if (!knockDownSeen) {
         knockDownSeen = true;
+        continue;
+      }
+
+      if (!knockDownIsOnlyEffect(result)) {
         continue;
       }
 

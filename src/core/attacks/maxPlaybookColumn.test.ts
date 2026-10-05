@@ -1,23 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { maxPlaybookColumnForRow } from '@/core/attacks/maxPlaybookColumn';
 import type { AttackPlanClampParams } from '@/core/plan/attackPlan.types';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+import { makeAttacker, makeRollParams } from '@/core/testing/fixtures';
 
 describe('maxPlaybookColumnForRow', () => {
   const params = (tac: number): AttackPlanClampParams => {
     return {
-      attacker: makeAttacker({ tac }),
-      chargeAttackIndex: NO_ATTACK_INDEX,
-      armor: 0,
-      enemyHasCover: false,
-      enemyDefensiveStance: false,
-      damageMods: NO_MODS,
-      enemyDef: 4,
-      bonusTimeByAttack: [false, false],
-      initialTacModifier: 0,
+      ...makeRollParams({ attacker: makeAttacker({ tac }) }),
       enemyKnockedDown: false,
-      activeBaseCount: 2,
     };
   };
 

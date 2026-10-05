@@ -1,3 +1,4 @@
+import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type {
@@ -36,8 +37,8 @@ export type ActivationScenario = {
   crowdingOut: number;
   bonusTimeByAttack: boolean[];
   damageMods: PlaybookDamageMods;
-  /** Toggled model-specific flat-damage abilities, by ability id. */
-  specialAbilities: Record<string, boolean>;
+  /** Activated traits (e.g. Don't Fear The...), by trait id. */
+  activeTraits: Record<string, boolean>;
   attackPlan: AttackPlan;
 };
 
@@ -50,8 +51,6 @@ export type DerivedSimulation = {
    * `NO_ATTACK_INDEX`.
    */
   effectiveChargeAttackIndex: number;
-  /** Enemy ARM after attacker buffs (e.g. They Ain't Tough!). */
-  effectiveArmor: number;
   /** Enemy DEF after Knocked Down and Snared. */
   effectiveEnemyDef: number;
   /** Ganging Up minus Crowding Out, applied to the first swing's TAC. */
@@ -78,9 +77,11 @@ export type DerivedSimulation = {
   /** Bonus-Time flags with the Resilience-ignored swing forced off. */
   effectiveBonusTimeByAttack: boolean[];
   attacks: AttackRollContext[];
+  /** Per-swing state the engine derived, by attack index. */
+  timeline: ActivationTimeline;
   /** Damage each attack row deals if every pick on it hits, by attack index. */
   rowDamageIfHit: number[];
-  /** Guaranteed damage from the toggled special abilities, applied before any swing. */
+  /** Guaranteed damage from the activated traits, applied before any swing. */
   flatDamage: number;
   /**
    * Display index into `attacks` of the swing that drops the target to 0 HP in

@@ -46,7 +46,8 @@ export const playbookLineDisplaySegments = (
 ): string[] => {
   const label = playbookLineDisplayLabel(attacker, id, mods);
 
-  return label.match(/\d+|<|[A-Za-z]+/g) ?? [label];
+  // Digits, a run of arrows (<<, >>, ><), or letters (GB, KD, T).
+  return label.match(/\d+|[<>]+|[A-Za-z]+/g) ?? [label];
 };
 
 /** Selected playbook lines on one attack row, for summaries (e.g. `> → 2 → GB`). */

@@ -29,8 +29,9 @@ export type MeatGrinderAction =
   | { type: 'gangingUp'; value: number }
   | { type: 'crowdingOut'; value: number }
   | { type: 'toughHide'; value: boolean }
+  | { type: 'targetBurning'; value: boolean }
   | { type: 'guildBuff'; id: string; value: boolean }
-  | { type: 'specialAbility'; id: string; value: boolean }
+  | { type: 'activeTrait'; id: string; value: boolean }
   | { type: 'bonusTime'; attackIndex: number; value: boolean }
   | {
       type: 'wrapChoice';

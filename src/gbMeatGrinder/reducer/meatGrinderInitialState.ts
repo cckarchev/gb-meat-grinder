@@ -50,8 +50,12 @@ export const stateForAttacker = (
     gangingUp,
     crowdingOut,
     bonusTimeByAttack,
-    damageMods: { toughHide: prev?.damageMods.toughHide ?? false, buffs: {} },
-    specialAbilities: {},
+    damageMods: {
+      toughHide: prev?.damageMods.toughHide ?? false,
+      targetBurning: prev?.damageMods.targetBurning ?? false,
+      buffs: {},
+    },
+    activeTraits: {},
     attackPlan: createInitialAttackPlan(attacker, influence, charging),
   };
 };

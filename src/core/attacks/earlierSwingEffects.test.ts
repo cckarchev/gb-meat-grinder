@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import {
-  carriedEffectsBeforeAttack,
-  coverTacPenaltyForAttack,
-} from '@/core/attacks/earlierSwingEffects';
-import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+import { coverTacPenaltyForAttack } from '@/core/attacks/earlierSwingEffects';
+import { makeAttacker } from '@/core/testing/fixtures';
 
 const COVER = true;
 
@@ -31,38 +28,10 @@ describe('coverTacPenaltyForAttack', () => {
   });
 });
 
-describe('carriedEffectsBeforeAttack', () => {
-  it('collects TAC and DEF carry-over from earlier swings', () => {
-    const attacker = makeAttacker({ inf: 3 });
-
-    expect(
-      carriedEffectsBeforeAttack(
-        attacker,
-        [['gb'], ['kd'], ['one']],
-        [['playTac'], [null], [null]],
-        2,
-        NO_MODS,
-        3,
-      ),
-    ).toEqual({ tacBonus: 2, defReduction: 1 });
-  });
-});
-
 describe('rows outside the activation', () => {
   const attacker = makeAttacker();
 
-  it('get the full cover penalty and no carry-over', () => {
+  it('get the full cover penalty', () => {
     expect(coverTacPenaltyForAttack(attacker, COVER, [['push']], 5, 1)).toBe(1);
-
-    expect(
-      carriedEffectsBeforeAttack(
-        attacker,
-        [['gb']],
-        [['playTac']],
-        5,
-        NO_MODS,
-        1,
-      ),
-    ).toEqual({ tacBonus: 0, defReduction: 0 });
   });
 });

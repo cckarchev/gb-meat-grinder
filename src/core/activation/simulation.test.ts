@@ -4,7 +4,9 @@ import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import { activeBaseAttackCount } from '@/core/attacks/attackStructure';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { HP_MIN, NO_ATTACK_INDEX } from '@/core/shared/constants';
+import { thresher } from '@/data/attackers/thresher';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
+import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
 import type {
   MeatGrinderAction,
   MeatGrinderState,
@@ -126,9 +128,45 @@ describe('deriveSimulation', () => {
       derived.effectiveWrapPicks,
       state.damageMods,
       derived.activeBaseCount,
+      derived.timeline,
     );
 
     expect(derived.rowDamageIfHit).toEqual(expectedRowDamage);
     expect(derived.flatDamage).toBe(0);
+  });
+});
+
+describe('one named source across a guild buff and a play', () => {
+  it("lowers ARM once for They Ain't Tough! as a buff and as a GB play", () => {
+    // Thresher is the guild's source of They Ain't Tough!, so the UI never
+    // lets him receive it; another Farmers model with the same play would.
+    const attacker = { ...thresher, excludedGuildBuffs: [] };
+    const base = stateForAttacker(attacker);
+
+    const wrapPicks = base.attackPlan.wrapPicks.map((row, attackIndex) => {
+      if (attackIndex === 0) {
+        return ['three_gb'];
+      }
+
+      return attackIndex === 1 ? ['m2'] : row;
+    });
+
+    const characterPlayPicks = base.attackPlan.characterPlayPicks.map(
+      (row, attackIndex) => (attackIndex === 0 ? ['theyAintTough'] : row),
+    );
+
+    const derived = deriveSimulation(attacker, {
+      ...base,
+      armor: 3,
+      damageMods: {
+        toughHide: false,
+        targetBurning: false,
+        buffs: { theyAintTough: true },
+      },
+      attackPlan: { wrapPicks, characterPlayPicks },
+    });
+
+    expect(derived.attacks[0].armor).toBe(2);
+    expect(derived.attacks[1].armor).toBe(2);
   });
 });

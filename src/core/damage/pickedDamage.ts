@@ -6,11 +6,38 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import {
+  getPlaybookResult,
   maxPlaybookNet,
   netSuccessesForChoice,
 } from '@/core/playbook/playbookIndex';
 import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
+
+/** Damage a swing deals besides its card results, by where it lands. */
+type SwingDamageExtras = {
+  /** Effective play damage triggered on each slot, added when that slot reaches its line. */
+  playDamageBySlot: readonly number[];
+  /** Unmodified charge damage (Sweeping Charge), added when the roll lands on a damage result. */
+  chargeTraitDamage: number;
+};
+
+const NO_EXTRAS: SwingDamageExtras = {
+  playDamageBySlot: [],
+  chargeTraitDamage: 0,
+};
+
+/** Whether any line in a column within `budget` has printed damage. */
+const damageLineWithinBudget = (
+  attacker: AttackerData,
+  budget: number,
+): boolean => {
+  return attacker.playbook.some((column) => {
+    const affordable =
+      column.netSuccesses >= MIN_PLAYBOOK_NET && column.netSuccesses <= budget;
+
+    return affordable && column.results.some((result) => result.damage > 0);
+  });
+};
 
 /** Most card damage reachable in a single playbook column within `budget` net. */
 const bestDamageWithinBudget = (
@@ -51,6 +78,7 @@ export const pickedDamageForNet = (
   mods: PlaybookDamageMods,
   picks: readonly WrapPick[],
   net: number,
+  extras: SwingDamageExtras = NO_EXTRAS,
 ): number => {
   if (net < MIN_PLAYBOOK_NET) {
     return 0;
@@ -58,6 +86,7 @@ export const pickedDamageForNet = (
 
   const maxNet = maxPlaybookNet(attacker);
   let total = 0;
+  let reachedDamageResult = false;
 
   for (let slot = 0; slot < picks.length; slot++) {
     const netSpentOnEarlierSlots = slot * maxNet;
@@ -75,10 +104,24 @@ export const pickedDamageForNet = (
 
     const reachesPickedLine = slotBudget >= netSuccessesForChoice(attacker, id);
 
-    total += reachesPickedLine
-      ? effectiveDamageForChoice(attacker, id, mods)
-      : bestDamageWithinBudget(attacker, mods, slotBudget);
+    if (!reachesPickedLine) {
+      total += bestDamageWithinBudget(attacker, mods, slotBudget);
+
+      if (damageLineWithinBudget(attacker, slotBudget)) {
+        reachedDamageResult = true;
+      }
+
+      continue;
+    }
+
+    const playDamage = extras.playDamageBySlot[slot] ?? 0;
+
+    total += effectiveDamageForChoice(attacker, id, mods) + playDamage;
+
+    if (getPlaybookResult(attacker, id).damage > 0) {
+      reachedDamageResult = true;
+    }
   }
 
-  return total;
+  return reachedDamageResult ? total + extras.chargeTraitDamage : total;
 };

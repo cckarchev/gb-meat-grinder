@@ -1,12 +1,7 @@
 /** Enemy DEF and ARM for a swing after stance, conditions and earlier plays. */
 
+import type { SwingState } from '@/core/attacks/activationTimeline.types';
 import { isChargeSwing } from '@/core/attacks/attackStructure';
-import type {
-  CharacterPlayPickSlot,
-  PlaybookDamageMods,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
-import { armorReductionBeforeAttack } from '@/core/playbook/rowEffects';
 import { clamp } from '@/core/shared/clamp';
 import {
   ARM_MIN,
@@ -14,7 +9,6 @@ import {
   DEF_MIN,
   DEFENSIVE_STANCE_DEF_BONUS,
 } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /**
  * Effective enemy DEF stat for this row: the charge into Defensive Stance gains
@@ -59,24 +53,10 @@ export const tacBonusFromDefReductionCap = (
   return Math.max(0, DEF_MIN - (baseDef - defReduction));
 };
 
-/** Enemy ARM for a swing: the buff-reduced base minus any earlier GB They Ain't Tough. */
+/** Enemy ARM for a swing: the base minus what earlier swings left on the target. */
 export const armorForAttackRow = (
-  attacker: AttackerData,
   baseArmor: number,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
-  damageMods: PlaybookDamageMods,
-  attackIndex: number,
-  activeBaseCount: number,
+  state: SwingState,
 ): number => {
-  const earlierReduction = armorReductionBeforeAttack(
-    attacker,
-    wrapPicks,
-    characterPlayPicks,
-    damageMods,
-    attackIndex,
-    activeBaseCount,
-  );
-
-  return Math.max(ARM_MIN, baseArmor - earlierReduction);
+  return Math.max(ARM_MIN, baseArmor - state.effectsBefore.armorReduction);
 };

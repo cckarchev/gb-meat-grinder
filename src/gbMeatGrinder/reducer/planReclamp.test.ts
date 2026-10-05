@@ -3,6 +3,7 @@ import { thresher } from '@/data/attackers/thresher';
 import {
   initialState,
   PICK_THRESHER,
+  PICK_VETERAN_BOAR,
   pick,
   reduce,
 } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
@@ -53,13 +54,22 @@ describe('re-clamping the plan', () => {
     expect(state.attackPlan.wrapPicks[0]).toEqual(['m4', null]);
   });
 
-  it('replaces a playbook KD when the target is already Knocked Down', () => {
+  it('keeps a KD line with a dodge when the target is already Knocked Down', () => {
     const state = reduce(initialState(PICK_THRESHER), pick(0, 'kd_dodge'), {
       type: 'enemyKnockedDown',
       value: true,
     });
 
-    expect(state.attackPlan.wrapPicks[0]).toEqual(['dodge']);
+    expect(state.attackPlan.wrapPicks[0]).toEqual(['kd_dodge']);
+  });
+
+  it('replaces a bare KD when the target is already Knocked Down', () => {
+    const state = reduce(initialState(PICK_VETERAN_BOAR), pick(0, 'kd'), {
+      type: 'enemyKnockedDown',
+      value: true,
+    });
+
+    expect(state.attackPlan.wrapPicks[0]).toEqual(['push', null]);
   });
 
   it('keeps the same plan object when nothing becomes illegal', () => {

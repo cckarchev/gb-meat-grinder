@@ -1,6 +1,5 @@
 /** Effects each pick carries into later swings: TAC, DEF and the ARM condition. */
 
-import { picksOnEarlierSwings } from '@/core/attacks/attackRows';
 import { characterPlayPickEffects } from '@/core/characterPlays/characterPlayEffects';
 import { effectivePlayForPick } from '@/core/characterPlays/characterPlayLookup';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
@@ -15,7 +14,7 @@ import {
   choiceUsesCharacterPlay,
   getPlaybookResult,
 } from '@/core/playbook/playbookIndex';
-import { MAX_ARMOR_REDUCTION } from '@/core/shared/constants';
+import { KNOCKED_DOWN_EFFECT } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 const NO_EFFECTS: PickEffects = {
@@ -93,41 +92,37 @@ export const pickEffectsForLaterSwings = (
 };
 
 /**
- * ARM this swing loses because an earlier swing's GB triggered a character play
- * that reduces ARM (e.g. They Ain't Tough!), in activation order (strictly
- * earlier). A condition, so it never stacks past `MAX_ARMOR_REDUCTION`.
+ * The name a pick's carried effect goes by, for the "same name does not stack"
+ * rule: the play's id when the pick triggers one, the shared Knock Down name for
+ * a KD, otherwise the playbook result's id.
  */
-export const armorReductionBeforeAttack = (
+export const pickEffectName = (
   attacker: AttackerData,
   wrapPicks: WrapPick[][],
   characterPlayPicks: CharacterPlayPickSlot[][],
-  damageMods: PlaybookDamageMods,
   attackIndex: number,
-  activeBaseCount: number,
-): number => {
-  const earlierPicks = picksOnEarlierSwings(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-    attackIndex,
-  );
+  pickIndex: number,
+): string => {
+  const id = wrapPicks[attackIndex][pickIndex];
 
-  let reduction = 0;
-
-  for (const earlier of earlierPicks) {
-    const effects = pickEffectsForLaterSwings(
-      attacker,
-      wrapPicks,
-      characterPlayPicks,
-      earlier.attackIndex,
-      earlier.pickIndex,
-      damageMods,
-      activeBaseCount,
-    );
-
-    reduction += effects.armorReduction;
+  if (id == null) {
+    return '';
   }
 
-  return Math.min(MAX_ARMOR_REDUCTION, reduction);
+  if (choiceUsesCharacterPlay(attacker, id)) {
+    const play = effectivePlayForPick(
+      attacker,
+      characterPlayPicks,
+      attackIndex,
+      pickIndex,
+    );
+
+    return play ?? id;
+  }
+
+  if (getPlaybookResult(attacker, id).appliesKnockDown) {
+    return KNOCKED_DOWN_EFFECT;
+  }
+
+  return id;
 };

@@ -4,7 +4,7 @@ import type {
   DerivedSimulation,
 } from '@/core/activation/simulation.types';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
-import { specialAbilityFlatDamage } from '@/core/damage/damage';
+import { activeTraitFlatDamage } from '@/core/damage/damage';
 import { killingBlowDisplayIndex } from '@/core/damage/killingBlow';
 import {
   effectiveBonusTimeForResilience,
@@ -29,7 +29,6 @@ export const deriveSimulation = (
   const {
     activeBaseCount,
     effectiveChargeAttackIndex,
-    effectiveArmor,
     effectiveEnemyDef,
     initialTacModifier,
   } = stats;
@@ -64,10 +63,10 @@ export const deriveSimulation = (
     characterPlayPicks: effectiveCharacterPlayPicks,
   };
 
-  const { attacks } = computeAttackSequence(effectivePlan, {
+  const { attacks, timeline } = computeAttackSequence(effectivePlan, {
     attacker,
     chargeAttackIndex: effectiveChargeAttackIndex,
-    armor: effectiveArmor,
+    armor: scenario.armor,
     enemyHasCover: scenario.enemyHasCover,
     enemyDefensiveStance: scenario.enemyDefensiveStance,
     damageMods: scenario.damageMods,
@@ -87,12 +86,10 @@ export const deriveSimulation = (
     effectiveWrapPicks,
     scenario.damageMods,
     activeBaseCount,
+    timeline,
   );
 
-  const flatDamage = specialAbilityFlatDamage(
-    attacker,
-    scenario.specialAbilities,
-  );
+  const flatDamage = activeTraitFlatDamage(attacker, scenario.activeTraits);
 
   const killingBlowIndex = killingBlowDisplayIndex(
     attacks,
@@ -109,6 +106,7 @@ export const deriveSimulation = (
     effectiveCharacterPlayPicks,
     effectiveBonusTimeByAttack,
     attacks,
+    timeline,
     rowDamageIfHit,
     flatDamage,
     killingBlowIndex,

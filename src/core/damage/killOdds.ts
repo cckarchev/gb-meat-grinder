@@ -1,6 +1,9 @@
 /** Kill chance, expected damage and HP left for a whole activation. */
 
+import { swingStateAt } from '@/core/attacks/activationTimeline';
+import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+import { withSwingDamageBonus } from '@/core/damage/damage';
 import type {
   ActivationDamageOutcome,
   DamageDistribution,
@@ -36,7 +39,7 @@ const withFlatDamage = (
  * Convolves every swing's damage distribution, where each swing only deals the
  * damage of the lines actually picked, then reports the chance the activation
  * drops the target and the mean damage dealt. `flatDamage` is guaranteed
- * (special abilities) and applied as a baseline.
+ * (activated traits) and applied as a baseline.
  */
 export const planDamageOutcome = (
   attacker: AttackerData,
@@ -45,14 +48,21 @@ export const planDamageOutcome = (
   mods: PlaybookDamageMods,
   flatDamage: number,
   targetHp: number,
+  timeline: ActivationTimeline,
 ): ActivationDamageOutcome => {
   let total: DamageDistribution = new Map([[0, 1]]);
 
   for (const attack of attacks) {
     const picks = wrapPicks[attack.attackIndex] ?? [];
+    const state = swingStateAt(timeline, attack.attackIndex);
+    const extras = {
+      playDamageBySlot: state.playDamageBySlot,
+      chargeTraitDamage: state.chargeTraitDamage,
+    };
+    const swingMods = withSwingDamageBonus(mods, state.playbookDamageBonus);
 
     const pickedDamage: DamageForNet = (net) => {
-      return pickedDamageForNet(attacker, mods, picks, net);
+      return pickedDamageForNet(attacker, swingMods, picks, net, extras);
     };
 
     const swing = swingDamageDistribution(attack, pickedDamage);

@@ -116,19 +116,24 @@ const transition = (
 
       return withReclampedPlan(state, { damageMods });
     }
+    case 'targetBurning': {
+      const damageMods = { ...state.damageMods, targetBurning: action.value };
+
+      return withReclampedPlan(state, { damageMods });
+    }
     case 'guildBuff': {
       const buffs = { ...state.damageMods.buffs, [action.id]: action.value };
       const damageMods = { ...state.damageMods, buffs };
 
       return withReclampedPlan(state, { damageMods });
     }
-    case 'specialAbility': {
-      const specialAbilities = {
-        ...state.specialAbilities,
+    case 'activeTrait': {
+      const activeTraits = {
+        ...state.activeTraits,
         [action.id]: action.value,
       };
 
-      return { ...state, specialAbilities };
+      return { ...state, activeTraits };
     }
     case 'bonusTime': {
       return toggleBonusTime(state, action.attackIndex, action.value);

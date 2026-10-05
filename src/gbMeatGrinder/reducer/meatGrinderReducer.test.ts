@@ -24,8 +24,8 @@ describe('initial state', () => {
       hp: HP_DEFAULT,
       startingMomentum: 0,
       bonusTimeByAttack: [false, false, false, false, false],
-      damageMods: { toughHide: false, buffs: {} },
-      specialAbilities: {},
+      damageMods: { toughHide: false, targetBurning: false, buffs: {} },
+      activeTraits: {},
     });
 
     expect(state.attackPlan).toEqual(
@@ -58,7 +58,7 @@ describe('model selection', () => {
     );
   });
 
-  it('keeps enemy stats and Tough Hide but drops attacker-side toggles', () => {
+  it('keeps enemy stats, Tough Hide and Burning but drops attacker-side toggles', () => {
     const state = reduce(
       initialState(PICK_THRESHER),
       { type: 'enemyDef', value: 5 },
@@ -66,8 +66,9 @@ describe('model selection', () => {
       { type: 'hp', value: 9 },
       { type: 'enemyHasCover', value: true },
       { type: 'toughHide', value: true },
+      { type: 'targetBurning', value: true },
       { type: 'guildBuff', id: 'weakPoint', value: true },
-      { type: 'specialAbility', id: 'dontFearTheReaper', value: true },
+      { type: 'activeTrait', id: 'dontFearTheReaper', value: true },
       { type: 'selectAttacker', id: veteranBoar.id },
     );
 
@@ -78,8 +79,8 @@ describe('model selection', () => {
       hp: 9,
       enemyHasCover: true,
       charging: true,
-      damageMods: { toughHide: true, buffs: {} },
-      specialAbilities: {},
+      damageMods: { toughHide: true, targetBurning: true, buffs: {} },
+      activeTraits: {},
     });
   });
 });
@@ -173,6 +174,7 @@ describe('damage modifiers', () => {
 
     expect(state.damageMods).toEqual({
       toughHide: true,
+      targetBurning: false,
       buffs: { weakPoint: true },
     });
   });

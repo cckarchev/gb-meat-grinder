@@ -4,6 +4,7 @@ import {
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
 } from '@/core/activation/momentum';
+import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import type {
   PlaybookDamageMods,
@@ -23,9 +24,11 @@ export type SwingProjectionInput = {
   /** Effective (Resilience-applied) Bonus Time flags. */
   bonusTimeByAttack: boolean[];
   damageMods: PlaybookDamageMods;
+  /** Per-swing state the engine derived, by attack index. */
+  timeline: ActivationTimeline;
   /** Damage each attack row deals if every pick on it hits, by attack index. */
   rowDamageIfHit: readonly number[];
-  /** Guaranteed special-ability damage, applied before any swing. */
+  /** Guaranteed activated-trait damage, applied before any swing. */
   flatDamage: number;
   startingMomentum: number;
   activeBaseCount: number;

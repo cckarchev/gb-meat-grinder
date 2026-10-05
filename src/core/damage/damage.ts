@@ -8,16 +8,18 @@ import type {
 } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import {
-  ARM_MIN,
   DEF_MAX,
   KNOCKED_DOWN_DEF_PENALTY,
   SNARED_DEF_PENALTY,
   TOUGH_HIDE_DAMAGE_PENALTY,
 } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { CharacterTrait } from '@/data/characterTraits';
+import type { GuildBuff, GuildBuffTarget } from '@/data/guilds/guild.types';
 
 export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
   toughHide: false,
+  targetBurning: false,
   buffs: {},
 };
 
@@ -31,6 +33,20 @@ export const guildBuffIsExcluded = (
   return excluded.includes(buffId);
 };
 
+const DEFAULT_GUILD_BUFF_TARGET: GuildBuffTarget = 'attacker';
+
+/** The guild's effects on one side, excluded ones included (the UI disables those). */
+export const guildBuffsFor = (
+  attacker: AttackerData,
+  target: GuildBuffTarget,
+): readonly GuildBuff[] => {
+  return attacker.guild.buffs.filter((buff) => {
+    const buffTarget = buff.target ?? DEFAULT_GUILD_BUFF_TARGET;
+
+    return buffTarget === target;
+  });
+};
+
 /** Guild buffs this model can receive (excludes buffs it is the source of). */
 export const availableBuffs = (attacker: AttackerData) => {
   return attacker.guild.buffs.filter(
@@ -39,22 +55,93 @@ export const availableBuffs = (attacker: AttackerData) => {
 };
 
 /** The attacker's available buffs that are currently toggled on. */
-const activeBuffs = (attacker: AttackerData, mods: PlaybookDamageMods) => {
+export const activeBuffs = (
+  attacker: AttackerData,
+  mods: PlaybookDamageMods,
+) => {
   return availableBuffs(attacker).filter((buff) => mods.buffs[buff.id]);
 };
 
 /**
- * Flat, unmodified damage from the model's toggled special abilities (e.g.
- * Thresher's Don't Fear The Reaper). Independent of attack rolls and ARM /
- * Tough Hide / buffs, so it is simply added to the activation's damage.
+ * Flat, unmodified damage from the model's activated traits (e.g. Thresher's
+ * Don't Fear The...). Character traits ignore Tough Hide and damage buffs,
+ * so it is simply added to the activation's damage.
  */
-export const specialAbilityFlatDamage = (
+export const activeTraitFlatDamage = (
   attacker: AttackerData,
-  toggled: Record<string, boolean>,
+  activeTraits: Record<string, boolean>,
 ): number => {
-  return (attacker.specialAbilities ?? [])
-    .filter((ability) => toggled[ability.id])
-    .reduce((sum, ability) => sum + ability.flatDamage, 0);
+  const activated = activatedTraits(attacker, activeTraits);
+
+  return activated.reduce((sum, trait) => sum + (trait.flatDamage ?? 0), 0);
+};
+
+/** The model's traits the user activates with a checkbox. */
+export const activatableTraits = (
+  attacker: AttackerData,
+): readonly CharacterTrait[] => {
+  return (attacker.characterTraits ?? []).filter((trait) => {
+    return trait.active === true;
+  });
+};
+
+/** The activatable traits currently toggled on. */
+export const activatedTraits = (
+  attacker: AttackerData,
+  activeTraits: Record<string, boolean>,
+): readonly CharacterTrait[] => {
+  return activatableTraits(attacker).filter((trait) => {
+    return activeTraits[trait.id] === true;
+  });
+};
+
+const TRAIT_LABEL_SEPARATOR = ' + ';
+
+/** Several traits named on one breakdown line (e.g. `Searing Strike + Sweeping Charge`). */
+export const joinTraitLabels = (traits: readonly CharacterTrait[]): string => {
+  return traits.map((trait) => trait.label).join(TRAIT_LABEL_SEPARATOR);
+};
+
+/** The attacker's traits plus those granted by active buffs, once each. */
+export const attackerTraits = (
+  attacker: AttackerData,
+  mods: PlaybookDamageMods,
+): readonly CharacterTrait[] => {
+  const granted = activeBuffs(attacker, mods).flatMap((buff) => {
+    return buff.grantsTraits ?? [];
+  });
+
+  const byId = new Map<string, CharacterTrait>();
+
+  for (const trait of [...(attacker.characterTraits ?? []), ...granted]) {
+    if (!byId.has(trait.id)) {
+      byId.set(trait.id, trait);
+    }
+  }
+
+  return [...byId.values()];
+};
+
+/** Unmodified DMG the attacker's traits add to a charge that picks a damage result. */
+export const chargeTraitDamage = (
+  attacker: AttackerData,
+  mods: PlaybookDamageMods,
+): number => {
+  return attackerTraits(attacker, mods).reduce((sum, trait) => {
+    return sum + (trait.chargeDamage ?? 0);
+  }, 0);
+};
+
+/** `mods` with one swing's engine-injected playbook damage bonus. */
+export const withSwingDamageBonus = (
+  mods: PlaybookDamageMods,
+  bonus: number,
+): PlaybookDamageMods => {
+  if (bonus === 0) {
+    return mods;
+  }
+
+  return { ...mods, swingDamageBonus: bonus };
 };
 
 /** Sum of the +damage from selected buffs. */
@@ -100,20 +187,6 @@ export const effectiveEnemyDef = (
   return Math.min(DEF_MAX, enemyDef - reduction);
 };
 
-/** Enemy ARM after the selected buffs' reductions (floored at 0). */
-export const effectiveArmor = (
-  attacker: AttackerData,
-  baseArmor: number,
-  mods: PlaybookDamageMods,
-): number => {
-  const reduction = activeBuffs(attacker, mods).reduce(
-    (sum, buff) => sum + (buff.armorReduction ?? 0),
-    0,
-  );
-
-  return Math.max(ARM_MIN, baseArmor - reduction);
-};
-
 export const effectivePlaybookDamage = (
   attacker: AttackerData,
   cardDamage: number,
@@ -127,8 +200,9 @@ export const effectivePlaybookDamage = (
     mods.toughHide && !buffsIgnoreToughHide(attacker, mods);
   const toughHidePenalty = toughHideApplies ? TOUGH_HIDE_DAMAGE_PENALTY : 0;
   const buffBonus = playbookDamageBonusSum(attacker, mods);
+  const swingBonus = mods.swingDamageBonus ?? 0;
 
-  return Math.max(0, cardDamage - toughHidePenalty + buffBonus);
+  return Math.max(0, cardDamage - toughHidePenalty + buffBonus + swingBonus);
 };
 
 export const effectiveDamageForChoice = (

@@ -24,13 +24,20 @@ export const characterPlayPickEffects = (
 /** True when this play changes the attack math (so a no-op like Snack Break is false). */
 export const characterPlayHasEffect = (play: CharacterPlay): boolean => {
   return Boolean(
-    play.tacBonusForLater || play.defReductionForLater || play.armorReduction,
+    play.tacBonusForLater ||
+      play.defReductionForLater ||
+      play.armorReduction ||
+      play.damage,
   );
 };
 
 /** Human-readable effect + cadence, used for the selector tooltip / aria-label. */
 export const characterPlayEffectSummary = (play: CharacterPlay): string => {
   const effects: string[] = [];
+
+  if (play.damage) {
+    effects.push(`${play.damage} DMG`);
+  }
 
   if (play.tacBonusForLater) {
     effects.push(`+${play.tacBonusForLater} TAC on later attacks`);
@@ -48,7 +55,7 @@ export const characterPlayEffectSummary = (play: CharacterPlay): string => {
     ? `${effects.join('; ')}.`
     : 'No effect on the attack math.';
 
-  const cadence = play.repeatable ? 'Repeatable.' : 'Once per turn.';
+  const cadence = play.oncePerTurn ? ' Once per turn.' : '';
 
-  return `${effect} ${cadence}`;
+  return `${effect}${cadence}`;
 };

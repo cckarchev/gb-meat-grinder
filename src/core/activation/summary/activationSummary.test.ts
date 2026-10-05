@@ -5,10 +5,13 @@ import {
   swingIsSkipped,
 } from '@/core/activation/summary/activationSummary';
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
+import { activationTimeline } from '@/core/attacks/activationTimeline';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import { specialAbilityFlatDamage } from '@/core/damage/damage';
+import { activeTraitFlatDamage } from '@/core/damage/damage';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
+import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
+import { sweepingCharge } from '@/data/characterTraits';
 
 /** A swing that always rolls exactly `tac` net successes. */
 const certainSwing = (attackIndex: number, tac: number): AttackRollContext => {
@@ -38,7 +41,7 @@ const input = (
     wrapPicks: [['two'], ['two']],
     bonusTimeByAttack: [false, false],
     damageMods: NO_MODS,
-    specialAbilities: {},
+    activeTraits: {},
     startingMomentum: 0,
     activeBaseCount: 2,
     targetHp: 10,
@@ -46,19 +49,34 @@ const input = (
   };
 
   // Derived the way `deriveSimulation` does, unless a test pins them.
+  const characterPlayPicks = scenario.wrapPicks.map((row) => {
+    return row.map(() => null);
+  });
+
+  const timeline = activationTimeline(
+    { wrapPicks: scenario.wrapPicks, characterPlayPicks },
+    {
+      attacker: scenario.attacker,
+      damageMods: scenario.damageMods,
+      activeBaseCount: scenario.activeBaseCount,
+      chargeAttackIndex: NO_ATTACK_INDEX,
+    },
+  );
+
   const rowDamageIfHit = rowDamageIfAllHit(
     scenario.attacker,
     scenario.wrapPicks,
     scenario.damageMods,
     scenario.activeBaseCount,
+    timeline,
   );
 
-  const flatDamage = specialAbilityFlatDamage(
+  const flatDamage = activeTraitFlatDamage(
     scenario.attacker,
-    scenario.specialAbilities,
+    scenario.activeTraits,
   );
 
-  return { rowDamageIfHit, flatDamage, ...scenario };
+  return { timeline, rowDamageIfHit, flatDamage, ...scenario };
 };
 
 describe('activeSwings', () => {
@@ -134,10 +152,44 @@ describe('summarizeActivation', () => {
     expect(summary.netMomentumIfAllHit).toBe(1);
   });
 
-  it('itemizes Tough Hide, buffs and special abilities', () => {
+  it('itemizes Sweeping Charge on a charge that picks damage', () => {
+    const attacker = makeAttacker({ characterTraits: [sweepingCharge] });
+    const wrapPicks = [['two'], ['two']];
+    const chargeRow = 0;
+
+    const timeline = activationTimeline(
+      { wrapPicks, characterPlayPicks: [[null], [null]] },
+      {
+        attacker,
+        damageMods: NO_MODS,
+        activeBaseCount: 2,
+        chargeAttackIndex: chargeRow,
+      },
+    );
+
+    const rowDamageIfHit = rowDamageIfAllHit(
+      attacker,
+      wrapPicks,
+      NO_MODS,
+      2,
+      timeline,
+    );
+
+    const summary = summarizeActivation(
+      input({ attacker, wrapPicks, timeline, rowDamageIfHit }),
+    );
+
+    expect(summary.totalDamageIfAllHit).toBe(7);
+
+    expect(summary.damageDealtTooltip).toBe(
+      '4 from card pips; +3 Sweeping Charge = 7.',
+    );
+  });
+
+  it('itemizes Tough Hide, buffs and activated traits', () => {
     const attacker = makeAttacker({
-      specialAbilities: [
-        { id: 'gore', label: 'Gore', tooltip: '', flatDamage: 2 },
+      characterTraits: [
+        { id: 'gore', label: 'Gore', tooltip: '', active: true, flatDamage: 2 },
       ],
     });
 
@@ -145,7 +197,7 @@ describe('summarizeActivation', () => {
       input({
         attacker,
         damageMods: modsWith({ toughHide: true, buffs: { sharp: true } }),
-        specialAbilities: { gore: true },
+        activeTraits: { gore: true },
       }),
     );
 

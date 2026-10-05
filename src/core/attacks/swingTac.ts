@@ -1,11 +1,10 @@
 /** Per-swing TAC after charge, cover, Bonus Time and everything earlier swings carried over. */
 
+import { swingStateAt } from '@/core/attacks/activationTimeline';
+import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
 import { isChargeSwing } from '@/core/attacks/attackStructure';
-import {
-  carriedEffectsBeforeAttack,
-  coverTacPenaltyForAttack,
-} from '@/core/attacks/earlierSwingEffects';
+import { coverTacPenaltyForAttack } from '@/core/attacks/earlierSwingEffects';
 import {
   effectiveDefMinRoll,
   enemyDefForSwing,
@@ -68,29 +67,25 @@ export const swingTacAndDef = (
   plan: AttackPlan,
   attackIndex: number,
   params: ActivationRollParams,
+  timeline: ActivationTimeline,
 ): SwingTacAndDef => {
-  const { wrapPicks, characterPlayPicks } = plan;
+  const { wrapPicks } = plan;
 
   const {
     attacker,
     chargeAttackIndex,
     enemyHasCover,
     enemyDefensiveStance,
-    damageMods,
     enemyDef,
     bonusTimeByAttack,
     initialTacModifier,
     activeBaseCount,
   } = params;
 
-  const { tacBonus, defReduction } = carriedEffectsBeforeAttack(
-    attacker,
-    wrapPicks,
-    characterPlayPicks,
+  const { tacBonus, defReduction } = swingStateAt(
+    timeline,
     attackIndex,
-    damageMods,
-    activeBaseCount,
-  );
+  ).effectsBefore;
 
   const defForRow = enemyDefForSwing(
     enemyDef,

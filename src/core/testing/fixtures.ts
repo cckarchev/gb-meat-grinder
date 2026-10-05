@@ -1,16 +1,22 @@
+import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
 import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from '@/core/damage/damage';
+import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type {
   CharacterPlay,
+  CharacterPlayPickSlot,
   PlaybookColumn,
   PlaybookDamageMods,
   PlaybookResult,
+  WrapPick,
 } from '@/core/playbook/playbook.types';
+import { DEF_DEFAULT, NO_ATTACK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
 } from '@/data/attackers/statRanges';
+import { searingStrike } from '@/data/characterTraits';
 import type { Guild } from '@/data/guilds/guild.types';
 
 /**
@@ -83,34 +89,69 @@ export const TEST_GUILD: Guild = {
   ],
 };
 
+/** A guild with condition-driven buffs: Tempered Steel-like and Searing Strike. */
+export const CONDITION_GUILD: Guild = {
+  id: 'conditioners',
+  name: 'Conditioners',
+  color: '#654321',
+  buffs: [
+    {
+      id: 'steel',
+      label: 'Steel',
+      tooltip: '',
+      tacBonus: 1,
+      grantsTraits: [searingStrike],
+    },
+    {
+      id: 'searingStrike',
+      label: 'Searing Strike',
+      tooltip: '',
+      target: 'enemy',
+      armorReduction: 1,
+    },
+    { id: 'sharp', label: 'Sharp', tooltip: '', damageBonus: 1 },
+  ],
+};
+
 export const PLAY_TAC: CharacterPlay = {
   id: 'playTac',
   label: 'Play TAC',
   tacBonusForLater: 2,
+  oncePerTurn: true,
 };
 
 export const PLAY_DEF: CharacterPlay = {
   id: 'playDef',
   label: 'Play DEF',
   defReductionForLater: 1,
+  oncePerTurn: true,
 };
 
 export const PLAY_ARM: CharacterPlay = {
   id: 'playArm',
   label: 'Play ARM',
   armorReduction: 1,
+  oncePerTurn: true,
 };
 
 export const PLAY_REPEATABLE: CharacterPlay = {
   id: 'playRepeatable',
   label: 'Play Repeatable',
   tacBonusForLater: 1,
-  repeatable: true,
+  oncePerTurn: false,
 };
 
 export const PLAY_NOOP: CharacterPlay = {
   id: 'playNoop',
   label: 'Play Noop',
+  oncePerTurn: true,
+};
+
+export const PLAY_DAMAGE: CharacterPlay = {
+  id: 'playDamage',
+  label: 'Play Damage',
+  damage: 3,
+  oncePerTurn: true,
 };
 
 export const makeAttacker = (
@@ -141,4 +182,47 @@ export const modsWith = (
   overrides: Partial<PlaybookDamageMods>,
 ): PlaybookDamageMods => {
   return { ...NO_MODS, ...overrides };
+};
+
+/** A plan from its wrap picks; without `plays`, no slot picks a character play. */
+export const planOf = (
+  rows: WrapPick[][],
+  plays?: CharacterPlayPickSlot[][],
+): AttackPlan => {
+  const noPlays = rows.map((row) => row.map(() => null));
+
+  return { wrapPicks: rows, characterPlayPicks: plays ?? noPlays };
+};
+
+/** Three swings that each pick the same line once. */
+export const threeOf = (id: string): AttackPlan => {
+  return planOf([[id], [id], [id]]);
+};
+
+/** Enemy ARM in the neutral roll params: nothing to strip. */
+const NEUTRAL_ARMOR = 0;
+
+/** Swings in the neutral roll params. */
+const NEUTRAL_BASE_COUNT = 2;
+
+/**
+ * Roll params with nothing in play: no charge, cover, stance, mods, Bonus Time
+ * or TAC modifier, ARM 0 and the default DEF. Tests override what they exercise.
+ */
+export const makeRollParams = (
+  overrides: Partial<ActivationRollParams> = {},
+): ActivationRollParams => {
+  return {
+    attacker: makeAttacker(),
+    chargeAttackIndex: NO_ATTACK_INDEX,
+    armor: NEUTRAL_ARMOR,
+    enemyHasCover: false,
+    enemyDefensiveStance: false,
+    damageMods: NO_MODS,
+    enemyDef: DEF_DEFAULT,
+    bonusTimeByAttack: [],
+    initialTacModifier: 0,
+    activeBaseCount: NEUTRAL_BASE_COUNT,
+    ...overrides,
+  };
 };

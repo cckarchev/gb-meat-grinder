@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest';
+import { activationTimeline } from '@/core/attacks/activationTimeline';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import {
   projectSwings,
   type SwingProjectionInput,
 } from '@/core/attacks/swingProjections';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
+import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
 
 const swing = (attackIndex: number): AttackRollContext => {
@@ -37,14 +39,29 @@ const input = (
   };
 
   // Derived the way `deriveSimulation` does, unless a test pins it.
+  const characterPlayPicks = scenario.wrapPicks.map((row) => {
+    return row.map(() => null);
+  });
+
+  const timeline = activationTimeline(
+    { wrapPicks: scenario.wrapPicks, characterPlayPicks },
+    {
+      attacker: scenario.attacker,
+      damageMods: scenario.damageMods,
+      activeBaseCount: scenario.activeBaseCount,
+      chargeAttackIndex: NO_ATTACK_INDEX,
+    },
+  );
+
   const rowDamageIfHit = rowDamageIfAllHit(
     scenario.attacker,
     scenario.wrapPicks,
     scenario.damageMods,
     scenario.activeBaseCount,
+    timeline,
   );
 
-  return { rowDamageIfHit, ...scenario };
+  return { timeline, rowDamageIfHit, ...scenario };
 };
 
 describe('projectSwings', () => {
@@ -56,7 +73,7 @@ describe('projectSwings', () => {
     expect(projection.bonusTimePool).toEqual([0, 1]);
   });
 
-  it('applies special-ability damage before the first swing', () => {
+  it('applies activated-trait damage before the first swing', () => {
     const projection = projectSwings(input({ flatDamage: 3 }));
 
     expect(projection.remainingHp).toEqual([5, 3]);

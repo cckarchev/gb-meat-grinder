@@ -22,14 +22,23 @@ export const momentousLineStyle = (
     return 'none';
   }
 
+  // A momentous result with no printed damage is pure momentum: nothing can
+  // negate it. Only a damage result reduced to 0 loses its momentum.
+  const printedDamage = result.damage > 0;
+
+  if (!printedDamage) {
+    return 'heat';
+  }
+
   const dealsDamage = effectiveDamageForChoice(attacker, id, mods) > 0;
 
   return dealsDamage ? 'heat' : 'zeroed';
 };
 
 /**
- * True when this pick earns momentum on a hit: momentous on the card **and**
- * effective damage greater than 0 (same rule as the red playbook chip; Tough Hide can zero it out).
+ * True when this pick earns momentum on a hit: a momentous result without
+ * printed damage always does; one with printed damage only while its effective
+ * damage is above 0 (Tough Hide can zero it out).
  */
 export const pickGeneratesMomentum = (
   attacker: AttackerData,

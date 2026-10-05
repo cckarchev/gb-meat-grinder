@@ -1,5 +1,10 @@
 /** Roll context and hit odds for every swing in the activation. */
 
+import {
+  activationTimeline,
+  swingStateAt,
+} from '@/core/attacks/activationTimeline';
+import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
 import type {
   ActivationRollParams,
@@ -14,11 +19,15 @@ import {
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import { wrapNetThresholdAllHits } from '@/core/playbook/wrapSlots';
 
+/**
+ * Every swing's roll context, with the activation timeline they were computed
+ * from so callers reuse it instead of rebuilding it.
+ */
 export const computeAttackSequence = (
   plan: AttackPlan,
   params: ActivationRollParams,
-): { attacks: AttackRollContext[] } => {
-  const { wrapPicks, characterPlayPicks } = plan;
+): { attacks: AttackRollContext[]; timeline: ActivationTimeline } => {
+  const { wrapPicks } = plan;
   const { attacker, armor, damageMods, activeBaseCount } = params;
 
   const attacks: AttackRollContext[] = [];
@@ -30,17 +39,19 @@ export const computeAttackSequence = (
     activeBaseCount,
   );
 
+  const timeline = activationTimeline(plan, params);
+
   for (const attackIndex of order) {
-    const { tac, defMinRoll } = swingTacAndDef(plan, attackIndex, params);
+    const { tac, defMinRoll } = swingTacAndDef(
+      plan,
+      attackIndex,
+      params,
+      timeline,
+    );
 
     const rowArmor = armorForAttackRow(
-      attacker,
       armor,
-      wrapPicks,
-      characterPlayPicks,
-      damageMods,
-      attackIndex,
-      activeBaseCount,
+      swingStateAt(timeline, attackIndex),
     );
 
     const pHit = hitProbabilityPerDie(defMinRoll);
@@ -62,5 +73,5 @@ export const computeAttackSequence = (
     });
   }
 
-  return { attacks };
+  return { attacks, timeline };
 };

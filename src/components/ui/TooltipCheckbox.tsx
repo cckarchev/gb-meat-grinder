@@ -1,6 +1,7 @@
-import type { ReactNode } from 'react';
+import type { FocusEvent, MouseEvent, ReactNode } from 'react';
 import styled from 'styled-components';
-import { InfoTip } from '@/components/ui/InfoTip';
+import { TooltipBubble } from '@/components/ui/TooltipBubble';
+import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
 import { narrowViewport } from '@/styles/breakpoints';
 
 const DISABLED_INPUT_OPACITY = 0.5;
@@ -29,6 +30,13 @@ const CheckOption = styled.label<{ $disabled: boolean }>`
   }
 `;
 
+/** Plain label text (clicking it toggles the box), hinting at its tooltip. */
+const LabelText = styled.span`
+  position: relative;
+  text-decoration: underline dotted;
+  text-underline-offset: 0.12em;
+`;
+
 type TooltipCheckboxProps = {
   checked: boolean;
   onChange: (checked: boolean) => void;
@@ -37,7 +45,10 @@ type TooltipCheckboxProps = {
   children: ReactNode;
 };
 
-/** Checkbox row whose label explains itself in a tooltip. */
+/**
+ * Checkbox row whose label explains itself in a tooltip. The whole label
+ * toggles the box; the tooltip opens on hover, or on keyboard focus of the box.
+ */
 export const TooltipCheckbox = ({
   checked,
   onChange,
@@ -45,6 +56,23 @@ export const TooltipCheckbox = ({
   disabled = false,
   children,
 }: TooltipCheckboxProps) => {
+  const { open, tooltipId, wrapperProps, triggerProps } =
+    useTooltipOpen<HTMLSpanElement>();
+
+  // A mouse click focuses the box too; only keyboard focus should pin it open.
+  const openOnKeyboardFocus = (event: FocusEvent<HTMLInputElement>) => {
+    const keyboardFocus = event.currentTarget.matches(':focus-visible');
+
+    if (keyboardFocus) {
+      triggerProps.onFocus();
+    }
+  };
+
+  // Clicks on the popover text should not toggle the box behind it.
+  const ignoreBubbleClick = (event: MouseEvent) => {
+    event.preventDefault();
+  };
+
   return (
     <CheckOption $disabled={disabled}>
       <input
@@ -52,8 +80,22 @@ export const TooltipCheckbox = ({
         checked={checked}
         disabled={disabled}
         onChange={(event) => onChange(event.target.checked)}
+        {...triggerProps}
+        onFocus={openOnKeyboardFocus}
       />
-      <InfoTip content={tooltip}>{children}</InfoTip>
+      <LabelText {...wrapperProps}>
+        {children}
+        {open ? (
+          <TooltipBubble
+            $size="regular"
+            id={tooltipId}
+            role="tooltip"
+            onClick={ignoreBubbleClick}
+          >
+            {tooltip}
+          </TooltipBubble>
+        ) : null}
+      </LabelText>
     </CheckOption>
   );
 };

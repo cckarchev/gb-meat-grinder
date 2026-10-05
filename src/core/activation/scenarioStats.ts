@@ -8,7 +8,7 @@ import {
   activeBaseAttackCount,
   effectiveChargeIndex,
 } from '@/core/attacks/attackStructure';
-import { effectiveArmor, effectiveEnemyDef } from '@/core/damage/damage';
+import { effectiveEnemyDef } from '@/core/damage/damage';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 export type ScenarioStatsInput = Pick<
@@ -16,8 +16,6 @@ export type ScenarioStatsInput = Pick<
   | 'influence'
   | 'charging'
   | 'chargeAttackIndex'
-  | 'armor'
-  | 'damageMods'
   | 'enemyDef'
   | 'enemyKnockedDown'
   | 'enemySnared'
@@ -29,7 +27,6 @@ export type ScenarioEffectiveStats = Pick<
   DerivedSimulation,
   | 'activeBaseCount'
   | 'effectiveChargeAttackIndex'
-  | 'effectiveArmor'
   | 'effectiveEnemyDef'
   | 'initialTacModifier'
 >;
@@ -49,8 +46,6 @@ export const scenarioEffectiveStats = (
     scenario.chargeAttackIndex,
   );
 
-  const armor = effectiveArmor(attacker, scenario.armor, scenario.damageMods);
-
   const enemyDef = effectiveEnemyDef(
     scenario.enemyDef,
     scenario.enemyKnockedDown,
@@ -62,7 +57,6 @@ export const scenarioEffectiveStats = (
   return {
     activeBaseCount,
     effectiveChargeAttackIndex,
-    effectiveArmor: armor,
     effectiveEnemyDef: enemyDef,
     initialTacModifier,
   };

@@ -1,7 +1,16 @@
 /** Breakdown text for the momentum and damage totals in the attacks summary. */
 
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
-import { damageModifierBreakdown } from '@/core/playbook/rowDamage';
+import { swingStateAt } from '@/core/attacks/activationTimeline';
+import {
+  activatedTraits,
+  attackerTraits,
+  joinTraitLabels,
+} from '@/core/damage/damage';
+import {
+  characterPlayDamageSources,
+  damageModifierBreakdown,
+} from '@/core/playbook/rowDamage';
 
 const NO_DAMAGE_TOOLTIP =
   'No selected playbook lines deal card damage to HP (after Tough Hide).';
@@ -32,18 +41,34 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
     input.wrapPicks,
     input.damageMods,
     input.activeBaseCount,
+    input.timeline,
   );
+
+  const activeIndexes = input.attacks.map((swing) => swing.attackIndex);
+
+  const chargeDamage = activeIndexes.reduce((sum, attackIndex) => {
+    return sum + swingStateAt(input.timeline, attackIndex).chargeDamage;
+  }, 0);
 
   const dealsNothing =
     breakdown.rawCardDamage === 0 &&
     breakdown.totalEffective === 0 &&
-    flatDamage === 0;
+    flatDamage === 0 &&
+    chargeDamage === 0;
 
   if (dealsNothing) {
     return NO_DAMAGE_TOOLTIP;
   }
 
   let tooltip = `${breakdown.rawCardDamage} from card pips`;
+
+  // Printed play damage sits beside the card pips; Tough Hide and buffs on
+  // both are itemized on their own lines below.
+  const playSources = characterPlayDamageSources(input.timeline, activeIndexes);
+
+  for (const source of playSources) {
+    tooltip += `; +${source.amount} ${source.label}`;
+  }
 
   if (breakdown.toughHideReduction > 0) {
     tooltip += `; -${breakdown.toughHideReduction} Tough Hide`;
@@ -55,15 +80,23 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
     }
   }
 
-  const activeAbilities = (input.attacker.specialAbilities ?? []).filter(
-    (ability) => input.specialAbilities[ability.id],
-  );
+  // Unmodified charge damage (Sweeping Charge), named after its trait.
+  if (chargeDamage > 0) {
+    const chargeTraits = attackerTraits(
+      input.attacker,
+      input.damageMods,
+    ).filter((trait) => {
+      return (trait.chargeDamage ?? 0) > 0;
+    });
 
-  for (const ability of activeAbilities) {
-    tooltip += `; +${ability.flatDamage} ${ability.label}`;
+    tooltip += `; +${chargeDamage} ${joinTraitLabels(chargeTraits)}`;
   }
 
-  const totalDamage = breakdown.totalEffective + flatDamage;
+  for (const trait of activatedTraits(input.attacker, input.activeTraits)) {
+    tooltip += `; +${trait.flatDamage ?? 0} ${trait.label}`;
+  }
+
+  const totalDamage = breakdown.totalEffective + flatDamage + chargeDamage;
 
   return `${tooltip} = ${totalDamage}.`;
 };

@@ -1,3 +1,4 @@
+import { weakPoint } from '@/data/guildBuffs';
 import type { Guild } from '@/data/guilds/guild.types';
 
 export const farmers: Guild = {
@@ -9,15 +10,10 @@ export const farmers: Guild = {
       id: 'theyAintTough',
       label: "They Ain't Tough!",
       tooltip: 'The enemy model suffers -1 ARM.',
+      target: 'enemy',
       armorReduction: 1,
     },
-    {
-      id: 'weakPoint',
-      label: 'Weak Point',
-      tooltip:
-        "The enemy model suffers -1 ARM (stacks with They Ain't Tough!).",
-      armorReduction: 1,
-    },
+    weakPoint,
     {
       id: 'ourToolsAreSharp',
       label: 'Our Tools Are Sharp',

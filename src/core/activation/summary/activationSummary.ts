@@ -88,6 +88,7 @@ export const summarizeActivation = (
     input.damageMods,
     flatDamage,
     input.targetHp,
+    input.timeline,
   );
 
   const distribution = outcome.damageDistribution;

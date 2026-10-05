@@ -4,7 +4,7 @@ import {
   scenarioEffectiveStats,
 } from '@/core/activation/scenarioStats';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+import { makeAttacker } from '@/core/testing/fixtures';
 
 const attacker = makeAttacker();
 
@@ -15,8 +15,6 @@ const input = (
     influence: attacker.inf,
     charging: false,
     chargeAttackIndex: 1,
-    armor: 3,
-    damageMods: NO_MODS,
     enemyDef: 5,
     enemyKnockedDown: false,
     enemySnared: false,
@@ -40,14 +38,13 @@ describe('scenarioEffectiveStats', () => {
     expect(stats.effectiveChargeAttackIndex).toBe(1);
   });
 
-  it('applies Knocked Down and Snared to DEF and keeps the printed ARM without buffs', () => {
+  it('applies Knocked Down and Snared to DEF', () => {
     const stats = scenarioEffectiveStats(
       attacker,
       input({ enemyKnockedDown: true, enemySnared: true }),
     );
 
     expect(stats.effectiveEnemyDef).toBe(3);
-    expect(stats.effectiveArmor).toBe(3);
   });
 
   it('nets Ganging Up against Crowding Out', () => {

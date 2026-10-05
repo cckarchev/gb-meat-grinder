@@ -3,6 +3,7 @@ import {
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
 } from '@/core/activation/momentum';
+import { activationTimeline } from '@/core/attacks/activationTimeline';
 import {
   activationAttackIndices,
   attackRowIsActive,
@@ -15,10 +16,8 @@ import {
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
 import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
-import {
-  armorReductionBeforeAttack,
-  pickEffectsForLaterSwings,
-} from '@/core/playbook/rowEffects';
+import { pickEffectsForLaterSwings } from '@/core/playbook/rowEffects';
+import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
@@ -64,9 +63,22 @@ describe('activation order', () => {
   });
 
   it('projects damage per active row when every pick hits', () => {
-    expect(rowDamageIfAllHit(berserker, wrapPicks, NO_MODS, 2)).toEqual([
-      2, 0, 0, 0,
-    ]);
+    const timeline = activationTimeline(
+      {
+        wrapPicks,
+        characterPlayPicks: wrapPicks.map((row) => row.map(() => null)),
+      },
+      {
+        attacker: berserker,
+        damageMods: NO_MODS,
+        activeBaseCount: 2,
+        chargeAttackIndex: NO_ATTACK_INDEX,
+      },
+    );
+
+    expect(
+      rowDamageIfAllHit(berserker, wrapPicks, NO_MODS, 2, timeline),
+    ).toEqual([2, 0, 0, 0]);
   });
 });
 
@@ -91,16 +103,17 @@ describe('rows outside the activation', () => {
 
     expect(momentumAfterAttackInclusive(inactiveRow, momentumParams)).toBe(3);
 
-    expect(
-      armorReductionBeforeAttack(
+    const timeline = activationTimeline(
+      { wrapPicks, characterPlayPicks: plays },
+      {
         attacker,
-        wrapPicks,
-        plays,
-        NO_MODS,
-        inactiveRow,
+        damageMods: NO_MODS,
         activeBaseCount,
-      ),
-    ).toBe(0);
+        chargeAttackIndex: NO_ATTACK_INDEX,
+      },
+    );
+
+    expect(timeline[inactiveRow].effectsBefore.armorReduction).toBe(0);
 
     expect(
       characterPlayUsageBeforePick(

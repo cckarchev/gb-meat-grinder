@@ -1,6 +1,8 @@
 import type { AttackerData } from '@/data/attackers/attacker.types';
+import { cast } from '@/data/attackers/cast';
 import { thresher } from '@/data/attackers/thresher';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
+import { veteranCinder } from '@/data/attackers/veteranCinder';
 import { windle } from '@/data/attackers/windle';
 
 /** Every model the calculator can simulate, in display order. */
@@ -8,6 +10,8 @@ export const ATTACKERS: readonly AttackerData[] = [
   veteranBoar,
   windle,
   thresher,
+  cast,
+  veteranCinder,
 ];
 
 /** Fallback model when an id can't be resolved. */

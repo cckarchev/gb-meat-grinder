@@ -5,21 +5,15 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/playbookIndex';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker, NO_MODS, TEST_PLAYBOOK } from '@/core/testing/fixtures';
+import {
+  makeAttacker,
+  makeRollParams,
+  planOf,
+  TEST_PLAYBOOK,
+} from '@/core/testing/fixtures';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
-const COVER = true;
-
-const STANCE = true;
-
-const NO_BONUS_TIME = [false, false];
-
 const ENEMY_KNOCKED_DOWN = true;
-
-const ENEMY_DEF = 4;
-
-const NO_TAC_MODIFIER = 0;
 
 describe('clampAttackPlan', () => {
   type ClampOptions = {
@@ -43,41 +37,36 @@ describe('clampAttackPlan', () => {
   }: ClampOptions) => {
     const model = attacker ?? makeAttacker({ tac });
 
-    const plays =
-      characterPlayPicks ?? wrapPicks.map((row) => row.map(() => null));
-
-    return clampAttackPlan(
-      { wrapPicks, characterPlayPicks: plays },
-      {
-        attacker: model,
-        chargeAttackIndex: NO_ATTACK_INDEX,
-        armor,
-        enemyHasCover: !COVER,
-        enemyDefensiveStance: !STANCE,
-        damageMods: NO_MODS,
-        enemyDef: ENEMY_DEF,
-        bonusTimeByAttack: NO_BONUS_TIME,
-        initialTacModifier: NO_TAC_MODIFIER,
-        enemyKnockedDown,
-        activeBaseCount,
-      },
-    );
+    return clampAttackPlan(planOf(wrapPicks, characterPlayPicks), {
+      ...makeRollParams({ attacker: model, armor, activeBaseCount }),
+      enemyKnockedDown,
+    });
   };
 
-  /** Model whose only net-1 line is a KD and only net-2 line is a GB. */
-  const knockDownThenGbAttacker = (tac: number): AttackerData => {
-    const fixture = makeAttacker();
-    const gbResult = getPlaybookResult(fixture, 'gb');
-    const knockDownResult = getPlaybookResult(fixture, 'kd');
+  const fixture = makeAttacker();
 
+  /** The fixture `kd` line without its dodge: Knock Down is all it does. */
+  const bareKnockDown = { ...getPlaybookResult(fixture, 'kd'), dodge: false };
+
+  /** Model whose only net-1 line is a bare KD and only net-2 line is a GB. */
+  const knockDownThenGbAttacker = (tac: number): AttackerData => {
     return makeAttacker({
       tac,
       playbook: [
-        { netSuccesses: 1, results: [knockDownResult] },
-        { netSuccesses: 2, results: [gbResult] },
+        { netSuccesses: 1, results: [bareKnockDown] },
+        { netSuccesses: 2, results: [getPlaybookResult(fixture, 'gb')] },
       ],
     });
   };
+
+  /** TAC 3 model with a net-1 `1` line and a net-3 bare KD line. */
+  const bareKnockDownAttacker = makeAttacker({
+    tac: 3,
+    playbook: [
+      { netSuccesses: 1, results: [getPlaybookResult(fixture, 'one')] },
+      { netSuccesses: 3, results: [bareKnockDown] },
+    ],
+  });
 
   it('downgrades picks the roll can never reach', () => {
     // 2 dice, ARM 0: max 2 net, so `four` becomes the first net-2 line.
@@ -167,10 +156,30 @@ describe('clampAttackPlan', () => {
     ).toEqual([['one'], []]);
   });
 
-  it('replaces every KD after the first one', () => {
+  it('replaces every bare KD after the first one', () => {
+    expect(
+      clamp({
+        attacker: bareKnockDownAttacker,
+        wrapPicks: [['kd'], ['kd']],
+        activeBaseCount: 2,
+      }).wrapPicks,
+    ).toEqual([['kd'], ['one']]);
+
+    expect(
+      clamp({
+        attacker: bareKnockDownAttacker,
+        wrapPicks: [['kd'], ['kd']],
+        activeBaseCount: 2,
+        enemyKnockedDown: ENEMY_KNOCKED_DOWN,
+      }).wrapPicks,
+    ).toEqual([['one'], ['one']]);
+  });
+
+  it('keeps a repeated KD line that carries other effects', () => {
+    // The later KD does not apply, but its dodge (or damage) still does.
     expect(
       clamp({ wrapPicks: [['kd'], ['kd']], activeBaseCount: 2 }).wrapPicks,
-    ).toEqual([['kd'], ['one']]);
+    ).toEqual([['kd'], ['kd']]);
 
     expect(
       clamp({
@@ -178,7 +187,7 @@ describe('clampAttackPlan', () => {
         activeBaseCount: 2,
         enemyKnockedDown: ENEMY_KNOCKED_DOWN,
       }).wrapPicks,
-    ).toEqual([['one'], ['one']]);
+    ).toEqual([['kd'], ['kd']]);
   });
 
   it('gives a GB replacement for a duplicate KD its default play', () => {
@@ -213,17 +222,8 @@ describe('clampAttackPlan', () => {
     };
 
     const result = clampAttackPlan(plan, {
-      attacker: makeAttacker({ tac: 4 }),
-      chargeAttackIndex: NO_ATTACK_INDEX,
-      armor: 0,
-      enemyHasCover: !COVER,
-      enemyDefensiveStance: !STANCE,
-      damageMods: NO_MODS,
-      enemyDef: ENEMY_DEF,
-      bonusTimeByAttack: NO_BONUS_TIME,
-      initialTacModifier: NO_TAC_MODIFIER,
+      ...makeRollParams({ attacker: makeAttacker({ tac: 4 }) }),
       enemyKnockedDown: false,
-      activeBaseCount: 2,
     });
 
     expect(result).toBe(plan);
@@ -236,17 +236,8 @@ describe('clampAttackPlan', () => {
     };
 
     const result = clampAttackPlan(plan, {
-      attacker: makeAttacker({ tac: 2 }),
-      chargeAttackIndex: NO_ATTACK_INDEX,
-      armor: 0,
-      enemyHasCover: !COVER,
-      enemyDefensiveStance: !STANCE,
-      damageMods: NO_MODS,
-      enemyDef: ENEMY_DEF,
-      bonusTimeByAttack: NO_BONUS_TIME,
-      initialTacModifier: NO_TAC_MODIFIER,
+      ...makeRollParams({ attacker: makeAttacker({ tac: 2 }) }),
       enemyKnockedDown: false,
-      activeBaseCount: 2,
     });
 
     expect(result).not.toBe(plan);

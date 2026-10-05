@@ -49,4 +49,36 @@ describe('labels', () => {
 
     expect(formatWrapRowSelectionLabel(attacker, [null], NO_MODS)).toBe('-');
   });
+
+  it('keeps runs of arrows together as one segment', () => {
+    const arrows = makeAttacker({
+      playbook: [
+        {
+          netSuccesses: 1,
+          results: [
+            { id: 'dd', label: '<<', damage: 0 },
+            { id: 'pd', label: '><', damage: 0 },
+          ],
+        },
+        {
+          netSuccesses: 2,
+          results: [
+            {
+              id: 'gbpd',
+              label: 'GB><',
+              damage: 0,
+              picksCharacterPlay: true,
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(playbookLineDisplaySegments(arrows, 'dd', NO_MODS)).toEqual(['<<']);
+    expect(playbookLineDisplaySegments(arrows, 'pd', NO_MODS)).toEqual(['><']);
+    expect(playbookLineDisplaySegments(arrows, 'gbpd', NO_MODS)).toEqual([
+      'GB',
+      '><',
+    ]);
+  });
 });
