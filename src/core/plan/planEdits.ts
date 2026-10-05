@@ -10,6 +10,7 @@ import type {
   PlaybookDamageMods,
 } from '@/core/playbook/playbook.types';
 import { choiceUsesCharacterPlay } from '@/core/playbook/wrapSlots';
+import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /** Copy every row, replacing the one at `index` with `replace(row)`. */
@@ -31,7 +32,7 @@ export const nextPlanAfterWrapChoice = (
   pickIndex: number,
   id: PlaybookChoiceId | null,
 ): AttackPlan | null => {
-  const clearsFirstSlot = pickIndex === 0 && id === null;
+  const clearsFirstSlot = pickIndex === PRIMARY_PICK_INDEX && id === null;
   const unchanged = prev.wrapPicks[attackIndex][pickIndex] === id;
 
   if (clearsFirstSlot || unchanged) {

@@ -8,6 +8,7 @@ import {
   defaultWrapPicks,
   getPlaybookResult,
   netSuccessesForChoice,
+  rowHasWrapContinuation,
   rowHasWrapPick,
   wrapExtendedNetNeeded,
   wrapNetThresholdAllHits,
@@ -86,5 +87,15 @@ describe('rowHasWrapPick', () => {
 
   it('is false for a missing row', () => {
     expect(rowHasWrapPick(undefined)).toBe(false);
+  });
+});
+
+describe('rowHasWrapContinuation', () => {
+  it('is true when the row has slots past the primary pick', () => {
+    expect(rowHasWrapContinuation(['two', null])).toBe(true);
+  });
+
+  it('is false when the row only has the primary pick', () => {
+    expect(rowHasWrapContinuation(['two'])).toBe(false);
   });
 });

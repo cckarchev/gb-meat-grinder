@@ -17,7 +17,11 @@ import {
   wrapSlotBudget,
   wrapSlotCount,
 } from '@/core/playbook/wrapSlots';
-import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
+import {
+  FIRST_WRAP_PICK_INDEX,
+  MIN_PLAYBOOK_NET,
+  PRIMARY_PICK_INDEX,
+} from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /** First line of the widest column within `maxNet`. */
@@ -68,19 +72,19 @@ const fitPicksToBudget = (
   maxNet: number,
 ): void => {
   const { picks, plays } = row;
-  const firstBudget = wrapSlotBudget(attacker, maxNet, 0);
-  const first = picks[0];
+  const firstBudget = wrapSlotBudget(attacker, maxNet, PRIMARY_PICK_INDEX);
+  const first = picks[PRIMARY_PICK_INDEX];
 
   if (first != null && netSuccessesForChoice(attacker, first) > firstBudget) {
     const replacement = firstReachableChoiceId(attacker, firstBudget);
 
-    picks[0] = replacement;
-    plays[0] = initialCharacterPlayFor(attacker, replacement);
+    picks[PRIMARY_PICK_INDEX] = replacement;
+    plays[PRIMARY_PICK_INDEX] = initialCharacterPlayFor(attacker, replacement);
   }
 
-  const wrapStarted = picks[0] != null;
+  const wrapStarted = picks[PRIMARY_PICK_INDEX] != null;
 
-  for (let slot = 1; slot < picks.length; slot++) {
+  for (let slot = FIRST_WRAP_PICK_INDEX; slot < picks.length; slot++) {
     const id = picks[slot];
     const slotBudget = wrapSlotBudget(attacker, maxNet, slot);
     const overBudget =

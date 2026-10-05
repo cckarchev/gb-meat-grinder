@@ -68,3 +68,9 @@ export const BERSERKER_ROWS_PER_BASE = 1;
 
 /** Fewest wrap slots an attack shows, even when it cannot reach the playbook. */
 export const MIN_WRAP_SLOTS = 1;
+
+/** A swing's primary wrap slot: the pick every attack makes first. */
+export const PRIMARY_PICK_INDEX = 0;
+
+/** The first extra slot a wrap opens, right after the primary pick. */
+export const FIRST_WRAP_PICK_INDEX = PRIMARY_PICK_INDEX + 1;

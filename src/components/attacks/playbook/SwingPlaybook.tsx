@@ -7,8 +7,15 @@ import { WrapSlotPickGrid } from '@/components/attacks/playbook/WrapSlotPickGrid
 import { CharacterPlaySelection } from '@/components/attacks/plays/CharacterPlaySelection';
 import { wrapSectionId, wrapTriggerId } from '@/components/attacks/wrapIds';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import { choiceUsesCharacterPlay } from '@/core/playbook/wrapSlots';
-import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
+import {
+  choiceUsesCharacterPlay,
+  rowHasWrapContinuation,
+} from '@/core/playbook/wrapSlots';
+import {
+  FIRST_WRAP_PICK_INDEX,
+  MIN_PLAYBOOK_NET,
+  PRIMARY_PICK_INDEX,
+} from '@/core/shared/constants';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 type SwingPlaybookProps = {
@@ -46,7 +53,7 @@ export const SwingPlaybook = ({
         choiceUsesCharacterPlay(attacker, slot.choiceId),
     );
 
-  const hasWrapContinuation = rowPicks.length > 1;
+  const hasWrapContinuation = rowHasWrapContinuation(rowPicks);
 
   const renderSlot = (pickIndex: number, firstSlotInSection: boolean) => (
     <WrapSlotPickGrid
@@ -63,17 +70,19 @@ export const SwingPlaybook = ({
 
   return (
     <>
-      <PlaybookPrimarySlot>{renderSlot(0, true)}</PlaybookPrimarySlot>
+      <PlaybookPrimarySlot>
+        {renderSlot(PRIMARY_PICK_INDEX, true)}
+      </PlaybookPrimarySlot>
       {hasWrapContinuation ? (
         <section
           id={wrapSectionId(attackIndex)}
           aria-labelledby={wrapTriggerId(attackIndex)}
           hidden={!wrapOpen}
         >
-          {rowPicks.slice(1).map((_, slot) => {
-            const pickIndex = slot + 1;
+          {rowPicks.slice(FIRST_WRAP_PICK_INDEX).map((_, slot) => {
+            const pickIndex = FIRST_WRAP_PICK_INDEX + slot;
 
-            return renderSlot(pickIndex, pickIndex === 1);
+            return renderSlot(pickIndex, pickIndex === FIRST_WRAP_PICK_INDEX);
           })}
         </section>
       ) : null}

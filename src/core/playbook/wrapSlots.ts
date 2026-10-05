@@ -11,7 +11,11 @@ import type {
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { maxPlaybookNet, playbookIndex } from '@/core/playbook/playbookIndex';
-import { MIN_PLAYBOOK_NET, MIN_WRAP_SLOTS } from '@/core/shared/constants';
+import {
+  FIRST_WRAP_PICK_INDEX,
+  MIN_PLAYBOOK_NET,
+  MIN_WRAP_SLOTS,
+} from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 export const getPlaybookResult = (
@@ -148,4 +152,9 @@ export const rowHasWrapPick = (
   picks: readonly WrapPick[] | undefined,
 ): boolean => {
   return (picks ?? []).some((id) => id != null);
+};
+
+/** Whether a swing's wrap row has slots past the primary pick. */
+export const rowHasWrapContinuation = (picks: readonly WrapPick[]): boolean => {
+  return picks.length > FIRST_WRAP_PICK_INDEX;
 };

@@ -12,6 +12,7 @@ import {
   wrapExtendedNetNeeded,
   wrapSlotBudget,
 } from '@/core/playbook/wrapSlots';
+import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
 import { formatPercent } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
@@ -93,7 +94,8 @@ export const WrapSlotPickGrid = ({
 
                   // Wrap slots can be cleared by clicking the pick again; the
                   // first slot always keeps a line.
-                  const clearsPick = pickIndex > 0 && selected;
+                  const clearsPick =
+                    pickIndex !== PRIMARY_PICK_INDEX && selected;
 
                   return (
                     <PlaybookLineButton

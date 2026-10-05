@@ -20,6 +20,7 @@ import {
   attackKindLabel,
 } from '@/core/attacks/attackVariant';
 import { maxNetSuccessesForRoll } from '@/core/damage/probability';
+import { rowHasWrapContinuation } from '@/core/playbook/wrapSlots';
 import {
   KILLING_BLOW_MOMENTUM,
   MIN_PLAYBOOK_NET,
@@ -68,7 +69,7 @@ export const AttackSwingRow = ({
   const armor = attack.armor;
   const maxNet = maxNetSuccessesForRoll(attack.tac, armor);
 
-  const hasWrapContinuation = wrapPicks[attackIndex].length > 1;
+  const hasWrapContinuation = rowHasWrapContinuation(wrapPicks[attackIndex]);
   const variant = attackBlockVariant(attacker, attackIndex, chargeAttackIndex);
   const cornerAccent = CORNER_ACCENTS[variant];
   const bonusTimeDisabled =
