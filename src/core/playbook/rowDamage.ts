@@ -7,12 +7,14 @@ import {
 import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import { attackRowIsActive } from '@/core/attacks/attackRows';
 import {
+  attackerTraits,
   availableBuffs,
   effectiveDamageForChoice,
   effectivePlaybookDamage,
   withSwingDamageBonus,
 } from '@/core/damage/damage';
 import type {
+  DamageBuffBonus,
   DamageModifierBreakdown,
   PlaybookDamageMods,
   WrapPick,
@@ -20,8 +22,24 @@ import type {
 import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
-const BURNING_PASSION_ID = 'burningPassion';
-const BURNING_PASSION_LABEL = 'Burning Passion';
+const TRAIT_ID_SEPARATOR = '+';
+const TRAIT_LABEL_SEPARATOR = ' + ';
+
+/** The breakdown line for Burning Passion-like traits, named after them. */
+const burningPassionLine = (
+  attacker: AttackerData,
+  damageMods: PlaybookDamageMods,
+  bonus: number,
+): DamageBuffBonus => {
+  const traits = attackerTraits(attacker, damageMods).filter((trait) => {
+    return (trait.playbookDamageVsBurning ?? 0) > 0;
+  });
+
+  const id = traits.map((trait) => trait.id).join(TRAIT_ID_SEPARATOR);
+  const label = traits.map((trait) => trait.label).join(TRAIT_LABEL_SEPARATOR);
+
+  return { id, label, bonus };
+};
 
 /** A damage source the breakdown itemizes, at its printed amount. */
 export type PrintedDamageSource = { label: string; amount: number };
@@ -153,11 +171,7 @@ export const damageModifierBreakdown = (
 
   // Listed only when it adds damage, so breakdowns without it keep their shape.
   if (passionBonus > 0) {
-    buffBonuses.push({
-      id: BURNING_PASSION_ID,
-      label: BURNING_PASSION_LABEL,
-      bonus: passionBonus,
-    });
+    buffBonuses.push(burningPassionLine(attacker, damageMods, passionBonus));
   }
 
   return {

@@ -127,11 +127,13 @@ const swingCausesDamage = (
   const { attacker, damageMods } = params;
   const swingMods = withSwingDamageBonus(damageMods, state.playbookDamageBonus);
 
-  const cardDamage = row.some((id) => {
+  const causesCardDamage = row.some((id) => {
     return id != null && effectiveDamageForChoice(attacker, id, swingMods) > 0;
   });
 
-  return cardDamage || swingPlayDamage(state) > 0 || state.chargeDamage > 0;
+  return (
+    causesCardDamage || swingPlayDamage(state) > 0 || state.chargeDamage > 0
+  );
 };
 
 type SwingChargeDamage = Pick<SwingState, 'chargeTraitDamage' | 'chargeDamage'>;

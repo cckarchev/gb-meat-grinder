@@ -87,6 +87,15 @@ describe('Sweeping Charge in the odds', () => {
     expect(pickedDamageForNet(sweeper, NO_MODS, ['four'], 1, extras)).toBe(4);
   });
 
+  it('adds 3 when a short roll on a damage-less pick falls back to a damage line', () => {
+    // Picked `push` (net 2, no damage): the plan projects no Sweeping Charge,
+    // but 1 net falls back to `one`, a damage result, so the odds count it.
+    const projected = timelineFor(planOf([['push'], ['one'], ['one']]));
+
+    expect(projected[CHARGE_ROW].chargeDamage).toBe(0);
+    expect(pickedDamageForNet(sweeper, NO_MODS, ['push'], 1, extras)).toBe(4);
+  });
+
   it('adds nothing when the roll reaches a line without damage', () => {
     expect(pickedDamageForNet(sweeper, NO_MODS, ['push'], 2, extras)).toBe(0);
   });

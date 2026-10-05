@@ -77,6 +77,12 @@ whole attack.
   momentum). Its 3 DMG is unmodified and is damage caused, so it triggers Searing Strike
   for later swings even when every card result was zeroed. It lands with the charge
   attack, so that attack is still resolved at full ARM.
+- In the **odds**, a charge roll that falls short of its picked line falls back to the
+  best line it reaches, like any other swing. If that fallback is a damage result,
+  *Sweeping Charge* triggers, even when the picked line had no damage: a charge that
+  picked `>` and rolled 1 net takes `1` and adds the 3 DMG. The all-hit projection and
+  its tooltip assume the picked line, so they show no *Sweeping Charge* for that charge.
+  A worse roll can therefore deal more damage than the plan shows.
 
 **Plan assumption.** When deciding whether a later swing sees a condition, the calculator
 assumes the plan's earlier swings land and reach their picked lines. This is the same
