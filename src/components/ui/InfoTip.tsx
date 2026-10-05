@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
 import styled from 'styled-components';
+import { TooltipBubble } from '@/components/ui/TooltipBubble';
 import { focusRing } from '@/styles/mixins';
 
 const Wrap = styled.span`
@@ -25,28 +26,6 @@ const Trigger = styled.button`
   &:focus-visible {
     border-radius: 0;
   }
-`;
-
-const Bubble = styled.span`
-  position: absolute;
-  top: calc(100% + 0.4rem);
-  left: 0;
-  z-index: 20;
-  width: max-content;
-  max-width: min(18rem, 80vw);
-  padding: 0.5rem 0.6rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--popover-bg);
-  color: var(--text);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-  font-size: 0.78rem;
-  font-weight: 400;
-  line-height: 1.4;
-  white-space: normal;
-  text-align: left;
-  letter-spacing: normal;
-  text-transform: none;
 `;
 
 /**
@@ -107,9 +86,9 @@ export const InfoTip = ({
         {children}
       </Trigger>
       {open ? (
-        <Bubble id={tooltipId} role="tooltip">
+        <TooltipBubble $size="regular" id={tooltipId} role="tooltip">
           {content}
-        </Bubble>
+        </TooltipBubble>
       ) : null}
     </Wrap>
   );
