@@ -11,6 +11,7 @@ import {
   availableBuffs,
   effectiveDamageForChoice,
   effectivePlaybookDamage,
+  effectivePlayDamage,
   joinTraitLabels,
   withSwingDamageBonus,
 } from '@/core/damage/damage';
@@ -81,6 +82,9 @@ export const characterPlayDamageSources = (
   return [...byPlay.values()];
 };
 
+/** Effective damage of a printed amount: playbook results and plays differ. */
+type DamageOf = typeof effectivePlaybookDamage;
+
 /**
  * Sums card pip damage and the marginal effects of Tough Hide and each of the
  * attacker's damage buffs across all active rows (same scope as
@@ -130,7 +134,11 @@ export const damageModifierBreakdown = (
     const passionOnly = state.playbookDamageBonus - carriedBonus;
     const passionMods = withSwingDamageBonus(damageMods, passionOnly);
 
-    const printedAmounts: { printed: number; mods: PlaybookDamageMods }[] = [];
+    const printedAmounts: {
+      printed: number;
+      mods: PlaybookDamageMods;
+      damageOf: DamageOf;
+    }[] = [];
 
     for (const id of wrapPicks[attackIndex]) {
       if (id == null) {
@@ -144,7 +152,11 @@ export const damageModifierBreakdown = (
       }
 
       rawCardDamage += cardDamage;
-      printedAmounts.push({ printed: cardDamage, mods: swingMods });
+      printedAmounts.push({
+        printed: cardDamage,
+        mods: swingMods,
+        damageOf: effectivePlaybookDamage,
+      });
 
       const withSwingBonus = effectivePlaybookDamage(
         attacker,
@@ -181,11 +193,15 @@ export const damageModifierBreakdown = (
         return;
       }
 
-      printedAmounts.push({ printed: play.damage ?? 0, mods: damageMods });
+      printedAmounts.push({
+        printed: play.damage ?? 0,
+        mods: damageMods,
+        damageOf: effectivePlayDamage,
+      });
     });
 
-    for (const { printed, mods } of printedAmounts) {
-      const effective = effectivePlaybookDamage(attacker, printed, mods);
+    for (const { printed, mods, damageOf } of printedAmounts) {
+      const effective = damageOf(attacker, printed, mods);
 
       totalEffective += effective;
 
@@ -195,8 +211,7 @@ export const damageModifierBreakdown = (
       };
 
       toughHideReduction +=
-        effectivePlaybookDamage(attacker, printed, withoutToughHide) -
-        effective;
+        damageOf(attacker, printed, withoutToughHide) - effective;
 
       for (const buffBonus of buffBonuses) {
         const withoutBuff: PlaybookDamageMods = {
@@ -204,8 +219,7 @@ export const damageModifierBreakdown = (
           buffs: { ...mods.buffs, [buffBonus.id]: false },
         };
 
-        buffBonus.bonus +=
-          effective - effectivePlaybookDamage(attacker, printed, withoutBuff);
+        buffBonus.bonus += effective - damageOf(attacker, printed, withoutBuff);
       }
     }
   }

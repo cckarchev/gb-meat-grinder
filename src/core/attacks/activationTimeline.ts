@@ -17,7 +17,7 @@ import {
   attackerTraits,
   chargeTraitDamage,
   effectiveDamageForChoice,
-  effectivePlaybookDamage,
+  effectivePlayDamage,
   withSwingDamageBonus,
 } from '@/core/damage/damage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
@@ -97,6 +97,7 @@ const preAppliedEffects = (
     const effects: CarriedEffects = {
       ...NO_CARRIED_EFFECTS,
       tacBonus: buff.tacBonus ?? 0,
+      defReduction: buff.defReduction ?? 0,
       armorReduction: buff.armorReduction ?? 0,
     };
 
@@ -321,7 +322,7 @@ const swingPlayDamageFor = (
       return;
     }
 
-    playDamageBySlot[pickIndex] = effectivePlaybookDamage(
+    playDamageBySlot[pickIndex] = effectivePlayDamage(
       attacker,
       printedDamage,
       damageMods,

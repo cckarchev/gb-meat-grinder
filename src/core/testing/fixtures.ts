@@ -114,6 +114,34 @@ export const CONDITION_GUILD: Guild = {
   ],
 };
 
+/**
+ * A guild with teammate effects: a playbook-only damage bonus (Butchery-like),
+ * an enemy -DEF debuff (Stagger-like), Maximum Effort-like momentum and a
+ * teammate that gives ganging up (Lend a Hand-like).
+ */
+export const TEAMMATE_GUILD: Guild = {
+  id: 'teammates',
+  name: 'Teammates',
+  color: '#abcdef',
+  buffs: [
+    { id: 'carve', label: 'Carve', tooltip: '', playbookDamageBonus: 1 },
+    {
+      id: 'trip',
+      label: 'Trip',
+      tooltip: '',
+      target: 'enemy',
+      defReduction: 1,
+    },
+    {
+      id: 'effort',
+      label: 'Effort',
+      tooltip: '',
+      damageResultsMomentous: true,
+    },
+    { id: 'gang', label: 'Gang', tooltip: '', tacBonus: 1, gangingUpMin: 1 },
+  ],
+};
+
 export const PLAY_TAC: CharacterPlay = {
   id: 'playTac',
   label: 'Play TAC',

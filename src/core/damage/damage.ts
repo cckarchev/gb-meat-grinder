@@ -145,8 +145,23 @@ export const withSwingDamageBonus = (
   return { ...mods, swingDamageBonus: bonus };
 };
 
-/** Sum of the +damage from selected buffs. */
+/** Sum of the +damage selected buffs give playbook damage results. */
 export const playbookDamageBonusSum = (
+  attacker: AttackerData,
+  mods: PlaybookDamageMods,
+): number => {
+  let sum = 0;
+
+  for (const buff of activeBuffs(attacker, mods)) {
+    sum += buff.damageBonus ?? 0;
+    sum += buff.playbookDamageBonus ?? 0;
+  }
+
+  return sum;
+};
+
+/** Sum of the +damage selected buffs give character plays that cause damage. */
+const playDamageBonusSum = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
 ): number => {
@@ -204,6 +219,26 @@ export const effectivePlaybookDamage = (
   const swingBonus = mods.swingDamageBonus ?? 0;
 
   return Math.max(0, cardDamage - toughHidePenalty + buffBonus + swingBonus);
+};
+
+/**
+ * Damage of a character play that causes damage: Tough Hide and the buffs that
+ * reach plays (Tooled Up), but none limited to playbook damage results
+ * (Butchery, Our Tools Are Sharp, Burning Passion, Assist).
+ */
+export const effectivePlayDamage = (
+  attacker: AttackerData,
+  printedDamage: number,
+  mods: PlaybookDamageMods,
+): number => {
+  if (printedDamage <= 0) {
+    return 0;
+  }
+
+  const toughHidePenalty = mods.toughHide ? TOUGH_HIDE_DAMAGE_PENALTY : 0;
+  const buffBonus = playDamageBonusSum(attacker, mods);
+
+  return Math.max(0, printedDamage - toughHidePenalty + buffBonus);
 };
 
 export const effectiveDamageForChoice = (

@@ -3,6 +3,7 @@ import styles from '@/components/attacker/AttackerPanel.module.css';
 import { AttackerPreAttackOptions } from '@/components/attacker/AttackerPreAttackOptions';
 import { StepControl } from '@/components/ui/StepControl';
 import { Panel, PanelFooterSection, PanelTitle } from '@/components/ui/ui';
+import { gangingUpRange } from '@/core/activation/gangingUp';
 import { INFLUENCE_MIN } from '@/core/shared/constants';
 import { formatSigned } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
@@ -14,9 +15,11 @@ export const AttackerPanel = () => {
     gangingUp,
     crowdingOut,
     influence,
+    damageMods,
     dispatch,
   } = useMeatGrinderSimulation();
 
+  const gangingUpBounds = gangingUpRange(attacker, damageMods);
   const gangingUpLabel = formatSigned(gangingUp);
   const crowdingOutLabel = formatSigned(-crowdingOut);
 
@@ -44,8 +47,8 @@ export const AttackerPanel = () => {
         <StepControl
           label="Ganging Up"
           value={gangingUp}
-          min={attacker.gangingUp.min}
-          max={attacker.gangingUp.max}
+          min={gangingUpBounds.min}
+          max={gangingUpBounds.max}
           onChange={(value) => dispatch({ type: 'gangingUp', value })}
           valueLabel={gangingUpLabel}
           ariaSubject="Ganging Up"

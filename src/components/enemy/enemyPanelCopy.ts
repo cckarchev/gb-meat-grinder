@@ -1,5 +1,6 @@
 import {
   ASSIST_DAMAGE_BONUS,
+  ASSIST_ENGAGED_GANGING_UP_MIN,
   ASSIST_TAC_BONUS,
   COVER_TAC_PENALTY,
   DEFENSIVE_STANCE_DEF_BONUS,
@@ -37,7 +38,8 @@ export const tooltipAssistEngaged = (named: readonly string[]): string => {
   return (
     `${engagers} engages the target. Once Assist is gained (Axe A Question), ` +
     `later attacks get +${ASSIST_TAC_BONUS} TAC and +${ASSIST_DAMAGE_BONUS} DMG ` +
-    'to playbook damage results.'
+    'to playbook damage results. ' +
+    `Ganging up is at least +${ASSIST_ENGAGED_GANGING_UP_MIN} while it engages.`
   );
 };
 

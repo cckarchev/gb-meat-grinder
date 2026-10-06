@@ -71,6 +71,7 @@ export const cast: AttackerData = {
   guild: blacksmiths,
   characterPlays: [shieldGlare, shieldThrow],
   characterTraits: [burningPassion],
+  excludedGuildBuffs: ['shieldGlare'],
   startingMomentum: STARTING_MOMENTUM_RANGE,
   gangingUp: GANGING_UP_RANGE,
   crowdingOut: CROWDING_OUT_RANGE,
