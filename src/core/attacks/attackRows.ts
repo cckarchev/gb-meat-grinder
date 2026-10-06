@@ -7,7 +7,6 @@ import type {
   PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /** Rows below the berserker offset are base attacks; at/above it are berserkers. */
@@ -163,22 +162,4 @@ export const picksBeforeInActivation = (
   }
 
   return placed;
-};
-
-/** Every non-empty pick on swings strictly earlier than `attackIndex`. */
-export const picksOnEarlierSwings = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
-  attackIndex: number,
-): PlacedPick[] => {
-  return picksBeforeInActivation(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-    attackIndex,
-    PRIMARY_PICK_INDEX,
-  );
 };

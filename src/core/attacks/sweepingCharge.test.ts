@@ -7,8 +7,8 @@ import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import {
   CONDITION_GUILD,
   makeAttacker,
+  makeRollParams,
   modsWith,
-  NEUTRAL_TARGET_HP,
   NO_MODS,
   planOf,
 } from '@/core/testing/fixtures';
@@ -27,14 +27,14 @@ const sweeper = makeAttacker({
 });
 
 const timelineFor = (plan: AttackPlan, mods = NO_MODS) => {
-  return activationTimeline(plan, {
+  const params = makeRollParams({
     attacker: sweeper,
     damageMods: mods,
     activeBaseCount: SWINGS,
     chargeAttackIndex: CHARGE_ROW,
-    targetHp: NEUTRAL_TARGET_HP,
-    enemyKnockedDown: false,
   });
+
+  return activationTimeline(plan, params);
 };
 
 describe('Sweeping Charge in the plan', () => {

@@ -20,7 +20,7 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
 const NO_EFFECTS: PickEffects = {
   tacBonusForLater: 0,
   defReductionForLater: 0,
-  armorReduction: 0,
+  armorReductionForLater: 0,
   damageBonusForLater: 0,
 };
 
@@ -67,7 +67,7 @@ export const pickEffectsForLaterSwings = (
     return {
       tacBonusForLater: result.tacBonusForLater ?? 0,
       defReductionForLater: result.defReductionForLater ?? 0,
-      armorReduction: 0,
+      armorReductionForLater: 0,
       damageBonusForLater: 0,
     };
   }

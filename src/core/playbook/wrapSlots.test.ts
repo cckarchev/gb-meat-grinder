@@ -97,7 +97,13 @@ describe('wrapSlotColumns', () => {
     const netNeeded = wrapExtendedNetNeeded(attacker, 1, 1);
 
     expect(first.hitChance).toBe(
-      probAttackSucceeds(roll.tac, roll.pHit, roll.armor, netNeeded),
+      probAttackSucceeds(
+        roll.tac,
+        roll.pHit,
+        roll.armor,
+        netNeeded,
+        roll.netHitBonus,
+      ),
     );
   });
 });

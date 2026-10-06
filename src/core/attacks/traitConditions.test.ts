@@ -10,6 +10,7 @@ import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import {
   CONDITION_GUILD,
   makeAttacker,
+  makeRollParams,
   modsWith,
   NEUTRAL_TARGET_HP,
   NO_MODS,
@@ -26,14 +27,13 @@ const timelineFor = (
   plan: AttackPlan,
   damageMods: PlaybookDamageMods = NO_MODS,
 ) => {
-  return activationTimeline(plan, {
+  const params = makeRollParams({
     attacker,
     damageMods,
     activeBaseCount: SWINGS,
-    chargeAttackIndex: NO_ATTACK_INDEX,
-    targetHp: NEUTRAL_TARGET_HP,
-    enemyKnockedDown: false,
   });
+
+  return activationTimeline(plan, params);
 };
 
 const armorReductions = (

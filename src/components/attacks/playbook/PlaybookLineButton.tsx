@@ -4,8 +4,8 @@ import { swingDamageMods } from '@/core/attacks/activationTimeline';
 import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
 import { playbookLineDisplaySegments } from '@/core/playbook/playbookLabels';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-import type { CustomPropertyStyle } from '@/styles/customProperties';
 import { dataFlag } from '@/styles/dataFlag';
+import { guildColorStyle } from '@/styles/guildColorStyle';
 
 /** Why a line cannot be picked: its once-per-activation effect is already used. */
 export type PlaybookLineLock = 'knockDown' | 'tackle';
@@ -45,14 +45,11 @@ export const PlaybookLineButton = ({
   const action = selected ? 'Selected' : 'Select';
   const locked = lock !== undefined;
   const lockedTitle = locked ? LOCKED_TITLES[lock] : undefined;
-  const guildColorStyle: CustomPropertyStyle = {
-    '--guild-color': attacker.guild.color,
-  };
 
   return (
     <button
       className={styles.lineButton}
-      style={guildColorStyle}
+      style={guildColorStyle(attacker.guild.color)}
       type="button"
       disabled={locked}
       data-momentous={momentousStyle}

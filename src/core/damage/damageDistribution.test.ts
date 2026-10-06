@@ -4,6 +4,7 @@ import {
   damageQuantile,
   swingDamageDistribution,
 } from '@/core/damage/damageDistribution';
+import { makeRollContext } from '@/core/testing/fixtures';
 
 describe('damageQuantile', () => {
   const distribution = new Map([
@@ -35,18 +36,16 @@ describe('damageQuantile', () => {
 
 describe('swingDamageDistribution with gained net hits', () => {
   it('shifts every roll up by the bonus, so a soaked roll still reaches it', () => {
-    const attack: AttackRollContext = {
+    const attack: AttackRollContext = makeRollContext({
       attackIndex: 0,
       tac: 1,
       armor: 1,
       defMinRoll: 4,
-      defMinRollAfter: 4,
-      armorAfter: 1,
       pHit: 0.5,
       netSuccessesNeeded: 2,
       netHitBonus: 2,
       prob: 1,
-    };
+    });
 
     // 1 die vs ARM 1 always nets 0 from the roll; the bonus makes it 2.
     const dist = swingDamageDistribution(attack, (net) => net * 10);

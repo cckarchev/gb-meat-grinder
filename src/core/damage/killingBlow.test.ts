@@ -1,20 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { killingBlowDisplayIndex } from '@/core/damage/killingBlow';
+import { makeRollContext } from '@/core/testing/fixtures';
 
 const swing = (attackIndex: number): AttackRollContext => {
-  return {
+  return makeRollContext({
     attackIndex,
     tac: 0,
     armor: 0,
     defMinRoll: 4,
-    defMinRollAfter: 4,
-    armorAfter: 0,
     pHit: 0.5,
     netSuccessesNeeded: 0,
     netHitBonus: 0,
     prob: 1,
-  };
+  });
 };
 
 const ATTACKS = [swing(0), swing(2), swing(1)];

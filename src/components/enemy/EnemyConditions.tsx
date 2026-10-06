@@ -1,4 +1,5 @@
 import {
+  LABEL_BURNING,
   LABEL_CONDITIONS,
   LABEL_KNOCKED_DOWN,
   LABEL_SNARED,
@@ -36,7 +37,7 @@ export const EnemyConditions = () => {
         onChange={(value) => dispatch({ type: 'targetBurning', value })}
         tooltip={TOOLTIP_BURNING}
       >
-        Burning
+        {LABEL_BURNING}
       </TooltipCheckbox>
     </ToggleGroup>
   );

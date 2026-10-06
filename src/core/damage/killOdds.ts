@@ -1,16 +1,18 @@
 /** Kill chance, expected damage and HP left for a whole activation. */
 
 import {
-  playDamageForHealth,
-  swingHasHealthPlay,
   swingStateAt,
+  swingStateDamageMods,
 } from '@/core/attacks/activationTimeline';
 import type {
   ActivationTimeline,
   SwingState,
 } from '@/core/attacks/activationTimeline.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import { withSwingDamageBonus } from '@/core/damage/damage';
+import {
+  playDamageForHealth,
+  swingHasHealthPlay,
+} from '@/core/attacks/swingPlayDamage';
 import type {
   ActivationDamageOutcome,
   DamageDistribution,
@@ -88,9 +90,10 @@ const addHealthDependentSwing = (
 /**
  * Convolves every swing's damage distribution, where each swing only deals the
  * damage of the lines actually picked (a play scaled by current HP is rolled
- * per damage total instead, since it depends on what came before), then reports the chance the activation
- * drops the target and the mean damage dealt. `flatDamage` is guaranteed
- * (activated traits) and applied as a baseline.
+ * per damage total instead, since it depends on what came before), then
+ * reports the chance the activation drops the target and the mean damage
+ * dealt. `flatDamage` is guaranteed (activated traits) and applied as a
+ * baseline.
  */
 export const planDamageOutcome = (
   attacker: AttackerData,
@@ -106,7 +109,7 @@ export const planDamageOutcome = (
   for (const attack of attacks) {
     const picks = wrapPicks[attack.attackIndex] ?? [];
     const state = swingStateAt(timeline, attack.attackIndex);
-    const swingMods = withSwingDamageBonus(mods, state.playbookDamageBonus);
+    const swingMods = swingStateDamageMods(mods, state);
 
     const swingAt = (hpLeft: number): DamageDistribution => {
       return swingDistributionAt(

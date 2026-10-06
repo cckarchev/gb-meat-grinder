@@ -5,6 +5,7 @@ import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { planDamageOutcome } from '@/core/damage/killOdds';
 import {
   makeAttacker,
+  makeRollContext,
   makeRollParams,
   NO_MODS,
   PLAY_DAMAGE,
@@ -15,18 +16,16 @@ describe('planDamageOutcome', () => {
   it('convolves swings and folds in flat damage', () => {
     const attacker = makeAttacker();
 
-    const swing: AttackRollContext = {
+    const swing: AttackRollContext = makeRollContext({
       attackIndex: 0,
       tac: 2,
       armor: 0,
       defMinRoll: 4,
-      defMinRollAfter: 4,
-      armorAfter: 0,
       pHit: 0.5,
       netSuccessesNeeded: 1,
       netHitBonus: 0,
       prob: 0.75,
-    };
+    });
 
     const flatDamage = 1;
     const targetHp = 2;
@@ -90,31 +89,27 @@ describe('planDamageOutcome', () => {
     );
 
     // A coin flip for `one`, then a sure `gb`.
-    const coinFlip: AttackRollContext = {
+    const coinFlip: AttackRollContext = makeRollContext({
       attackIndex: 0,
       tac: 1,
       armor: 0,
       defMinRoll: 4,
-      defMinRollAfter: 4,
-      armorAfter: 0,
       pHit: 0.5,
       netSuccessesNeeded: 1,
       netHitBonus: 0,
       prob: 0.5,
-    };
+    });
 
-    const sureHit: AttackRollContext = {
+    const sureHit: AttackRollContext = makeRollContext({
       attackIndex: 1,
       tac: 3,
       armor: 0,
       defMinRoll: 2,
-      defMinRollAfter: 2,
-      armorAfter: 0,
       pHit: 1,
       netSuccessesNeeded: 3,
       netHitBonus: 0,
       prob: 1,
-    };
+    });
 
     const outcome = planDamageOutcome(
       attacker,

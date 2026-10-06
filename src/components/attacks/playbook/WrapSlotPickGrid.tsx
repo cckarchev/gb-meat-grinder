@@ -1,39 +1,23 @@
-import {
-  PlaybookLineButton,
-  type PlaybookLineLock,
-} from '@/components/attacks/playbook/PlaybookLineButton';
-import {
-  probHeatBackground,
-  probHeatBorder,
-  probHeatTextColor,
-} from '@/components/attacks/playbook/probStyle';
+import { PlaybookColumnBlock } from '@/components/attacks/playbook/PlaybookColumnBlock';
+import type { PlaybookLineLock } from '@/components/attacks/playbook/PlaybookLineButton';
 import styles from '@/components/attacks/playbook/WrapSlotPickGrid.module.css';
 import {
   knockDownIsOnlyEffect,
   knockDownTakenBeforePick,
 } from '@/core/playbook/knockDown';
-import type { PlaybookResult } from '@/core/playbook/playbook.types';
+import type {
+  PlaybookChoiceId,
+  PlaybookResult,
+} from '@/core/playbook/playbook.types';
 import { stealsBall, tackleTakenBeforePick } from '@/core/playbook/tackle';
 import { type SwingRoll, wrapSlotColumns } from '@/core/playbook/wrapSlots';
 import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
-import { formatPercent } from '@/core/shared/format';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 import type { CustomPropertyStyle } from '@/styles/customProperties';
 import { dataFlag } from '@/styles/dataFlag';
 
-const HIT_CHANCE_DIGITS = 1;
-
 /** Keeps the grid one track wide even when no column is reachable. */
 const MIN_COLUMN_COUNT = 1;
-
-/** Heat colors for a column head, read by the CSS module. */
-const columnHeadStyle = (hitChance: number): CustomPropertyStyle => {
-  return {
-    '--heat-background': probHeatBackground(hitChance),
-    '--heat-text': probHeatTextColor(hitChance),
-    '--heat-border': probHeatBorder(hitChance),
-  };
-};
 
 type WrapSlotPickGridProps = {
   attackIndex: number;
@@ -94,6 +78,20 @@ export const WrapSlotPickGrid = ({
     return undefined;
   };
 
+  const handlePick = (id: PlaybookChoiceId) => {
+    // Wrap slots can be cleared by clicking the pick again; the first slot
+    // always keeps a line.
+    const reselected = selectedId === id;
+    const clearsPick = pickIndex !== PRIMARY_PICK_INDEX && reselected;
+
+    dispatch({
+      type: 'wrapChoice',
+      attackIndex,
+      pickIndex,
+      id: clearsPick ? null : id,
+    });
+  };
+
   const columnCount = Math.max(MIN_COLUMN_COUNT, visibleColumns.length);
   const gridStyle: CustomPropertyStyle = { '--column-count': columnCount };
 
@@ -103,49 +101,16 @@ export const WrapSlotPickGrid = ({
       data-first={dataFlag(firstSlotInSection)}
     >
       <div className={styles.columnGrid} style={gridStyle}>
-        {visibleColumns.map(({ column, hitChance }) => {
-          const hitChanceLabel = formatPercent(hitChance, HIT_CHANCE_DIGITS);
-
-          return (
-            <div className={styles.columnBlock} key={column.netSuccesses}>
-              <div
-                className={styles.columnHead}
-                style={columnHeadStyle(hitChance)}
-              >
-                {hitChanceLabel}
-              </div>
-              <div className={styles.columnResults}>
-                {column.results.map((result) => {
-                  const selected = selectedId === result.id;
-
-                  // Wrap slots can be cleared by clicking the pick again; the
-                  // first slot always keeps a line.
-                  const clearsPick =
-                    pickIndex !== PRIMARY_PICK_INDEX && selected;
-
-                  return (
-                    <PlaybookLineButton
-                      key={result.id}
-                      attackIndex={attackIndex}
-                      id={result.id}
-                      selected={selected}
-                      lock={lockFor(result)}
-                      hitChanceLabel={hitChanceLabel}
-                      onClick={() =>
-                        dispatch({
-                          type: 'wrapChoice',
-                          attackIndex,
-                          pickIndex,
-                          id: clearsPick ? null : result.id,
-                        })
-                      }
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          );
-        })}
+        {visibleColumns.map((slotColumn) => (
+          <PlaybookColumnBlock
+            key={slotColumn.column.netSuccesses}
+            attackIndex={attackIndex}
+            slotColumn={slotColumn}
+            selectedId={selectedId}
+            lockFor={lockFor}
+            onPick={handlePick}
+          />
+        ))}
       </div>
     </div>
   );

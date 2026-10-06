@@ -13,6 +13,7 @@ import {
   SNARED_DEF_PENALTY,
   TOUGH_HIDE_DAMAGE_PENALTY,
 } from '@/core/shared/constants';
+import { sumOf } from '@/core/shared/sumOf';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 import type { CharacterTrait } from '@/data/characterTraits';
 import type { GuildBuff, GuildBuffTarget } from '@/data/guilds/guild.types';
@@ -49,7 +50,9 @@ export const guildBuffsFor = (
 };
 
 /** Guild buffs this model can receive (excludes buffs it is the source of). */
-export const availableBuffs = (attacker: AttackerData) => {
+export const availableBuffs = (
+  attacker: AttackerData,
+): readonly GuildBuff[] => {
   return attacker.guild.buffs.filter(
     (buff) => !guildBuffIsExcluded(attacker, buff.id),
   );
@@ -59,7 +62,7 @@ export const availableBuffs = (attacker: AttackerData) => {
 export const activeBuffs = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
-) => {
+): readonly GuildBuff[] => {
   return availableBuffs(attacker).filter((buff) => mods.buffs[buff.id]);
 };
 
@@ -74,7 +77,7 @@ export const activeTraitFlatDamage = (
 ): number => {
   const activated = activatedTraits(attacker, activeTraits);
 
-  return activated.reduce((sum, trait) => sum + (trait.flatDamage ?? 0), 0);
+  return sumOf(activated, (trait) => trait.flatDamage);
 };
 
 /** The model's traits the user activates with a checkbox. */
@@ -128,9 +131,9 @@ export const chargeTraitDamage = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
 ): number => {
-  return attackerTraits(attacker, mods).reduce((sum, trait) => {
-    return sum + (trait.chargeDamage ?? 0);
-  }, 0);
+  const traits = attackerTraits(attacker, mods);
+
+  return sumOf(traits, (trait) => trait.chargeDamage);
 };
 
 /** `mods` with one swing's engine-injected playbook damage bonus. */
@@ -150,14 +153,11 @@ export const playbookDamageBonusSum = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
 ): number => {
-  let sum = 0;
+  const buffs = activeBuffs(attacker, mods);
+  const anyDamageBonus = sumOf(buffs, (buff) => buff.damageBonus);
+  const playbookOnlyBonus = sumOf(buffs, (buff) => buff.playbookDamageBonus);
 
-  for (const buff of activeBuffs(attacker, mods)) {
-    sum += buff.damageBonus ?? 0;
-    sum += buff.playbookDamageBonus ?? 0;
-  }
-
-  return sum;
+  return anyDamageBonus + playbookOnlyBonus;
 };
 
 /** Sum of the +damage selected buffs give character plays that cause damage. */
@@ -165,13 +165,9 @@ const playDamageBonusSum = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
 ): number => {
-  let sum = 0;
+  const buffs = activeBuffs(attacker, mods);
 
-  for (const buff of activeBuffs(attacker, mods)) {
-    sum += buff.damageBonus ?? 0;
-  }
-
-  return sum;
+  return sumOf(buffs, (buff) => buff.damageBonus);
 };
 
 /** True if a selected buff turns playbook damage into Tough-Hide-ignoring Condition Damage. */

@@ -11,7 +11,6 @@ import {
   basePicksDealDamage,
   berserkerSourceBaseIndex,
   picksBeforeInActivation,
-  picksOnEarlierSwings,
 } from '@/core/attacks/attackRows';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
 import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
@@ -30,7 +29,7 @@ const TOUGH_HIDE = modsWith({ toughHide: true });
 const NO_EFFECTS = {
   tacBonusForLater: 0,
   defReductionForLater: 0,
-  armorReduction: 0,
+  armorReductionForLater: 0,
   damageBonusForLater: 0,
 };
 
@@ -145,6 +144,7 @@ describe('rows outside the activation', () => {
         0,
         NO_MODS,
         activeBaseCount,
+        false,
       ),
     ).toBe(false);
   });
@@ -193,12 +193,6 @@ describe('picksBeforeInActivation', () => {
       { attackIndex: 2, pickIndex: 0, id: 'one' },
       { attackIndex: 1, pickIndex: 0, id: 'one' },
     ]);
-  });
-
-  it('lists only earlier swings when asked for whole swings', () => {
-    expect(picksOnEarlierSwings(berserker, wrapPicks, NO_MODS, 2, 1)).toEqual(
-      picksBefore(1, 0),
-    );
   });
 
   it('is empty for the first pick and for a swing outside the activation', () => {

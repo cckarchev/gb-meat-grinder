@@ -5,7 +5,7 @@ import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
 const NO_EFFECTS = {
   tacBonusForLater: 0,
   defReductionForLater: 0,
-  armorReduction: 0,
+  armorReductionForLater: 0,
   damageBonusForLater: 0,
 };
 

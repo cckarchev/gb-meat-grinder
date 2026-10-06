@@ -7,21 +7,23 @@ import {
 } from '@/core/attacks/swingProjections';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+import {
+  makeAttacker,
+  makeRollContext,
+  NO_MODS,
+} from '@/core/testing/fixtures';
 
 const swing = (attackIndex: number): AttackRollContext => {
-  return {
+  return makeRollContext({
     attackIndex,
     tac: 2,
     armor: 0,
     defMinRoll: 2,
-    defMinRollAfter: 2,
-    armorAfter: 0,
     pHit: 1,
     netSuccessesNeeded: 2,
     netHitBonus: 0,
     prob: 1,
-  };
+  });
 };
 
 const input = (

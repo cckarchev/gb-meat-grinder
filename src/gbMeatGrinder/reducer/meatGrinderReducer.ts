@@ -1,13 +1,14 @@
-import { crowdingOutRange } from '@/core/activation/crowdingOut';
-import { gangingUpRange } from '@/core/activation/gangingUp';
 /** App state transitions: each action patches the state and keeps the plan legal. */
 
+import { crowdingOutRange } from '@/core/activation/crowdingOut';
+import { gangingUpRange } from '@/core/activation/gangingUp';
 import { clampChargeAttackIndex } from '@/core/attacks/attackStructure';
 import {
   nextPlanAfterCharacterPlayPick,
   nextPlanAfterClearWrapContinuation,
   nextPlanAfterWrapChoice,
 } from '@/core/plan/planEdits';
+import type { PlaybookDamageMods } from '@/core/playbook/playbook.types';
 import { clamp, clampToRange } from '@/core/shared/clamp';
 import { INFLUENCE_MIN } from '@/core/shared/constants';
 import { attackerById } from '@/data/attackers/registry';
@@ -29,6 +30,27 @@ import {
   activeBaseCountOf,
   attackerOf,
 } from '@/gbMeatGrinder/reducer/stateSelectors';
+
+/**
+ * New damage mods, with ganging up and crowding out pulled back into the ranges
+ * the toggled buffs and Assist allow, then the plan re-clamped.
+ */
+const withDamageMods = (
+  state: MeatGrinderState,
+  damageMods: PlaybookDamageMods,
+): MeatGrinderState => {
+  const attacker = attackerOf(state);
+  const gangingUp = clampToRange(
+    state.gangingUp,
+    gangingUpRange(attacker, damageMods),
+  );
+  const crowdingOut = clampToRange(
+    state.crowdingOut,
+    crowdingOutRange(attacker, damageMods),
+  );
+
+  return withReclampedPlan(state, { damageMods, gangingUp, crowdingOut });
+};
 
 const transition = (
   state: MeatGrinderState,
@@ -115,34 +137,23 @@ const transition = (
     case 'toughHide': {
       const damageMods = { ...state.damageMods, toughHide: action.value };
 
-      return withReclampedPlan(state, { damageMods });
+      return withDamageMods(state, damageMods);
     }
     case 'targetBurning': {
       const damageMods = { ...state.damageMods, targetBurning: action.value };
 
-      return withReclampedPlan(state, { damageMods });
+      return withDamageMods(state, damageMods);
     }
     case 'assistEngaged': {
       const damageMods = { ...state.damageMods, assistEngaged: action.value };
-      const range = gangingUpRange(attackerOf(state), damageMods);
-      const gangingUp = clampToRange(state.gangingUp, range);
 
-      return withReclampedPlan(state, { damageMods, gangingUp });
+      return withDamageMods(state, damageMods);
     }
     case 'guildBuff': {
       const buffs = { ...state.damageMods.buffs, [action.id]: action.value };
       const damageMods = { ...state.damageMods, buffs };
-      const attacker = attackerOf(state);
-      const gangingUp = clampToRange(
-        state.gangingUp,
-        gangingUpRange(attacker, damageMods),
-      );
-      const crowdingOut = clampToRange(
-        state.crowdingOut,
-        crowdingOutRange(attacker, damageMods),
-      );
 
-      return withReclampedPlan(state, { damageMods, gangingUp, crowdingOut });
+      return withDamageMods(state, damageMods);
     }
     case 'activeTrait': {
       const activeTraits = {

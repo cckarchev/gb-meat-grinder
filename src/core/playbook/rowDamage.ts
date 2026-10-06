@@ -1,15 +1,15 @@
 /** Per-row damage totals under the "every pick hits" projection. */
 
 import {
-  swingPlayDamage,
+  swingDamageIfAllHit,
   swingStateAt,
+  swingStateDamageMods,
 } from '@/core/attacks/activationTimeline';
 import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import { attackRowIsActive } from '@/core/attacks/attackRows';
 import {
   attackerTraits,
   availableBuffs,
-  effectiveDamageForChoice,
   effectivePlaybookDamage,
   effectivePlayDamage,
   joinTraitLabels,
@@ -124,10 +124,7 @@ export const damageModifierBreakdown = (
     }
 
     const state = swingStateAt(timeline, attackIndex);
-    const swingMods = withSwingDamageBonus(
-      damageMods,
-      state.playbookDamageBonus,
-    );
+    const swingMods = swingStateDamageMods(damageMods, state);
 
     // The swing bonus is Burning Passion plus the carried Assist DMG.
     const carriedBonus = state.effectsBefore.damageBonus;
@@ -256,14 +253,6 @@ export const rowDamageIfAllHit = (
   activeBaseCount: number,
   timeline: ActivationTimeline,
 ): number[] => {
-  const pickDamage = (id: WrapPick, mods: PlaybookDamageMods): number => {
-    if (id == null) {
-      return 0;
-    }
-
-    return effectiveDamageForChoice(attacker, id, mods);
-  };
-
   return wrapPicks.map((picks, attackIndex) => {
     const active = attackRowIsActive(
       attacker,
@@ -278,17 +267,7 @@ export const rowDamageIfAllHit = (
     }
 
     const state = swingStateAt(timeline, attackIndex);
-    const swingMods = withSwingDamageBonus(
-      damageMods,
-      state.playbookDamageBonus,
-    );
 
-    const cardDamage = picks.reduce((sum, id) => {
-      return sum + pickDamage(id, swingMods);
-    }, 0);
-
-    const playDamage = swingPlayDamage(state);
-
-    return cardDamage + playDamage + state.chargeDamage;
+    return swingDamageIfAllHit(attacker, damageMods, picks, state);
   });
 };

@@ -60,7 +60,7 @@ export type CharacterPlayUsage = ReadonlySet<string>;
 export type PickEffects = {
   tacBonusForLater: number;
   defReductionForLater: number;
-  armorReduction: number;
+  armorReductionForLater: number;
   /** +DMG to playbook damage results on later attacks (Assist). */
   damageBonusForLater: number;
 };

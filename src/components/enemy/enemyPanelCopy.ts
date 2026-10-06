@@ -13,6 +13,8 @@ export const LABEL_KNOCKED_DOWN = `Knocked Down (-${KNOCKED_DOWN_DEF_PENALTY} DE
 
 export const LABEL_SNARED = `Snared (-${SNARED_DEF_PENALTY} DEF)`;
 
+export const LABEL_BURNING = 'Burning';
+
 export const TOOLTIP_COVER = `Terrain: attacks that still count as in cover take -${COVER_TAC_PENALTY} TAC. An earlier > or >> in this activation can clear cover for later swings.`;
 
 export const TOOLTIP_DEFENSIVE_STANCE = `On the charge attack only, the model counts as +${DEFENSIVE_STANCE_DEF_BONUS} DEF on its hit roll (still capped at the normal DEF maximum).`;

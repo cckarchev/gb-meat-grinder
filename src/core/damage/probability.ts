@@ -43,7 +43,7 @@ export const probAttackSucceeds = (
   p: number,
   armor: number,
   netSuccessesNeeded: number,
-  netHitBonus = 0,
+  netHitBonus: number,
 ): number => {
   const netNeededFromRoll = netSuccessesNeeded - netHitBonus;
 
@@ -71,7 +71,7 @@ export const probAttackSucceeds = (
 export const maxNetSuccessesForRoll = (
   tac: number,
   armor: number,
-  netHitBonus = 0,
+  netHitBonus: number,
 ): number => {
   const fromRoll = Math.max(0, tac - armor);
 

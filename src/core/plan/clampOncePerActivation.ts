@@ -50,11 +50,8 @@ const cheapestRepeatableChoice = (
     return cheapestChoiceId(attacker);
   }
 
-  const columnsByCost = [...attacker.playbook].sort(
-    (a, b) => a.netSuccesses - b.netSuccesses,
-  );
-
-  for (const column of columnsByCost) {
+  // Columns are stored cheapest first (checked in attackerData.test.ts).
+  for (const column of attacker.playbook) {
     if (column.netSuccesses > budget) {
       continue;
     }

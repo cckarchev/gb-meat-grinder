@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
   activationTimeline,
-  playDamageForHealth,
   swingDamageMods,
   swingStateAt,
 } from '@/core/attacks/activationTimeline';
 import type { TimelineParams } from '@/core/attacks/activationTimeline.types';
+import { playDamageForHealth } from '@/core/attacks/swingPlayDamage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type { CharacterPlay } from '@/core/playbook/playbook.types';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';

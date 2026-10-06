@@ -1,5 +1,9 @@
-import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
+import type {
+  ActivationRollParams,
+  AttackRollContext,
+} from '@/core/attacks/attackSequence.types';
 import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from '@/core/damage/damage';
+import type { SwingDamageExtras } from '@/core/damage/pickedDamage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type {
   CharacterPlay,
@@ -250,6 +254,12 @@ export const modsWith = (
   return { ...NO_MODS, ...overrides };
 };
 
+/** A swing that deals nothing besides its card results: no plays, no charge. */
+export const NO_SWING_EXTRAS: SwingDamageExtras = {
+  playDamageBySlot: [],
+  chargeTraitDamage: 0,
+};
+
 /** A plan from its wrap picks; without `plays`, no slot picks a character play. */
 export const planOf = (
   rows: WrapPick[][],
@@ -294,6 +304,35 @@ export const makeRollParams = (
     activeBaseCount: NEUTRAL_BASE_COUNT,
     targetHp: NEUTRAL_TARGET_HP,
     enemyKnockedDown: false,
+    ...overrides,
+  };
+};
+
+/** DEF roll in the neutral roll context: a coin flip per die. */
+const NEUTRAL_DEF_MIN_ROLL = 4;
+
+/**
+ * One swing's roll context with nothing in play: ARM 0, DEF 4+, no gained net
+ * hits, and a swing that leaves DEF and ARM as they were. Tests override what
+ * they exercise; the after values follow the before ones unless given.
+ */
+export const makeRollContext = (
+  overrides: Partial<AttackRollContext> = {},
+): AttackRollContext => {
+  const armor = overrides.armor ?? NEUTRAL_ARMOR;
+  const defMinRoll = overrides.defMinRoll ?? NEUTRAL_DEF_MIN_ROLL;
+
+  return {
+    attackIndex: 0,
+    tac: 0,
+    armor,
+    defMinRoll,
+    defMinRollAfter: defMinRoll,
+    armorAfter: armor,
+    pHit: 0,
+    netSuccessesNeeded: 0,
+    netHitBonus: 0,
+    prob: 1,
     ...overrides,
   };
 };

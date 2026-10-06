@@ -1,3 +1,4 @@
+import { tooltipExcludedBuff } from '@/components/ui/guildBuffCopy';
 import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
 import { guildBuffIsExcluded } from '@/core/damage/damage';
 import type { GuildBuff } from '@/data/guilds/guild.types';
@@ -14,7 +15,7 @@ export const GuildBuffCheckbox = ({ buff }: GuildBuffCheckboxProps) => {
   const excluded = guildBuffIsExcluded(attacker, buff.id);
 
   const tooltip = excluded
-    ? `${buff.tooltip} (not available to ${attacker.name})`
+    ? tooltipExcludedBuff(buff.tooltip, attacker.name)
     : buff.tooltip;
 
   return (

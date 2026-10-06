@@ -14,16 +14,11 @@ import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /** Damage a swing deals besides its card results, by where it lands. */
-type SwingDamageExtras = {
+export type SwingDamageExtras = {
   /** Effective play damage triggered on each slot, added when that slot reaches its line. */
   playDamageBySlot: readonly number[];
   /** Unmodified charge damage (Sweeping Charge), added when the roll lands on a damage result. */
   chargeTraitDamage: number;
-};
-
-const NO_EXTRAS: SwingDamageExtras = {
-  playDamageBySlot: [],
-  chargeTraitDamage: 0,
 };
 
 /** Whether any line in a column within `budget` has printed damage. */
@@ -78,7 +73,7 @@ export const pickedDamageForNet = (
   mods: PlaybookDamageMods,
   picks: readonly WrapPick[],
   net: number,
-  extras: SwingDamageExtras = NO_EXTRAS,
+  extras: SwingDamageExtras,
 ): number => {
   if (net < MIN_PLAYBOOK_NET) {
     return 0;

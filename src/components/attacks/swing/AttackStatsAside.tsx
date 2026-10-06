@@ -2,8 +2,8 @@ import styles from '@/components/attacks/swing/AttackStatsAside.module.css';
 import { Mono } from '@/components/ui/ui';
 import type { StatTransition } from '@/core/attacks/statTransitions';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-import type { CustomPropertyStyle } from '@/styles/customProperties';
 import { dataFlag } from '@/styles/dataFlag';
+import { guildColorStyle } from '@/styles/guildColorStyle';
 
 const DEF_SUFFIX = '+';
 
@@ -26,7 +26,7 @@ type TransitionValueProps = {
  */
 const TransitionValue = ({ transition, suffix = '' }: TransitionValueProps) => {
   const { from, to } = transition;
-  const changed = from !== undefined && from !== to;
+  const changed = from !== to;
 
   return (
     <>
@@ -49,6 +49,20 @@ const TransitionValue = ({ transition, suffix = '' }: TransitionValueProps) => {
   );
 };
 
+type StatRowProps = TransitionValueProps & {
+  caption: string;
+};
+
+/** One stat on the rail: its caption, then its before and after values. */
+const StatRow = ({ caption, transition, suffix }: StatRowProps) => {
+  return (
+    <div className={styles.statRow}>
+      <span className={styles.caption}>{caption}</span>
+      <TransitionValue transition={transition} suffix={suffix} />
+    </div>
+  );
+};
+
 export const AttackStatsAside = ({
   def,
   armor,
@@ -56,32 +70,17 @@ export const AttackStatsAside = ({
   momentum,
 }: AttackStatsAsideProps) => {
   const { attacker } = useMeatGrinderSimulation();
-  const guildColorStyle: CustomPropertyStyle = {
-    '--guild-color': attacker.guild.color,
-  };
 
   return (
     <aside
       className={styles.rail}
-      style={guildColorStyle}
+      style={guildColorStyle(attacker.guild.color)}
       aria-label="Defense, armor, HP after this swing, and momentum"
     >
-      <div className={styles.statRow}>
-        <span className={styles.caption}>DEF</span>
-        <TransitionValue transition={def} suffix={DEF_SUFFIX} />
-      </div>
-      <div className={styles.statRow}>
-        <span className={styles.caption}>ARM</span>
-        <TransitionValue transition={armor} />
-      </div>
-      <div className={styles.statRow}>
-        <span className={styles.caption}>HP</span>
-        <TransitionValue transition={hp} />
-      </div>
-      <div className={styles.statRow}>
-        <span className={styles.caption}>Mom</span>
-        <TransitionValue transition={momentum} />
-      </div>
+      <StatRow caption="DEF" transition={def} suffix={DEF_SUFFIX} />
+      <StatRow caption="ARM" transition={armor} />
+      <StatRow caption="HP" transition={hp} />
+      <StatRow caption="Mom" transition={momentum} />
     </aside>
   );
 };

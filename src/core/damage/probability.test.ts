@@ -7,6 +7,7 @@ import {
 } from '@/core/damage/probability';
 
 const COIN_FLIP = 0.5;
+const NO_BONUS = 0;
 
 describe('binomialPmf', () => {
   it('matches C(n,k) p^k (1-p)^(n-k)', () => {
@@ -30,23 +31,23 @@ describe('hitProbabilityPerDie', () => {
 
 describe('probAttackSucceeds', () => {
   it('is certain when no net successes are needed', () => {
-    expect(probAttackSucceeds(3, COIN_FLIP, 1, 0)).toBe(1);
+    expect(probAttackSucceeds(3, COIN_FLIP, 1, 0, NO_BONUS)).toBe(1);
   });
 
   it('is impossible when the raw hits needed exceed the dice', () => {
-    expect(probAttackSucceeds(2, COIN_FLIP, 1, 2)).toBe(0);
+    expect(probAttackSucceeds(2, COIN_FLIP, 1, 2, NO_BONUS)).toBe(0);
   });
 
   it('sums the binomial tail from need + armor hits', () => {
     // 3 dice, ARM 1, need 1 net: P(hits >= 2) = (3 + 1) / 8.
-    expect(probAttackSucceeds(3, COIN_FLIP, 1, 1)).toBeCloseTo(4 / 8);
+    expect(probAttackSucceeds(3, COIN_FLIP, 1, 1, NO_BONUS)).toBeCloseTo(4 / 8);
   });
 });
 
 describe('maxNetSuccessesForRoll', () => {
   it('is TAC minus ARM, floored at 0', () => {
-    expect(maxNetSuccessesForRoll(5, 2)).toBe(3);
-    expect(maxNetSuccessesForRoll(2, 5)).toBe(0);
+    expect(maxNetSuccessesForRoll(5, 2, NO_BONUS)).toBe(3);
+    expect(maxNetSuccessesForRoll(2, 5, NO_BONUS)).toBe(0);
   });
 });
 

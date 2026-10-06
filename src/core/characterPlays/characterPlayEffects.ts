@@ -35,7 +35,7 @@ export const characterPlayPickEffects = (
   return {
     tacBonusForLater: (play?.tacBonusForLater ?? 0) + assistTac,
     defReductionForLater: play?.defReductionForLater ?? 0,
-    armorReduction: play?.armorReduction ?? 0,
+    armorReductionForLater: play?.armorReduction ?? 0,
     damageBonusForLater: assistDamage,
   };
 };

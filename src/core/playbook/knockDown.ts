@@ -24,7 +24,7 @@ export const knockDownTakenBeforePick = (
   pickIndex: number,
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
-  enemyKnockedDown = false,
+  enemyKnockedDown: boolean,
 ): boolean => {
   if (enemyKnockedDown) {
     return true;

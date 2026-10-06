@@ -1,23 +1,33 @@
 import { describe, expect, it } from 'vitest';
 import { pickedDamageForNet } from '@/core/damage/pickedDamage';
-import { makeAttacker, NO_MODS, PLAY_DAMAGE } from '@/core/testing/fixtures';
+import type { WrapPick } from '@/core/playbook/playbook.types';
+import {
+  makeAttacker,
+  NO_MODS,
+  NO_SWING_EXTRAS,
+  PLAY_DAMAGE,
+} from '@/core/testing/fixtures';
 
 describe('pickedDamageForNet', () => {
   const attacker = makeAttacker();
 
+  const damageAt = (picks: WrapPick[], net: number): number => {
+    return pickedDamageForNet(attacker, NO_MODS, picks, net, NO_SWING_EXTRAS);
+  };
+
   it('deals the picked line once the roll reaches it', () => {
-    expect(pickedDamageForNet(attacker, NO_MODS, ['two'], 2)).toBe(2);
-    expect(pickedDamageForNet(attacker, NO_MODS, ['two'], 3)).toBe(2);
+    expect(damageAt(['two'], 2)).toBe(2);
+    expect(damageAt(['two'], 3)).toBe(2);
   });
 
   it('falls back to the best lower line on a short roll', () => {
-    expect(pickedDamageForNet(attacker, NO_MODS, ['two'], 1)).toBe(1);
-    expect(pickedDamageForNet(attacker, NO_MODS, ['two'], 0)).toBe(0);
+    expect(damageAt(['two'], 1)).toBe(1);
+    expect(damageAt(['two'], 0)).toBe(0);
   });
 
   it('resolves wrap slots past the card width', () => {
-    expect(pickedDamageForNet(attacker, NO_MODS, ['four', 'two'], 5)).toBe(5);
-    expect(pickedDamageForNet(attacker, NO_MODS, ['four', 'two'], 6)).toBe(6);
+    expect(damageAt(['four', 'two'], 5)).toBe(5);
+    expect(damageAt(['four', 'two'], 6)).toBe(6);
   });
 });
 

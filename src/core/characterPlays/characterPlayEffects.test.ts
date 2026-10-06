@@ -21,7 +21,7 @@ import {
 const NO_EFFECTS = {
   tacBonusForLater: 0,
   defReductionForLater: 0,
-  armorReduction: 0,
+  armorReductionForLater: 0,
   damageBonusForLater: 0,
 };
 
@@ -82,7 +82,7 @@ describe('character play effects', () => {
       ),
     ).toEqual({
       ...NO_EFFECTS,
-      armorReduction: 1,
+      armorReductionForLater: 1,
     });
 
     expect(characterPlayEffectSummary(PLAY_TAC)).toBe(

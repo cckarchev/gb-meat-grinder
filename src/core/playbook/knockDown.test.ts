@@ -23,11 +23,11 @@ describe('knockDownTakenBeforePick', () => {
 
   it('allows only the first KD in the activation', () => {
     expect(
-      knockDownTakenBeforePick(attacker, wrapPicks, 0, 0, NO_MODS, 2),
+      knockDownTakenBeforePick(attacker, wrapPicks, 0, 0, NO_MODS, 2, false),
     ).toBe(false);
 
     expect(
-      knockDownTakenBeforePick(attacker, wrapPicks, 1, 0, NO_MODS, 2),
+      knockDownTakenBeforePick(attacker, wrapPicks, 1, 0, NO_MODS, 2, false),
     ).toBe(true);
 
     expect(

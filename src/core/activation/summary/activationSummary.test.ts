@@ -12,6 +12,7 @@ import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import {
   makeAttacker,
+  makeRollContext,
   modsWith,
   NEUTRAL_TARGET_HP,
   NO_MODS,
@@ -20,18 +21,16 @@ import { sweepingCharge } from '@/data/characterTraits';
 
 /** A swing that always rolls exactly `tac` net successes. */
 const certainSwing = (attackIndex: number, tac: number): AttackRollContext => {
-  return {
+  return makeRollContext({
     attackIndex,
     tac,
     armor: 0,
     defMinRoll: 2,
-    defMinRollAfter: 2,
-    armorAfter: 0,
     pHit: 1,
     netSuccessesNeeded: tac,
     netHitBonus: 0,
     prob: 1,
-  };
+  });
 };
 
 const flaky = (attackIndex: number, prob: number): AttackRollContext => {
