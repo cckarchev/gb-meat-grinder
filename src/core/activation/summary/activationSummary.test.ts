@@ -25,6 +25,8 @@ const certainSwing = (attackIndex: number, tac: number): AttackRollContext => {
     tac,
     armor: 0,
     defMinRoll: 2,
+    defMinRollAfter: 2,
+    armorAfter: 0,
     pHit: 1,
     netSuccessesNeeded: tac,
     netHitBonus: 0,

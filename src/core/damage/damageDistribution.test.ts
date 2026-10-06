@@ -40,6 +40,8 @@ describe('swingDamageDistribution with gained net hits', () => {
       tac: 1,
       armor: 1,
       defMinRoll: 4,
+      defMinRollAfter: 4,
+      armorAfter: 1,
       pHit: 0.5,
       netSuccessesNeeded: 2,
       netHitBonus: 2,

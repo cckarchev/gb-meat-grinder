@@ -15,6 +15,8 @@ const swing = (attackIndex: number): AttackRollContext => {
     tac: 2,
     armor: 0,
     defMinRoll: 2,
+    defMinRollAfter: 2,
+    armorAfter: 0,
     pHit: 1,
     netSuccessesNeeded: 2,
     netHitBonus: 0,
