@@ -10,6 +10,7 @@ import type {
   AttackKind,
   AttackRollContext,
 } from '@/core/attacks/attackSequence.types';
+import type { StatTransition } from '@/core/attacks/statTransitions';
 import { maxNetSuccessesForRoll } from '@/core/damage/probability';
 import { rowHasWrapContinuation } from '@/core/playbook/wrapSlots';
 import {
@@ -38,7 +39,10 @@ type AttackSwingRowProps = {
   isKillingBlow: boolean;
   /** Charge row the engine uses: the chosen base, or none when not charging. */
   chargeAttackIndex: number;
-  remainingHpIfHit: number;
+  /** Enemy HP before this swing and after it if every pick hits. */
+  hp: StatTransition;
+  def: StatTransition;
+  armor: StatTransition;
   momentum: number;
   bonusTime: boolean;
   bonusTimeMomentumPool: number;
@@ -52,7 +56,9 @@ export const AttackSwingRow = ({
   disabled,
   isKillingBlow,
   chargeAttackIndex,
-  remainingHpIfHit,
+  hp,
+  def,
+  armor,
   momentum,
   bonusTime,
   bonusTimeMomentumPool,
@@ -62,8 +68,11 @@ export const AttackSwingRow = ({
   const { attacker, charging, wrapPicks, dispatch } =
     useMeatGrinderSimulation();
   const attackIndex = attack.attackIndex;
-  const armor = attack.armor;
-  const maxNet = maxNetSuccessesForRoll(attack.tac, armor, attack.netHitBonus);
+  const maxNet = maxNetSuccessesForRoll(
+    attack.tac,
+    attack.armor,
+    attack.netHitBonus,
+  );
 
   const hasWrapContinuation = rowHasWrapContinuation(wrapPicks[attackIndex]);
   const kind = attackKind(attacker, attackIndex, chargeAttackIndex);
@@ -131,12 +140,7 @@ export const AttackSwingRow = ({
           />
         </div>
       </div>
-      <AttackStatsAside
-        defMinRoll={attack.defMinRoll}
-        armor={armor}
-        momentum={momentum}
-        remainingHpIfHit={remainingHpIfHit}
-      />
+      <AttackStatsAside def={def} armor={armor} hp={hp} momentum={momentum} />
     </div>
   );
 };

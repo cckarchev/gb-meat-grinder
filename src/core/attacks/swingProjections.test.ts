@@ -83,6 +83,12 @@ describe('projectSwings', () => {
     expect(projection.remainingHp).toEqual([5, 3]);
   });
 
+  it('starts the swings from HP left after activated-trait damage', () => {
+    expect(projectSwings(input()).startingHp).toBe(10);
+    expect(projectSwings(input({ flatDamage: 3 })).startingHp).toBe(7);
+    expect(projectSwings(input({ flatDamage: 12 })).startingHp).toBe(0);
+  });
+
   it('never drops HP below zero', () => {
     expect(projectSwings(input({ targetHp: 3 })).remainingHp).toEqual([1, 0]);
   });
