@@ -1,4 +1,5 @@
 import type {
+  ActivationOrderParams,
   ActivationRollParams,
   AttackRollContext,
 } from '@/core/attacks/attackSequence.types';
@@ -254,6 +255,15 @@ export const modsWith = (
   return { ...NO_MODS, ...overrides };
 };
 
+/** What decides the swing order for `attacker`, with no damage mods unless given. */
+export const orderFor = (
+  attacker: AttackerData,
+  activeBaseCount: number,
+  damageMods: PlaybookDamageMods = NO_MODS,
+): ActivationOrderParams => {
+  return { attacker, damageMods, activeBaseCount };
+};
+
 /** A swing that deals nothing besides its card results: no plays, no charge. */
 export const NO_SWING_EXTRAS: SwingDamageExtras = {
   playDamageBySlot: [],
@@ -335,4 +345,12 @@ export const makeRollContext = (
     prob: 1,
     ...overrides,
   };
+};
+
+/** A passive trait with flat damage that must never count as activated damage. */
+export const PASSIVE_TRAIT: CharacterTrait = {
+  id: 'passive',
+  label: 'Passive',
+  tooltip: '',
+  flatDamage: 3,
 };

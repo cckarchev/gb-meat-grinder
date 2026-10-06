@@ -1,17 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { thresher } from '@/data/attackers/thresher';
-import {
-  initialState,
-  PICK_THRESHER,
-  PICK_VETERAN_BOAR,
-  pick,
-  reduce,
-} from '@/gbMeatGrinder/reducer/reducerTestHelpers';
+import { veteranBoar } from '@/data/attackers/veteranBoar';
+import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
+import { pick, reduce } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
 
 describe('re-clamping the plan', () => {
   // Thresher: TAC 7 vs ARM 1 reaches 6 net, so `m4` (net 6) is legal.
   const withM4 = () => {
-    return reduce(initialState(PICK_THRESHER), pick(0, 'm4'));
+    return reduce(stateForAttacker(thresher), pick(0, 'm4'));
   };
 
   it('downgrades picks when ARM rises', () => {
@@ -55,7 +51,7 @@ describe('re-clamping the plan', () => {
   });
 
   it('keeps a KD line with a dodge when the target is already Knocked Down', () => {
-    const state = reduce(initialState(PICK_THRESHER), pick(0, 'kd_dodge'), {
+    const state = reduce(stateForAttacker(thresher), pick(0, 'kd_dodge'), {
       type: 'enemyKnockedDown',
       value: true,
     });
@@ -64,7 +60,7 @@ describe('re-clamping the plan', () => {
   });
 
   it('replaces a bare KD when the target is already Knocked Down', () => {
-    const state = reduce(initialState(PICK_VETERAN_BOAR), pick(0, 'kd'), {
+    const state = reduce(stateForAttacker(veteranBoar), pick(0, 'kd'), {
       type: 'enemyKnockedDown',
       value: true,
     });

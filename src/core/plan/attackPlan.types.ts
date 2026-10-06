@@ -3,10 +3,8 @@ import type {
   CharacterPlayPick,
   CharacterPlayPickSlot,
   PlaybookChoiceId,
-  PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
 
 export type AttackPlan = {
   wrapPicks: WrapPick[][];
@@ -19,25 +17,20 @@ export type AttackPlanRow = {
   plays: CharacterPlayPickSlot[];
 };
 
-/** A playbook line chosen (or cleared, with `null`) for one wrap slot of one attack. */
-export type WrapChoiceEdit = {
+/** One wrap slot of one attack. */
+export type PickPosition = {
   attackIndex: number;
   pickIndex: number;
+};
+
+/** A playbook line chosen (or cleared, with `null`) for one wrap slot of one attack. */
+export type WrapChoiceEdit = PickPosition & {
   id: PlaybookChoiceId | null;
 };
 
 /** A character play chosen for one wrap slot of one attack. */
-export type CharacterPlayPickEdit = {
-  attackIndex: number;
-  pickIndex: number;
+export type CharacterPlayPickEdit = PickPosition & {
   pick: CharacterPlayPick;
-};
-
-/** What a character play edit needs to re-check the later plays. */
-export type CharacterPlayEditParams = {
-  attacker: AttackerData;
-  damageMods: PlaybookDamageMods;
-  activeBaseCount: number;
 };
 
 /** Inputs that bound a legal attack plan; see `clampAttackPlan`. */

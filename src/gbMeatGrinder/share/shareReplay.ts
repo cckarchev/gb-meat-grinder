@@ -1,13 +1,12 @@
 /**
- * Share links: the selected model in plain text plus every other choice packed
- * into one versioned base64url blob. Decoding replays the blob as reducer
- * actions on the model's fresh state, so a stale or tampered link goes through
- * the same validation and clamping as clicks in the UI.
+ * Share links, decoding side: the blob is replayed as reducer actions on the
+ * model's fresh state, so a stale or tampered link goes through the same
+ * validation and clamping as clicks in the UI.
  */
 
-import { availableBuffs } from '@/core/damage/damage';
+import { availableBuffs } from '@/core/attackers/buffsAndTraits';
 import { playbookIndex } from '@/core/playbook/playbookIndex';
-import { fromBase64Url, toBase64Url } from '@/core/shared/base64Url';
+import { fromBase64Url } from '@/core/shared/base64Url';
 import { clamp } from '@/core/shared/clamp';
 import {
   ARM_MAX,
@@ -18,167 +17,23 @@ import {
   HP_MIN,
 } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
-import { ATTACKERS } from '@/data/attackers/registry';
+import { findAttackerById } from '@/data/attackers/registry';
 import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
 import { meatGrinderReducer } from '@/gbMeatGrinder/reducer/meatGrinderReducer';
 import type {
+  BooleanActionType,
   MeatGrinderAction,
   MeatGrinderState,
+  NumberActionType,
 } from '@/gbMeatGrinder/reducer/reducer.types';
 import { attackerOf } from '@/gbMeatGrinder/reducer/stateSelectors';
-
-export const SHARE_MODEL_PARAM = 'model';
-export const SHARE_STATE_PARAM = 's';
-
-const SHARE_WIRE_VERSION = 1;
-
-type Slot = string | null;
-
-/** Short keys keep the link short; every field but `v` is optional on decode. */
-type ShareWire = {
-  v: number;
-  /** Enemy DEF, ARM, HP. */
-  d: number;
-  a: number;
-  h: number;
-  /** Influence, charging, charge row. */
-  i: number;
-  c: boolean;
-  ci: number;
-  /** Cover, Defensive Stance, Knocked Down, Snared, Resilience. */
-  cv: boolean;
-  ds: boolean;
-  kd: boolean;
-  sn: boolean;
-  rs: boolean;
-  /** Starting momentum, Ganging Up, Crowding Out. */
-  m: number;
-  g: number;
-  co: number;
-  /** Tough Hide, Burning, Assist engaged. */
-  th: boolean;
-  bu: boolean;
-  ae: boolean;
-  /** Ids of the active guild buffs and character traits. */
-  b: string[];
-  t: string[];
-  /** Bonus Time per attack, wrap picks and character plays per attack. */
-  bt: boolean[];
-  w: Slot[][];
-  p: Slot[][];
-};
-
-const activeIds = (flags: Record<string, boolean>): string[] => {
-  return Object.keys(flags).filter((id) => flags[id]);
-};
-
-/** Empty slots at the end of a row replay as no-ops, so they are left out. */
-const withoutTrailingEmptySlots = (row: readonly Slot[]): Slot[] => {
-  let keptCount = row.length;
-
-  while (keptCount > 0 && row[keptCount - 1] === null) {
-    keptCount--;
-  }
-
-  return row.slice(0, keptCount);
-};
-
-const wireOf = (state: MeatGrinderState): ShareWire => {
-  return {
-    v: SHARE_WIRE_VERSION,
-    d: state.enemyDef,
-    a: state.armor,
-    h: state.hp,
-    i: state.influence,
-    c: state.charging,
-    ci: state.chargeAttackIndex,
-    cv: state.enemyHasCover,
-    ds: state.enemyDefensiveStance,
-    kd: state.enemyKnockedDown,
-    sn: state.enemySnared,
-    rs: state.enemyResilience,
-    m: state.startingMomentum,
-    g: state.gangingUp,
-    co: state.crowdingOut,
-    th: state.damageMods.toughHide,
-    bu: state.damageMods.targetBurning,
-    ae: state.damageMods.assistEngaged,
-    b: activeIds(state.damageMods.buffs),
-    t: activeIds(state.activeTraits),
-    bt: state.bonusTimeByAttack,
-    w: state.attackPlan.wrapPicks.map(withoutTrailingEmptySlots),
-    p: state.attackPlan.characterPlayPicks.map(withoutTrailingEmptySlots),
-  };
-};
-
-type WireValue = ShareWire[keyof ShareWire];
-
-const sameWireValue = (a: unknown, b: unknown): boolean => {
-  return JSON.stringify(a) === JSON.stringify(b);
-};
-
-/** `items` without the trailing entries that match `defaults` index by index. */
-const withoutTrailingDefaults = (
-  items: readonly unknown[],
-  defaults: readonly unknown[],
-): unknown[] => {
-  let keptCount = items.length;
-
-  while (
-    keptCount > 0 &&
-    sameWireValue(items[keptCount - 1], defaults[keptCount - 1])
-  ) {
-    keptCount--;
-  }
-
-  return items.slice(0, keptCount);
-};
-
-/** The part of `value` a decoder starting from `defaultValue` needs, or `undefined`. */
-const wireDelta = (value: WireValue, defaultValue: WireValue): unknown => {
-  if (Array.isArray(value) && Array.isArray(defaultValue)) {
-    const kept = withoutTrailingDefaults(value, defaultValue);
-
-    return kept.length > 0 ? kept : undefined;
-  }
-
-  return sameWireValue(value, defaultValue) ? undefined : value;
-};
-
-/**
- * Only the fields that differ from the model's fresh state; the decoder starts
- * from that same state, so whatever is left out comes back as the default.
- */
-const compactWire = (wire: ShareWire, defaults: ShareWire): WireFields => {
-  const compact: WireFields = { v: SHARE_WIRE_VERSION };
-  const keys = Object.keys(wire) as (keyof ShareWire)[];
-
-  for (const key of keys) {
-    const delta = wireDelta(wire[key], defaults[key]);
-
-    if (delta !== undefined) {
-      compact[key] = delta;
-    }
-  }
-
-  return compact;
-};
-
-/** The model in plain text, plus the encoded choices when any differ from its defaults. */
-export const shareParamsOf = (state: MeatGrinderState): URLSearchParams => {
-  const defaults = stateForAttacker(attackerOf(state));
-  const compact = compactWire(wireOf(state), wireOf(defaults));
-  const params = new URLSearchParams({ [SHARE_MODEL_PARAM]: state.attackerId });
-  const hasChoices = Object.keys(compact).some((key) => key !== 'v');
-
-  if (hasChoices) {
-    params.set(SHARE_STATE_PARAM, toBase64Url(JSON.stringify(compact)));
-  }
-
-  return params;
-};
-
-type WireFields = Partial<Record<keyof ShareWire, unknown>>;
+import {
+  SHARE_MODEL_PARAM,
+  SHARE_STATE_PARAM,
+  SHARE_WIRE_VERSION,
+  type Slot,
+  type WireFields,
+} from '@/gbMeatGrinder/share/shareWire';
 
 const readNumber = (value: unknown): number | undefined => {
   const isFiniteNumber = typeof value === 'number' && Number.isFinite(value);
@@ -227,27 +82,6 @@ const parseWire = (encoded: string): WireFields | null => {
     return null;
   }
 };
-
-type NumberActionType =
-  | 'enemyDef'
-  | 'armor'
-  | 'hp'
-  | 'influence'
-  | 'chargeAttackIndex'
-  | 'startingMomentum'
-  | 'gangingUp'
-  | 'crowdingOut';
-
-type BooleanActionType =
-  | 'charging'
-  | 'enemyHasCover'
-  | 'enemyDefensiveStance'
-  | 'enemyKnockedDown'
-  | 'enemySnared'
-  | 'enemyResilience'
-  | 'toughHide'
-  | 'targetBurning'
-  | 'assistEngaged';
 
 /** Builds the replay, skipping fields that are missing or the wrong type. */
 const createActionList = () => {
@@ -333,6 +167,31 @@ const setupActions = (
   return actions;
 };
 
+/** One attack's share of the wire, already read and type-checked. */
+type AttackReplay = {
+  bonusTime: boolean | undefined;
+  wrapRow: Slot[];
+  playRow: Slot[];
+};
+
+/** The wire's per-attack fields, read once and split by attack. */
+const attackReplaysOf = (
+  wire: WireFields,
+  attackCount: number,
+): AttackReplay[] => {
+  const bonusTimes = readArray(wire.bt);
+  const wrapGrid = readGrid(wire.w);
+  const playGrid = readGrid(wire.p);
+
+  return Array.from({ length: attackCount }, (_, attackIndex) => {
+    return {
+      bonusTime: readBoolean(bonusTimes[attackIndex]),
+      wrapRow: wrapGrid[attackIndex] ?? [],
+      playRow: playGrid[attackIndex] ?? [],
+    };
+  });
+};
+
 /**
  * One attack's Bonus Time, then its picks slot by slot. Slots the current plan
  * does not have, and lines not on the card, are skipped: a pick can only open
@@ -341,11 +200,9 @@ const setupActions = (
 const replayAttack = (
   state: MeatGrinderState,
   attackIndex: number,
-  wire: WireFields,
+  replay: AttackReplay,
 ): MeatGrinderState => {
-  const bonusTime = readBoolean(readArray(wire.bt)[attackIndex]);
-  const wrapRow = readGrid(wire.w)[attackIndex] ?? [];
-  const playRow = readGrid(wire.p)[attackIndex] ?? [];
+  const { bonusTime, wrapRow, playRow } = replay;
 
   let next = state;
 
@@ -357,11 +214,11 @@ const replayAttack = (
     });
   }
 
-  const lineIds = playbookIndex(attackerOf(state)).byId;
+  const linesById = playbookIndex(attackerOf(state)).byId;
 
   wrapRow.forEach((id, pickIndex) => {
     const slotCount = next.attackPlan.wrapPicks[attackIndex].length;
-    const isKnownSlot = id === null || lineIds.has(id);
+    const isKnownSlot = id === null || linesById.has(id);
 
     if (pickIndex >= slotCount || !isKnownSlot) {
       return;
@@ -402,13 +259,12 @@ const replayWire = (
   );
 
   const attackCount = setup.attackPlan.wrapPicks.length;
-  let state = setup;
+  const replays = attackReplaysOf(wire, attackCount);
 
-  for (let attackIndex = 0; attackIndex < attackCount; attackIndex++) {
-    state = replayAttack(state, attackIndex, wire);
-  }
-
-  return state;
+  return replays.reduce(
+    (state, replay, attackIndex) => replayAttack(state, attackIndex, replay),
+    setup,
+  );
 };
 
 /**
@@ -419,7 +275,7 @@ export const stateFromShareParams = (
   params: URLSearchParams,
 ): MeatGrinderState | null => {
   const modelId = params.get(SHARE_MODEL_PARAM);
-  const attacker = ATTACKERS.find((candidate) => candidate.id === modelId);
+  const attacker = findAttackerById(modelId);
 
   if (!attacker) {
     return null;

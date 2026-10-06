@@ -13,8 +13,8 @@ import {
   picksBeforeInActivation,
 } from '@/core/attacks/attackRows';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
+import { rowDamageIfAllHit } from '@/core/damage/rowDamage';
 import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
-import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { pickEffectsForLaterSwings } from '@/core/playbook/rowEffects';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import {
@@ -22,6 +22,7 @@ import {
   modsWith,
   NEUTRAL_TARGET_HP,
   NO_MODS,
+  orderFor,
 } from '@/core/testing/fixtures';
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
@@ -38,19 +39,21 @@ describe('activation order', () => {
   const wrapPicks = [['two'], ['dodge'], [null], [null]];
 
   it('puts each damaging base before its Berserker swing', () => {
-    expect(activationAttackIndices(berserker, wrapPicks, NO_MODS, 2)).toEqual([
+    expect(activationAttackIndices(orderFor(berserker, 2), wrapPicks)).toEqual([
       0, 2, 1,
     ]);
   });
 
   it('activates rows by base count and Berserker damage', () => {
-    expect(attackRowIsActive(berserker, wrapPicks, 1, NO_MODS, 1)).toBe(false);
-    expect(attackRowIsActive(berserker, wrapPicks, 2, NO_MODS, 2)).toBe(true);
-    expect(attackRowIsActive(berserker, wrapPicks, 3, NO_MODS, 2)).toBe(false);
+    const oneBase = orderFor(berserker, 1);
+    const twoBases = orderFor(berserker, 2);
+    const noBerserker = orderFor(makeAttacker(), 2);
 
-    expect(attackRowIsActive(makeAttacker(), wrapPicks, 2, NO_MODS, 2)).toBe(
-      false,
-    );
+    expect(attackRowIsActive(oneBase, wrapPicks, 1)).toBe(false);
+    expect(attackRowIsActive(twoBases, wrapPicks, 2)).toBe(true);
+    expect(attackRowIsActive(twoBases, wrapPicks, 3)).toBe(false);
+
+    expect(attackRowIsActive(noBerserker, wrapPicks, 2)).toBe(false);
   });
 
   it('maps Berserker rows to their source base', () => {
@@ -124,41 +127,28 @@ describe('rows outside the activation', () => {
 
     expect(timeline[inactiveRow].effectsBefore.armorReduction).toBe(0);
 
+    const order = orderFor(attacker, activeBaseCount);
+    const position = { attackIndex: inactiveRow, pickIndex: 0 };
+
     expect(
       characterPlayUsageBeforePick(
-        attacker,
-        wrapPicks,
-        plays,
-        inactiveRow,
-        0,
-        NO_MODS,
-        activeBaseCount,
+        order,
+        { wrapPicks, characterPlayPicks: plays },
+        position,
       ).size,
     ).toBe(0);
 
-    expect(
-      knockDownTakenBeforePick(
-        attacker,
-        wrapPicks,
-        inactiveRow,
-        0,
-        NO_MODS,
-        activeBaseCount,
-        false,
-      ),
-    ).toBe(false);
+    expect(knockDownTakenBeforePick(order, wrapPicks, position, false)).toBe(
+      false,
+    );
   });
 
   it('give no effects for an empty pick', () => {
     expect(
       pickEffectsForLaterSwings(
-        attacker,
-        [[null]],
-        [[null]],
-        0,
-        0,
-        NO_MODS,
-        1,
+        orderFor(attacker, 1),
+        { wrapPicks: [[null]], characterPlayPicks: [[null]] },
+        { attackIndex: 0, pickIndex: 0 },
         false,
       ),
     ).toEqual(NO_EFFECTS);
@@ -170,14 +160,10 @@ describe('picksBeforeInActivation', () => {
   const wrapPicks = [['two', null], ['one'], ['one'], [null]];
 
   const picksBefore = (attackIndex: number, pickIndex: number) => {
-    return picksBeforeInActivation(
-      berserker,
-      wrapPicks,
-      NO_MODS,
-      2,
+    return picksBeforeInActivation(orderFor(berserker, 2), wrapPicks, {
       attackIndex,
       pickIndex,
-    );
+    });
   };
 
   it('walks earlier swings in activation order, Berserkers included', () => {

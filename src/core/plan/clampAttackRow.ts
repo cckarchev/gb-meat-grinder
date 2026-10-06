@@ -43,13 +43,7 @@ export const clampAttackRow = (
 ): boolean => {
   let changed = alignPlaySlots(draft, attackIndex);
 
-  const active = attackRowIsActive(
-    params.attacker,
-    draft.wrapPicks,
-    attackIndex,
-    params.damageMods,
-    params.activeBaseCount,
-  );
+  const active = attackRowIsActive(params, draft.wrapPicks, attackIndex);
 
   if (!active) {
     const alreadyEmpty =

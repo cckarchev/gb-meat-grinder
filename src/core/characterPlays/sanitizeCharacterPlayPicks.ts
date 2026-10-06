@@ -1,26 +1,22 @@
 /** Repair character-play rows after the wrap picks or earlier plays changed. */
 
+import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
 import { characterPlayAvailabilityForPick } from '@/core/characterPlays/characterPlayUsage';
-import type {
-  CharacterPlayPickSlot,
-  PlaybookDamageMods,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
+import type { AttackPlan } from '@/core/plan/attackPlan.types';
+import type { CharacterPlayPickSlot } from '@/core/playbook/playbook.types';
 import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
-import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /**
  * Fix play slots that no longer match their pick, or that hold a Once Per Turn
  * play an earlier pick already used.
  */
 export const sanitizeCharacterPlayPicks = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
+  order: ActivationOrderParams,
+  plan: AttackPlan,
 ): { characterPlayPicks: CharacterPlayPickSlot[][]; changed: boolean } => {
-  const next: CharacterPlayPickSlot[][] = characterPlayPicks.map((row) => [
+  const { attacker } = order;
+  const { wrapPicks } = plan;
+  const next: CharacterPlayPickSlot[][] = plan.characterPlayPicks.map((row) => [
     ...row,
   ]);
 
@@ -42,14 +38,11 @@ export const sanitizeCharacterPlayPicks = (
         continue;
       }
 
+      // Earlier slots of `next` are already repaired, so later ones see them.
       const { available, depleted } = characterPlayAvailabilityForPick(
-        attacker,
-        wrapPicks,
-        next,
-        attackIndex,
-        slot,
-        damageMods,
-        activeBaseCount,
+        order,
+        { wrapPicks, characterPlayPicks: next },
+        { attackIndex, pickIndex: slot },
       );
 
       if (depleted) {

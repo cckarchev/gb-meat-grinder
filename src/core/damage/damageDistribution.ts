@@ -6,7 +6,7 @@ import type {
   DamageForNet,
   ReadonlyDamageDistribution,
 } from '@/core/damage/damage.types';
-import { binomialPmf } from '@/core/damage/probability';
+import { binomialPmf, maxNetSuccessesForRoll } from '@/core/damage/probability';
 
 /** Add `prob` to the probability already recorded for `damage`. */
 export const addProbability = (
@@ -44,7 +44,8 @@ export const swingDamageDistribution = (
   damageForNet: DamageForNet,
 ): DamageDistribution => {
   const { tac, armor, pHit, netHitBonus } = attack;
-  const maxNet = Math.max(0, tac - armor);
+  // Net from the roll alone; the bonus is added to each level below.
+  const maxNet = maxNetSuccessesForRoll(tac, armor, 0);
   const dist: DamageDistribution = new Map();
 
   for (let net = 0; net <= maxNet; net++) {

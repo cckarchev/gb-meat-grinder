@@ -1,10 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { deriveSimulation } from '@/core/activation/simulation';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
-import {
-  initialState,
-  PICK_VETERAN_BOAR,
-} from '@/gbMeatGrinder/reducer/reducerTestHelpers';
+import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
 import {
   pickUiEngineResults,
   UI_ENGINE_RESULT_KEYS,
@@ -14,7 +11,7 @@ describe('pickUiEngineResults', () => {
   it('copies exactly the engine results the UI reads', () => {
     const derived = deriveSimulation(
       veteranBoar,
-      initialState(PICK_VETERAN_BOAR),
+      stateForAttacker(veteranBoar),
     );
 
     const uiResults = pickUiEngineResults(derived);

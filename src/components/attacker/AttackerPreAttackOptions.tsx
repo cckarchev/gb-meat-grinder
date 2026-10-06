@@ -2,14 +2,19 @@ import {
   LABEL_ACTIVATED_TRAITS,
   LABEL_CHARGE_COST,
   LABEL_CHARGE_COST_FURIOUS,
+  LABEL_CHARGING,
   LABEL_GUILD_BUFFS,
+  labelActivatedTrait,
   TOOLTIP_CHARGE,
   TOOLTIP_CHARGE_FURIOUS,
 } from '@/components/attacker/attackerPanelCopy';
 import { GuildBuffCheckbox } from '@/components/ui/GuildBuffCheckbox';
 import { ToggleGroup, ToggleGroupStack } from '@/components/ui/ToggleGroup';
 import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
-import { activatableTraits, guildBuffsFor } from '@/core/damage/damage';
+import {
+  activatableTraits,
+  guildBuffsFor,
+} from '@/core/attackers/buffsAndTraits';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 /** Charging, then guild buffs and activated traits under guild-colored titles. */
@@ -36,7 +41,8 @@ export const AttackerPreAttackOptions = () => {
         onChange={(value) => dispatch({ type: 'charging', value })}
         tooltip={chargeTooltip}
       >
-        Charging{chargeCostLabel}
+        {LABEL_CHARGING}
+        {chargeCostLabel}
       </TooltipCheckbox>
       {buffs.length > 0 ? (
         <ToggleGroup title={LABEL_GUILD_BUFFS} color={attacker.guild.color}>
@@ -59,7 +65,7 @@ export const AttackerPreAttackOptions = () => {
               }
               tooltip={trait.tooltip}
             >
-              {trait.label} (+{trait.flatDamage ?? 0})
+              {labelActivatedTrait(trait.label, trait.flatDamage ?? 0)}
             </TooltipCheckbox>
           ))}
         </ToggleGroup>

@@ -3,6 +3,7 @@ import {
   ATTACKERS,
   attackerById,
   DEFAULT_ATTACKER,
+  findAttackerById,
   randomAttacker,
 } from '@/data/attackers/registry';
 
@@ -15,6 +16,19 @@ describe('attackerById', () => {
 
   it('falls back to the default model for an unknown id', () => {
     expect(attackerById('nobody')).toBe(DEFAULT_ATTACKER);
+  });
+});
+
+describe('findAttackerById', () => {
+  it('finds every registered model', () => {
+    for (const attacker of ATTACKERS) {
+      expect(findAttackerById(attacker.id)).toBe(attacker);
+    }
+  });
+
+  it('finds nothing for an unknown or missing id', () => {
+    expect(findAttackerById('nobody')).toBeUndefined();
+    expect(findAttackerById(null)).toBeUndefined();
   });
 });
 

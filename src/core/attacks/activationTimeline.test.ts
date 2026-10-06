@@ -5,7 +5,10 @@ import {
   swingStateAt,
 } from '@/core/attacks/activationTimeline';
 import type { TimelineParams } from '@/core/attacks/activationTimeline.types';
-import { playDamageForHealth } from '@/core/attacks/swingPlayDamage';
+import {
+  playDamageForHealth,
+  slotScalesWithHealth,
+} from '@/core/attacks/swingPlayDamage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type { CharacterPlay } from '@/core/playbook/playbook.types';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
@@ -394,6 +397,13 @@ describe('character plays that deal damage from the target current HP', () => {
     const hpLeft = 9;
 
     expect(playDamageForHealth(timeline[1], hpLeft)).toEqual([4]);
+  });
+
+  it('marks only the slot whose play scales with the HP left', () => {
+    const timeline = activationTimeline(fourThenHalf, params({ attacker }));
+
+    expect(slotScalesWithHealth(timeline[0], 0)).toBe(false);
+    expect(slotScalesWithHealth(timeline[1], 0)).toBe(true);
   });
 });
 

@@ -1,18 +1,24 @@
 /** Per-row damage totals under the "every pick hits" projection. */
 
 import {
+  attackerTraits,
+  availableBuffs,
+  joinTraitLabels,
+} from '@/core/attackers/buffsAndTraits';
+import {
   swingDamageIfAllHit,
   swingStateAt,
   swingStateDamageMods,
 } from '@/core/attacks/activationTimeline';
-import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
+import type {
+  ActivationTimeline,
+  SwingState,
+} from '@/core/attacks/activationTimeline.types';
 import { attackRowIsActive } from '@/core/attacks/attackRows';
+import { slotScalesWithHealth } from '@/core/attacks/swingPlayDamage';
 import {
-  attackerTraits,
-  availableBuffs,
   effectivePlaybookDamage,
   effectivePlayDamage,
-  joinTraitLabels,
   withSwingDamageBonus,
 } from '@/core/damage/damage';
 import type {
@@ -68,7 +74,7 @@ export const characterPlayDamageSources = (
         return;
       }
 
-      const scalesWithHealth = state.healthPlayDivisorBySlot[slot] > 0;
+      const scalesWithHealth = slotScalesWithHealth(state, slot);
       const amount = scalesWithHealth
         ? state.playDamageBySlot[slot]
         : (play.damage ?? 0);
@@ -85,6 +91,125 @@ export const characterPlayDamageSources = (
 /** Effective damage of a printed amount: playbook results and plays differ. */
 type DamageOf = typeof effectivePlaybookDamage;
 
+/** A printed damage amount and how to turn it into effective damage. */
+type PrintedAmount = {
+  printed: number;
+  mods: PlaybookDamageMods;
+  damageOf: DamageOf;
+};
+
+/** One swing's card damage: the printed pips and what the swing bonus adds. */
+type SwingCardAmounts = {
+  rawCardDamage: number;
+  passionBonus: number;
+  assistBonus: number;
+  amounts: PrintedAmount[];
+};
+
+/**
+ * The card damage one swing's picks deal, with the share of its swing bonus
+ * that is Burning Passion and the share that is the carried Assist DMG.
+ */
+const swingCardAmounts = (
+  attacker: AttackerData,
+  damageMods: PlaybookDamageMods,
+  picks: readonly WrapPick[],
+  state: SwingState,
+): SwingCardAmounts => {
+  const swingMods = swingStateDamageMods(damageMods, state);
+
+  // The swing bonus is Burning Passion plus the carried Assist DMG.
+  const carriedBonus = state.effectsBefore.damageBonus;
+  const passionOnly = state.playbookDamageBonus - carriedBonus;
+  const passionMods = withSwingDamageBonus(damageMods, passionOnly);
+
+  let rawCardDamage = 0;
+  let passionBonus = 0;
+  let assistBonus = 0;
+  const amounts: PrintedAmount[] = [];
+
+  for (const id of picks) {
+    if (id == null) {
+      continue;
+    }
+
+    const cardDamage = getPlaybookResult(attacker, id).damage;
+
+    if (cardDamage <= 0) {
+      continue;
+    }
+
+    rawCardDamage += cardDamage;
+    amounts.push({
+      printed: cardDamage,
+      mods: swingMods,
+      damageOf: effectivePlaybookDamage,
+    });
+
+    const withSwingBonus = effectivePlaybookDamage(
+      attacker,
+      cardDamage,
+      swingMods,
+    );
+    const withPassion = effectivePlaybookDamage(
+      attacker,
+      cardDamage,
+      passionMods,
+    );
+    const withNeither = effectivePlaybookDamage(
+      attacker,
+      cardDamage,
+      damageMods,
+    );
+
+    passionBonus += withPassion - withNeither;
+    assistBonus += withSwingBonus - withPassion;
+  }
+
+  return { rawCardDamage, passionBonus, assistBonus, amounts };
+};
+
+/** One swing's play damage: printed amounts, plus plays no modifier touches. */
+type SwingPlayAmounts = {
+  amounts: PrintedAmount[];
+  unmodifiedDamage: number;
+};
+
+/**
+ * The damaging plays one swing triggers. Play damage is not a playbook damage
+ * result, so no Burning Passion; a play scaled by current HP is unmodified, so
+ * it only adds to the total.
+ */
+const swingPlayAmounts = (
+  damageMods: PlaybookDamageMods,
+  state: SwingState,
+): SwingPlayAmounts => {
+  const amounts: PrintedAmount[] = [];
+  let unmodifiedDamage = 0;
+
+  state.damagingPlayBySlot.forEach((play, slot) => {
+    if (play == null) {
+      return;
+    }
+
+    const scalesWithHealth = slotScalesWithHealth(state, slot);
+
+    if (scalesWithHealth) {
+      unmodifiedDamage += state.playDamageBySlot[slot];
+
+      return;
+    }
+
+    amounts.push({
+      printed: play.damage ?? 0,
+      mods: damageMods,
+      damageOf: effectivePlayDamage,
+    });
+  });
+
+  return { amounts, unmodifiedDamage };
+};
+
 /**
  * Sums card pip damage and the marginal effects of Tough Hide and each of the
  * attacker's damage buffs across all active rows (same scope as
@@ -98,6 +223,7 @@ export const damageModifierBreakdown = (
   activeBaseCount: number,
   timeline: ActivationTimeline,
 ): DamageModifierBreakdown => {
+  const order = { attacker, damageMods, activeBaseCount };
   let rawCardDamage = 0;
   let toughHideReduction = 0;
   let totalEffective = 0;
@@ -111,93 +237,30 @@ export const damageModifierBreakdown = (
   }));
 
   for (let attackIndex = 0; attackIndex < wrapPicks.length; attackIndex++) {
-    const active = attackRowIsActive(
-      attacker,
-      wrapPicks,
-      attackIndex,
-      damageMods,
-      activeBaseCount,
-    );
+    const active = attackRowIsActive(order, wrapPicks, attackIndex);
 
     if (!active) {
       continue;
     }
 
     const state = swingStateAt(timeline, attackIndex);
-    const swingMods = swingStateDamageMods(damageMods, state);
+    const cards = swingCardAmounts(
+      attacker,
+      damageMods,
+      wrapPicks[attackIndex],
+      state,
+    );
+    const plays = swingPlayAmounts(damageMods, state);
 
-    // The swing bonus is Burning Passion plus the carried Assist DMG.
-    const carriedBonus = state.effectsBefore.damageBonus;
-    const passionOnly = state.playbookDamageBonus - carriedBonus;
-    const passionMods = withSwingDamageBonus(damageMods, passionOnly);
+    rawCardDamage += cards.rawCardDamage;
+    passionBonus += cards.passionBonus;
+    assistBonus += cards.assistBonus;
+    totalEffective += plays.unmodifiedDamage;
 
-    const printedAmounts: {
-      printed: number;
-      mods: PlaybookDamageMods;
-      damageOf: DamageOf;
-    }[] = [];
-
-    for (const id of wrapPicks[attackIndex]) {
-      if (id == null) {
-        continue;
-      }
-
-      const cardDamage = getPlaybookResult(attacker, id).damage;
-
-      if (cardDamage <= 0) {
-        continue;
-      }
-
-      rawCardDamage += cardDamage;
-      printedAmounts.push({
-        printed: cardDamage,
-        mods: swingMods,
-        damageOf: effectivePlaybookDamage,
-      });
-
-      const withSwingBonus = effectivePlaybookDamage(
-        attacker,
-        cardDamage,
-        swingMods,
-      );
-      const withPassion = effectivePlaybookDamage(
-        attacker,
-        cardDamage,
-        passionMods,
-      );
-      const withNeither = effectivePlaybookDamage(
-        attacker,
-        cardDamage,
-        damageMods,
-      );
-
-      passionBonus += withPassion - withNeither;
-      assistBonus += withSwingBonus - withPassion;
-    }
-
-    // Play damage is not a playbook damage result: no Burning Passion. A play
-    // scaled by current HP is unmodified, so it only adds to the total.
-    state.damagingPlayBySlot.forEach((play, slot) => {
-      if (play == null) {
-        return;
-      }
-
-      const scalesWithHealth = state.healthPlayDivisorBySlot[slot] > 0;
-
-      if (scalesWithHealth) {
-        totalEffective += state.playDamageBySlot[slot];
-
-        return;
-      }
-
-      printedAmounts.push({
-        printed: play.damage ?? 0,
-        mods: damageMods,
-        damageOf: effectivePlayDamage,
-      });
-    });
-
-    for (const { printed, mods, damageOf } of printedAmounts) {
+    for (const { printed, mods, damageOf } of [
+      ...cards.amounts,
+      ...plays.amounts,
+    ]) {
       const effective = damageOf(attacker, printed, mods);
 
       totalEffective += effective;
@@ -253,14 +316,10 @@ export const rowDamageIfAllHit = (
   activeBaseCount: number,
   timeline: ActivationTimeline,
 ): number[] => {
+  const order = { attacker, damageMods, activeBaseCount };
+
   return wrapPicks.map((picks, attackIndex) => {
-    const active = attackRowIsActive(
-      attacker,
-      wrapPicks,
-      attackIndex,
-      damageMods,
-      activeBaseCount,
-    );
+    const active = attackRowIsActive(order, wrapPicks, attackIndex);
 
     if (!active) {
       return 0;

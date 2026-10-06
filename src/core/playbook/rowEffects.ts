@@ -1,15 +1,12 @@
 /** Effects each pick carries into later swings: TAC, DEF and the ARM condition. */
 
+import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
 import { characterPlayPickEffects } from '@/core/characterPlays/characterPlayEffects';
 import { effectivePlayForPick } from '@/core/characterPlays/characterPlayLookup';
 import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
+import type { AttackPlan, PickPosition } from '@/core/plan/attackPlan.types';
 import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
-import type {
-  CharacterPlayPickSlot,
-  PickEffects,
-  PlaybookDamageMods,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
+import type { PickEffects } from '@/core/playbook/playbook.types';
 import {
   choiceUsesCharacterPlay,
   getPlaybookResult,
@@ -30,16 +27,14 @@ const NO_EFFECTS: PickEffects = {
  * pick already used, adds nothing.
  */
 export const pickEffectsForLaterSwings = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
-  attackIndex: number,
-  pickIndex: number,
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
+  order: ActivationOrderParams,
+  plan: AttackPlan,
+  position: PickPosition,
   enemyKnockedDown: boolean,
 ): PickEffects => {
-  const id = wrapPicks[attackIndex][pickIndex];
+  const { attacker, damageMods } = order;
+  const { attackIndex, pickIndex } = position;
+  const id = plan.wrapPicks[attackIndex][pickIndex];
 
   if (id == null) {
     return NO_EFFECTS;
@@ -49,15 +44,7 @@ export const pickEffectsForLaterSwings = (
 
   const redundantKnockDown =
     result.appliesKnockDown &&
-    knockDownTakenBeforePick(
-      attacker,
-      wrapPicks,
-      attackIndex,
-      pickIndex,
-      damageMods,
-      activeBaseCount,
-      enemyKnockedDown,
-    );
+    knockDownTakenBeforePick(order, plan.wrapPicks, position, enemyKnockedDown);
 
   if (redundantKnockDown) {
     return NO_EFFECTS;
@@ -72,19 +59,11 @@ export const pickEffectsForLaterSwings = (
     };
   }
 
-  const used = characterPlayUsageBeforePick(
-    attacker,
-    wrapPicks,
-    characterPlayPicks,
-    attackIndex,
-    pickIndex,
-    damageMods,
-    activeBaseCount,
-  );
+  const used = characterPlayUsageBeforePick(order, plan, position);
 
   const play = effectivePlayForPick(
     attacker,
-    characterPlayPicks,
+    plan.characterPlayPicks,
     attackIndex,
     pickIndex,
   );
@@ -103,12 +82,11 @@ export const pickEffectsForLaterSwings = (
  */
 export const pickEffectName = (
   attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
-  attackIndex: number,
-  pickIndex: number,
+  plan: AttackPlan,
+  position: PickPosition,
 ): string => {
-  const id = wrapPicks[attackIndex][pickIndex];
+  const { attackIndex, pickIndex } = position;
+  const id = plan.wrapPicks[attackIndex][pickIndex];
 
   if (id == null) {
     return '';
@@ -117,7 +95,7 @@ export const pickEffectName = (
   if (choiceUsesCharacterPlay(attacker, id)) {
     const play = effectivePlayForPick(
       attacker,
-      characterPlayPicks,
+      plan.characterPlayPicks,
       attackIndex,
       pickIndex,
     );

@@ -36,10 +36,8 @@ export const resilienceIgnoredAttackIndex = (
   }
 
   const order = activationAttackIndices(
-    attacker,
+    { attacker, damageMods, activeBaseCount },
     wrapPicks,
-    damageMods,
-    activeBaseCount,
   );
 
   return order.length > 0 ? order[0] : NO_ATTACK_INDEX;

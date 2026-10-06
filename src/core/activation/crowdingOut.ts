@@ -1,6 +1,6 @@
 /** Which crowding out values the scenario allows. */
 
-import { activeBuffs } from '@/core/damage/damage';
+import { activeBuffs } from '@/core/attackers/buffsAndTraits';
 import type { PlaybookDamageMods } from '@/core/playbook/playbook.types';
 import type { AttackerData, StatRange } from '@/data/attackers/attacker.types';
 

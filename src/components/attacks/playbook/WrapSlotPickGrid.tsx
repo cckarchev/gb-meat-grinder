@@ -47,24 +47,17 @@ export const WrapSlotPickGrid = ({
   const selectedId = wrapPicks[attackIndex][pickIndex];
   const visibleColumns = wrapSlotColumns(attacker, roll, maxNet, pickIndex);
 
+  const order = { attacker, damageMods, activeBaseCount };
+  const position = { attackIndex, pickIndex };
+
   const knockDownTaken = knockDownTakenBeforePick(
-    attacker,
+    order,
     wrapPicks,
-    attackIndex,
-    pickIndex,
-    damageMods,
-    activeBaseCount,
+    position,
     enemyKnockedDown,
   );
 
-  const tackleTaken = tackleTakenBeforePick(
-    attacker,
-    wrapPicks,
-    attackIndex,
-    pickIndex,
-    damageMods,
-    activeBaseCount,
-  );
+  const tackleTaken = tackleTakenBeforePick(order, wrapPicks, position);
 
   const lockFor = (result: PlaybookResult): PlaybookLineLock | undefined => {
     if (knockDownTaken && knockDownIsOnlyEffect(result)) {

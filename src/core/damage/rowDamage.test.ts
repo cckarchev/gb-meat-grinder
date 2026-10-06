@@ -4,7 +4,7 @@ import {
   characterPlayDamageSources,
   damageModifierBreakdown,
   rowDamageIfAllHit,
-} from '@/core/playbook/rowDamage';
+} from '@/core/damage/rowDamage';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import {
   makeAttacker,

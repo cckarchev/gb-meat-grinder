@@ -28,6 +28,15 @@ export type ActivationRollParams = {
   enemyKnockedDown: boolean;
 };
 
+/**
+ * What decides which swings the activation makes and in what order: the active
+ * bases, each followed by its berserker when that base dealt damage.
+ */
+export type ActivationOrderParams = Pick<
+  ActivationRollParams,
+  'attacker' | 'damageMods' | 'activeBaseCount'
+>;
+
 export type AttackRollContext = {
   attackIndex: number;
   tac: number;

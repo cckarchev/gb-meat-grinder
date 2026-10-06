@@ -1,6 +1,7 @@
 /** Which playbook lines earn momentum once Tough Hide and buffs are applied. */
 
-import { activeBuffs, effectiveDamageForChoice } from '@/core/damage/damage';
+import { activeBuffs } from '@/core/attackers/buffsAndTraits';
+import { effectiveDamageForChoice } from '@/core/damage/damage';
 import type {
   MomentousLineStyle,
   PlaybookChoiceId,

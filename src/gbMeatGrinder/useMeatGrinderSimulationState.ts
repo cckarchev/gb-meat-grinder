@@ -12,8 +12,8 @@ import {
   launchEmbedBase,
   launchSharedState,
 } from '@/gbMeatGrinder/share/launchUrl';
-import { shareParamsOf } from '@/gbMeatGrinder/share/shareState';
 import { buildShareUrl } from '@/gbMeatGrinder/share/shareUrl';
+import { shareParamsOf } from '@/gbMeatGrinder/share/shareWire';
 import { pickUiEngineResults } from '@/gbMeatGrinder/uiEngineResults';
 
 /** The shared state the app was opened with, else a random model. */

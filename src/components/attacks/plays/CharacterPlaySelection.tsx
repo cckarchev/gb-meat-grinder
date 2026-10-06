@@ -30,18 +30,16 @@ export const CharacterPlaySelection = ({
     dispatch,
   } = useMeatGrinderSimulation();
 
+  const order = { attacker, damageMods, activeBaseCount };
+  const plan = { wrapPicks, characterPlayPicks };
+
   const actionable = pickIndexes
     .map((pickIndex) => ({
       pickIndex,
-      ...characterPlayAvailabilityForPick(
-        attacker,
-        wrapPicks,
-        characterPlayPicks,
+      ...characterPlayAvailabilityForPick(order, plan, {
         attackIndex,
         pickIndex,
-        damageMods,
-        activeBaseCount,
-      ),
+      }),
     }))
     .filter((slot) => !slot.depleted);
 

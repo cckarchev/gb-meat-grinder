@@ -5,7 +5,7 @@
  */
 
 import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
-import { stateFromShareParams } from '@/gbMeatGrinder/share/shareState';
+import { stateFromShareParams } from '@/gbMeatGrinder/share/shareReplay';
 import { EMBED_PARAM, validEmbedBase } from '@/gbMeatGrinder/share/shareUrl';
 
 const launchParams = new URLSearchParams(window.location.search);

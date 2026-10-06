@@ -11,26 +11,34 @@ export type MeatGrinderState = ActivationScenario & {
   startingMomentum: number;
 };
 
+/** Actions that set one number and carry nothing else. */
+export type NumberActionType =
+  | 'enemyDef'
+  | 'armor'
+  | 'hp'
+  | 'influence'
+  | 'chargeAttackIndex'
+  | 'startingMomentum'
+  | 'gangingUp'
+  | 'crowdingOut';
+
+/** Actions that set one flag and carry nothing else. */
+export type BooleanActionType =
+  | 'charging'
+  | 'enemyHasCover'
+  | 'enemyDefensiveStance'
+  | 'enemyKnockedDown'
+  | 'enemySnared'
+  | 'enemyResilience'
+  | 'toughHide'
+  | 'targetBurning'
+  | 'assistEngaged';
+
 export type MeatGrinderAction =
   | { type: 'reset' }
   | { type: 'selectAttacker'; id: string }
-  | { type: 'enemyDef'; value: number }
-  | { type: 'armor'; value: number }
-  | { type: 'hp'; value: number }
-  | { type: 'influence'; value: number }
-  | { type: 'charging'; value: boolean }
-  | { type: 'chargeAttackIndex'; value: number }
-  | { type: 'enemyHasCover'; value: boolean }
-  | { type: 'enemyDefensiveStance'; value: boolean }
-  | { type: 'enemyKnockedDown'; value: boolean }
-  | { type: 'enemySnared'; value: boolean }
-  | { type: 'enemyResilience'; value: boolean }
-  | { type: 'startingMomentum'; value: number }
-  | { type: 'gangingUp'; value: number }
-  | { type: 'crowdingOut'; value: number }
-  | { type: 'toughHide'; value: boolean }
-  | { type: 'targetBurning'; value: boolean }
-  | { type: 'assistEngaged'; value: boolean }
+  | { type: NumberActionType; value: number }
+  | { type: BooleanActionType; value: boolean }
   | { type: 'guildBuff'; id: string; value: boolean }
   | { type: 'activeTrait'; id: string; value: boolean }
   | { type: 'bonusTime'; attackIndex: number; value: boolean }

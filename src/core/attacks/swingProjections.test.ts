@@ -5,7 +5,7 @@ import {
   projectSwings,
   type SwingProjectionInput,
 } from '@/core/attacks/swingProjections';
-import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
+import { rowDamageIfAllHit } from '@/core/damage/rowDamage';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import {
   makeAttacker,

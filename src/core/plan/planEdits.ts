@@ -1,10 +1,10 @@
 /** User edits to the plan: picking a line, clearing a continuation, choosing a play. */
 
+import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
 import { playSlotForPick } from '@/core/characterPlays/characterPlayLookup';
 import { sanitizeCharacterPlayPicks } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
 import type {
   AttackPlan,
-  CharacterPlayEditParams,
   CharacterPlayPickEdit,
   WrapChoiceEdit,
 } from '@/core/plan/attackPlan.types';
@@ -103,7 +103,7 @@ export const nextPlanAfterClearWrapContinuation = (
 export const nextPlanAfterCharacterPlayPick = (
   prev: AttackPlan,
   edit: CharacterPlayPickEdit,
-  params: CharacterPlayEditParams,
+  params: ActivationOrderParams,
 ): AttackPlan | null => {
   const { attackIndex, pickIndex, pick } = edit;
 
@@ -123,13 +123,10 @@ export const nextPlanAfterCharacterPlayPick = (
     },
   );
 
-  const { characterPlayPicks: sanitized } = sanitizeCharacterPlayPicks(
-    params.attacker,
-    prev.wrapPicks,
-    nextCharacterPlay,
-    params.damageMods,
-    params.activeBaseCount,
-  );
+  const { characterPlayPicks: sanitized } = sanitizeCharacterPlayPicks(params, {
+    wrapPicks: prev.wrapPicks,
+    characterPlayPicks: nextCharacterPlay,
+  });
 
   return { wrapPicks: prev.wrapPicks, characterPlayPicks: sanitized };
 };

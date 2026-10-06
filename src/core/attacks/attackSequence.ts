@@ -31,16 +31,11 @@ export const computeAttackSequence = (
   params: ActivationRollParams,
 ): { attacks: AttackRollContext[]; timeline: ActivationTimeline } => {
   const { wrapPicks } = plan;
-  const { attacker, armor, damageMods, activeBaseCount } = params;
+  const { attacker, armor } = params;
 
   const attacks: AttackRollContext[] = [];
 
-  const order = activationAttackIndices(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-  );
+  const order = activationAttackIndices(params, wrapPicks);
 
   const timeline = activationTimeline(plan, params);
 

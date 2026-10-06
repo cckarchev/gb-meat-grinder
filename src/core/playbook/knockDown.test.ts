@@ -12,6 +12,7 @@ import {
   makeAttacker,
   NEUTRAL_TARGET_HP,
   NO_MODS,
+  orderFor,
   planOf,
 } from '@/core/testing/fixtures';
 import { crossCut } from '@/data/attackers/crossCut';
@@ -20,19 +21,22 @@ import { thresher } from '@/data/attackers/thresher';
 describe('knockDownTakenBeforePick', () => {
   const attacker = makeAttacker();
   const wrapPicks = [['kd'], ['kd']];
+  const order = orderFor(attacker, 2);
+  const firstSwing = { attackIndex: 0, pickIndex: 0 };
+  const secondSwing = { attackIndex: 1, pickIndex: 0 };
 
   it('allows only the first KD in the activation', () => {
-    expect(
-      knockDownTakenBeforePick(attacker, wrapPicks, 0, 0, NO_MODS, 2, false),
-    ).toBe(false);
+    expect(knockDownTakenBeforePick(order, wrapPicks, firstSwing, false)).toBe(
+      false,
+    );
 
-    expect(
-      knockDownTakenBeforePick(attacker, wrapPicks, 1, 0, NO_MODS, 2, false),
-    ).toBe(true);
+    expect(knockDownTakenBeforePick(order, wrapPicks, secondSwing, false)).toBe(
+      true,
+    );
 
-    expect(
-      knockDownTakenBeforePick(attacker, wrapPicks, 0, 0, NO_MODS, 2, true),
-    ).toBe(true);
+    expect(knockDownTakenBeforePick(order, wrapPicks, firstSwing, true)).toBe(
+      true,
+    );
   });
 });
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { deriveSimulation } from '@/core/activation/simulation';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import { activeBaseAttackCount } from '@/core/attacks/attackStructure';
-import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
+import { rowDamageIfAllHit } from '@/core/damage/rowDamage';
 import { HP_MIN, NO_ATTACK_INDEX } from '@/core/shared/constants';
 import { thresher } from '@/data/attackers/thresher';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
@@ -11,15 +11,10 @@ import type {
   MeatGrinderAction,
   MeatGrinderState,
 } from '@/gbMeatGrinder/reducer/reducer.types';
-import {
-  initialState,
-  PICK_VETERAN_BOAR,
-  pick,
-  reduce,
-} from '@/gbMeatGrinder/reducer/reducerTestHelpers';
+import { pick, reduce } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
 
 const boarState = (...actions: MeatGrinderAction[]): MeatGrinderState => {
-  return reduce(initialState(PICK_VETERAN_BOAR), ...actions);
+  return reduce(stateForAttacker(veteranBoar), ...actions);
 };
 
 const pickDamage = (attackIndex: number): MeatGrinderAction => {

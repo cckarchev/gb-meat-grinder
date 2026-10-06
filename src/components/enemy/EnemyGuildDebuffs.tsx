@@ -6,8 +6,8 @@ import {
 import { GuildBuffCheckbox } from '@/components/ui/GuildBuffCheckbox';
 import { ToggleGroup } from '@/components/ui/ToggleGroup';
 import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
+import { guildBuffsFor } from '@/core/attackers/buffsAndTraits';
 import { assistNamedModels } from '@/core/characterPlays/characterPlayEffects';
-import { guildBuffsFor } from '@/core/damage/damage';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 const DEBUFF_COLUMNS = 2;

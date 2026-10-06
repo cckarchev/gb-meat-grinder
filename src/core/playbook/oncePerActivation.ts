@@ -1,13 +1,10 @@
 /** Playbook effects that only apply once per activation: Knock Down and Tackle. */
 
 import { picksBeforeInActivation } from '@/core/attacks/attackRows';
-import type {
-  PlaybookDamageMods,
-  PlaybookResult,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
+import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
+import type { PickPosition } from '@/core/plan/attackPlan.types';
+import type { PlaybookResult, WrapPick } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/playbookIndex';
-import type { AttackerData } from '@/data/attackers/attacker.types';
 
 export type PlaybookResultMatcher = (result: PlaybookResult) => boolean;
 
@@ -24,24 +21,14 @@ export const isOncePerActivation: PlaybookResultMatcher = (result) => {
  * `matches`.
  */
 export const matchingPickBefore = (
-  attacker: AttackerData,
+  order: ActivationOrderParams,
   wrapPicks: WrapPick[][],
-  attackIndex: number,
-  pickIndex: number,
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
+  position: PickPosition,
   matches: PlaybookResultMatcher,
 ): boolean => {
-  const earlierPicks = picksBeforeInActivation(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-    attackIndex,
-    pickIndex,
-  );
+  const earlierPicks = picksBeforeInActivation(order, wrapPicks, position);
 
   return earlierPicks.some((earlier) => {
-    return matches(getPlaybookResult(attacker, earlier.id));
+    return matches(getPlaybookResult(order.attacker, earlier.id));
   });
 };

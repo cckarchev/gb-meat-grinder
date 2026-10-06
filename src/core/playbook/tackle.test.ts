@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import { tackleTakenBeforePick } from '@/core/playbook/tackle';
-import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+import { makeAttacker, orderFor } from '@/core/testing/fixtures';
 import { bucker } from '@/data/attackers/bucker';
 import { cast } from '@/data/attackers/cast';
 import { thresher } from '@/data/attackers/thresher';
@@ -22,32 +22,33 @@ const tackleAttacker = makeAttacker({
 });
 
 describe('tackleTakenBeforePick', () => {
+  const order = orderFor(tackleAttacker, 2);
+
+  const tackleTakenAt = (
+    wrapPicks: string[][],
+    attackIndex: number,
+    pickIndex: number,
+  ): boolean => {
+    return tackleTakenBeforePick(order, wrapPicks, { attackIndex, pickIndex });
+  };
+
   it('allows only the first Tackle in the activation', () => {
     const wrapPicks = [['tackle'], ['tackle']];
 
-    expect(
-      tackleTakenBeforePick(tackleAttacker, wrapPicks, 0, 0, NO_MODS, 2),
-    ).toBe(false);
-
-    expect(
-      tackleTakenBeforePick(tackleAttacker, wrapPicks, 1, 0, NO_MODS, 2),
-    ).toBe(true);
+    expect(tackleTakenAt(wrapPicks, 0, 0)).toBe(false);
+    expect(tackleTakenAt(wrapPicks, 1, 0)).toBe(true);
   });
 
   it('counts a Tackle earlier in the same wrap', () => {
     const wrapPicks = [['tackle', 'tackle'], []];
 
-    expect(
-      tackleTakenBeforePick(tackleAttacker, wrapPicks, 0, 1, NO_MODS, 2),
-    ).toBe(true);
+    expect(tackleTakenAt(wrapPicks, 0, 1)).toBe(true);
   });
 
   it('stays available when no earlier pick tackles', () => {
     const wrapPicks = [['one'], ['tackle']];
 
-    expect(
-      tackleTakenBeforePick(tackleAttacker, wrapPicks, 1, 0, NO_MODS, 2),
-    ).toBe(false);
+    expect(tackleTakenAt(wrapPicks, 1, 0)).toBe(false);
   });
 });
 

@@ -1,16 +1,17 @@
 /** Breakdown text for the momentum and damage totals in the attacks summary. */
 
 import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
-import { swingStateAt } from '@/core/attacks/activationTimeline';
 import {
   activatedTraits,
   attackerTraits,
   joinTraitLabels,
-} from '@/core/damage/damage';
+} from '@/core/attackers/buffsAndTraits';
+import { swingStateAt } from '@/core/attacks/activationTimeline';
 import {
   characterPlayDamageSources,
   damageModifierBreakdown,
-} from '@/core/playbook/rowDamage';
+} from '@/core/damage/rowDamage';
+import { sumOf } from '@/core/shared/sumOf';
 
 const NO_DAMAGE_TOOLTIP =
   'No selected playbook lines deal card damage to HP (after Tough Hide).';
@@ -46,9 +47,9 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
 
   const activeIndexes = input.attacks.map((swing) => swing.attackIndex);
 
-  const chargeDamage = activeIndexes.reduce((sum, attackIndex) => {
-    return sum + swingStateAt(input.timeline, attackIndex).chargeDamage;
-  }, 0);
+  const chargeDamage = sumOf(activeIndexes, (attackIndex) => {
+    return swingStateAt(input.timeline, attackIndex).chargeDamage;
+  });
 
   const dealsNothing =
     breakdown.rawCardDamage === 0 &&

@@ -12,10 +12,11 @@ import { effectivePlayDamage } from '@/core/damage/damage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import type { CharacterPlay } from '@/core/playbook/playbook.types';
 import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
+import { sumOf } from '@/core/shared/sumOf';
 
 /** Total play damage a swing deals when every pick on it lands. */
 export const swingPlayDamage = (state: SwingState): number => {
-  return state.playDamageBySlot.reduce((sum, damage) => sum + damage, 0);
+  return sumOf(state.playDamageBySlot, (damage) => damage);
 };
 
 /** Condition damage of a play that deals the target's current HP over `divisor`. */
@@ -47,6 +48,16 @@ export const playDamageForHealth = (
 /** Whether any of a swing's plays deals damage scaled by the target's current HP. */
 export const swingHasHealthPlay = (state: SwingState): boolean => {
   return state.healthPlayDivisorBySlot.some((divisor) => divisor > 0);
+};
+
+/** Whether the play in this slot deals damage scaled by the target's current HP. */
+export const slotScalesWithHealth = (
+  state: SwingState,
+  slot: number,
+): boolean => {
+  const divisor = state.healthPlayDivisorBySlot[slot] ?? 0;
+
+  return divisor > 0;
 };
 
 type SwingPlayDamage = Pick<

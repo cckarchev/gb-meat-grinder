@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { activationTimeline } from '@/core/attacks/activationTimeline';
-import type { AttackPlan } from '@/core/plan/attackPlan.types';
-import type { PlaybookDamageMods } from '@/core/playbook/playbook.types';
 import {
   damageModifierBreakdown,
   rowDamageIfAllHit,
-} from '@/core/playbook/rowDamage';
+} from '@/core/damage/rowDamage';
+import type { AttackPlan } from '@/core/plan/attackPlan.types';
+import type { PlaybookDamageMods } from '@/core/playbook/playbook.types';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import {
   CONDITION_GUILD,

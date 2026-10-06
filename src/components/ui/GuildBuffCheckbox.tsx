@@ -1,6 +1,6 @@
 import { tooltipExcludedBuff } from '@/components/ui/guildBuffCopy';
 import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
-import { guildBuffIsExcluded } from '@/core/damage/damage';
+import { guildBuffIsExcluded } from '@/core/attackers/buffsAndTraits';
 import type { GuildBuff } from '@/data/guilds/guild.types';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 

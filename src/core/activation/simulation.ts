@@ -12,7 +12,7 @@ import {
   effectiveWrapPicksForResilience,
   resilienceIgnoredAttackIndex,
 } from '@/core/damage/resilience';
-import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
+import { rowDamageIfAllHit } from '@/core/damage/rowDamage';
 import { isAttackIndex } from '@/core/shared/attackIndex';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';

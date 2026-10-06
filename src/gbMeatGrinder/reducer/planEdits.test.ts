@@ -1,28 +1,25 @@
 import { describe, expect, it } from 'vitest';
-import {
-  initialState,
-  PICK_THRESHER,
-  PICK_VETERAN_BOAR,
-  pick,
-  reduce,
-} from '@/gbMeatGrinder/reducer/reducerTestHelpers';
+import { thresher } from '@/data/attackers/thresher';
+import { veteranBoar } from '@/data/attackers/veteranBoar';
+import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
+import { pick, reduce } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
 
 describe('plan edits', () => {
   it('ignores no-op wrap choices', () => {
-    const state = initialState(PICK_THRESHER);
+    const state = stateForAttacker(thresher);
 
     expect(reduce(state, pick(0, null))).toBe(state);
   });
 
   it('defaults the character play on a GB pick', () => {
-    const state = reduce(initialState(PICK_THRESHER), pick(0, 'three_gb'));
+    const state = reduce(stateForAttacker(thresher), pick(0, 'three_gb'));
 
     expect(state.attackPlan.characterPlayPicks[0]).toEqual(['theyAintTough']);
   });
 
   it('clamps an unreachable pick', () => {
     const state = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'armor', value: 5 },
       pick(0, 'm4'),
     );
@@ -32,7 +29,7 @@ describe('plan edits', () => {
 
   it('clears a wrap continuation but keeps the slot open', () => {
     const wrapped = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'gangingUp', value: 5 },
       pick(0, 'm4'),
       pick(0, 'm2', 1),
@@ -47,15 +44,15 @@ describe('plan edits', () => {
     expect(cleared.attackPlan.wrapPicks[0]).toEqual(['m4', null]);
 
     expect(
-      reduce(initialState(PICK_THRESHER), {
+      reduce(stateForAttacker(thresher), {
         type: 'clearWrapContinuation',
         attackIndex: 0,
       }).attackPlan,
-    ).toEqual(initialState(PICK_THRESHER).attackPlan);
+    ).toEqual(stateForAttacker(thresher).attackPlan);
   });
 
   it('changes a character play pick', () => {
-    const withGb = reduce(initialState(PICK_VETERAN_BOAR), pick(0, 'gb'));
+    const withGb = reduce(stateForAttacker(veteranBoar), pick(0, 'gb'));
 
     const stagger = reduce(withGb, {
       type: 'characterPlayPick',

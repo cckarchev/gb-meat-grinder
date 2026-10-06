@@ -1,20 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { fromBase64Url, toBase64Url } from '@/core/shared/base64Url';
+import { toBase64Url } from '@/core/shared/base64Url';
 import { HP_MAX } from '@/core/shared/constants';
 import { thresher } from '@/data/attackers/thresher';
-import {
-  initialState,
-  PICK_THRESHER,
-  PICK_VETERAN_BOAR,
-  pick,
-  reduce,
-} from '@/gbMeatGrinder/reducer/reducerTestHelpers';
+import { veteranBoar } from '@/data/attackers/veteranBoar';
+import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
+import { pick, reduce } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
+import { stateFromShareParams } from '@/gbMeatGrinder/share/shareReplay';
 import {
   SHARE_MODEL_PARAM,
   SHARE_STATE_PARAM,
   shareParamsOf,
-  stateFromShareParams,
-} from '@/gbMeatGrinder/share/shareState';
+} from '@/gbMeatGrinder/share/shareWire';
 
 const paramsWith = (model: string, encoded: string): URLSearchParams => {
   return new URLSearchParams({
@@ -27,65 +23,16 @@ const encodeWire = (wire: unknown): string => {
   return toBase64Url(JSON.stringify(wire));
 };
 
-const decodedWireOf = (params: URLSearchParams): unknown => {
-  const json = fromBase64Url(params.get(SHARE_STATE_PARAM) ?? '');
-
-  return JSON.parse(json ?? 'null');
-};
-
-describe('share params', () => {
-  it('names the model in plain text', () => {
-    const state = reduce(initialState(PICK_THRESHER), { type: 'hp', value: 9 });
-    const params = shareParamsOf(state);
-
-    expect(params.get(SHARE_MODEL_PARAM)).toBe(thresher.id);
-    expect(params.get(SHARE_STATE_PARAM)).toMatch(/^[A-Za-z0-9_-]+$/);
-  });
-
-  it('shares only the model when every choice is a default', () => {
-    const params = shareParamsOf(initialState(PICK_THRESHER));
-
-    expect(params.toString()).toBe(`${SHARE_MODEL_PARAM}=${thresher.id}`);
-  });
-
-  it('encodes only the choices that differ from the model defaults', () => {
-    const state = reduce(
-      initialState(PICK_THRESHER),
-      { type: 'hp', value: 9 },
-      { type: 'enemyHasCover', value: true },
-    );
-
-    expect(decodedWireOf(shareParamsOf(state))).toEqual({
-      v: 1,
-      h: 9,
-      cv: true,
-    });
-  });
-
-  it('drops trailing attacks left at their defaults', () => {
-    const state = reduce(
-      initialState(PICK_THRESHER),
-      { type: 'gangingUp', value: 5 },
-      pick(0, 'm4'),
-      pick(0, 'm2', 1),
-    );
-
-    expect(decodedWireOf(shareParamsOf(state))).toEqual({
-      v: 1,
-      g: 5,
-      w: [['m4', 'm2']],
-    });
-  });
-
+describe('state from share params', () => {
   it('round-trips a fresh state', () => {
-    const state = initialState(PICK_THRESHER);
+    const state = stateForAttacker(thresher);
 
     expect(stateFromShareParams(shareParamsOf(state))).toEqual(state);
   });
 
   it('round-trips enemy stats, conditions, toggles and the plan', () => {
     const state = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'enemyDef', value: 5 },
       { type: 'armor', value: 2 },
       { type: 'hp', value: 9 },
@@ -111,7 +58,7 @@ describe('share params', () => {
 
   it('round-trips a charge and its character play pick', () => {
     const state = reduce(
-      initialState(PICK_VETERAN_BOAR),
+      stateForAttacker(veteranBoar),
       { type: 'chargeAttackIndex', value: 1 },
       { type: 'enemyKnockedDown', value: true },
       { type: 'crowdingOut', value: 1 },
@@ -128,7 +75,7 @@ describe('share params', () => {
   });
 
   it('returns null without a model or for an unknown one', () => {
-    const encoded = shareParamsOf(initialState(PICK_THRESHER)).get(
+    const encoded = shareParamsOf(stateForAttacker(thresher)).get(
       SHARE_STATE_PARAM,
     );
 
@@ -139,7 +86,7 @@ describe('share params', () => {
   });
 
   it('falls back to the model defaults for a missing or corrupt blob', () => {
-    const defaults = initialState(PICK_THRESHER);
+    const defaults = stateForAttacker(thresher);
     const modelOnly = new URLSearchParams({
       [SHARE_MODEL_PARAM]: thresher.id,
     });
@@ -170,7 +117,7 @@ describe('share params', () => {
     const state = stateFromShareParams(
       paramsWith(thresher.id, encodeWire(wire)),
     );
-    const defaults = initialState(PICK_THRESHER);
+    const defaults = stateForAttacker(thresher);
 
     expect(state).toMatchObject({
       enemyDef: defaults.enemyDef,
@@ -193,7 +140,7 @@ describe('share params', () => {
     const state = stateFromShareParams(
       paramsWith(thresher.id, encodeWire(wire)),
     );
-    const withBuff = reduce(initialState(PICK_THRESHER), {
+    const withBuff = reduce(stateForAttacker(thresher), {
       type: 'guildBuff',
       id: 'weakPoint',
       value: true,

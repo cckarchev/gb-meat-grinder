@@ -21,8 +21,15 @@ export const ATTACKERS: readonly AttackerData[] = [
 /** Fallback model when an id can't be resolved. */
 export const DEFAULT_ATTACKER: AttackerData = veteranBoar;
 
+/** The registered model with this id, if any. */
+export const findAttackerById = (
+  id: string | null,
+): AttackerData | undefined => {
+  return ATTACKERS.find((attacker) => attacker.id === id);
+};
+
 export const attackerById = (id: string): AttackerData => {
-  return ATTACKERS.find((attacker) => attacker.id === id) ?? DEFAULT_ATTACKER;
+  return findAttackerById(id) ?? DEFAULT_ATTACKER;
 };
 
 /** A random model, used to pick which one is selected on first load. */

@@ -1,5 +1,6 @@
 /** One pass over the activation: what each swing inherits from the swings before it. */
 
+import { activeBuffs, attackerTraits } from '@/core/attackers/buffsAndTraits';
 import type {
   ActivationTimeline,
   CarriedEffects,
@@ -13,8 +14,6 @@ import {
   swingPlayDamageFor,
 } from '@/core/attacks/swingPlayDamage';
 import {
-  activeBuffs,
-  attackerTraits,
   chargeTraitDamage,
   effectiveDamageForChoice,
   withSwingDamageBonus,
@@ -220,13 +219,13 @@ export const swingDamageIfAllHit = (
 ): number => {
   const swingMods = swingStateDamageMods(damageMods, state);
 
-  const cardDamage = row.reduce((sum, id) => {
+  const cardDamage = sumOf(row, (id) => {
     if (id == null) {
-      return sum;
+      return 0;
     }
 
-    return sum + effectiveDamageForChoice(attacker, id, swingMods);
-  }, 0);
+    return effectiveDamageForChoice(attacker, id, swingMods);
+  });
 
   return cardDamage + swingPlayDamage(state) + state.chargeDamage;
 };
@@ -235,8 +234,8 @@ export const activationTimeline = (
   plan: AttackPlan,
   params: TimelineParams,
 ): ActivationTimeline => {
-  const { wrapPicks, characterPlayPicks } = plan;
-  const { attacker, damageMods, activeBaseCount } = params;
+  const { wrapPicks } = plan;
+  const { attacker, damageMods } = params;
 
   // Effects of the same name never stack, so each name keeps its first value.
   const named = preAppliedEffects(params);
@@ -265,12 +264,7 @@ export const activationTimeline = (
 
   const states: SwingState[] = wrapPicks.map(() => preAppliedState);
 
-  const order = activationAttackIndices(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-  );
+  const order = activationAttackIndices(params, wrapPicks);
 
   const firstAttackIndex = order[0];
   const instructedNetHits = firstAttackNetHitBonus(params);
@@ -307,14 +301,11 @@ export const activationTimeline = (
     damageDealt += swingDamage;
 
     for (let pickIndex = 0; pickIndex < row.length; pickIndex++) {
+      const position = { attackIndex, pickIndex };
       const pickEffects = pickEffectsForLaterSwings(
-        attacker,
-        wrapPicks,
-        characterPlayPicks,
-        attackIndex,
-        pickIndex,
-        damageMods,
-        activeBaseCount,
+        params,
+        plan,
+        position,
         params.enemyKnockedDown,
       );
 
@@ -325,13 +316,7 @@ export const activationTimeline = (
         damageBonus: pickEffects.damageBonusForLater,
       };
 
-      const name = pickEffectName(
-        attacker,
-        wrapPicks,
-        characterPlayPicks,
-        attackIndex,
-        pickIndex,
-      );
+      const name = pickEffectName(attacker, plan, position);
 
       addNamedEffect(named, name, effects);
     }

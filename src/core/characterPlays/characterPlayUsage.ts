@@ -1,18 +1,17 @@
 /** Once Per Turn bookkeeping: which plays earlier picks used up and which remain. */
 
 import { picksBeforeInActivation } from '@/core/attacks/attackRows';
+import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
 import {
   characterPlaysForAttacker,
   effectivePlayForPick,
   getCharacterPlay,
 } from '@/core/characterPlays/characterPlayLookup';
+import type { AttackPlan, PickPosition } from '@/core/plan/attackPlan.types';
 import type {
   CharacterPlay,
   CharacterPlayPick,
-  CharacterPlayPickSlot,
   CharacterPlayUsage,
-  PlaybookDamageMods,
-  WrapPick,
 } from '@/core/playbook/playbook.types';
 import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
 import type { AttackerData } from '@/data/attackers/attacker.types';
@@ -22,24 +21,14 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
  * pickIndex)` in activation order (base then its berserker, then next base, …).
  */
 export const characterPlayUsageBeforePick = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
-  attackIndex: number,
-  pickIndex: number,
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
+  order: ActivationOrderParams,
+  plan: AttackPlan,
+  position: PickPosition,
 ): CharacterPlayUsage => {
+  const { attacker } = order;
   const used = new Set<CharacterPlayPick>();
 
-  const earlierPicks = picksBeforeInActivation(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-    attackIndex,
-    pickIndex,
-  );
+  const earlierPicks = picksBeforeInActivation(order, plan.wrapPicks, position);
 
   for (const earlier of earlierPicks) {
     if (!choiceUsesCharacterPlay(attacker, earlier.id)) {
@@ -48,7 +37,7 @@ export const characterPlayUsageBeforePick = (
 
     const play = effectivePlayForPick(
       attacker,
-      characterPlayPicks,
+      plan.characterPlayPicks,
       earlier.attackIndex,
       earlier.pickIndex,
     );
@@ -66,7 +55,7 @@ export const characterPlayUsageBeforePick = (
 };
 
 /** The attacker's plays that are not in `used`. */
-export const unusedCharacterPlays = (
+const unusedCharacterPlays = (
   attacker: AttackerData,
   used: CharacterPlayUsage,
 ): CharacterPlay[] => {
@@ -77,25 +66,12 @@ export const unusedCharacterPlays = (
 
 /** Character plays still choosable on this pick (those not used by earlier picks). */
 export const characterPlayAvailabilityForPick = (
-  attacker: AttackerData,
-  wrapPicks: WrapPick[][],
-  characterPlayPicks: CharacterPlayPickSlot[][],
-  attackIndex: number,
-  pickIndex: number,
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
+  order: ActivationOrderParams,
+  plan: AttackPlan,
+  position: PickPosition,
 ): { available: readonly CharacterPlay[]; depleted: boolean } => {
-  const used = characterPlayUsageBeforePick(
-    attacker,
-    wrapPicks,
-    characterPlayPicks,
-    attackIndex,
-    pickIndex,
-    damageMods,
-    activeBaseCount,
-  );
-
-  const available = unusedCharacterPlays(attacker, used);
+  const used = characterPlayUsageBeforePick(order, plan, position);
+  const available = unusedCharacterPlays(order.attacker, used);
 
   return { available, depleted: available.length === 0 };
 };

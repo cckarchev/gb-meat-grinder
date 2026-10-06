@@ -1,7 +1,9 @@
 /** Which attack rows exist this activation and the order they are made in. */
 
+import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
 import { berserkerRowOffset } from '@/core/attacks/attackStructure';
 import { effectiveDamageForChoice } from '@/core/damage/damage';
+import type { PickPosition } from '@/core/plan/attackPlan.types';
 import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
@@ -42,12 +44,11 @@ export const basePicksDealDamage = (
  * active and dealt damage.
  */
 export const attackRowIsActive = (
-  attacker: AttackerData,
+  order: ActivationOrderParams,
   wrapPicks: WrapPick[][],
   attackIndex: number,
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
 ): boolean => {
+  const { attacker, damageMods, activeBaseCount } = order;
   const offset = berserkerRowOffset(attacker);
 
   if (attackIndex < offset) {
@@ -76,11 +77,10 @@ export const attackRowIsActive = (
  * Berserkers cannot be banked; they always resolve immediately after the base that earned them.
  */
 export const activationAttackIndices = (
-  attacker: AttackerData,
+  order: ActivationOrderParams,
   wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
 ): number[] => {
+  const { attacker, activeBaseCount } = order;
   const indices: number[] = [];
   const offset = berserkerRowOffset(attacker);
 
@@ -93,15 +93,7 @@ export const activationAttackIndices = (
 
     const berserkerIndex = offset + baseIndex;
 
-    if (
-      attackRowIsActive(
-        attacker,
-        wrapPicks,
-        berserkerIndex,
-        damageMods,
-        activeBaseCount,
-      )
-    ) {
+    if (attackRowIsActive(order, wrapPicks, berserkerIndex)) {
       indices.push(berserkerIndex);
     }
   }
@@ -110,9 +102,7 @@ export const activationAttackIndices = (
 };
 
 /** A non-empty wrap slot and where it sits in the plan. */
-export type PlacedPick = {
-  attackIndex: number;
-  pickIndex: number;
+export type PlacedPick = PickPosition & {
   id: PlaybookChoiceId;
 };
 
@@ -123,21 +113,13 @@ export type PlacedPick = {
  * part of the activation.
  */
 export const picksBeforeInActivation = (
-  attacker: AttackerData,
+  order: ActivationOrderParams,
   wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
-  attackIndex: number,
-  pickIndex: number,
+  position: PickPosition,
 ): PlacedPick[] => {
-  const order = activationAttackIndices(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-  );
-
-  const orderPosition = order.indexOf(attackIndex);
+  const { attackIndex, pickIndex } = position;
+  const swingOrder = activationAttackIndices(order, wrapPicks);
+  const orderPosition = swingOrder.indexOf(attackIndex);
 
   if (orderPosition < 0) {
     return [];
@@ -145,7 +127,7 @@ export const picksBeforeInActivation = (
 
   const placed: PlacedPick[] = [];
 
-  for (const swingIndex of order.slice(0, orderPosition + 1)) {
+  for (const swingIndex of swingOrder.slice(0, orderPosition + 1)) {
     const swingPicks = wrapPicks[swingIndex];
     const isTargetSwing = swingIndex === attackIndex;
     const picksToTake = isTargetSwing ? pickIndex : swingPicks.length;

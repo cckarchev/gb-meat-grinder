@@ -11,6 +11,10 @@ import { sanitizeBonusTimeFlags } from '@/core/activation/bonusTimeFlags';
 import { momentumAfterAttackInclusive } from '@/core/activation/momentum';
 import { deriveSimulation } from '@/core/activation/simulation';
 import type { ActivationScenario } from '@/core/activation/simulation.types';
+import {
+  activatableTraits,
+  availableBuffs,
+} from '@/core/attackers/buffsAndTraits';
 import { activationAttackIndices } from '@/core/attacks/attackRows';
 import {
   activeBaseAttackCount,
@@ -19,13 +23,12 @@ import {
 import { maxPlaybookColumnForRow } from '@/core/attacks/maxPlaybookColumn';
 import { characterPlayAvailabilityForPick } from '@/core/characterPlays/characterPlayUsage';
 import {
-  activatableTraits,
-  availableBuffs,
   effectiveDamageForChoice,
   effectiveEnemyDef,
 } from '@/core/damage/damage';
 import { damageQuantile } from '@/core/damage/damageDistribution';
 import { planDamageOutcome } from '@/core/damage/killOdds';
+import { damageModifierBreakdown } from '@/core/damage/rowDamage';
 import type { AttackPlanClampParams } from '@/core/plan/attackPlan.types';
 import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
 import type {
@@ -37,7 +40,6 @@ import type {
 } from '@/core/playbook/playbook.types';
 import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
 import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
-import { damageModifierBreakdown } from '@/core/playbook/rowDamage';
 import {
   defaultCharacterPlayPicks,
   defaultWrapPicks,
@@ -275,12 +277,7 @@ const runScenario = (
   clamp();
 
   for (let pass = 0; pass < PLAN_SETTLE_PASSES; pass++) {
-    const order = activationAttackIndices(
-      attacker,
-      wrapPicks,
-      damageMods,
-      activeBaseCount,
-    );
+    const order = activationAttackIndices(clampParams, wrapPicks);
 
     for (const row of order) {
       const maxNet = maxPlaybookColumnForRow(
@@ -301,13 +298,9 @@ const runScenario = (
         }
 
         const { available } = characterPlayAvailabilityForPick(
-          attacker,
-          wrapPicks,
-          characterPlayPicks,
-          row,
-          slot,
-          damageMods,
-          activeBaseCount,
+          clampParams,
+          { wrapPicks, characterPlayPicks },
+          { attackIndex: row, pickIndex: slot },
         );
 
         const lastAvailable = available[available.length - 1];

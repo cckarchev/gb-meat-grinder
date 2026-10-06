@@ -82,12 +82,7 @@ const stripRepeatedEffect = (
   let changed = false;
   let effectSeen = rule.appliedBeforeActivation;
 
-  const activationOrder = activationAttackIndices(
-    attacker,
-    draft.wrapPicks,
-    params.damageMods,
-    params.activeBaseCount,
-  );
+  const activationOrder = activationAttackIndices(params, draft.wrapPicks);
 
   for (const attackIndex of activationOrder) {
     const maxNet = maxPlaybookColumnForRow(draft, attackIndex, params);

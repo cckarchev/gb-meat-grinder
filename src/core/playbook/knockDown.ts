@@ -1,12 +1,9 @@
 /** Knock Down only applies once per activation, and never on a target already down. */
 
+import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
+import type { PickPosition } from '@/core/plan/attackPlan.types';
 import { matchingPickBefore } from '@/core/playbook/oncePerActivation';
-import type {
-  PlaybookDamageMods,
-  PlaybookResult,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { PlaybookResult, WrapPick } from '@/core/playbook/playbook.types';
 
 export const appliesKnockDown = (result: PlaybookResult): boolean => {
   return result.appliesKnockDown === true;
@@ -18,27 +15,16 @@ export const appliesKnockDown = (result: PlaybookResult): boolean => {
  * pick (activation order). Only one KD can ever apply.
  */
 export const knockDownTakenBeforePick = (
-  attacker: AttackerData,
+  order: ActivationOrderParams,
   wrapPicks: WrapPick[][],
-  attackIndex: number,
-  pickIndex: number,
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
+  position: PickPosition,
   enemyKnockedDown: boolean,
 ): boolean => {
   if (enemyKnockedDown) {
     return true;
   }
 
-  return matchingPickBefore(
-    attacker,
-    wrapPicks,
-    attackIndex,
-    pickIndex,
-    damageMods,
-    activeBaseCount,
-    appliesKnockDown,
-  );
+  return matchingPickBefore(order, wrapPicks, position, appliesKnockDown);
 };
 
 /**

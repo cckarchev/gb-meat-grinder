@@ -21,15 +21,9 @@ const momentumAcrossSwings = (
     damageMods,
     startingMomentum,
     bonusTimeByAttack,
-    activeBaseCount,
   } = params;
 
-  const order = activationAttackIndices(
-    attacker,
-    wrapPicks,
-    damageMods,
-    activeBaseCount,
-  );
+  const order = activationAttackIndices(params, wrapPicks);
 
   const orderPosition = order.indexOf(attackIndex);
 

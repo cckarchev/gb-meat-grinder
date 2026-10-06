@@ -1,7 +1,13 @@
 /**
- * Guild buffs, enemy stat modifiers and the effective damage of a playbook line.
+ * Damage the toggled buffs and traits add, enemy stat modifiers and the
+ * effective damage of a playbook line.
  */
 
+import {
+  activatedTraits,
+  activeBuffs,
+  attackerTraits,
+} from '@/core/attackers/buffsAndTraits';
 import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
@@ -15,55 +21,12 @@ import {
 } from '@/core/shared/constants';
 import { sumOf } from '@/core/shared/sumOf';
 import type { AttackerData } from '@/data/attackers/attacker.types';
-import type { CharacterTrait } from '@/data/characterTraits';
-import type { GuildBuff, GuildBuffTarget } from '@/data/guilds/guild.types';
 
 export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
   toughHide: false,
   targetBurning: false,
   assistEngaged: false,
   buffs: {},
-};
-
-/** Whether the model cannot receive this guild buff (it is the source of it). */
-export const guildBuffIsExcluded = (
-  attacker: AttackerData,
-  buffId: string,
-): boolean => {
-  const excluded = attacker.excludedGuildBuffs ?? [];
-
-  return excluded.includes(buffId);
-};
-
-const DEFAULT_GUILD_BUFF_TARGET: GuildBuffTarget = 'attacker';
-
-/** The guild's effects on one side, excluded ones included (the UI disables those). */
-export const guildBuffsFor = (
-  attacker: AttackerData,
-  target: GuildBuffTarget,
-): readonly GuildBuff[] => {
-  return attacker.guild.buffs.filter((buff) => {
-    const buffTarget = buff.target ?? DEFAULT_GUILD_BUFF_TARGET;
-
-    return buffTarget === target;
-  });
-};
-
-/** Guild buffs this model can receive (excludes buffs it is the source of). */
-export const availableBuffs = (
-  attacker: AttackerData,
-): readonly GuildBuff[] => {
-  return attacker.guild.buffs.filter(
-    (buff) => !guildBuffIsExcluded(attacker, buff.id),
-  );
-};
-
-/** The attacker's available buffs that are currently toggled on. */
-export const activeBuffs = (
-  attacker: AttackerData,
-  mods: PlaybookDamageMods,
-): readonly GuildBuff[] => {
-  return availableBuffs(attacker).filter((buff) => mods.buffs[buff.id]);
 };
 
 /**
@@ -78,52 +41,6 @@ export const activeTraitFlatDamage = (
   const activated = activatedTraits(attacker, activeTraits);
 
   return sumOf(activated, (trait) => trait.flatDamage);
-};
-
-/** The model's traits the user activates with a checkbox. */
-export const activatableTraits = (
-  attacker: AttackerData,
-): readonly CharacterTrait[] => {
-  return (attacker.characterTraits ?? []).filter((trait) => {
-    return trait.active === true;
-  });
-};
-
-/** The activatable traits currently toggled on. */
-export const activatedTraits = (
-  attacker: AttackerData,
-  activeTraits: Record<string, boolean>,
-): readonly CharacterTrait[] => {
-  return activatableTraits(attacker).filter((trait) => {
-    return activeTraits[trait.id] === true;
-  });
-};
-
-const TRAIT_LABEL_SEPARATOR = ' + ';
-
-/** Several traits named on one breakdown line (e.g. `Searing Strike + Sweeping Charge`). */
-export const joinTraitLabels = (traits: readonly CharacterTrait[]): string => {
-  return traits.map((trait) => trait.label).join(TRAIT_LABEL_SEPARATOR);
-};
-
-/** The attacker's traits plus those granted by active buffs, once each. */
-export const attackerTraits = (
-  attacker: AttackerData,
-  mods: PlaybookDamageMods,
-): readonly CharacterTrait[] => {
-  const granted = activeBuffs(attacker, mods).flatMap((buff) => {
-    return buff.grantsTraits ?? [];
-  });
-
-  const byId = new Map<string, CharacterTrait>();
-
-  for (const trait of [...(attacker.characterTraits ?? []), ...granted]) {
-    if (!byId.has(trait.id)) {
-      byId.set(trait.id, trait);
-    }
-  }
-
-  return [...byId.values()];
 };
 
 /** Unmodified DMG the attacker's traits add to a charge that picks a damage result. */

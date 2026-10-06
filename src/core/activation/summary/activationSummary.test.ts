@@ -8,7 +8,7 @@ import type { ActivationSummaryInput } from '@/core/activation/summary/activatio
 import { activationTimeline } from '@/core/attacks/activationTimeline';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { activeTraitFlatDamage } from '@/core/damage/damage';
-import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
+import { rowDamageIfAllHit } from '@/core/damage/rowDamage';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import {
   makeAttacker,

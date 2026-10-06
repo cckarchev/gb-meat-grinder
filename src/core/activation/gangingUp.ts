@@ -1,6 +1,6 @@
 /** Which ganging up values the scenario allows. */
 
-import { activeBuffs } from '@/core/damage/damage';
+import { activeBuffs } from '@/core/attackers/buffsAndTraits';
 import type { PlaybookDamageMods } from '@/core/playbook/playbook.types';
 import { ASSIST_ENGAGED_GANGING_UP_MIN } from '@/core/shared/constants';
 import type { AttackerData, StatRange } from '@/data/attackers/attacker.types';

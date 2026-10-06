@@ -1,12 +1,9 @@
 /** Tackle takes the ball, so only one Tackle can apply per activation. */
 
+import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
+import type { PickPosition } from '@/core/plan/attackPlan.types';
 import { matchingPickBefore } from '@/core/playbook/oncePerActivation';
-import type {
-  PlaybookDamageMods,
-  PlaybookResult,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { PlaybookResult, WrapPick } from '@/core/playbook/playbook.types';
 
 export const stealsBall = (result: PlaybookResult): boolean => {
   return result.stealsBall === true;
@@ -17,20 +14,9 @@ export const stealsBall = (result: PlaybookResult): boolean => {
  * (activation order) already took the ball.
  */
 export const tackleTakenBeforePick = (
-  attacker: AttackerData,
+  order: ActivationOrderParams,
   wrapPicks: WrapPick[][],
-  attackIndex: number,
-  pickIndex: number,
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
+  position: PickPosition,
 ): boolean => {
-  return matchingPickBefore(
-    attacker,
-    wrapPicks,
-    attackIndex,
-    pickIndex,
-    damageMods,
-    activeBaseCount,
-    stealsBall,
-  );
+  return matchingPickBefore(order, wrapPicks, position, stealsBall);
 };

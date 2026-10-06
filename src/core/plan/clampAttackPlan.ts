@@ -29,13 +29,7 @@ const sanitizeCharacterPlays = (
   draft: AttackPlan,
   params: AttackPlanClampParams,
 ): boolean => {
-  const sanitized = sanitizeCharacterPlayPicks(
-    params.attacker,
-    draft.wrapPicks,
-    draft.characterPlayPicks,
-    params.damageMods,
-    params.activeBaseCount,
-  );
+  const sanitized = sanitizeCharacterPlayPicks(params, draft);
 
   if (!sanitized.changed) {
     return false;

@@ -1,14 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { thresher } from '@/data/attackers/thresher';
+import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
 import type {
   MeatGrinderAction,
   MeatGrinderState,
 } from '@/gbMeatGrinder/reducer/reducer.types';
-import {
-  initialState,
-  PICK_THRESHER,
-  pick,
-  reduce,
-} from '@/gbMeatGrinder/reducer/reducerTestHelpers';
+import { pick, reduce } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
 
 describe('Bonus Time', () => {
   const spend = (attackIndex: number): MeatGrinderAction => {
@@ -20,14 +17,14 @@ describe('Bonus Time', () => {
   };
 
   it('refuses a spend without momentum', () => {
-    const state = initialState(PICK_THRESHER);
+    const state = stateForAttacker(thresher);
 
     expect(reduce(state, spend(0))).toBe(state);
   });
 
   it('spends momentum earned on earlier swings', () => {
     const state = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'startingMomentum', value: 1 },
       pick(0, 'm2'),
       spend(0),
@@ -40,7 +37,7 @@ describe('Bonus Time', () => {
 
   it('turns a spend off', () => {
     const paid = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'startingMomentum', value: 1 },
       spend(0),
     );
@@ -53,7 +50,7 @@ describe('Bonus Time', () => {
 
   it('clears a spend in the same transition that drops its momentum', () => {
     const broke = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'startingMomentum', value: 1 },
       spend(0),
       { type: 'startingMomentum', value: 0 },
@@ -64,7 +61,7 @@ describe('Bonus Time', () => {
 
   it('clears a later spend in the same transition that replaces its momentous line', () => {
     const unpicked = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'startingMomentum', value: 1 },
       pick(0, 'm2'),
       spend(0),
@@ -83,7 +80,7 @@ describe('Bonus Time', () => {
 
     const reachedWithBonusTime = (): MeatGrinderState => {
       return reduce(
-        initialState(PICK_THRESHER),
+        stateForAttacker(thresher),
         { type: 'armor', value: ARMOR_CAPPING_NET_3 },
         { type: 'startingMomentum', value: 1 },
         spend(0),
@@ -93,7 +90,7 @@ describe('Bonus Time', () => {
 
     it('is out of reach without the spend', () => {
       const state = reduce(
-        initialState(PICK_THRESHER),
+        stateForAttacker(thresher),
         { type: 'armor', value: ARMOR_CAPPING_NET_3 },
         pick(0, BONUS_TIME_LINE),
       );

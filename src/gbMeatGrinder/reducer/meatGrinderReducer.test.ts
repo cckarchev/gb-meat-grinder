@@ -1,20 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { createInitialAttackPlan } from '@/core/plan/initialAttackPlan';
 import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from '@/core/shared/constants';
+import { cast } from '@/data/attackers/cast';
 import { thresher } from '@/data/attackers/thresher';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
-import {
-  initialState,
-  PICK_CAST,
-  PICK_THRESHER,
-  PICK_VETERAN_BOAR,
-  PICK_WINDLE,
-  reduce,
-} from '@/gbMeatGrinder/reducer/reducerTestHelpers';
+import { windle } from '@/data/attackers/windle';
+import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
+import { reduce } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
 
 describe('initial state', () => {
   it('starts a random model with all influence and default enemy stats', () => {
-    const state = initialState(PICK_THRESHER);
+    const state = stateForAttacker(thresher);
 
     expect(state).toMatchObject({
       attackerId: thresher.id,
@@ -36,14 +32,14 @@ describe('initial state', () => {
   });
 
   it('charges by default for Furious models', () => {
-    expect(initialState(PICK_VETERAN_BOAR).charging).toBe(true);
+    expect(stateForAttacker(veteranBoar).charging).toBe(true);
   });
 });
 
 describe('model selection', () => {
   it('reset restores defaults but keeps the model', () => {
     const state = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'hp', value: 3 },
       { type: 'reset' },
     );
@@ -53,7 +49,7 @@ describe('model selection', () => {
   });
 
   it('ignores selecting the current model', () => {
-    const state = initialState(PICK_THRESHER);
+    const state = stateForAttacker(thresher);
 
     expect(reduce(state, { type: 'selectAttacker', id: thresher.id })).toBe(
       state,
@@ -62,7 +58,7 @@ describe('model selection', () => {
 
   it('keeps enemy stats, Tough Hide and Burning but drops attacker-side toggles', () => {
     const state = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'enemyDef', value: 5 },
       { type: 'armor', value: 2 },
       { type: 'hp', value: 9 },
@@ -89,7 +85,7 @@ describe('model selection', () => {
 
 describe('influence and charge', () => {
   it('clamps influence to 0..INF and empties rows that lose their attack', () => {
-    const start = initialState(PICK_THRESHER);
+    const start = stateForAttacker(thresher);
     const tooMuch = reduce(start, { type: 'influence', value: 9 });
     const negative = reduce(start, { type: 'influence', value: -1 });
     const two = reduce(start, { type: 'influence', value: 2 });
@@ -101,7 +97,7 @@ describe('influence and charge', () => {
 
   it('keeps the charge row within the active base attacks', () => {
     const charging = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'charging', value: true },
       { type: 'chargeAttackIndex', value: 3 },
     );
@@ -126,7 +122,7 @@ describe('influence and charge', () => {
 
 describe('attacker stat ranges', () => {
   it('clamps each per-activation input to the model range', () => {
-    const start = initialState(PICK_VETERAN_BOAR);
+    const start = stateForAttacker(veteranBoar);
 
     const tooHigh = reduce(
       start,
@@ -155,7 +151,7 @@ describe('attacker stat ranges', () => {
 describe('damage modifiers', () => {
   it('toggles one guild buff and keeps the others', () => {
     const state = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'guildBuff', id: 'weakPoint', value: true },
       { type: 'guildBuff', id: 'otherBuff', value: true },
       { type: 'guildBuff', id: 'otherBuff', value: false },
@@ -169,7 +165,7 @@ describe('damage modifiers', () => {
 
   it('toggles Tough Hide without touching the buffs', () => {
     const state = reduce(
-      initialState(PICK_THRESHER),
+      stateForAttacker(thresher),
       { type: 'guildBuff', id: 'weakPoint', value: true },
       { type: 'toughHide', value: true },
     );
@@ -183,7 +179,7 @@ describe('damage modifiers', () => {
   });
 
   it('toggles a named model engaging the target and drops it on a model change', () => {
-    const engaged = reduce(initialState(PICK_THRESHER), {
+    const engaged = reduce(stateForAttacker(thresher), {
       type: 'assistEngaged',
       value: true,
     });
@@ -198,7 +194,7 @@ describe('damage modifiers', () => {
   });
 
   it('raises ganging up to at least 1 while a named model engages', () => {
-    const engaged = reduce(initialState(PICK_THRESHER), {
+    const engaged = reduce(stateForAttacker(thresher), {
       type: 'assistEngaged',
       value: true,
     });
@@ -214,7 +210,7 @@ describe('damage modifiers', () => {
   });
 
   it('raises ganging up to at least 1 with Lend a Hand', () => {
-    const lent = reduce(initialState(PICK_WINDLE), {
+    const lent = reduce(stateForAttacker(windle), {
       type: 'guildBuff',
       id: 'lendAHand',
       value: true,
@@ -225,7 +221,7 @@ describe('damage modifiers', () => {
   });
 
   it('keeps a higher ganging up when a named model engages', () => {
-    const three = reduce(initialState(PICK_THRESHER), {
+    const three = reduce(stateForAttacker(thresher), {
       type: 'gangingUp',
       value: 3,
     });
@@ -238,7 +234,7 @@ describe('damage modifiers', () => {
 
 describe('One at a Time Lads!', () => {
   it('drops crowding out to 0 and keeps it there while on', () => {
-    const crowded = reduce(initialState(PICK_CAST), {
+    const crowded = reduce(stateForAttacker(cast), {
       type: 'crowdingOut',
       value: 2,
     });

@@ -3,10 +3,10 @@ import { pickGeneratesMomentum } from '@/core/activation/momentousLines';
 import { activationTimeline } from '@/core/attacks/activationTimeline';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
+import { rowDamageIfAllHit } from '@/core/damage/rowDamage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
 import { wrapPickClearsCover } from '@/core/playbook/coverClearing';
 import type { PlaybookDamageMods } from '@/core/playbook/playbook.types';
-import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import {
   makeRollParams,
