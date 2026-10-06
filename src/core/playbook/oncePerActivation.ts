@@ -8,12 +8,17 @@ import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 
 export type PlaybookResultMatcher = (result: PlaybookResult) => boolean;
 
+export const appliesKnockDown: PlaybookResultMatcher = (result) => {
+  return result.appliesKnockDown === true;
+};
+
+export const stealsBall: PlaybookResultMatcher = (result) => {
+  return result.stealsBall === true;
+};
+
 /** True for a line whose effect can only apply once per activation. */
 export const isOncePerActivation: PlaybookResultMatcher = (result) => {
-  const knocksDown = result.appliesKnockDown === true;
-  const tackles = result.stealsBall === true;
-
-  return knocksDown || tackles;
+  return appliesKnockDown(result) || stealsBall(result);
 };
 
 /**

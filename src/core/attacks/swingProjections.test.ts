@@ -11,6 +11,7 @@ import {
   makeAttacker,
   makeRollContext,
   NO_MODS,
+  orderFor,
 } from '@/core/testing/fixtures';
 
 const swing = (attackIndex: number): AttackRollContext => {
@@ -62,10 +63,8 @@ const input = (
   );
 
   const rowDamageIfHit = rowDamageIfAllHit(
-    scenario.attacker,
+    orderFor(scenario.attacker, scenario.activeBaseCount, scenario.damageMods),
     scenario.wrapPicks,
-    scenario.damageMods,
-    scenario.activeBaseCount,
     timeline,
   );
 

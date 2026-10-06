@@ -18,7 +18,7 @@ import {
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /** The swing and every already computed TAC modifier that `sumSwingTac` adds up. */
-export type SwingTacTerms = {
+type SwingTacTerms = {
   attacker: AttackerData;
   attackIndex: number;
   chargeAttackIndex: number;
@@ -57,7 +57,7 @@ export const sumSwingTac = (terms: SwingTacTerms): number => {
 };
 
 /** What one swing rolls: its dice and the DEF each die must meet. */
-export type SwingTacAndDef = {
+type SwingTacAndDef = {
   tac: number;
   defMinRoll: number;
   /** DEF once this swing lands, with the reductions it applies. */

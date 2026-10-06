@@ -5,7 +5,7 @@ import {
   effectiveWrapPicksForResilience,
   resilienceIgnoredAttackIndex,
 } from '@/core/damage/resilience';
-import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+import { makeAttacker, orderFor } from '@/core/testing/fixtures';
 
 const RESILIENT = true;
 const NOT_RESILIENT = false;
@@ -17,23 +17,21 @@ describe('resilienceIgnoredAttackIndex', () => {
 
   it('is the first swing in activation order for a Resilient target', () => {
     expect(
-      resilienceIgnoredAttackIndex(attacker, wrapPicks, NO_MODS, 2, RESILIENT),
+      resilienceIgnoredAttackIndex(orderFor(attacker, 2), wrapPicks, RESILIENT),
     ).toBe(0);
   });
 
   it('is -1 when the target is not Resilient or nothing swings', () => {
     expect(
       resilienceIgnoredAttackIndex(
-        attacker,
+        orderFor(attacker, 2),
         wrapPicks,
-        NO_MODS,
-        2,
         NOT_RESILIENT,
       ),
     ).toBe(NONE_IGNORED);
 
     expect(
-      resilienceIgnoredAttackIndex(attacker, wrapPicks, NO_MODS, 0, RESILIENT),
+      resilienceIgnoredAttackIndex(orderFor(attacker, 0), wrapPicks, RESILIENT),
     ).toBe(NONE_IGNORED);
   });
 });

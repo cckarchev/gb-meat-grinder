@@ -38,8 +38,7 @@ export const characterPlayUsageBeforePick = (
     const play = effectivePlayForPick(
       attacker,
       plan.characterPlayPicks,
-      earlier.attackIndex,
-      earlier.pickIndex,
+      earlier,
     );
 
     // Plays that are not Once Per Turn may be picked again, so they never count

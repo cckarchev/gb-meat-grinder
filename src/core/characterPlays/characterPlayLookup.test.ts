@@ -68,14 +68,24 @@ describe('effectivePlayForPick', () => {
   const attacker = makeAttacker();
 
   it('reads the play held in the slot', () => {
-    expect(effectivePlayForPick(attacker, [[null, 'playDef']], 0, 1)).toBe(
-      'playDef',
-    );
+    expect(
+      effectivePlayForPick(attacker, [[null, 'playDef']], {
+        attackIndex: 0,
+        pickIndex: 1,
+      }),
+    ).toBe('playDef');
   });
 
   it('falls back to the default play for an empty or missing slot', () => {
-    expect(effectivePlayForPick(attacker, [[null]], 0, 0)).toBe('playTac');
-    expect(effectivePlayForPick(attacker, [], 3, 0)).toBe('playTac');
+    expect(
+      effectivePlayForPick(attacker, [[null]], {
+        attackIndex: 0,
+        pickIndex: 0,
+      }),
+    ).toBe('playTac');
+    expect(
+      effectivePlayForPick(attacker, [], { attackIndex: 3, pickIndex: 0 }),
+    ).toBe('playTac');
   });
 });
 

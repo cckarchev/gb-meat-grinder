@@ -11,6 +11,7 @@ import {
   modsWith,
   NEUTRAL_TARGET_HP,
   NO_MODS,
+  orderFor,
   PLAY_ASSIST,
   PLAY_DAMAGE,
   PLAY_HALF_HEALTH,
@@ -36,7 +37,7 @@ describe('damageModifierBreakdown', () => {
     );
 
     expect(
-      damageModifierBreakdown(attacker, wrapPicks, mods, 2, timeline),
+      damageModifierBreakdown(orderFor(attacker, 2, mods), wrapPicks, timeline),
     ).toEqual({
       rawCardDamage: 4,
       toughHideReduction: 3,
@@ -70,7 +71,7 @@ describe('play damage in the all-hit projection', () => {
 
     // `gb` is 1 card damage; the play adds 3 on the first swing only.
     expect(
-      rowDamageIfAllHit(attacker, wrapPicks, NO_MODS, 2, timeline),
+      rowDamageIfAllHit(orderFor(attacker, 2), wrapPicks, timeline),
     ).toEqual([4, 1]);
   });
 });
@@ -95,10 +96,8 @@ describe('play damage in the breakdown', () => {
 
   it('folds a buff lift on the play into that buff line', () => {
     const breakdown = damageModifierBreakdown(
-      attacker,
+      orderFor(attacker, 1, sharp),
       wrapPicks,
-      sharp,
-      1,
       timeline,
     );
 
@@ -135,10 +134,8 @@ describe('play damage in the breakdown', () => {
     );
 
     const breakdown = damageModifierBreakdown(
-      butcher,
+      orderFor(butcher, 1, carve),
       wrapPicks,
-      carve,
-      1,
       carveTimeline,
     );
 
@@ -172,16 +169,18 @@ describe('current-HP play damage in the projection and breakdown', () => {
   it('adds half the current HP to the swing', () => {
     // Card `gb` 1 (-1 Tough Hide, +1 Sharp), then half of 10 unmodified.
     expect(
-      rowDamageIfAllHit(attacker, wrapPicks, toughAndSharp, 1, timeline),
+      rowDamageIfAllHit(
+        orderFor(attacker, 1, toughAndSharp),
+        wrapPicks,
+        timeline,
+      ),
     ).toEqual([6, 0]);
   });
 
   it('leaves it out of the Tough Hide and buff lines', () => {
     const breakdown = damageModifierBreakdown(
-      attacker,
+      orderFor(attacker, 1, toughAndSharp),
       wrapPicks,
-      toughAndSharp,
-      1,
       timeline,
     );
 
@@ -218,17 +217,15 @@ describe('Assist damage in the projection and breakdown', () => {
 
   it('adds +1 DMG to the later playbook damage result only', () => {
     // The fixture's `gb` deals 1: the play does not boost its own swing.
-    expect(rowDamageIfAllHit(attacker, wrapPicks, mods, 2, timeline)).toEqual([
-      1, 3,
-    ]);
+    expect(
+      rowDamageIfAllHit(orderFor(attacker, 2, mods), wrapPicks, timeline),
+    ).toEqual([1, 3]);
   });
 
   it('itemizes it on its own Assist line', () => {
     const breakdown = damageModifierBreakdown(
-      attacker,
+      orderFor(attacker, 2, mods),
       wrapPicks,
-      mods,
-      2,
       timeline,
     );
 

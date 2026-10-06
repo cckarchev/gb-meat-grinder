@@ -36,10 +36,8 @@ export const deriveSimulation = (
   // The swing a Resilient target ignores, plus plan copies with that swing
   // blanked so every downstream calculation treats it as if it never happened.
   const ignoredAttackIndex = resilienceIgnoredAttackIndex(
-    attacker,
+    { attacker, damageMods: scenario.damageMods, activeBaseCount },
     wrapPicks,
-    scenario.damageMods,
-    activeBaseCount,
     scenario.enemyResilience,
   );
 
@@ -84,10 +82,8 @@ export const deriveSimulation = (
   const ignoredDisplayIndex = hasIgnoredSwing ? 0 : NO_ATTACK_INDEX;
 
   const rowDamageIfHit = rowDamageIfAllHit(
-    attacker,
+    { attacker, damageMods: scenario.damageMods, activeBaseCount },
     effectiveWrapPicks,
-    scenario.damageMods,
-    activeBaseCount,
     timeline,
   );
 

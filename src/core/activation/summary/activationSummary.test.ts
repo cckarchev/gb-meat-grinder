@@ -16,6 +16,7 @@ import {
   modsWith,
   NEUTRAL_TARGET_HP,
   NO_MODS,
+  orderFor,
 } from '@/core/testing/fixtures';
 import { sweepingCharge } from '@/data/characterTraits';
 
@@ -74,10 +75,8 @@ const input = (
   );
 
   const rowDamageIfHit = rowDamageIfAllHit(
-    scenario.attacker,
+    orderFor(scenario.attacker, scenario.activeBaseCount, scenario.damageMods),
     scenario.wrapPicks,
-    scenario.damageMods,
-    scenario.activeBaseCount,
     timeline,
   );
 
@@ -180,10 +179,8 @@ describe('summarizeActivation', () => {
     );
 
     const rowDamageIfHit = rowDamageIfAllHit(
-      attacker,
+      orderFor(attacker, 2),
       wrapPicks,
-      NO_MODS,
-      2,
       timeline,
     );
 

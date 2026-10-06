@@ -14,6 +14,7 @@ import {
   modsWith,
   NEUTRAL_TARGET_HP,
   NO_MODS,
+  orderFor,
   PLAY_DAMAGE,
   threeOf,
 } from '@/core/testing/fixtures';
@@ -102,7 +103,11 @@ describe('Burning Passion', () => {
     const plan = threeOf('two');
     const timeline = timelineFor(attacker, plan, mods);
 
-    return rowDamageIfAllHit(attacker, plan.wrapPicks, mods, SWINGS, timeline);
+    return rowDamageIfAllHit(
+      orderFor(attacker, SWINGS, mods),
+      plan.wrapPicks,
+      timeline,
+    );
   };
 
   it('is inert while the target is not Burning', () => {
@@ -156,7 +161,7 @@ describe('Burning Passion', () => {
 
     // `gb` card 1 + 1 Burning Passion, play 3 untouched.
     expect(
-      rowDamageIfAllHit(withPlay, plan.wrapPicks, mods, 1, timeline),
+      rowDamageIfAllHit(orderFor(withPlay, 1, mods), plan.wrapPicks, timeline),
     ).toEqual([5]);
   });
 });
@@ -212,10 +217,8 @@ describe('Burning Passion in the breakdown', () => {
     const timeline = timelineFor(passionate, plan, mods);
 
     return damageModifierBreakdown(
-      passionate,
+      orderFor(passionate, SWINGS, mods),
       plan.wrapPicks,
-      mods,
-      SWINGS,
       timeline,
     );
   };

@@ -102,7 +102,7 @@ export const activationAttackIndices = (
 };
 
 /** A non-empty wrap slot and where it sits in the plan. */
-export type PlacedPick = PickPosition & {
+type PlacedPick = PickPosition & {
   id: PlaybookChoiceId;
 };
 

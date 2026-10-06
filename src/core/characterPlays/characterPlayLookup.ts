@@ -1,5 +1,6 @@
 /** Which character plays an attacker's GB results can trigger, and the default one. */
 
+import type { PickPosition } from '@/core/plan/attackPlan.types';
 import type {
   CharacterPlay,
   CharacterPlayPickSlot,
@@ -38,9 +39,9 @@ export const defaultCharacterPlayId = (
 export const effectivePlayForPick = (
   attacker: AttackerData,
   characterPlayPicks: CharacterPlayPickSlot[][],
-  attackIndex: number,
-  pickIndex: number,
+  position: PickPosition,
 ): CharacterPlayPickSlot => {
+  const { attackIndex, pickIndex } = position;
   const slot = characterPlayPicks[attackIndex]?.[pickIndex];
 
   return slot ?? defaultCharacterPlayId(attacker);

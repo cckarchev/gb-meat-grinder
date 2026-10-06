@@ -64,8 +64,7 @@ export const pickEffectsForLaterSwings = (
   const play = effectivePlayForPick(
     attacker,
     plan.characterPlayPicks,
-    attackIndex,
-    pickIndex,
+    position,
   );
 
   if (play == null || used.has(play)) {
@@ -96,8 +95,7 @@ export const pickEffectName = (
     const play = effectivePlayForPick(
       attacker,
       plan.characterPlayPicks,
-      attackIndex,
-      pickIndex,
+      position,
     );
 
     return play ?? id;

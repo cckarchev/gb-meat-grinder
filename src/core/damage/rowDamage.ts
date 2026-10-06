@@ -15,6 +15,7 @@ import type {
   SwingState,
 } from '@/core/attacks/activationTimeline.types';
 import { attackRowIsActive } from '@/core/attacks/attackRows';
+import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
 import { slotScalesWithHealth } from '@/core/attacks/swingPlayDamage';
 import {
   effectivePlaybookDamage,
@@ -217,13 +218,12 @@ const swingPlayAmounts = (
  * Hide and buff lines, but not to the card damage.
  */
 export const damageModifierBreakdown = (
-  attacker: AttackerData,
+  order: ActivationOrderParams,
   wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
   timeline: ActivationTimeline,
 ): DamageModifierBreakdown => {
-  const order = { attacker, damageMods, activeBaseCount };
+  const { attacker, damageMods } = order;
+
   let rawCardDamage = 0;
   let toughHideReduction = 0;
   let totalEffective = 0;
@@ -310,13 +310,11 @@ export const damageModifierBreakdown = (
  * applied), including the damaging plays those picks trigger.
  */
 export const rowDamageIfAllHit = (
-  attacker: AttackerData,
+  order: ActivationOrderParams,
   wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
   timeline: ActivationTimeline,
 ): number[] => {
-  const order = { attacker, damageMods, activeBaseCount };
+  const { attacker, damageMods } = order;
 
   return wrapPicks.map((picks, attackIndex) => {
     const active = attackRowIsActive(order, wrapPicks, attackIndex);

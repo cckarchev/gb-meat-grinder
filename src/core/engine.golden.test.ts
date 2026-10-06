@@ -46,6 +46,7 @@ import {
   wrapSlotBudget,
 } from '@/core/playbook/wrapSlots';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
+import { orderFor } from '@/core/testing/fixtures';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 import { ATTACKERS } from '@/data/attackers/registry';
 
@@ -393,10 +394,8 @@ const runScenario = (
     })),
     damageIfAllHits: rowDamageIfHit,
     breakdown: damageModifierBreakdown(
-      attacker,
+      orderFor(attacker, activeBaseCount, damageMods),
       effectiveWrapPicks,
-      damageMods,
-      activeBaseCount,
       timeline,
     ),
     killingBlowIndex,

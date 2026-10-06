@@ -4,6 +4,7 @@ import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import { activeBaseAttackCount } from '@/core/attacks/attackStructure';
 import { rowDamageIfAllHit } from '@/core/damage/rowDamage';
 import { HP_MIN, NO_ATTACK_INDEX } from '@/core/shared/constants';
+import { orderFor } from '@/core/testing/fixtures';
 import { thresher } from '@/data/attackers/thresher';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
 import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
@@ -121,10 +122,8 @@ describe('deriveSimulation', () => {
     const derived = deriveSimulation(veteranBoar, state);
 
     const expectedRowDamage = rowDamageIfAllHit(
-      veteranBoar,
+      orderFor(veteranBoar, derived.activeBaseCount, state.damageMods),
       derived.effectiveWrapPicks,
-      state.damageMods,
-      derived.activeBaseCount,
       derived.timeline,
     );
 

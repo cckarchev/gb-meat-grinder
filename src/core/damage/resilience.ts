@@ -10,14 +10,13 @@
  */
 
 import { activationAttackIndices } from '@/core/attacks/attackRows';
+import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
 import type {
   CharacterPlayPickSlot,
-  PlaybookDamageMods,
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { isAttackIndex } from '@/core/shared/attackIndex';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
 
 /**
  * Attack-array index of the swing a Resilient target ignores: the first swing
@@ -25,22 +24,17 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
  * the target is not Resilient or there are no attacks this activation.
  */
 export const resilienceIgnoredAttackIndex = (
-  attacker: AttackerData,
+  order: ActivationOrderParams,
   wrapPicks: WrapPick[][],
-  damageMods: PlaybookDamageMods,
-  activeBaseCount: number,
   enemyResilience: boolean,
 ): number => {
   if (!enemyResilience) {
     return NO_ATTACK_INDEX;
   }
 
-  const order = activationAttackIndices(
-    { attacker, damageMods, activeBaseCount },
-    wrapPicks,
-  );
+  const attackIndices = activationAttackIndices(order, wrapPicks);
 
-  return order.length > 0 ? order[0] : NO_ATTACK_INDEX;
+  return attackIndices.length > 0 ? attackIndices[0] : NO_ATTACK_INDEX;
 };
 
 /** Rows with the ignored swing's row blanked (the same rows when none is ignored). */

@@ -38,10 +38,12 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
   const { flatDamage } = input;
 
   const breakdown = damageModifierBreakdown(
-    input.attacker,
+    {
+      attacker: input.attacker,
+      damageMods: input.damageMods,
+      activeBaseCount: input.activeBaseCount,
+    },
     input.wrapPicks,
-    input.damageMods,
-    input.activeBaseCount,
     input.timeline,
   );
 

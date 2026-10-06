@@ -23,7 +23,7 @@ export type ScenarioStatsInput = Pick<
   | 'crowdingOut'
 >;
 
-export type ScenarioEffectiveStats = Pick<
+type ScenarioEffectiveStats = Pick<
   DerivedSimulation,
   | 'activeBaseCount'
   | 'effectiveChargeAttackIndex'

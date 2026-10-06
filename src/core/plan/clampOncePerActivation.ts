@@ -11,20 +11,18 @@ import type {
   AttackPlan,
   AttackPlanClampParams,
 } from '@/core/plan/attackPlan.types';
+import { knockDownIsOnlyEffect } from '@/core/playbook/knockDown';
 import {
   appliesKnockDown,
-  knockDownIsOnlyEffect,
-} from '@/core/playbook/knockDown';
-import {
   isOncePerActivation,
   type PlaybookResultMatcher,
+  stealsBall,
 } from '@/core/playbook/oncePerActivation';
 import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
 import {
   cheapestChoiceId,
   getPlaybookResult,
 } from '@/core/playbook/playbookIndex';
-import { stealsBall } from '@/core/playbook/tackle';
 import { wrapSlotBudget } from '@/core/playbook/wrapSlots';
 import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';

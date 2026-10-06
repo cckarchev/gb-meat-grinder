@@ -2,12 +2,11 @@
 
 import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
 import type { PickPosition } from '@/core/plan/attackPlan.types';
-import { matchingPickBefore } from '@/core/playbook/oncePerActivation';
+import {
+  appliesKnockDown,
+  matchingPickBefore,
+} from '@/core/playbook/oncePerActivation';
 import type { PlaybookResult, WrapPick } from '@/core/playbook/playbook.types';
-
-export const appliesKnockDown = (result: PlaybookResult): boolean => {
-  return result.appliesKnockDown === true;
-};
 
 /**
  * True if Knock Down is unavailable for this pick: either the target is already

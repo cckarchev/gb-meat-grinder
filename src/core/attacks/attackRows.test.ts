@@ -87,7 +87,7 @@ describe('activation order', () => {
     );
 
     expect(
-      rowDamageIfAllHit(berserker, wrapPicks, NO_MODS, 2, timeline),
+      rowDamageIfAllHit(orderFor(berserker, 2), wrapPicks, timeline),
     ).toEqual([2, 0, 0, 0]);
   });
 });

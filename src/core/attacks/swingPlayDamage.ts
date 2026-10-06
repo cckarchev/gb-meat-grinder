@@ -90,12 +90,10 @@ export const swingPlayDamageFor = (
       return;
     }
 
-    const playId = effectivePlayForPick(
-      attacker,
-      plan.characterPlayPicks,
+    const playId = effectivePlayForPick(attacker, plan.characterPlayPicks, {
       attackIndex,
       pickIndex,
-    );
+    });
 
     const play = getCharacterPlay(attacker, playId);
     const printedDamage = play?.damage ?? 0;

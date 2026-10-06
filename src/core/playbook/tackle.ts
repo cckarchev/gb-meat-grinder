@@ -2,12 +2,11 @@
 
 import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
 import type { PickPosition } from '@/core/plan/attackPlan.types';
-import { matchingPickBefore } from '@/core/playbook/oncePerActivation';
-import type { PlaybookResult, WrapPick } from '@/core/playbook/playbook.types';
-
-export const stealsBall = (result: PlaybookResult): boolean => {
-  return result.stealsBall === true;
-};
+import {
+  matchingPickBefore,
+  stealsBall,
+} from '@/core/playbook/oncePerActivation';
+import type { WrapPick } from '@/core/playbook/playbook.types';
 
 /**
  * True if Tackle is unavailable for this pick: a strictly earlier wrap pick

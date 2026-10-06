@@ -1,6 +1,6 @@
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
-export type AttackerGroup = {
+type AttackerGroup = {
   name: string;
   models: AttackerData[];
 };

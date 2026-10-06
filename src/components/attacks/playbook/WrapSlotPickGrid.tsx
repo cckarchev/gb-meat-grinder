@@ -5,11 +5,12 @@ import {
   knockDownIsOnlyEffect,
   knockDownTakenBeforePick,
 } from '@/core/playbook/knockDown';
+import { stealsBall } from '@/core/playbook/oncePerActivation';
 import type {
   PlaybookChoiceId,
   PlaybookResult,
 } from '@/core/playbook/playbook.types';
-import { stealsBall, tackleTakenBeforePick } from '@/core/playbook/tackle';
+import { tackleTakenBeforePick } from '@/core/playbook/tackle';
 import { type SwingRoll, wrapSlotColumns } from '@/core/playbook/wrapSlots';
 import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';

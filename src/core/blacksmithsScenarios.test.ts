@@ -12,6 +12,7 @@ import {
   makeRollParams,
   modsWith,
   NO_MODS,
+  orderFor,
   planOf,
   threeOf,
 } from '@/core/testing/fixtures';
@@ -68,10 +69,8 @@ const allHitDamage = (
   const timeline = activationTimeline(plan, params);
 
   return rowDamageIfAllHit(
-    attacker,
+    orderFor(attacker, params.activeBaseCount, params.damageMods),
     plan.wrapPicks,
-    params.damageMods,
-    params.activeBaseCount,
     timeline,
   );
 };

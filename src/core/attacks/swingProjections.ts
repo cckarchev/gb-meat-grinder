@@ -37,7 +37,7 @@ export type SwingProjectionInput = {
 };
 
 /** Values per display index into `attacks`. */
-export type SwingProjection = {
+type SwingProjection = {
   /** HP before the first swing, after activated-trait damage. */
   startingHp: number;
   remainingHp: number[];
