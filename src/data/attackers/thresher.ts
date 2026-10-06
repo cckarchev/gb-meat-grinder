@@ -10,9 +10,9 @@ import { dontFearTheReaper } from '@/data/characterTraits';
 import { farmers } from '@/data/guilds/farmers';
 
 /**
- * Thresher playbook. `<` (dodge) and `T` (tackle) do nothing for attacking but
- * are mapped as selectable results. The net-3 GB applies They Ain't Tough!
- * (−1 enemy ARM) to later swings.
+ * Thresher playbook. `<` (dodge) does nothing for attacking but is mapped as a
+ * selectable result; `T` (tackle) can only be picked once per activation. The
+ * net-3 GB applies They Ain't Tough! (−1 enemy ARM) to later swings.
  */
 const PLAYBOOK: readonly PlaybookColumn[] = [
   {
@@ -38,6 +38,7 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
         id: 'tackle',
         label: 'T',
         damage: 0,
+        stealsBall: true,
       },
     ],
   },

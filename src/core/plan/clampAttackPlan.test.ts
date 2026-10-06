@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
 import type {
   CharacterPlayPickSlot,
+  PlaybookResult,
   WrapPick,
 } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/playbookIndex';
@@ -65,6 +66,31 @@ describe('clampAttackPlan', () => {
     playbook: [
       { netSuccesses: 1, results: [getPlaybookResult(fixture, 'one')] },
       { netSuccesses: 3, results: [bareKnockDown] },
+    ],
+  });
+
+  const tackle: PlaybookResult = {
+    id: 'tackle',
+    label: 'T',
+    damage: 0,
+    stealsBall: true,
+  };
+
+  /** TAC 3 model with a net-1 `1` line and a net-2 Tackle line. */
+  const tackleAttacker = makeAttacker({
+    tac: 3,
+    playbook: [
+      { netSuccesses: 1, results: [getPlaybookResult(fixture, 'one')] },
+      { netSuccesses: 2, results: [tackle] },
+    ],
+  });
+
+  /** TAC 3 model whose cheapest lines are a bare KD and a Tackle, then `1`. */
+  const onceOnlyFirstAttacker = makeAttacker({
+    tac: 3,
+    playbook: [
+      { netSuccesses: 1, results: [bareKnockDown, tackle] },
+      { netSuccesses: 2, results: [getPlaybookResult(fixture, 'one')] },
     ],
   });
 
@@ -213,6 +239,43 @@ describe('clampAttackPlan', () => {
         activeBaseCount: 2,
       }).wrapPicks,
     ).toEqual([['kd'], ['kd']]);
+  });
+
+  it('replaces every Tackle after the first one', () => {
+    expect(
+      clamp({
+        attacker: tackleAttacker,
+        wrapPicks: [['tackle'], ['tackle']],
+        activeBaseCount: 2,
+      }).wrapPicks,
+    ).toEqual([
+      ['tackle', null],
+      ['one', null],
+    ]);
+  });
+
+  it('never replaces a duplicate KD with a Tackle, or a Tackle with a KD', () => {
+    expect(
+      clamp({
+        attacker: onceOnlyFirstAttacker,
+        wrapPicks: [['kd'], ['kd']],
+        activeBaseCount: 2,
+      }).wrapPicks,
+    ).toEqual([
+      ['kd', null],
+      ['one', null],
+    ]);
+
+    expect(
+      clamp({
+        attacker: onceOnlyFirstAttacker,
+        wrapPicks: [['tackle'], ['tackle']],
+        activeBaseCount: 2,
+      }).wrapPicks,
+    ).toEqual([
+      ['tackle', null],
+      ['one', null],
+    ]);
   });
 
   it('returns the same plan object when nothing changes', () => {

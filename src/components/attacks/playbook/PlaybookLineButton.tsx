@@ -7,16 +7,23 @@ import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulati
 import type { CustomPropertyStyle } from '@/styles/customProperties';
 import { dataFlag } from '@/styles/dataFlag';
 
-const KNOCK_DOWN_LOCKED_TITLE =
-  'Knock Down unavailable: the target is already Knocked Down or an earlier pick knocks it down (only one KD applies)';
+/** Why a line cannot be picked: its once-per-activation effect is already used. */
+export type PlaybookLineLock = 'knockDown' | 'tackle';
+
+const LOCKED_TITLES: Record<PlaybookLineLock, string> = {
+  knockDown:
+    'Knock Down unavailable: the target is already Knocked Down or an earlier pick knocks it down (only one KD applies)',
+  tackle:
+    'Tackle unavailable: an earlier pick already tackled and took the ball (only one Tackle applies)',
+};
 
 type PlaybookLineButtonProps = {
   /** The swing this line belongs to, for its +DMG (Burning Passion, Assist). */
   attackIndex: number;
   id: PlaybookChoiceId;
   selected: boolean;
-  /** KD-only line after Knock Down already applied, so it cannot be picked. */
-  knockDownLocked: boolean;
+  /** Set when the line cannot be picked: its KD or Tackle is already used. */
+  lock: PlaybookLineLock | undefined;
   /** Formatted hit chance for this line's column, for the accessible label. */
   hitChanceLabel: string;
   onClick: () => void;
@@ -27,7 +34,7 @@ export const PlaybookLineButton = ({
   attackIndex,
   id,
   selected,
-  knockDownLocked,
+  lock,
   hitChanceLabel,
   onClick,
 }: PlaybookLineButtonProps) => {
@@ -36,6 +43,8 @@ export const PlaybookLineButton = ({
   const momentousStyle = momentousLineStyle(attacker, id, swingMods);
   const segments = playbookLineDisplaySegments(attacker, id, swingMods);
   const action = selected ? 'Selected' : 'Select';
+  const locked = lock !== undefined;
+  const lockedTitle = locked ? LOCKED_TITLES[lock] : undefined;
   const guildColorStyle: CustomPropertyStyle = {
     '--guild-color': attacker.guild.color,
   };
@@ -45,12 +54,12 @@ export const PlaybookLineButton = ({
       className={styles.lineButton}
       style={guildColorStyle}
       type="button"
-      disabled={knockDownLocked}
+      disabled={locked}
       data-momentous={momentousStyle}
       data-selected={dataFlag(selected)}
       aria-pressed={selected}
       aria-label={`${action} playbook result ${segments.join(' ')}, ${hitChanceLabel} to hit`}
-      title={knockDownLocked ? KNOCK_DOWN_LOCKED_TITLE : undefined}
+      title={lockedTitle}
       onClick={onClick}
     >
       {segments.length > 1 ? (

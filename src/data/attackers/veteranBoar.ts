@@ -89,6 +89,7 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
         id: 'tackle',
         label: 'T',
         damage: 0,
+        stealsBall: true,
       },
     ],
   },

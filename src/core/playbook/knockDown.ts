@@ -1,13 +1,16 @@
 /** Knock Down only applies once per activation, and never on a target already down. */
 
-import { picksBeforeInActivation } from '@/core/attacks/attackRows';
+import { matchingPickBefore } from '@/core/playbook/oncePerActivation';
 import type {
   PlaybookDamageMods,
   PlaybookResult,
   WrapPick,
 } from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import type { AttackerData } from '@/data/attackers/attacker.types';
+
+export const appliesKnockDown = (result: PlaybookResult): boolean => {
+  return result.appliesKnockDown === true;
+};
 
 /**
  * True if Knock Down is unavailable for this pick: either the target is already
@@ -27,18 +30,15 @@ export const knockDownTakenBeforePick = (
     return true;
   }
 
-  const earlierPicks = picksBeforeInActivation(
+  return matchingPickBefore(
     attacker,
     wrapPicks,
-    damageMods,
-    activeBaseCount,
     attackIndex,
     pickIndex,
+    damageMods,
+    activeBaseCount,
+    appliesKnockDown,
   );
-
-  return earlierPicks.some((earlier) => {
-    return getPlaybookResult(attacker, earlier.id).appliesKnockDown === true;
-  });
 };
 
 /**

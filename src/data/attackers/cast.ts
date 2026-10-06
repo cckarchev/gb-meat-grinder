@@ -33,7 +33,7 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
   {
     netSuccesses: 3,
     results: [
-      { id: 'tackle', label: 'T', damage: 0 },
+      { id: 'tackle', label: 'T', damage: 0, stealsBall: true },
       { id: 'push_dodge', label: '><', damage: 0, clearsCover: true },
     ],
   },

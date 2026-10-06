@@ -1,4 +1,7 @@
-import { PlaybookLineButton } from '@/components/attacks/playbook/PlaybookLineButton';
+import {
+  PlaybookLineButton,
+  type PlaybookLineLock,
+} from '@/components/attacks/playbook/PlaybookLineButton';
 import {
   probHeatBackground,
   probHeatBorder,
@@ -9,6 +12,8 @@ import {
   knockDownIsOnlyEffect,
   knockDownTakenBeforePick,
 } from '@/core/playbook/knockDown';
+import type { PlaybookResult } from '@/core/playbook/playbook.types';
+import { stealsBall, tackleTakenBeforePick } from '@/core/playbook/tackle';
 import { type SwingRoll, wrapSlotColumns } from '@/core/playbook/wrapSlots';
 import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
 import { formatPercent } from '@/core/shared/format';
@@ -68,6 +73,27 @@ export const WrapSlotPickGrid = ({
     enemyKnockedDown,
   );
 
+  const tackleTaken = tackleTakenBeforePick(
+    attacker,
+    wrapPicks,
+    attackIndex,
+    pickIndex,
+    damageMods,
+    activeBaseCount,
+  );
+
+  const lockFor = (result: PlaybookResult): PlaybookLineLock | undefined => {
+    if (knockDownTaken && knockDownIsOnlyEffect(result)) {
+      return 'knockDown';
+    }
+
+    if (tackleTaken && stealsBall(result)) {
+      return 'tackle';
+    }
+
+    return undefined;
+  };
+
   const columnCount = Math.max(MIN_COLUMN_COUNT, visibleColumns.length);
   const gridStyle: CustomPropertyStyle = { '--column-count': columnCount };
 
@@ -103,9 +129,7 @@ export const WrapSlotPickGrid = ({
                       attackIndex={attackIndex}
                       id={result.id}
                       selected={selected}
-                      knockDownLocked={
-                        knockDownTaken && knockDownIsOnlyEffect(result)
-                      }
+                      lock={lockFor(result)}
                       hitChanceLabel={hitChanceLabel}
                       onClick={() =>
                         dispatch({

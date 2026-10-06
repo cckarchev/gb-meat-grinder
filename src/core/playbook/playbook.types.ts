@@ -82,6 +82,8 @@ export type PlaybookResult = {
   clearsCover?: boolean;
   /** KD: applies Knocked Down; only the first one in the activation counts. */
   appliesKnockDown?: boolean;
+  /** T: Tackle takes the ball; only one per activation, since the ball is gone after. */
+  stealsBall?: boolean;
   /**
    * Card shows a dodge (`<`) on this result. Cosmetic only: dodges do nothing
    * for the attack math, but the symbol is still shown in the line label.

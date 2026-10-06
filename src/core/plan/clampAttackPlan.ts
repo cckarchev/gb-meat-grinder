@@ -8,7 +8,10 @@ import type {
   AttackPlanClampParams,
 } from '@/core/plan/attackPlan.types';
 import { clampAttackRow } from '@/core/plan/clampAttackRow';
-import { stripDuplicateKnockDown } from '@/core/plan/clampKnockDown';
+import {
+  stripDuplicateKnockDown,
+  stripDuplicateTackle,
+} from '@/core/plan/clampOncePerActivation';
 import { gridEqual } from '@/core/shared/gridEqual';
 
 /** Safety cap for the clamp fixpoint loop; real plans settle in a few passes. */
@@ -43,7 +46,7 @@ const sanitizeCharacterPlays = (
   return true;
 };
 
-/** One full pass: every row, then the KD rule, then the play picks. */
+/** One full pass: every row, then the KD and Tackle rules, then the play picks. */
 const clampPass = (
   draft: AttackPlan,
   params: AttackPlanClampParams,
@@ -57,6 +60,10 @@ const clampPass = (
   }
 
   if (stripDuplicateKnockDown(draft, params)) {
+    changed = true;
+  }
+
+  if (stripDuplicateTackle(draft, params)) {
     changed = true;
   }
 
