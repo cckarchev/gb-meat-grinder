@@ -21,6 +21,7 @@ const NO_EFFECTS: PickEffects = {
   tacBonusForLater: 0,
   defReductionForLater: 0,
   armorReduction: 0,
+  damageBonusForLater: 0,
 };
 
 /**
@@ -67,6 +68,7 @@ export const pickEffectsForLaterSwings = (
       tacBonusForLater: result.tacBonusForLater ?? 0,
       defReductionForLater: result.defReductionForLater ?? 0,
       armorReduction: 0,
+      damageBonusForLater: 0,
     };
   }
 
@@ -91,7 +93,7 @@ export const pickEffectsForLaterSwings = (
     return NO_EFFECTS;
   }
 
-  return characterPlayPickEffects(attacker, play);
+  return characterPlayPickEffects(attacker, play, damageMods.assistEngaged);
 };
 
 /**

@@ -163,6 +163,7 @@ describe('one named source across a guild buff and a play', () => {
       damageMods: {
         toughHide: false,
         targetBurning: false,
+        assistEngaged: false,
         buffs: { theyAintTough: true },
       },
       attackPlan: { wrapPicks, characterPlayPicks },

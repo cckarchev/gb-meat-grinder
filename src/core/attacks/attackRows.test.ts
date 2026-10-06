@@ -31,6 +31,7 @@ const NO_EFFECTS = {
   tacBonusForLater: 0,
   defReductionForLater: 0,
   armorReduction: 0,
+  damageBonusForLater: 0,
 };
 
 describe('activation order', () => {

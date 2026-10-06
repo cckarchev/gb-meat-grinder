@@ -6,6 +6,8 @@ export type CarriedEffects = {
   tacBonus: number;
   defReduction: number;
   armorReduction: number;
+  /** +DMG to playbook damage results (Assist). */
+  damageBonus: number;
 };
 
 /** What one swing inherits before it is rolled. */
@@ -23,7 +25,7 @@ export type SwingState = {
   healthPlayDivisorBySlot: readonly number[];
   /** The target is Burning before this swing (pre-applied or lit by an earlier one). */
   targetBurningBefore: boolean;
-  /** +DMG on this swing's playbook damage results (Burning Passion). */
+  /** +DMG on this swing's playbook damage results (Burning Passion, Assist). */
   playbookDamageBonus: number;
   /**
    * The traits' charge damage (Sweeping Charge) when this is the charge swing,

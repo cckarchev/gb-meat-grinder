@@ -21,7 +21,11 @@ import {
   withSwingDamageBonus,
 } from '@/core/damage/damage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
-import type { CharacterPlay, WrapPick } from '@/core/playbook/playbook.types';
+import type {
+  CharacterPlay,
+  PlaybookDamageMods,
+  WrapPick,
+} from '@/core/playbook/playbook.types';
 import {
   choiceUsesCharacterPlay,
   getPlaybookResult,
@@ -35,6 +39,7 @@ const NO_CARRIED_EFFECTS: CarriedEffects = {
   tacBonus: 0,
   defReduction: 0,
   armorReduction: 0,
+  damageBonus: 0,
 };
 
 const EMPTY_SWING_STATE: SwingState = {
@@ -56,15 +61,33 @@ export const swingStateAt = (
   return timeline[attackIndex] ?? EMPTY_SWING_STATE;
 };
 
+/**
+ * The mods one swing's playbook damage results are resolved with: the
+ * activation's, plus that swing's +DMG (Burning Passion, Assist).
+ */
+export const swingDamageMods = (
+  damageMods: PlaybookDamageMods,
+  timeline: ActivationTimeline,
+  attackIndex: number,
+): PlaybookDamageMods => {
+  const state = swingStateAt(timeline, attackIndex);
+
+  return withSwingDamageBonus(damageMods, state.playbookDamageBonus);
+};
+
 const hasAnyEffect = (effects: CarriedEffects): boolean => {
   return (
     effects.tacBonus !== 0 ||
     effects.defReduction !== 0 ||
-    effects.armorReduction !== 0
+    effects.armorReduction !== 0 ||
+    effects.damageBonus !== 0
   );
 };
 
-/** Named effects present before any swing: the toggled guild buffs and debuffs. */
+/**
+ * Named effects present before any swing: the toggled guild buffs and debuffs,
+ * and the attacker's traits that hold during each of its attacks.
+ */
 const preAppliedEffects = (
   params: TimelineParams,
 ): Map<string, CarriedEffects> => {
@@ -82,6 +105,17 @@ const preAppliedEffects = (
     }
   }
 
+  for (const trait of attackerTraits(params.attacker, params.damageMods)) {
+    const effects: CarriedEffects = {
+      ...NO_CARRIED_EFFECTS,
+      armorReduction: trait.armorReduction ?? 0,
+    };
+
+    if (hasAnyEffect(effects)) {
+      named.set(trait.id, effects);
+    }
+  }
+
   return named;
 };
 
@@ -92,14 +126,16 @@ const sumEffects = (
   let tacBonus = 0;
   let defReduction = 0;
   let armorReduction = 0;
+  let damageBonus = 0;
 
   for (const effects of named.values()) {
     tacBonus += effects.tacBonus;
     defReduction += effects.defReduction;
     armorReduction += effects.armorReduction;
+    damageBonus += effects.damageBonus;
   }
 
-  return { tacBonus, defReduction, armorReduction };
+  return { tacBonus, defReduction, armorReduction, damageBonus };
 };
 
 /** +DMG Burning Passion-like traits add to playbook damage against a Burning target. */
@@ -336,8 +372,11 @@ export const activationTimeline = (
   );
 
   for (const attackIndex of order) {
+    const effectsBefore = sumEffects(named);
+    const burningBonus = burning ? passionBonus : 0;
+
     const state: SwingState = {
-      effectsBefore: sumEffects(named),
+      effectsBefore,
       ...swingPlayDamageFor(
         plan,
         params,
@@ -346,7 +385,7 @@ export const activationTimeline = (
         params.targetHp - damageDealt,
       ),
       targetBurningBefore: burning,
-      playbookDamageBonus: burning ? passionBonus : 0,
+      playbookDamageBonus: burningBonus + effectsBefore.damageBonus,
       ...swingChargeDamageFor(plan, params, attackIndex),
     };
 
@@ -372,6 +411,7 @@ export const activationTimeline = (
         tacBonus: pickEffects.tacBonusForLater,
         defReduction: pickEffects.defReductionForLater,
         armorReduction: pickEffects.armorReduction,
+        damageBonus: pickEffects.damageBonusForLater,
       };
 
       const name = pickEffectName(

@@ -1,5 +1,6 @@
 import styles from '@/components/attacks/summary/attacksSummary.module.css';
 import { Mono } from '@/components/ui/ui';
+import { swingDamageMods } from '@/core/attacks/activationTimeline';
 import { attackKindLabel } from '@/core/attacks/attackKind';
 import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
 import { rowHasWrapPick } from '@/core/playbook/wrapSlots';
@@ -28,9 +29,11 @@ export const SummaryOddsRow = ({
     damageMods,
     effectiveWrapPicks,
     effectiveChargeAttackIndex,
+    timeline,
   } = useMeatGrinderSimulation();
 
   const rowPicks = effectiveWrapPicks[attackIndex];
+  const swingMods = swingDamageMods(damageMods, timeline, attackIndex);
 
   const probLabel = rowHasWrapPick(rowPicks)
     ? formatPercent(prob)
@@ -43,7 +46,7 @@ export const SummaryOddsRow = ({
         {attackKindLabel(attacker, attackIndex, effectiveChargeAttackIndex)}
         {' -> '}
         <span className={styles.selectionPicksInline}>
-          {formatWrapRowSelectionLabel(attacker, rowPicks ?? [], damageMods)}
+          {formatWrapRowSelectionLabel(attacker, rowPicks ?? [], swingMods)}
         </span>
       </span>
       <Mono>{probLabel}</Mono>

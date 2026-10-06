@@ -16,6 +16,7 @@ import {
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
 } from '@/data/attackers/statRanges';
+import type { CharacterTrait } from '@/data/characterTraits';
 import { searingStrike } from '@/data/characterTraits';
 import type { Guild } from '@/data/guilds/guild.types';
 
@@ -160,6 +161,22 @@ export const PLAY_HALF_HEALTH: CharacterPlay = {
   label: 'Play Half Health',
   currentHealthDivisor: 2,
   oncePerTurn: true,
+};
+
+/** Grants Assist [Mallet, Oak], like Axe A Question. */
+export const PLAY_ASSIST: CharacterPlay = {
+  id: 'playAssist',
+  label: 'Play Assist',
+  grantsAssist: ['Mallet', 'Oak'],
+  oncePerTurn: false,
+};
+
+/** A passive -1 ARM during every attack, like Anatomical Precision. */
+export const TRAIT_ARM: CharacterTrait = {
+  id: 'traitArm',
+  label: 'Trait ARM',
+  tooltip: '',
+  armorReduction: 1,
 };
 
 export const makeAttacker = (

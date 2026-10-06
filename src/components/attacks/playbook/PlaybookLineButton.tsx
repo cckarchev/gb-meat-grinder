@@ -1,5 +1,6 @@
 import styles from '@/components/attacks/playbook/PlaybookLineButton.module.css';
 import { momentousLineStyle } from '@/core/activation/momentousLines';
+import { swingDamageMods } from '@/core/attacks/activationTimeline';
 import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
 import { playbookLineDisplaySegments } from '@/core/playbook/playbookLabels';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
@@ -10,6 +11,8 @@ const KNOCK_DOWN_LOCKED_TITLE =
   'Knock Down unavailable: the target is already Knocked Down or an earlier pick knocks it down (only one KD applies)';
 
 type PlaybookLineButtonProps = {
+  /** The swing this line belongs to, for its +DMG (Burning Passion, Assist). */
+  attackIndex: number;
   id: PlaybookChoiceId;
   selected: boolean;
   /** KD-only line after Knock Down already applied, so it cannot be picked. */
@@ -21,15 +24,17 @@ type PlaybookLineButtonProps = {
 
 /** One playbook result, drawn as a round pick button. */
 export const PlaybookLineButton = ({
+  attackIndex,
   id,
   selected,
   knockDownLocked,
   hitChanceLabel,
   onClick,
 }: PlaybookLineButtonProps) => {
-  const { attacker, damageMods } = useMeatGrinderSimulation();
-  const momentousStyle = momentousLineStyle(attacker, id, damageMods);
-  const segments = playbookLineDisplaySegments(attacker, id, damageMods);
+  const { attacker, damageMods, timeline } = useMeatGrinderSimulation();
+  const swingMods = swingDamageMods(damageMods, timeline, attackIndex);
+  const momentousStyle = momentousLineStyle(attacker, id, swingMods);
+  const segments = playbookLineDisplaySegments(attacker, id, swingMods);
   const action = selected ? 'Selected' : 'Select';
   const guildColorStyle: CustomPropertyStyle = {
     '--guild-color': attacker.guild.color,

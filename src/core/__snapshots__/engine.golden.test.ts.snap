@@ -1,5 +1,3697 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`engine golden scenarios > Bucker > base (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000001,
+    ],
+    [
+      1,
+      0.000019,
+    ],
+    [
+      2,
+      0.000219,
+    ],
+    [
+      3,
+      0.00164,
+    ],
+    [
+      4,
+      0.008897,
+    ],
+    [
+      5,
+      0.035057,
+    ],
+    [
+      6,
+      0.102224,
+    ],
+    [
+      7,
+      0.20834,
+    ],
+    [
+      8,
+      0.287205,
+    ],
+    [
+      9,
+      0.20834,
+    ],
+    [
+      10,
+      0.102224,
+    ],
+    [
+      11,
+      0.035057,
+    ],
+    [
+      12,
+      0.008897,
+    ],
+    [
+      13,
+      0.00164,
+    ],
+    [
+      14,
+      0.000219,
+    ],
+    [
+      15,
+      0.000019,
+    ],
+    [
+      16,
+      0.000001,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 8,
+  "expectedHpRemaining": 6.000021,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.000239,
+  "killingBlowIndex": 3,
+  "likelyDamage": [
+    6,
+    10,
+  ],
+  "rowLabels": [
+    "4",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > base (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.53125,
+    ],
+    [
+      1,
+      0.15625,
+    ],
+    [
+      2,
+      0.3125,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0.78125,
+  "expectedHpRemaining": 13.21875,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    2,
+  ],
+  "rowLabels": [
+    "KD",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "kd",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > base (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      1,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0,
+  "expectedHpRemaining": 14,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    0,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > bonus time (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 21,
+    "totalEffective": 21,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0.000001,
+    ],
+    [
+      2,
+      0.000012,
+    ],
+    [
+      3,
+      0.000121,
+    ],
+    [
+      4,
+      0.000931,
+    ],
+    [
+      5,
+      0.00525,
+    ],
+    [
+      6,
+      0.022657,
+    ],
+    [
+      7,
+      0.069929,
+    ],
+    [
+      8,
+      0.156614,
+    ],
+    [
+      9,
+      0.209934,
+    ],
+    [
+      10,
+      0.206757,
+    ],
+    [
+      11,
+      0.15688,
+    ],
+    [
+      12,
+      0.095352,
+    ],
+    [
+      13,
+      0.047359,
+    ],
+    [
+      14,
+      0.019375,
+    ],
+    [
+      15,
+      0.00654,
+    ],
+    [
+      16,
+      0.001808,
+    ],
+    [
+      17,
+      0.000402,
+    ],
+    [
+      18,
+      0.00007,
+    ],
+    [
+      19,
+      0.000009,
+    ],
+    [
+      20,
+      0.000001,
+    ],
+    [
+      21,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    6,
+    5,
+    5,
+    5,
+  ],
+  "expectedDamage": 9.757813,
+  "expectedHpRemaining": 4.253879,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.028205,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    8,
+    12,
+  ],
+  "rowLabels": [
+    "4 → 2",
+    "4 → 1",
+    "4 → 1",
+    "4 → 1",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+      "m2",
+    ],
+    [
+      "dmg4",
+      "m1",
+    ],
+    [
+      "dmg4",
+      "m1",
+    ],
+    [
+      "dmg4",
+      "m1",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > bonus time (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.0625,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.666667,
+      "prob": 0.087791,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 6,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.666667,
+      "prob": 0.087791,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 8,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.666667,
+      "prob": 0.087791,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      "axeAQuestion",
+    ],
+    [
+      "hoistingAndHauling",
+      "axeAQuestion",
+    ],
+    [
+      "hoistingAndHauling",
+      "axeAQuestion",
+    ],
+    [
+      "hoistingAndHauling",
+      "axeAQuestion",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.78125,
+    ],
+    [
+      1,
+      0.054687,
+    ],
+    [
+      2,
+      0.164062,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0.382812,
+  "expectedHpRemaining": 13.617187,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    2,
+  ],
+  "rowLabels": [
+    "KD → GB",
+    "GB → GB",
+    "GB → GB",
+    "GB → GB",
+  ],
+  "wrapPicks": [
+    [
+      "kd",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > bonus time (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.0625,
+      "tac": 7,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 6,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 8,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      1,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0,
+  "expectedHpRemaining": 14,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    0,
+  ],
+  "rowLabels": [
+    "GB → GB",
+    "GB → GB",
+    "GB → GB",
+    "GB → GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > charge into stance (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 9,
+      "pHit": 0.333333,
+      "prob": 0.000051,
+      "tac": 9,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 15,
+    "totalEffective": 15,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000025,
+    ],
+    [
+      1,
+      0.000368,
+    ],
+    [
+      2,
+      0.00329,
+    ],
+    [
+      3,
+      0.017918,
+    ],
+    [
+      4,
+      0.069786,
+    ],
+    [
+      5,
+      0.175064,
+    ],
+    [
+      6,
+      0.298408,
+    ],
+    [
+      7,
+      0.225381,
+    ],
+    [
+      8,
+      0.128111,
+    ],
+    [
+      9,
+      0.055837,
+    ],
+    [
+      10,
+      0.019642,
+    ],
+    [
+      11,
+      0.005078,
+    ],
+    [
+      12,
+      0.000966,
+    ],
+    [
+      13,
+      0.000117,
+    ],
+    [
+      14,
+      0.000009,
+    ],
+    [
+      15,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    7,
+    4,
+    4,
+    0,
+  ],
+  "expectedDamage": 6.376213,
+  "expectedHpRemaining": 7.623787,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.000009,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    5,
+    8,
+  ],
+  "rowLabels": [
+    "4 → 3",
+    "4",
+    "4",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+      "dmg3",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > charge into stance (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.333333,
+      "prob": 0.042422,
+      "tac": 9,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.648834,
+    ],
+    [
+      1,
+      0.117055,
+    ],
+    [
+      2,
+      0.234111,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0.585277,
+  "expectedHpRemaining": 13.414723,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    2,
+  ],
+  "rowLabels": [
+    "KD → GB",
+    "GB",
+    "GB",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "kd",
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > charge into stance (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.333333,
+      "prob": 0.042422,
+      "tac": 9,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      1,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0,
+  "expectedHpRemaining": 14,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    0,
+  ],
+  "rowLabels": [
+    "GB → GB",
+    "GB",
+    "GB",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > cover (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.0625,
+      "tac": 4,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.0625,
+      "tac": 4,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.0625,
+      "tac": 4,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.0625,
+      "tac": 4,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 12,
+    "totalEffective": 12,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000015,
+    ],
+    [
+      1,
+      0.000244,
+    ],
+    [
+      2,
+      0.002075,
+    ],
+    [
+      3,
+      0.011292,
+    ],
+    [
+      4,
+      0.043091,
+    ],
+    [
+      5,
+      0.117065,
+    ],
+    [
+      6,
+      0.226166,
+    ],
+    [
+      7,
+      0.29248,
+    ],
+    [
+      8,
+      0.229126,
+    ],
+    [
+      9,
+      0.06842,
+    ],
+    [
+      10,
+      0.009399,
+    ],
+    [
+      11,
+      0.00061,
+    ],
+    [
+      12,
+      0.000015,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    3,
+    3,
+    3,
+  ],
+  "expectedDamage": 6.75,
+  "expectedHpRemaining": 7.25,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    5,
+    8,
+  ],
+  "rowLabels": [
+    "3",
+    "3",
+    "3",
+    "3",
+  ],
+  "wrapPicks": [
+    [
+      "dmg3",
+    ],
+    [
+      "dmg3",
+    ],
+    [
+      "dmg3",
+    ],
+    [
+      "dmg3",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > cover (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.3125,
+      "tac": 4,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.987654,
+      "tac": 4,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.987654,
+      "tac": 4,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.987654,
+      "tac": 4,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.375,
+    ],
+    [
+      1,
+      0.25,
+    ],
+    [
+      2,
+      0.375,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 1,
+  "expectedHpRemaining": 13,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    2,
+  ],
+  "rowLabels": [
+    "KD",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "kd",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > cover (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.9375,
+      "tac": 4,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.9375,
+      "tac": 4,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.9375,
+      "tac": 4,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.9375,
+      "tac": 4,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      1,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0,
+  "expectedHpRemaining": 14,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    0,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > hard target (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.333333,
+      "prob": 0.004115,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.333333,
+      "prob": 0.004115,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.333333,
+      "prob": 0.004115,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.333333,
+      "prob": 0.004115,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 12,
+    "totalEffective": 12,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.045128,
+    ],
+    [
+      1,
+      0.128937,
+    ],
+    [
+      2,
+      0.218733,
+    ],
+    [
+      3,
+      0.24008,
+    ],
+    [
+      4,
+      0.19251,
+    ],
+    [
+      5,
+      0.111085,
+    ],
+    [
+      6,
+      0.047286,
+    ],
+    [
+      7,
+      0.013568,
+    ],
+    [
+      8,
+      0.002511,
+    ],
+    [
+      9,
+      0.000157,
+    ],
+    [
+      10,
+      0.000004,
+    ],
+    [
+      11,
+      0,
+    ],
+    [
+      12,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    3,
+    3,
+    3,
+  ],
+  "expectedDamage": 3.012346,
+  "expectedHpRemaining": 14.987654,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    5,
+  ],
+  "rowLabels": [
+    "3",
+    "3",
+    "3",
+    "3",
+  ],
+  "wrapPicks": [
+    [
+      "dmg3",
+    ],
+    [
+      "dmg3",
+    ],
+    [
+      "dmg3",
+    ],
+    [
+      "dmg3",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > hard target (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.333333,
+      "prob": 0.045267,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.8125,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.8125,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.8125,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.506173,
+    ],
+    [
+      1,
+      0.329218,
+    ],
+    [
+      2,
+      0.164609,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0.658436,
+  "expectedHpRemaining": 17.341564,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    2,
+  ],
+  "rowLabels": [
+    "KD",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "kd",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > hard target (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.333333,
+      "prob": 0.539095,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 5,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.333333,
+      "prob": 0.539095,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 5,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.333333,
+      "prob": 0.539095,
+      "tac": 5,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 5,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.333333,
+      "prob": 0.539095,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      1,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0,
+  "expectedHpRemaining": 18,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    0,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > knocked down and snared (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 20,
+    "totalEffective": 20,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0,
+    ],
+    [
+      4,
+      0,
+    ],
+    [
+      5,
+      0,
+    ],
+    [
+      6,
+      0,
+    ],
+    [
+      7,
+      0.000001,
+    ],
+    [
+      8,
+      0.000022,
+    ],
+    [
+      9,
+      0.000223,
+    ],
+    [
+      10,
+      0.001413,
+    ],
+    [
+      11,
+      0.006276,
+    ],
+    [
+      12,
+      0.020879,
+    ],
+    [
+      13,
+      0.053828,
+    ],
+    [
+      14,
+      0.109146,
+    ],
+    [
+      15,
+      0.17439,
+    ],
+    [
+      16,
+      0.217101,
+    ],
+    [
+      17,
+      0.204889,
+    ],
+    [
+      18,
+      0.138873,
+    ],
+    [
+      19,
+      0.06038,
+    ],
+    [
+      20,
+      0.012579,
+    ],
+  ],
+  "damageIfAllHits": [
+    5,
+    5,
+    5,
+    5,
+  ],
+  "expectedDamage": 16.034808,
+  "expectedHpRemaining": 0.121318,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.917358,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    14,
+    18,
+  ],
+  "rowLabels": [
+    "4 → 1",
+    "4 → 1",
+    "4 → 1",
+    "4 → 1",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+      "m1",
+    ],
+    [
+      "dmg4",
+      "m1",
+    ],
+    [
+      "dmg4",
+      "m1",
+    ],
+    [
+      "dmg4",
+      "m1",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > knocked down and snared (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 6,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 8,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "hoistingAndHauling",
+      "axeAQuestion",
+    ],
+    [
+      "hoistingAndHauling",
+      "axeAQuestion",
+    ],
+    [
+      "hoistingAndHauling",
+      "axeAQuestion",
+    ],
+    [
+      "hoistingAndHauling",
+      "axeAQuestion",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      1,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0,
+  "expectedHpRemaining": 14,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    0,
+  ],
+  "rowLabels": [
+    "GB → GB",
+    "GB → GB",
+    "GB → GB",
+    "GB → GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > knocked down and snared (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 6,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 8,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.833333,
+      "prob": 0.334898,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      1,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0,
+  "expectedHpRemaining": 14,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    0,
+  ],
+  "rowLabels": [
+    "GB → GB",
+    "GB → GB",
+    "GB → GB",
+    "GB → GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > resilient (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 12,
+    "totalEffective": 12,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000031,
+    ],
+    [
+      1,
+      0.000458,
+    ],
+    [
+      2,
+      0.00412,
+    ],
+    [
+      3,
+      0.022583,
+    ],
+    [
+      4,
+      0.087067,
+    ],
+    [
+      5,
+      0.213776,
+    ],
+    [
+      6,
+      0.343933,
+    ],
+    [
+      7,
+      0.213776,
+    ],
+    [
+      8,
+      0.087067,
+    ],
+    [
+      9,
+      0.022583,
+    ],
+    [
+      10,
+      0.00412,
+    ],
+    [
+      11,
+      0.000458,
+    ],
+    [
+      12,
+      0.000031,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 6,
+  "expectedHpRemaining": 8,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    4,
+    8,
+  ],
+  "rowLabels": [
+    "4",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > resilient (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      1,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0,
+  "expectedHpRemaining": 14,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    0,
+  ],
+  "rowLabels": [
+    "KD",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "kd",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > resilient (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      1,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0,
+  "expectedHpRemaining": 14,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    0,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > soft target (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.666667,
+      "prob": 0.131687,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.666667,
+      "prob": 0.131687,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.666667,
+      "prob": 0.131687,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.666667,
+      "prob": 0.131687,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0.000005,
+    ],
+    [
+      4,
+      0.000072,
+    ],
+    [
+      5,
+      0.000695,
+    ],
+    [
+      6,
+      0.005248,
+    ],
+    [
+      7,
+      0.027622,
+    ],
+    [
+      8,
+      0.105947,
+    ],
+    [
+      9,
+      0.204495,
+    ],
+    [
+      10,
+      0.250345,
+    ],
+    [
+      11,
+      0.208912,
+    ],
+    [
+      12,
+      0.124558,
+    ],
+    [
+      13,
+      0.053003,
+    ],
+    [
+      14,
+      0.015788,
+    ],
+    [
+      15,
+      0.003007,
+    ],
+    [
+      16,
+      0.000301,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 10.17284,
+  "expectedHpRemaining": 0.040519,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.966357,
+  "killingBlowIndex": 1,
+  "likelyDamage": [
+    8,
+    12,
+  ],
+  "rowLabels": [
+    "4",
+    "4",
+    "4",
+    "4",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > soft target (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.666667,
+      "prob": 0.790123,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.833333,
+      "prob": 0.999871,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.833333,
+      "prob": 0.999871,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.833333,
+      "prob": 0.999871,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.794239,
+    ],
+    [
+      1,
+      0.041152,
+    ],
+    [
+      2,
+      0.164609,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0.37037,
+  "expectedHpRemaining": 7.62963,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    2,
+  ],
+  "rowLabels": [
+    "KD",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "kd",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > soft target (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      1,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0,
+  "expectedHpRemaining": 8,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    0,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > tough hide with buffs (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.03125,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 16,
+    "totalEffective": 12,
+    "toughHideReduction": 4,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.001236,
+    ],
+    [
+      1,
+      0.016479,
+    ],
+    [
+      2,
+      0.086517,
+    ],
+    [
+      3,
+      0.225128,
+    ],
+    [
+      4,
+      0.303307,
+    ],
+    [
+      5,
+      0.216446,
+    ],
+    [
+      6,
+      0.104538,
+    ],
+    [
+      7,
+      0.035515,
+    ],
+    [
+      8,
+      0.00895,
+    ],
+    [
+      9,
+      0.001644,
+    ],
+    [
+      10,
+      0.000219,
+    ],
+    [
+      11,
+      0.000019,
+    ],
+    [
+      12,
+      0.000001,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    3,
+    3,
+    3,
+  ],
+  "expectedDamage": 4.125,
+  "expectedHpRemaining": 9.875,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    2,
+    6,
+  ],
+  "rowLabels": [
+    "3",
+    "3",
+    "3",
+    "3",
+  ],
+  "wrapPicks": [
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+    [
+      "dmg4",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > tough hide with buffs (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 3,
+      "pHit": 0.5,
+      "prob": 0.5,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.666667,
+      "prob": 0.995885,
+      "tac": 5,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+    [
+      "hoistingAndHauling",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.6875,
+    ],
+    [
+      1,
+      0.3125,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0.3125,
+  "expectedHpRemaining": 13.6875,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    1,
+  ],
+  "rowLabels": [
+    "KD",
+    "GB",
+    "GB",
+    "GB",
+  ],
+  "wrapPicks": [
+    [
+      "kd",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+    [
+      "gb",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Bucker > tough hide with buffs (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 1,
+      "pHit": 0.5,
+      "prob": 0.96875,
+      "tac": 5,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 5,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 7,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.015625,
+      "tac": 6,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 0,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+    [
+      "axeAQuestion",
+      "axeAQuestion",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      1,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 0,
+  "expectedHpRemaining": 14,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    0,
+    0,
+  ],
+  "rowLabels": [
+    "GB",
+    "GB → GB",
+    "GB → GB",
+    "GB → GB",
+  ],
+  "wrapPicks": [
+    [
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+    [
+      "gb",
+      "gb",
+    ],
+  ],
+}
+`;
+
 exports[`engine golden scenarios > Cast > base (damage) 1`] = `
 {
   "attacks": [

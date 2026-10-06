@@ -37,6 +37,12 @@ export type CharacterPlay = {
    */
   currentHealthDivisor?: number;
   /**
+   * The model gains Assist [named models] (Axe A Question): while one of them
+   * engages the target (`PlaybookDamageMods.assistEngaged`), later attacks get
+   * +1 TAC and +1 DMG to playbook damage results.
+   */
+  grantsAssist?: readonly string[];
+  /**
    * Once Per Turn, copied from the card: picking it on one swing removes it from
    * later swings. It only limits availability; effects of the same name never
    * stack either way (see MODELING.md, "Stacking").
@@ -55,6 +61,8 @@ export type PickEffects = {
   tacBonusForLater: number;
   defReductionForLater: number;
   armorReduction: number;
+  /** +DMG to playbook damage results on later attacks (Assist). */
+  damageBonusForLater: number;
 };
 
 export type PlaybookResult = {
@@ -93,6 +101,8 @@ export type PlaybookDamageMods = {
   toughHide: boolean;
   /** The target starts the activation with the Burning condition. */
   targetBurning: boolean;
+  /** A model named by the attacker's Assist (e.g. Mallet or Oak) engages the target. */
+  assistEngaged: boolean;
   /**
    * Attacker damage buffs by id, toggled on/off. These are external (teammate /
    * guild-granted) and defined per attacker in its data file, so the keys are

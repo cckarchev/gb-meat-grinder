@@ -25,6 +25,10 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
 
 const TRAIT_ID_SEPARATOR = '+';
 
+/** The breakdown line for the +DMG Assist carries into later swings. */
+const ASSIST_LINE_ID = 'assist';
+const ASSIST_LINE_LABEL = 'Assist';
+
 /** The breakdown line for Burning Passion-like traits, named after them. */
 const burningPassionLine = (
   attacker: AttackerData,
@@ -94,6 +98,7 @@ export const damageModifierBreakdown = (
   let toughHideReduction = 0;
   let totalEffective = 0;
   let passionBonus = 0;
+  let assistBonus = 0;
 
   const buffBonuses = availableBuffs(attacker).map((buff) => ({
     id: buff.id,
@@ -120,6 +125,11 @@ export const damageModifierBreakdown = (
       state.playbookDamageBonus,
     );
 
+    // The swing bonus is Burning Passion plus the carried Assist DMG.
+    const carriedBonus = state.effectsBefore.damageBonus;
+    const passionOnly = state.playbookDamageBonus - carriedBonus;
+    const passionMods = withSwingDamageBonus(damageMods, passionOnly);
+
     const printedAmounts: { printed: number; mods: PlaybookDamageMods }[] = [];
 
     for (const id of wrapPicks[attackIndex]) {
@@ -136,9 +146,24 @@ export const damageModifierBreakdown = (
       rawCardDamage += cardDamage;
       printedAmounts.push({ printed: cardDamage, mods: swingMods });
 
-      passionBonus +=
-        effectivePlaybookDamage(attacker, cardDamage, swingMods) -
-        effectivePlaybookDamage(attacker, cardDamage, damageMods);
+      const withSwingBonus = effectivePlaybookDamage(
+        attacker,
+        cardDamage,
+        swingMods,
+      );
+      const withPassion = effectivePlaybookDamage(
+        attacker,
+        cardDamage,
+        passionMods,
+      );
+      const withNeither = effectivePlaybookDamage(
+        attacker,
+        cardDamage,
+        damageMods,
+      );
+
+      passionBonus += withPassion - withNeither;
+      assistBonus += withSwingBonus - withPassion;
     }
 
     // Play damage is not a playbook damage result: no Burning Passion. A play
@@ -188,6 +213,14 @@ export const damageModifierBreakdown = (
   // Listed only when it adds damage, so breakdowns without it keep their shape.
   if (passionBonus > 0) {
     buffBonuses.push(burningPassionLine(attacker, damageMods, passionBonus));
+  }
+
+  if (assistBonus > 0) {
+    buffBonuses.push({
+      id: ASSIST_LINE_ID,
+      label: ASSIST_LINE_LABEL,
+      bonus: assistBonus,
+    });
   }
 
   return {

@@ -215,6 +215,8 @@ const runScenario = (
     // Burning was a Blacksmiths buff; it rides with the buffs so the
     // Burning Passion snapshots keep their coverage.
     targetBurning: scenario.allBuffs,
+    // So does a named model engaging the target, for models with Assist.
+    assistEngaged: scenario.allBuffs,
     buffs: Object.fromEntries(
       availableBuffs(attacker).map((buff) => [buff.id, scenario.allBuffs]),
     ),

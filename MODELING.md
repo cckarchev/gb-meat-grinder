@@ -42,6 +42,15 @@ Classify every effect by **whose state it describes**:
   such as Searing Strike from *Tempered Steel*) are **attacker-side**: an attacker buff,
   shown on the Attacker panel. An ability whose *effect* lands on the target later in the
   activation is still attacker-side, because it is something the attacker does.
+  A passive trait that weakens the target only *during the model's own attacks* (Bucker's
+  *Anatomical Precision*, −1 ARM, `CharacterTrait.armorReduction`) is attacker-side too:
+  it holds from the first swing and stacks with other named −ARM effects.
+- **Assist [named models]** needs two things: one of the named friendly models engages the
+  target (an enemy condition toggle, `assistEngaged`, shown only to models with an Assist
+  play) **and** the attacker has gained Assist through its play (Bucker's *Axe A
+  Question*, `CharacterPlay.grantsAssist`). Only then do the **later** swings get +1 TAC
+  and +1 DMG to playbook damage results (not to play damage), itemized as an "Assist"
+  line in the damage breakdown.
 
 Guild effects stay **availability-scoped to the attacker's guild even when they land on
 the enemy.** Blacksmiths cannot use *They Ain't Tough!*, and Farmers and Butchers cannot

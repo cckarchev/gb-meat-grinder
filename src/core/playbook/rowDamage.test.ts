@@ -11,6 +11,7 @@ import {
   modsWith,
   NEUTRAL_TARGET_HP,
   NO_MODS,
+  PLAY_ASSIST,
   PLAY_DAMAGE,
   PLAY_HALF_HEALTH,
 } from '@/core/testing/fixtures';
@@ -160,5 +161,46 @@ describe('current-HP play damage in the projection and breakdown', () => {
     expect(characterPlayDamageSources(timeline, [0])).toEqual([
       { label: 'Play Half Health', amount: 5 },
     ]);
+  });
+});
+
+describe('Assist damage in the projection and breakdown', () => {
+  const attacker = makeAttacker({ characterPlays: [PLAY_ASSIST] });
+  const mods = modsWith({ assistEngaged: true });
+  const wrapPicks = [['gb'], ['two']];
+
+  const timeline = activationTimeline(
+    { wrapPicks, characterPlayPicks: [['playAssist'], [null]] },
+    {
+      attacker,
+      damageMods: mods,
+      activeBaseCount: 2,
+      chargeAttackIndex: NO_ATTACK_INDEX,
+      targetHp: NEUTRAL_TARGET_HP,
+      enemyKnockedDown: false,
+    },
+  );
+
+  it('adds +1 DMG to the later playbook damage result only', () => {
+    // The fixture's `gb` deals 1: the play does not boost its own swing.
+    expect(rowDamageIfAllHit(attacker, wrapPicks, mods, 2, timeline)).toEqual([
+      1, 3,
+    ]);
+  });
+
+  it('itemizes it on its own Assist line', () => {
+    const breakdown = damageModifierBreakdown(
+      attacker,
+      wrapPicks,
+      mods,
+      2,
+      timeline,
+    );
+
+    const lifted = breakdown.buffBonuses.filter((line) => line.bonus > 0);
+
+    expect(breakdown.rawCardDamage).toBe(3);
+    expect(breakdown.totalEffective).toBe(4);
+    expect(lifted).toEqual([{ id: 'assist', label: 'Assist', bonus: 1 }]);
   });
 });

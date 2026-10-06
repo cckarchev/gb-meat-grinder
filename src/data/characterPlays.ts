@@ -73,3 +73,22 @@ export const theBiggerTheyAre: CharacterPlay = {
   currentHealthDivisor: 2,
   oncePerTurn: true,
 };
+
+/** Bucker's Hoisting and Hauling: moves a log pile marker, no effect on the attack math. */
+export const hoistingAndHauling: CharacterPlay = {
+  id: 'hoistingAndHauling',
+  label: 'Hoisting and Hauling',
+  oncePerTurn: false,
+};
+
+/**
+ * Bucker's Axe A Question: he gains Assist [Mallet, Oak]. While Mallet or Oak
+ * engages the target, his later attacks get +1 TAC and +1 DMG to playbook
+ * damage results.
+ */
+export const axeAQuestion: CharacterPlay = {
+  id: 'axeAQuestion',
+  label: 'Axe A Question',
+  grantsAssist: ['Mallet', 'Oak'],
+  oncePerTurn: false,
+};
