@@ -23,6 +23,7 @@ import {
   convolve,
   swingDamageDistribution,
 } from '@/core/damage/damageDistribution';
+import { hpAfterDamage } from '@/core/damage/hpAfterDamage';
 import { pickedDamageForNet } from '@/core/damage/pickedDamage';
 import type {
   PlaybookDamageMods,
@@ -140,7 +141,7 @@ export const planDamageOutcome = (
   let killProbability = 0;
 
   for (const [damage, prob] of damageDistribution) {
-    const hpLeft = Math.max(0, targetHp - damage);
+    const hpLeft = hpAfterDamage(targetHp, damage);
 
     expectedDamage += damage * prob;
     expectedHpRemaining += hpLeft * prob;

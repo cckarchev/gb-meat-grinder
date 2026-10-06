@@ -37,7 +37,7 @@ export const EnemyGuildDebuffs = () => {
       {debuffs.map((debuff) => (
         <GuildBuffCheckbox key={debuff.id} buff={debuff} />
       ))}
-      {hasAssist && (
+      {hasAssist ? (
         <TooltipCheckbox
           checked={damageMods.assistEngaged}
           onChange={(value) => dispatch({ type: 'assistEngaged', value })}
@@ -45,7 +45,7 @@ export const EnemyGuildDebuffs = () => {
         >
           {labelAssistEngaged(assistNamed)}
         </TooltipCheckbox>
-      )}
+      ) : null}
     </ToggleGroup>
   );
 };

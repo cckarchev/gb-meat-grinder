@@ -6,6 +6,7 @@ import {
 } from '@/core/activation/momentum';
 import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+import { hpAfterDamage } from '@/core/damage/hpAfterDamage';
 import type {
   PlaybookDamageMods,
   WrapPick,
@@ -45,11 +46,6 @@ export type SwingProjection = {
   bonusTimePool: number[];
 };
 
-/** HP left once `dealt` damage lands, never below zero. */
-const hpAfterDamage = (input: SwingProjectionInput, dealt: number): number => {
-  return Math.max(0, input.targetHp - dealt);
-};
-
 const remainingHpAfterEachSwing = (input: SwingProjectionInput): number[] => {
   // Special-ability damage is guaranteed and untied to a swing, so apply it
   // up front as a baseline before the per-swing chip damage.
@@ -58,7 +54,7 @@ const remainingHpAfterEachSwing = (input: SwingProjectionInput): number[] => {
   return input.attacks.map((swing) => {
     dealt += input.rowDamageIfHit[swing.attackIndex];
 
-    return hpAfterDamage(input, dealt);
+    return hpAfterDamage(input.targetHp, dealt);
   });
 };
 
@@ -92,7 +88,7 @@ const bonusTimePoolBeforeEachSwing = (
 
 export const projectSwings = (input: SwingProjectionInput): SwingProjection => {
   return {
-    startingHp: hpAfterDamage(input, input.flatDamage),
+    startingHp: hpAfterDamage(input.targetHp, input.flatDamage),
     remainingHp: remainingHpAfterEachSwing(input),
     momentum: momentumAfterEachSwing(input),
     bonusTimePool: bonusTimePoolBeforeEachSwing(input),
