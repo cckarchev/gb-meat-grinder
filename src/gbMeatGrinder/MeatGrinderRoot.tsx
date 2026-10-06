@@ -2,6 +2,7 @@ import { AttackerPanel } from '@/components/attacker/AttackerPanel';
 import { AttacksPanel } from '@/components/attacks/AttacksPanel';
 import { EnemyPanel } from '@/components/enemy/EnemyPanel';
 import { SetupPanelsRow } from '@/components/ui/SetupPanelsRow';
+import { ShareButton } from '@/components/ui/ShareButton';
 import { ToggleButton } from '@/components/ui/ToggleButton';
 import styles from '@/gbMeatGrinder/MeatGrinderRoot.module.css';
 import { MeatGrinderSimulationContext } from '@/gbMeatGrinder/useMeatGrinderSimulation';
@@ -22,13 +23,19 @@ export const MeatGrinderRoot = () => {
           />
           <h1 className={styles.title}>GB Meat Grinder</h1>
         </div>
-        <ToggleButton
-          className={styles.resetButton}
-          type="button"
-          onClick={() => simulation.dispatch({ type: 'reset' })}
-        >
-          Reset
-        </ToggleButton>
+        <div className={styles.headerActions}>
+          <ShareButton
+            className={styles.headerButton}
+            url={simulation.shareUrl}
+          />
+          <ToggleButton
+            className={styles.resetButton}
+            type="button"
+            onClick={() => simulation.dispatch({ type: 'reset' })}
+          >
+            Reset
+          </ToggleButton>
+        </div>
       </header>
       <SetupPanelsRow>
         <AttackerPanel />

@@ -25,5 +25,7 @@ export type MeatGrinderSimulation = UiEditableState &
     availableAttackers: readonly AttackerData[];
     wrapPicks: WrapPick[][];
     characterPlayPicks: CharacterPlayPickSlot[][];
+    /** Link that reopens the app with every current choice. */
+    shareUrl: string;
     dispatch: Dispatch<MeatGrinderAction>;
   };

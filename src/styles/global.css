@@ -45,6 +45,9 @@
   --ghost-border: rgba(43, 179, 196, 0.6);
   --ghost-border-hover: rgba(43, 179, 196, 0.9);
   --ghost-bg: rgba(43, 179, 196, 0.1);
+  --accent-ghost-border: rgba(212, 98, 62, 0.6);
+  --accent-ghost-border-hover: rgba(212, 98, 62, 0.9);
+  --accent-ghost-bg: rgba(212, 98, 62, 0.1);
 
   /** Playbook lines without momentum: light "paper" chip, kept light for
       tabular legibility against the dark panels (echoes the physical playbook). */

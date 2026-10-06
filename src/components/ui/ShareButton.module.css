@@ -1,0 +1,5 @@
+/* Anchors the copy confirmation bubble below the button. */
+.shareButton {
+  position: relative;
+  display: inline-flex;
+}
