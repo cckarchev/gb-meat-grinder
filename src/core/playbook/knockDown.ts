@@ -43,8 +43,9 @@ export const knockDownTakenBeforePick = (
 
 /**
  * True if Knock Down is all this line does. A line with other effects (damage,
- * momentum, a dodge, ...) stays worth picking after KD is taken: its effects
- * apply on their own and only the KD is dropped.
+ * a dodge, ...) stays worth picking after KD is taken: its effects apply on
+ * their own and only the KD is dropped. Momentum is not one of them: it is
+ * earned by picking a valid result, and a KD on a Knocked Down target is not.
  */
 export const knockDownIsOnlyEffect = (result: PlaybookResult): boolean => {
   if (!result.appliesKnockDown) {
@@ -53,7 +54,6 @@ export const knockDownIsOnlyEffect = (result: PlaybookResult): boolean => {
 
   const hasOtherEffect =
     result.damage > 0 ||
-    result.momentum === true ||
     result.dodge === true ||
     result.clearsCover === true ||
     result.picksCharacterPlay === true ||

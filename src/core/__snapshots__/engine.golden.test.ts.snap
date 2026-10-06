@@ -5608,9 +5608,9 @@ exports[`engine golden scenarios > Cross Cut > bonus time (knockdown) 1`] = `
       "attackIndex": 0,
       "defMinRoll": 4,
       "momentumAfter": 1,
-      "netSuccessesNeeded": 9,
+      "netSuccessesNeeded": 7,
       "pHit": 0.5,
-      "prob": 0.000977,
+      "prob": 0.054688,
       "tac": 10,
     },
     {
@@ -5709,47 +5709,39 @@ exports[`engine golden scenarios > Cross Cut > bonus time (knockdown) 1`] = `
     ],
     [
       8,
-      0.000303,
+      0.000304,
     ],
     [
       9,
-      0.001261,
+      0.001266,
     ],
     [
       10,
-      0.004604,
+      0.004628,
     ],
     [
       11,
-      0.014432,
+      0.014535,
     ],
     [
       12,
-      0.041534,
+      0.041963,
     ],
     [
       13,
-      0.095123,
+      0.096542,
     ],
     [
       14,
-      0.178972,
+      0.182802,
     ],
     [
       15,
-      0.260997,
+      0.268249,
     ],
     [
       16,
-      0.366911,
-    ],
-    [
-      17,
-      0.029676,
-    ],
-    [
-      18,
-      0.006107,
+      0.389631,
     ],
   ],
   "damageIfAllHits": [
@@ -5758,17 +5750,17 @@ exports[`engine golden scenarios > Cross Cut > bonus time (knockdown) 1`] = `
     4,
     4,
   ],
-  "expectedDamage": 14.859674,
-  "expectedHpRemaining": 0.248602,
+  "expectedDamage": 14.796198,
+  "expectedHpRemaining": 0.251314,
   "ignoredAttackIndex": -1,
-  "killProbability": 0.842664,
+  "killProbability": 0.840682,
   "killingBlowIndex": 3,
   "likelyDamage": [
     13,
     16,
   ],
   "rowLabels": [
-    "4KD → KD",
+    "4KD → >",
     "4KD → >",
     "4KD → >",
     "4KD → >",
@@ -5776,7 +5768,7 @@ exports[`engine golden scenarios > Cross Cut > bonus time (knockdown) 1`] = `
   "wrapPicks": [
     [
       "four_kd",
-      "kd",
+      "push",
     ],
     [
       "four_kd",

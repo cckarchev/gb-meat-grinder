@@ -14,6 +14,7 @@ import {
   NO_MODS,
   planOf,
 } from '@/core/testing/fixtures';
+import { crossCut } from '@/data/attackers/crossCut';
 import { thresher } from '@/data/attackers/thresher';
 
 describe('knockDownTakenBeforePick', () => {
@@ -42,6 +43,12 @@ describe('knockDownIsOnlyEffect', () => {
     const bareKnockDown = { ...fixtureKnockDown, dodge: false };
 
     expect(knockDownIsOnlyEffect(bareKnockDown)).toBe(true);
+  });
+
+  it('is true for a momentous KD with nothing else', () => {
+    const momentousKnockDown = getPlaybookResult(crossCut, 'kd');
+
+    expect(knockDownIsOnlyEffect(momentousKnockDown)).toBe(true);
   });
 
   it('is false when the line also dodges', () => {

@@ -141,6 +141,12 @@ A momentous playbook result earns **1 momentum** on a hit, subject to one rule:
 - A momentous result **without printed damage** (e.g. a momentous `GB` or `<<`) always
   earns momentum, and its chip is shown momentous as usual.
 
+Momentum is earned by picking a **valid** result. A `KD` on a target that is already
+Knocked Down (from the Enemy panel or an earlier KD this activation) is not one, so a
+line whose only effect is that KD, momentous or not, cannot be picked and earns nothing.
+A KD line with another effect (damage, a dodge, a push, a play) stays pickable: only its
+KD is dropped.
+
 Damage from other sources on the same attack does not rescue a zeroed result: a `1;M`
 zeroed by Tough Hide earns no momentum even when *Sweeping Charge* deals its 3 DMG on
 that charge.
