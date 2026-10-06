@@ -1,13 +1,12 @@
 import styles from '@/components/attacks/swing/DicePoolStrip.module.css';
 import { WrapContinuationToggle } from '@/components/attacks/swing/WrapContinuationToggle';
-import { InfoTip } from '@/components/ui/InfoTip';
+import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
 import { Mono } from '@/components/ui/ui';
 import {
   BONUS_TIME_MOMENTUM_COST,
   BONUS_TIME_TAC_BONUS,
   CHARGE_TAC_BONUS,
 } from '@/core/shared/constants';
-import { dataFlag } from '@/styles/dataFlag';
 
 const BONUS_TIME_UNAFFORDABLE_TOOLTIP = `Bonus Time needs at least ${BONUS_TIME_MOMENTUM_COST} momentum before this attack (costs ${BONUS_TIME_MOMENTUM_COST} before the roll).`;
 
@@ -43,6 +42,10 @@ export const DicePoolStrip = ({
   wrapOpen,
   onWrapToggle,
 }: DicePoolStripProps) => {
+  const bonusTimeTooltip = bonusTimeDisabled
+    ? BONUS_TIME_UNAFFORDABLE_TOOLTIP
+    : BONUS_TIME_TOOLTIP;
+
   return (
     // biome-ignore lint/a11y/useAriaPropsSupportedByRole: predates the CSS Modules move; giving the div a role changes the accessibility tree, so it is a separate fix.
     <div className={styles.bar} aria-label="Dice pool for this attack">
@@ -58,26 +61,15 @@ export const DicePoolStrip = ({
             <span>+{CHARGE_TAC_BONUS} TAC charge</span>
           </label>
         ) : null}
-        <label
+        <TooltipCheckbox
           className={styles.poolToggle}
-          data-disabled={dataFlag(bonusTimeDisabled)}
+          checked={bonusTime}
+          disabled={bonusTimeDisabled}
+          onChange={onBonusTimeChange}
+          tooltip={bonusTimeTooltip}
         >
-          <input
-            type="checkbox"
-            checked={bonusTime}
-            disabled={bonusTimeDisabled}
-            onChange={(event) => onBonusTimeChange(event.target.checked)}
-          />
-          <InfoTip
-            content={
-              bonusTimeDisabled
-                ? BONUS_TIME_UNAFFORDABLE_TOOLTIP
-                : BONUS_TIME_TOOLTIP
-            }
-          >
-            Bonus Time (+{BONUS_TIME_TAC_BONUS} Dice Pool)
-          </InfoTip>
-        </label>
+          Bonus Time (+{BONUS_TIME_TAC_BONUS} Dice Pool)
+        </TooltipCheckbox>
       </div>
       <div className={styles.readoutGroup}>
         {canWrap ? (
