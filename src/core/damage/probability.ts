@@ -34,20 +34,24 @@ export const hitProbabilityPerDie = (defMinRoll: number): number => {
 
 /**
  * One attack: roll `tac` dice, each hits vs DEF with probability `p`.
- * Net successes = raw hits − ARM. Returns P(net ≥ netSuccessesNeeded), i.e. the
- * chance you reach a playbook column that needs that many net successes.
+ * Net successes = max(0, raw hits − ARM) + `netHitBonus` (Instruction).
+ * Returns P(net ≥ netSuccessesNeeded), i.e. the chance you reach a playbook
+ * column that needs that many net successes.
  */
 export const probAttackSucceeds = (
   tac: number,
   p: number,
   armor: number,
   netSuccessesNeeded: number,
+  netHitBonus = 0,
 ): number => {
-  if (netSuccessesNeeded <= 0) {
+  const netNeededFromRoll = netSuccessesNeeded - netHitBonus;
+
+  if (netNeededFromRoll <= 0) {
     return 1;
   }
 
-  const rawHitsNeeded = netSuccessesNeeded + armor;
+  const rawHitsNeeded = netNeededFromRoll + armor;
 
   if (rawHitsNeeded > tac) {
     return 0;
@@ -63,7 +67,13 @@ export const probAttackSucceeds = (
   return tail;
 };
 
-/** Max net successes in one roll: all dice hit, then subtract ARM. */
-export const maxNetSuccessesForRoll = (tac: number, armor: number): number => {
-  return Math.max(0, tac - armor);
+/** Max net successes in one roll: all dice hit, subtract ARM, add any gained net hits. */
+export const maxNetSuccessesForRoll = (
+  tac: number,
+  armor: number,
+  netHitBonus = 0,
+): number => {
+  const fromRoll = Math.max(0, tac - armor);
+
+  return fromRoll + netHitBonus;
 };

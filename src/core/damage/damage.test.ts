@@ -6,6 +6,7 @@ import {
   availableBuffs,
   effectiveEnemyDef,
   effectivePlaybookDamage,
+  effectivePlayDamage,
   guildBuffIsExcluded,
   guildBuffsFor,
   joinTraitLabels,
@@ -15,6 +16,7 @@ import {
   makeAttacker,
   modsWith,
   NO_MODS,
+  TEAMMATE_GUILD,
   TEST_GUILD,
 } from '@/core/testing/fixtures';
 import type { CharacterTrait } from '@/data/characterTraits';
@@ -70,6 +72,21 @@ describe('buffs and damage', () => {
         modsWith({ toughHide: true, buffs: { sharp: true } }),
       ),
     ).toBe(2);
+  });
+
+  it('applies a playbook-only bonus to playbook damage but not to play damage', () => {
+    const butcher = makeAttacker({ guild: TEAMMATE_GUILD });
+    const carve = modsWith({ buffs: { carve: true } });
+
+    expect(effectivePlaybookDamage(butcher, 2, carve)).toBe(3);
+    expect(effectivePlayDamage(butcher, 2, carve)).toBe(2);
+  });
+
+  it('applies an any-damage bonus to play damage too', () => {
+    const sharp = modsWith({ buffs: { sharp: true } });
+
+    expect(effectivePlayDamage(attacker, 2, sharp)).toBe(3);
+    expect(effectivePlayDamage(attacker, 2, TOUGH_HIDE)).toBe(1);
   });
 
   it('ignores Tough Hide with a Condition Damage buff', () => {

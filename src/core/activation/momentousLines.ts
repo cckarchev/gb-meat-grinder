@@ -1,6 +1,6 @@
 /** Which playbook lines earn momentum once Tough Hide and buffs are applied. */
 
-import { effectiveDamageForChoice } from '@/core/damage/damage';
+import { activeBuffs, effectiveDamageForChoice } from '@/core/damage/damage';
 import type {
   MomentousLineStyle,
   PlaybookChoiceId,
@@ -11,20 +11,33 @@ import { getPlaybookResult } from '@/core/playbook/playbookIndex';
 import { MOMENTOUS_PICK_MOMENTUM } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
 
+/** True if a selected buff makes every playbook damage result momentous (Maximum Effort). */
+const buffsMakeDamageMomentous = (
+  attacker: AttackerData,
+  mods: PlaybookDamageMods,
+): boolean => {
+  return activeBuffs(attacker, mods).some(
+    (buff) => buff.damageResultsMomentous === true,
+  );
+};
+
 export const momentousLineStyle = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
 ): MomentousLineStyle => {
   const result = getPlaybookResult(attacker, id);
+  const printedDamage = result.damage > 0;
+  const printedMomentous = result.momentum === true;
+  const madeMomentous =
+    printedDamage && buffsMakeDamageMomentous(attacker, mods);
 
-  if (result.momentum !== true) {
+  if (!printedMomentous && !madeMomentous) {
     return 'none';
   }
 
   // A momentous result with no printed damage is pure momentum: nothing can
   // negate it. Only a damage result reduced to 0 loses its momentum.
-  const printedDamage = result.damage > 0;
 
   if (!printedDamage) {
     return 'heat';

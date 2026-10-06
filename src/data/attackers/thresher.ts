@@ -109,9 +109,10 @@ export const thresher: AttackerData = {
   playbook: PLAYBOOK,
   guild: farmers,
   characterPlays: [theyAintTough],
-  // He is the guild's source of They Ain't Tough!; another captain grants Our
-  // Tools Are Sharp. So neither can be pre-applied to him.
-  excludedGuildBuffs: ['theyAintTough', 'ourToolsAreSharp'],
+  // He is the guild's source of They Ain't Tough!, and Our Tools Are Sharp and
+  // Lend a Hand come from Festival, the other Farmers captain, who cannot share
+  // a team with him. So none of them can be pre-applied to him.
+  excludedGuildBuffs: ['theyAintTough', 'ourToolsAreSharp', 'lendAHand'],
   characterTraits: [dontFearTheReaper],
   startingMomentum: STARTING_MOMENTUM_RANGE,
   gangingUp: GANGING_UP_RANGE,

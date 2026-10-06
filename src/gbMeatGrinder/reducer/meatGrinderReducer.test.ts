@@ -5,8 +5,10 @@ import { thresher } from '@/data/attackers/thresher';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
 import {
   initialState,
+  PICK_CAST,
   PICK_THRESHER,
   PICK_VETERAN_BOAR,
+  PICK_WINDLE,
   reduce,
 } from '@/gbMeatGrinder/reducer/reducerTestHelpers';
 
@@ -193,5 +195,62 @@ describe('damage modifiers', () => {
 
     expect(engaged.damageMods.assistEngaged).toBe(true);
     expect(switched.damageMods.assistEngaged).toBe(false);
+  });
+
+  it('raises ganging up to at least 1 while a named model engages', () => {
+    const engaged = reduce(initialState(PICK_THRESHER), {
+      type: 'assistEngaged',
+      value: true,
+    });
+
+    const loweredToZero = reduce(engaged, { type: 'gangingUp', value: 0 });
+
+    const released = reduce(engaged, { type: 'assistEngaged', value: false });
+
+    expect(engaged.gangingUp).toBe(1);
+    expect(loweredToZero.gangingUp).toBe(1);
+    expect(released.gangingUp).toBe(1);
+    expect(reduce(released, { type: 'gangingUp', value: 0 }).gangingUp).toBe(0);
+  });
+
+  it('raises ganging up to at least 1 with Lend a Hand', () => {
+    const lent = reduce(initialState(PICK_WINDLE), {
+      type: 'guildBuff',
+      id: 'lendAHand',
+      value: true,
+    });
+
+    expect(lent.gangingUp).toBe(1);
+    expect(reduce(lent, { type: 'gangingUp', value: 0 }).gangingUp).toBe(1);
+  });
+
+  it('keeps a higher ganging up when a named model engages', () => {
+    const three = reduce(initialState(PICK_THRESHER), {
+      type: 'gangingUp',
+      value: 3,
+    });
+
+    const engaged = reduce(three, { type: 'assistEngaged', value: true });
+
+    expect(engaged.gangingUp).toBe(3);
+  });
+});
+
+describe('One at a Time Lads!', () => {
+  it('drops crowding out to 0 and keeps it there while on', () => {
+    const crowded = reduce(initialState(PICK_CAST), {
+      type: 'crowdingOut',
+      value: 2,
+    });
+
+    const lads = reduce(crowded, {
+      type: 'guildBuff',
+      id: 'oneAtATimeLads',
+      value: true,
+    });
+
+    expect(crowded.crowdingOut).toBe(2);
+    expect(lads.crowdingOut).toBe(0);
+    expect(reduce(lads, { type: 'crowdingOut', value: 3 }).crowdingOut).toBe(0);
   });
 });

@@ -17,7 +17,7 @@ import {
   attackerTraits,
   chargeTraitDamage,
   effectiveDamageForChoice,
-  effectivePlaybookDamage,
+  effectivePlayDamage,
   withSwingDamageBonus,
 } from '@/core/damage/damage';
 import type { AttackPlan } from '@/core/plan/attackPlan.types';
@@ -49,6 +49,7 @@ const EMPTY_SWING_STATE: SwingState = {
   healthPlayDivisorBySlot: [],
   targetBurningBefore: false,
   playbookDamageBonus: 0,
+  netHitBonus: 0,
   chargeTraitDamage: 0,
   chargeDamage: 0,
 };
@@ -97,6 +98,7 @@ const preAppliedEffects = (
     const effects: CarriedEffects = {
       ...NO_CARRIED_EFFECTS,
       tacBonus: buff.tacBonus ?? 0,
+      defReduction: buff.defReduction ?? 0,
       armorReduction: buff.armorReduction ?? 0,
     };
 
@@ -117,6 +119,20 @@ const preAppliedEffects = (
   }
 
   return named;
+};
+
+/**
+ * Net hits the active buffs add to the activation's first attack (Instruction).
+ * Each buff is one named effect, so the largest one applies, not their sum.
+ */
+const firstAttackNetHitBonus = (params: TimelineParams): number => {
+  const bonuses = activeBuffs(params.attacker, params.damageMods).map(
+    (buff) => {
+      return buff.firstAttackNetHitBonus ?? 0;
+    },
+  );
+
+  return Math.max(0, ...bonuses);
 };
 
 /** The total of every named effect, each counted once. */
@@ -321,7 +337,7 @@ const swingPlayDamageFor = (
       return;
     }
 
-    playDamageBySlot[pickIndex] = effectivePlaybookDamage(
+    playDamageBySlot[pickIndex] = effectivePlayDamage(
       attacker,
       printedDamage,
       damageMods,
@@ -371,8 +387,13 @@ export const activationTimeline = (
     activeBaseCount,
   );
 
+  const firstAttackIndex = order[0];
+  const instructedNetHits = firstAttackNetHitBonus(params);
+
   for (const attackIndex of order) {
     const effectsBefore = sumEffects(named);
+    const isFirstAttack = attackIndex === firstAttackIndex;
+    const netHitBonus = isFirstAttack ? instructedNetHits : 0;
     const burningBonus = burning ? passionBonus : 0;
 
     const state: SwingState = {
@@ -386,6 +407,7 @@ export const activationTimeline = (
       ),
       targetBurningBefore: burning,
       playbookDamageBonus: burningBonus + effectsBefore.damageBonus,
+      netHitBonus,
       ...swingChargeDamageFor(plan, params, attackIndex),
     };
 

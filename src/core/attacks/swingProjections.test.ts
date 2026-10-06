@@ -17,6 +17,7 @@ const swing = (attackIndex: number): AttackRollContext => {
     defMinRoll: 2,
     pHit: 1,
     netSuccessesNeeded: 2,
+    netHitBonus: 0,
     prob: 1,
   };
 };

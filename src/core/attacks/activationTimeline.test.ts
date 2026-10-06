@@ -21,6 +21,7 @@ import {
   PLAY_HALF_HEALTH,
   PLAY_REPEATABLE,
   PLAY_TAC,
+  TEAMMATE_GUILD,
   TRAIT_ARM,
 } from '@/core/testing/fixtures';
 
@@ -166,6 +167,27 @@ describe('named effects do not stack', () => {
     expect(timeline[1].effectsBefore.armorReduction).toBe(2);
   });
 
+  it('applies a pre-applied guild DEF debuff from the first swing', () => {
+    const attacker = makeAttacker({ guild: TEAMMATE_GUILD });
+    const plan: AttackPlan = {
+      wrapPicks: [['one'], ['one']],
+      characterPlayPicks: [[null], [null]],
+    };
+
+    const timeline = activationTimeline(
+      plan,
+      params({
+        attacker,
+        activeBaseCount: 2,
+        damageMods: modsWith({ buffs: { trip: true } }),
+      }),
+    );
+
+    expect(timeline.map((state) => state.effectsBefore.defReduction)).toEqual([
+      1, 1,
+    ]);
+  });
+
   it('applies a passive ARM trait to every swing and stacks it with a play', () => {
     const attacker = makeAttacker({
       inf: 3,
@@ -275,6 +297,23 @@ describe('damaging character plays', () => {
     expect(toughHide[0].playDamageBySlot).toEqual([2]);
     expect(sharp[0].playDamageBySlot).toEqual([4]);
   });
+
+  it('skips a bonus limited to playbook damage results', () => {
+    const butcher = makeAttacker({
+      guild: TEAMMATE_GUILD,
+      characterPlays: [PLAY_DAMAGE],
+    });
+
+    const carve = activationTimeline(
+      twoGbs,
+      params({
+        attacker: butcher,
+        damageMods: modsWith({ buffs: { carve: true } }),
+      }),
+    );
+
+    expect(carve[0].playDamageBySlot).toEqual([3]);
+  });
 });
 
 describe('character plays that deal damage from the target current HP', () => {
@@ -379,5 +418,28 @@ describe('swingDamageMods', () => {
       ...mods,
       swingDamageBonus: 1,
     });
+  });
+});
+
+describe('net hits gained on the next attack (Instruction)', () => {
+  const attacker = makeAttacker({ guild: TEAMMATE_GUILD });
+  const plan: AttackPlan = {
+    wrapPicks: [['one'], ['one'], ['one']],
+    characterPlayPicks: [[null], [null], [null]],
+  };
+
+  it('lands on the first swing of the activation only', () => {
+    const timeline = activationTimeline(
+      plan,
+      params({ attacker, damageMods: modsWith({ buffs: { coach: true } }) }),
+    );
+
+    expect(timeline.map((state) => state.netHitBonus)).toEqual([2, 0, 0]);
+  });
+
+  it('gives nothing while the buff is off', () => {
+    const timeline = activationTimeline(plan, params({ attacker }));
+
+    expect(timeline.map((state) => state.netHitBonus)).toEqual([0, 0, 0]);
   });
 });

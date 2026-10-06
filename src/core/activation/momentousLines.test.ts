@@ -4,7 +4,12 @@ import {
   momentumEarnedBySwing,
   pickGeneratesMomentum,
 } from '@/core/activation/momentousLines';
-import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
+import {
+  makeAttacker,
+  modsWith,
+  NO_MODS,
+  TEAMMATE_GUILD,
+} from '@/core/testing/fixtures';
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
 
@@ -30,6 +35,39 @@ describe('momentumEarnedBySwing', () => {
 
   it('skips momentous picks Tough Hide zeroes out', () => {
     expect(momentumEarnedBySwing(attacker, ['two', 'one'], TOUGH_HIDE)).toBe(1);
+  });
+});
+
+describe('a buff that makes damage results momentous', () => {
+  const attacker = makeAttacker({
+    guild: TEAMMATE_GUILD,
+    playbook: [
+      {
+        netSuccesses: 1,
+        results: [
+          { id: 'plain1', label: '1', damage: 1 },
+          { id: 'plainPush', label: '>', damage: 0 },
+        ],
+      },
+    ],
+  });
+
+  const EFFORT = modsWith({ buffs: { effort: true } });
+
+  it('makes a non-momentous damage result earn momentum', () => {
+    expect(momentousLineStyle(attacker, 'plain1', NO_MODS)).toBe('none');
+    expect(momentousLineStyle(attacker, 'plain1', EFFORT)).toBe('heat');
+    expect(momentumEarnedBySwing(attacker, ['plain1'], EFFORT)).toBe(1);
+  });
+
+  it('leaves results without printed damage alone', () => {
+    expect(momentousLineStyle(attacker, 'plainPush', EFFORT)).toBe('none');
+  });
+
+  it('still earns nothing when the damage is zeroed', () => {
+    const zeroed = modsWith({ toughHide: true, buffs: { effort: true } });
+
+    expect(momentousLineStyle(attacker, 'plain1', zeroed)).toBe('zeroed');
   });
 });
 

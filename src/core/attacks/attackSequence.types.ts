@@ -36,6 +36,8 @@ export type AttackRollContext = {
   defMinRoll: number;
   pHit: number;
   netSuccessesNeeded: number;
+  /** Net hits added after ARM, even to a roll that nets none (Instruction). */
+  netHitBonus: number;
   prob: number;
 };
 

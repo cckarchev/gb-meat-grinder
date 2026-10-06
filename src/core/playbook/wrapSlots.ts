@@ -124,6 +124,8 @@ export type SwingRoll = {
   tac: number;
   pHit: number;
   armor: number;
+  /** Net hits added after ARM (Instruction). */
+  netHitBonus: number;
 };
 
 export type WrapSlotColumn = {
@@ -157,6 +159,7 @@ export const wrapSlotColumns = (
       roll.pHit,
       roll.armor,
       netNeeded,
+      roll.netHitBonus,
     );
 
     return { column, hitChance };

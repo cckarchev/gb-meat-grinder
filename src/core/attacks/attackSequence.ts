@@ -49,10 +49,9 @@ export const computeAttackSequence = (
       timeline,
     );
 
-    const rowArmor = armorForAttackRow(
-      armor,
-      swingStateAt(timeline, attackIndex),
-    );
+    const state = swingStateAt(timeline, attackIndex);
+    const rowArmor = armorForAttackRow(armor, state);
+    const { netHitBonus } = state;
 
     const pHit = hitProbabilityPerDie(defMinRoll);
     const netSuccessesNeeded = wrapNetThresholdAllHits(
@@ -60,7 +59,13 @@ export const computeAttackSequence = (
       wrapPicks[attackIndex],
     );
 
-    const prob = probAttackSucceeds(tac, pHit, rowArmor, netSuccessesNeeded);
+    const prob = probAttackSucceeds(
+      tac,
+      pHit,
+      rowArmor,
+      netSuccessesNeeded,
+      netHitBonus,
+    );
 
     attacks.push({
       attackIndex,
@@ -69,6 +74,7 @@ export const computeAttackSequence = (
       defMinRoll,
       pHit,
       netSuccessesNeeded,
+      netHitBonus,
       prob,
     });
   }

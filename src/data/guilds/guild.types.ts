@@ -15,14 +15,29 @@ export type GuildBuff = {
   id: string;
   label: string;
   tooltip: string;
-  /** +damage applied to each selected playbook line that has card damage. */
+  /** +damage to playbook damage results and to damaging character plays (Tooled Up). */
   damageBonus?: number;
+  /** +damage to playbook damage results only, not to play damage (e.g. Butchery). */
+  playbookDamageBonus?: number;
   /** −ARM on the enemy this activation (reduces net successes needed). */
   armorReduction?: number;
+  /** −DEF on the enemy this activation (e.g. Stagger, Cut 'Em Down). */
+  defReduction?: number;
+  /** Non-momentous playbook damage results become momentous (Maximum Effort). */
+  damageResultsMomentous?: boolean;
   /** Playbook damage becomes Condition Damage, ignoring the enemy's Tough Hide. */
   ignoresToughHide?: boolean;
   /** +TAC on every attack this activation (e.g. Tempered Steel). */
   tacBonus?: number;
+  /** Least ganging up while on: the teammate it needs gives it (Lend a Hand). */
+  gangingUpMin?: number;
+  /** The attacker ignores the crowding out penalty (One at a Time Lads!). */
+  ignoresCrowdingOut?: boolean;
+  /**
+   * Net hits added to the first attack of the activation, after ARM, even when
+   * the roll itself nets none (Instruction).
+   */
+  firstAttackNetHitBonus?: number;
   /** Traits the attacker gains while the buff is on (Tempered Steel grants Searing Strike). */
   grantsTraits?: readonly CharacterTrait[];
   /**

@@ -14,6 +14,7 @@ import {
   PLAY_ASSIST,
   PLAY_DAMAGE,
   PLAY_HALF_HEALTH,
+  TEAMMATE_GUILD,
 } from '@/core/testing/fixtures';
 
 describe('damageModifierBreakdown', () => {
@@ -112,6 +113,40 @@ describe('play damage in the breakdown', () => {
     expect(characterPlayDamageSources(timeline, [0])).toEqual([
       { label: 'Play Damage', amount: 3 },
     ]);
+  });
+
+  it('keeps a playbook-only buff off the play', () => {
+    const butcher = makeAttacker({
+      guild: TEAMMATE_GUILD,
+      characterPlays: [PLAY_DAMAGE],
+    });
+    const carve = modsWith({ buffs: { carve: true } });
+
+    const carveTimeline = activationTimeline(
+      { wrapPicks, characterPlayPicks },
+      {
+        attacker: butcher,
+        damageMods: carve,
+        activeBaseCount: 1,
+        chargeAttackIndex: NO_ATTACK_INDEX,
+        targetHp: NEUTRAL_TARGET_HP,
+        enemyKnockedDown: false,
+      },
+    );
+
+    const breakdown = damageModifierBreakdown(
+      butcher,
+      wrapPicks,
+      carve,
+      1,
+      carveTimeline,
+    );
+
+    // Card 1 + 1 (Carve), play 3 unmodified.
+    expect(breakdown.totalEffective).toBe(5);
+    expect(
+      breakdown.buffBonuses.find((buff) => buff.id === 'carve')?.bonus,
+    ).toBe(1);
   });
 });
 

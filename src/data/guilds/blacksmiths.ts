@@ -1,5 +1,5 @@
 import { searingStrike as searingStrikeTrait } from '@/data/characterTraits';
-import { tooledUp, weakPoint } from '@/data/guildBuffs';
+import { singledOut, stagger, tooledUp, weakPoint } from '@/data/guildBuffs';
 import type { Guild } from '@/data/guilds/guild.types';
 
 export const blacksmiths: Guild = {
@@ -16,6 +16,13 @@ export const blacksmiths: Guild = {
       grantsTraits: [searingStrikeTrait],
     },
     tooledUp,
+    singledOut,
+    {
+      id: 'eyeSpy',
+      label: 'Eye Spy',
+      tooltip: '+2 TAC while attacking the target enemy model.',
+      tacBonus: 2,
+    },
     {
       id: 'searingStrike',
       label: 'Searing Strike',
@@ -25,5 +32,27 @@ export const blacksmiths: Guild = {
       armorReduction: 1,
     },
     weakPoint,
+    {
+      id: 'instruction',
+      label: 'Instruction',
+      tooltip:
+        "Hearth's play on an Apprentice: its next attack gains +2 net hits, added after ARM even when the roll nets none.",
+      firstAttackNetHitBonus: 2,
+    },
+    {
+      id: 'oneAtATimeLads',
+      label: 'One at a Time Lads!',
+      tooltip:
+        "Within 2″ of Furnace's target friendly model: ignore the crowding out penalty.",
+      ignoresCrowdingOut: true,
+    },
+    stagger,
+    {
+      id: 'shieldGlare',
+      label: 'Shield Glare',
+      tooltip: 'The enemy model suffers -1 DEF.',
+      target: 'enemy',
+      defReduction: 1,
+    },
   ],
 };

@@ -27,6 +27,8 @@ export type SwingState = {
   targetBurningBefore: boolean;
   /** +DMG on this swing's playbook damage results (Burning Passion, Assist). */
   playbookDamageBonus: number;
+  /** Net hits added to this swing's roll after ARM (Instruction, first swing only). */
+  netHitBonus: number;
   /**
    * The traits' charge damage (Sweeping Charge) when this is the charge swing,
    * whatever it picks; 0 elsewhere. The odds add it per roll.

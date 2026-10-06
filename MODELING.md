@@ -46,16 +46,45 @@ Classify every effect by **whose state it describes**:
   *Anatomical Precision*, −1 ARM, `CharacterTrait.armorReduction`) is attacker-side too:
   it holds from the first swing and stacks with other named −ARM effects.
 - **Assist [named models]** needs two things: one of the named friendly models engages the
-  target (an enemy condition toggle, `assistEngaged`, shown only to models with an Assist
-  play) **and** the attacker has gained Assist through its play (Bucker's *Axe A
-  Question*, `CharacterPlay.grantsAssist`). Only then do the **later** swings get +1 TAC
-  and +1 DMG to playbook damage results (not to play damage), itemized as an "Assist"
-  line in the damage breakdown.
+  target (a toggle among the Enemy panel's guild debuffs, `assistEngaged`, shown only to
+  models with an Assist play) **and** the attacker has gained Assist through its play
+  (Bucker's *Axe A Question*, `CharacterPlay.grantsAssist`). Only then do the **later**
+  swings get +1 TAC and +1 DMG to playbook damage results (not to play damage), itemized
+  as an "Assist" line in the damage breakdown. While the named model engages, it also
+  gives ganging up, so the Ganging Up control cannot go below +1
+  (`ASSIST_ENGAGED_GANGING_UP_MIN`, `gangingUpRange`).
+
+Teammate effects that depend on board position or on something that already happened
+this turn (Oak's melee zone for *Cut 'Em Down*, a Loved Creature mascot taking damage,
+ganging up with Festival for *Lend a Hand*) are plain toggles: the user says whether
+they hold. A toggle that needs a teammate giving ganging up (*Lend a Hand*,
+`GuildBuff.gangingUpMin`) also keeps the Ganging Up control at +1 or more, like an engaged
+Assist model (`gangingUpRange`). Plays that also deal damage to the target (*Dirty Knives*, *Thousand Cuts*)
+only model their −DEF; the user lowers the target's HP for their damage.
+
+A legendary aura with effects on both sides (Ox's *Get 'Em Lads!*: +1 DMG and −1 ARM)
+is one toggle on the Attacker panel, named once for the stacking rule, so its −1 ARM
+stacks with *They Ain't Tough!*.
+
+*Maximum Effort* (`damageResultsMomentous`) makes every non-momentous playbook result
+**with printed damage** momentous. It then follows the momentum rules below: a result
+zeroed by Tough Hide earns nothing.
+
+*Instruction* (Hearth, `firstAttackNetHitBonus`) gives the **first attack of the
+activation** +2 net hits, added **after ARM** and even to a roll that nets none:
+`net = max(0, hits − ARM) + 2`, so that attack cannot miss and reaches higher playbook
+columns (and wraps). Only the first swing gets it, whatever it picks, even one Resilience
+ignores. It is for Apprentice models; every Blacksmith in the calculator is one, so a
+Master added later must list it in `excludedGuildBuffs`.
+
+*One at a Time Lads!* (Furnace, `ignoresCrowdingOut`) pins the Crowding Out control at 0
+while on (`crowdingOutRange`).
 
 Guild effects stay **availability-scoped to the attacker's guild even when they land on
 the enemy.** Blacksmiths cannot use *They Ain't Tough!*, and Farmers and Butchers cannot
-use *Searing Strike*. A model listed as the source of an effect (`excludedGuildBuffs`)
-sees it disabled on either panel.
+use *Searing Strike*. A model listed as the source of an effect, or one that cannot share a team with its source
+(a captain cannot take another captain's effects: Thresher gets neither of Festival's), is
+listed in `excludedGuildBuffs` and sees it disabled on either panel.
 
 ## Conditions and timing
 
@@ -117,12 +146,16 @@ Charge alone depends on the roll of its own (charge) swing.
 > character traits. In the case of multiple playbook damage results (e.g. from a wrapped
 > attack), Tough Hide reduces each individual result by 1 DMG.
 
-| Source | Tough Hide | Tooled Up / The Owner | Burning Passion |
-|---|:-:|:-:|:-:|
-| **Playbook damage results** | reduces | +1 | +1 while Burning |
-| **Character plays** that cause damage (*Impale*) | reduces | +1 | no |
-| **Character traits** (*Sweeping Charge*, *Don't Fear The...*) | no | no | no |
-| **Condition damage** from plays (*The Bigger They Are...*) | no | no | no |
+| Source | Tough Hide | Tooled Up / The Owner / Get 'Em Lads! | Butchery / Burning Passion / Assist | Our Tools Are Sharp |
+|---|:-:|:-:|:-:|:-:|
+| **Playbook damage results** | reduces | +1 | +1 | ignores Tough Hide |
+| **Character plays** that cause damage (*Impale*) | reduces | +1 | no | no |
+| **Character traits** (*Sweeping Charge*, *Don't Fear The...*) | no | no | no | no |
+| **Condition damage** from plays (*The Bigger They Are...*) | no | no | no | no |
+
+In the code a guild buff's `damageBonus` reaches plays and playbook results, while
+`playbookDamageBonus` reaches playbook results only (`effectivePlayDamage` vs.
+`effectivePlaybookDamage`).
 
 ## Playbook symbols
 

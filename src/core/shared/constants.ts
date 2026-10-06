@@ -57,6 +57,9 @@ export const ASSIST_TAC_BONUS = 1;
 /** +DMG to playbook damage results Assist gives while a named model engages the target. */
 export const ASSIST_DAMAGE_BONUS = 1;
 
+/** Least ganging up while a named Assist model engages the target: that model gives it. */
+export const ASSIST_ENGAGED_GANGING_UP_MIN = 1;
+
 /** Damage Tough Hide removes from each playbook line with card damage. */
 export const TOUGH_HIDE_DAMAGE_PENALTY = 1;
 

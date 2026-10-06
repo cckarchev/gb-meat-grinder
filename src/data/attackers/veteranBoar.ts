@@ -131,6 +131,9 @@ export const veteranBoar: AttackerData = {
   playbook: PLAYBOOK,
   guild: butchers,
   characterPlays: [singledOut, stagger],
+  // Butchery, Get 'Em Lads! and They Ain't Tough! come from Ox, a captain like
+  // him, so they cannot share a team. The Owner can still come from Veteran Ox.
+  excludedGuildBuffs: ['butchery', 'getEmLads', 'theyAintTough'],
   startingMomentum: STARTING_MOMENTUM_RANGE,
   gangingUp: GANGING_UP_RANGE,
   crowdingOut: CROWDING_OUT_RANGE,
