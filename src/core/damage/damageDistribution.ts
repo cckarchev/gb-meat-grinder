@@ -35,14 +35,15 @@ const probNoNetSuccesses = (
 };
 
 /**
- * Distribution of damage from one swing. Net successes are `max(0, hits - ARM)`
- * with hits ~ Binomial(tac, pHit); each net level maps to damage via `damageForNet`.
+ * Distribution of damage from one swing. Net successes are
+ * `max(0, hits - ARM) + netHitBonus` with hits ~ Binomial(tac, pHit); each net
+ * level maps to damage via `damageForNet`.
  */
 export const swingDamageDistribution = (
   attack: AttackRollContext,
   damageForNet: DamageForNet,
 ): DamageDistribution => {
-  const { tac, armor, pHit } = attack;
+  const { tac, armor, pHit, netHitBonus } = attack;
   const maxNet = Math.max(0, tac - armor);
   const dist: DamageDistribution = new Map();
 
@@ -56,7 +57,7 @@ export const swingDamageDistribution = (
       continue;
     }
 
-    addProbability(dist, damageForNet(net), prob);
+    addProbability(dist, damageForNet(net + netHitBonus), prob);
   }
 
   return dist;

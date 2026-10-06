@@ -63,7 +63,7 @@ export const AttackSwingRow = ({
     useMeatGrinderSimulation();
   const attackIndex = attack.attackIndex;
   const armor = attack.armor;
-  const maxNet = maxNetSuccessesForRoll(attack.tac, armor);
+  const maxNet = maxNetSuccessesForRoll(attack.tac, armor, attack.netHitBonus);
 
   const hasWrapContinuation = rowHasWrapContinuation(wrapPicks[attackIndex]);
   const kind = attackKind(attacker, attackIndex, chargeAttackIndex);

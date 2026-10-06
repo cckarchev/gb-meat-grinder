@@ -1,3 +1,4 @@
+import { crowdingOutRange } from '@/core/activation/crowdingOut';
 import { gangingUpRange } from '@/core/activation/gangingUp';
 /** App state transitions: each action patches the state and keeps the plan legal. */
 
@@ -106,10 +107,8 @@ const transition = (
       return withReclampedPlan(state, { gangingUp });
     }
     case 'crowdingOut': {
-      const crowdingOut = clampToRange(
-        action.value,
-        attackerOf(state).crowdingOut,
-      );
+      const range = crowdingOutRange(attackerOf(state), state.damageMods);
+      const crowdingOut = clampToRange(action.value, range);
 
       return withReclampedPlan(state, { crowdingOut });
     }
@@ -133,10 +132,17 @@ const transition = (
     case 'guildBuff': {
       const buffs = { ...state.damageMods.buffs, [action.id]: action.value };
       const damageMods = { ...state.damageMods, buffs };
-      const range = gangingUpRange(attackerOf(state), damageMods);
-      const gangingUp = clampToRange(state.gangingUp, range);
+      const attacker = attackerOf(state);
+      const gangingUp = clampToRange(
+        state.gangingUp,
+        gangingUpRange(attacker, damageMods),
+      );
+      const crowdingOut = clampToRange(
+        state.crowdingOut,
+        crowdingOutRange(attacker, damageMods),
+      );
 
-      return withReclampedPlan(state, { damageMods, gangingUp });
+      return withReclampedPlan(state, { damageMods, gangingUp, crowdingOut });
     }
     case 'activeTrait': {
       const activeTraits = {

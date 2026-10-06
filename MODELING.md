@@ -70,6 +70,16 @@ stacks with *They Ain't Tough!*.
 **with printed damage** momentous. It then follows the momentum rules below: a result
 zeroed by Tough Hide earns nothing.
 
+*Instruction* (Hearth, `firstAttackNetHitBonus`) gives the **first attack of the
+activation** +2 net hits, added **after ARM** and even to a roll that nets none:
+`net = max(0, hits − ARM) + 2`, so that attack cannot miss and reaches higher playbook
+columns (and wraps). Only the first swing gets it, whatever it picks, even one Resilience
+ignores. It is for Apprentice models; every Blacksmith in the calculator is one, so a
+Master added later must list it in `excludedGuildBuffs`.
+
+*One at a Time Lads!* (Furnace, `ignoresCrowdingOut`) pins the Crowding Out control at 0
+while on (`crowdingOutRange`).
+
 Guild effects stay **availability-scoped to the attacker's guild even when they land on
 the enemy.** Blacksmiths cannot use *They Ain't Tough!*, and Farmers and Butchers cannot
 use *Searing Strike*. A model listed as the source of an effect, or one that cannot share a team with its source

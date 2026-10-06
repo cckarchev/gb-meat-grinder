@@ -32,6 +32,20 @@ export const blacksmiths: Guild = {
       armorReduction: 1,
     },
     weakPoint,
+    {
+      id: 'instruction',
+      label: 'Instruction',
+      tooltip:
+        "Hearth's play on an Apprentice: its next attack gains +2 net hits, added after ARM even when the roll nets none.",
+      firstAttackNetHitBonus: 2,
+    },
+    {
+      id: 'oneAtATimeLads',
+      label: 'One at a Time Lads!',
+      tooltip:
+        "Within 2″ of Furnace's target friendly model: ignore the crowding out penalty.",
+      ignoresCrowdingOut: true,
+    },
     stagger,
     {
       id: 'shieldGlare',

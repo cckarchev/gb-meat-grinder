@@ -49,3 +49,21 @@ describe('maxNetSuccessesForRoll', () => {
     expect(maxNetSuccessesForRoll(2, 5)).toBe(0);
   });
 });
+
+describe('net hits gained on top of the roll (Instruction)', () => {
+  const BONUS = 2;
+
+  it('makes any need up to the bonus certain, even with no hits', () => {
+    expect(probAttackSucceeds(3, COIN_FLIP, 5, 2, BONUS)).toBe(1);
+  });
+
+  it('lowers the raw hits needed by the bonus', () => {
+    // 3 dice, ARM 1, need 3 net: 1 net from the roll, so P(hits >= 2) = 4 / 8.
+    expect(probAttackSucceeds(3, COIN_FLIP, 1, 3, BONUS)).toBeCloseTo(4 / 8);
+  });
+
+  it('adds the bonus after flooring the roll at 0 net', () => {
+    expect(maxNetSuccessesForRoll(5, 2, BONUS)).toBe(5);
+    expect(maxNetSuccessesForRoll(2, 5, BONUS)).toBe(2);
+  });
+});

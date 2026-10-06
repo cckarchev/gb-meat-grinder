@@ -31,6 +31,13 @@ export type GuildBuff = {
   tacBonus?: number;
   /** Least ganging up while on: the teammate it needs gives it (Lend a Hand). */
   gangingUpMin?: number;
+  /** The attacker ignores the crowding out penalty (One at a Time Lads!). */
+  ignoresCrowdingOut?: boolean;
+  /**
+   * Net hits added to the first attack of the activation, after ARM, even when
+   * the roll itself nets none (Instruction).
+   */
+  firstAttackNetHitBonus?: number;
   /** Traits the attacker gains while the buff is on (Tempered Steel grants Searing Strike). */
   grantsTraits?: readonly CharacterTrait[];
   /**

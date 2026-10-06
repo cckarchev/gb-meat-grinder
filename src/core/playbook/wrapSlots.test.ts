@@ -69,7 +69,7 @@ describe('rowHasWrapContinuation', () => {
 
 describe('wrapSlotColumns', () => {
   const attacker = makeAttacker();
-  const roll = { tac: 6, pHit: 0.5, armor: 1 };
+  const roll = { tac: 6, pHit: 0.5, armor: 1, netHitBonus: 0 };
 
   it('keeps only the columns within the slot budget', () => {
     const nets = (maxNet: number, pickIndex: number) => {
@@ -80,6 +80,16 @@ describe('wrapSlotColumns', () => {
 
     expect(nets(2, 0)).toEqual([1, 2]);
     expect(nets(9, 2)).toEqual([1]);
+  });
+
+  it('makes the columns the gained net hits cover certain', () => {
+    const instructed = { ...roll, netHitBonus: 2 };
+    const chances = wrapSlotColumns(attacker, instructed, 4, 0).map(
+      ({ hitChance }) => hitChance,
+    );
+
+    expect(chances.slice(0, 2)).toEqual([1, 1]);
+    expect(chances[2]).toBeLessThan(1);
   });
 
   it('prices each column at the net the slot actually needs', () => {

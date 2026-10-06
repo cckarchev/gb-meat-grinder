@@ -5,6 +5,7 @@ import { thresher } from '@/data/attackers/thresher';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
 import {
   initialState,
+  PICK_CAST,
   PICK_THRESHER,
   PICK_VETERAN_BOAR,
   PICK_WINDLE,
@@ -232,5 +233,24 @@ describe('damage modifiers', () => {
     const engaged = reduce(three, { type: 'assistEngaged', value: true });
 
     expect(engaged.gangingUp).toBe(3);
+  });
+});
+
+describe('One at a Time Lads!', () => {
+  it('drops crowding out to 0 and keeps it there while on', () => {
+    const crowded = reduce(initialState(PICK_CAST), {
+      type: 'crowdingOut',
+      value: 2,
+    });
+
+    const lads = reduce(crowded, {
+      type: 'guildBuff',
+      id: 'oneAtATimeLads',
+      value: true,
+    });
+
+    expect(crowded.crowdingOut).toBe(2);
+    expect(lads.crowdingOut).toBe(0);
+    expect(reduce(lads, { type: 'crowdingOut', value: 3 }).crowdingOut).toBe(0);
   });
 });

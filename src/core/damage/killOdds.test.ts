@@ -22,6 +22,7 @@ describe('planDamageOutcome', () => {
       defMinRoll: 4,
       pHit: 0.5,
       netSuccessesNeeded: 1,
+      netHitBonus: 0,
       prob: 0.75,
     };
 
@@ -94,6 +95,7 @@ describe('planDamageOutcome', () => {
       defMinRoll: 4,
       pHit: 0.5,
       netSuccessesNeeded: 1,
+      netHitBonus: 0,
       prob: 0.5,
     };
 
@@ -104,6 +106,7 @@ describe('planDamageOutcome', () => {
       defMinRoll: 2,
       pHit: 1,
       netSuccessesNeeded: 3,
+      netHitBonus: 0,
       prob: 1,
     };
 

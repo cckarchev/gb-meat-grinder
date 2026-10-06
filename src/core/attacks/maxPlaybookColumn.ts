@@ -1,4 +1,4 @@
-/** Highest playbook column a swing can reach, from its TAC and the enemy ARM. */
+/** Highest playbook column a swing can reach, from its TAC, the enemy ARM and any gained net hits. */
 
 import {
   activationTimeline,
@@ -25,10 +25,8 @@ export const maxPlaybookColumnForRow = (
 
   const { tac } = swingTacAndDef(plan, attackIndex, params, timeline);
 
-  const rowArmor = armorForAttackRow(
-    params.armor,
-    swingStateAt(timeline, attackIndex),
-  );
+  const state = swingStateAt(timeline, attackIndex);
+  const rowArmor = armorForAttackRow(params.armor, state);
 
-  return maxNetSuccessesForRoll(tac, rowArmor);
+  return maxNetSuccessesForRoll(tac, rowArmor, state.netHitBonus);
 };

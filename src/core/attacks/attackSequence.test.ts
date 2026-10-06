@@ -2,7 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { activationTimeline } from '@/core/attacks/activationTimeline';
 import { computeAttackSequence } from '@/core/attacks/attackSequence';
 import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
-import { makeAttacker, makeRollParams } from '@/core/testing/fixtures';
+import {
+  makeAttacker,
+  makeRollParams,
+  modsWith,
+  TEAMMATE_GUILD,
+} from '@/core/testing/fixtures';
 
 const COVER = true;
 
@@ -37,6 +42,7 @@ describe('computeAttackSequence', () => {
         defMinRoll: 4,
         pHit: 0.5,
         netSuccessesNeeded: 2,
+        netHitBonus: 0,
         prob: 42 / 64,
       },
       {
@@ -46,6 +52,7 @@ describe('computeAttackSequence', () => {
         defMinRoll: 4,
         pHit: 0.5,
         netSuccessesNeeded: 1,
+        netHitBonus: 0,
         prob: 57 / 64,
       },
     ]);
@@ -60,6 +67,25 @@ describe('computeAttackSequence', () => {
     const { attacks } = computeAttackSequence(plan, params);
 
     expect(attacks.map((attack) => attack.tac)).toEqual([6, 8]);
+  });
+
+  it('gives the first swing the net hits Instruction grants', () => {
+    const plan = {
+      wrapPicks: [['two'], ['two']],
+      characterPlayPicks: [[null], [null]],
+    };
+
+    const coached = makeRollParams({
+      ...params,
+      attacker: makeAttacker({ tac: 6, guild: TEAMMATE_GUILD }),
+      damageMods: modsWith({ buffs: { coach: true } }),
+    });
+
+    const { attacks } = computeAttackSequence(plan, coached);
+
+    expect(attacks.map((attack) => attack.netHitBonus)).toEqual([2, 0]);
+    expect(attacks[0].prob).toBe(1);
+    expect(attacks[1].prob).toBeCloseTo(42 / 64);
   });
 });
 

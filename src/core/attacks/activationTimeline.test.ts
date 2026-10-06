@@ -420,3 +420,26 @@ describe('swingDamageMods', () => {
     });
   });
 });
+
+describe('net hits gained on the next attack (Instruction)', () => {
+  const attacker = makeAttacker({ guild: TEAMMATE_GUILD });
+  const plan: AttackPlan = {
+    wrapPicks: [['one'], ['one'], ['one']],
+    characterPlayPicks: [[null], [null], [null]],
+  };
+
+  it('lands on the first swing of the activation only', () => {
+    const timeline = activationTimeline(
+      plan,
+      params({ attacker, damageMods: modsWith({ buffs: { coach: true } }) }),
+    );
+
+    expect(timeline.map((state) => state.netHitBonus)).toEqual([2, 0, 0]);
+  });
+
+  it('gives nothing while the buff is off', () => {
+    const timeline = activationTimeline(plan, params({ attacker }));
+
+    expect(timeline.map((state) => state.netHitBonus)).toEqual([0, 0, 0]);
+  });
+});

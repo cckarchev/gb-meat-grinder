@@ -117,7 +117,8 @@ export const CONDITION_GUILD: Guild = {
 /**
  * A guild with teammate effects: a playbook-only damage bonus (Butchery-like),
  * an enemy -DEF debuff (Stagger-like), Maximum Effort-like momentum and a
- * teammate that gives ganging up (Lend a Hand-like).
+ * teammate that gives ganging up (Lend a Hand-like), +2 net hits on the first
+ * attack (Instruction-like) and no crowding out (One at a Time Lads!-like).
  */
 export const TEAMMATE_GUILD: Guild = {
   id: 'teammates',
@@ -139,6 +140,18 @@ export const TEAMMATE_GUILD: Guild = {
       damageResultsMomentous: true,
     },
     { id: 'gang', label: 'Gang', tooltip: '', tacBonus: 1, gangingUpMin: 1 },
+    {
+      id: 'coach',
+      label: 'Coach',
+      tooltip: '',
+      firstAttackNetHitBonus: 2,
+    },
+    {
+      id: 'spread',
+      label: 'Spread',
+      tooltip: '',
+      ignoresCrowdingOut: true,
+    },
   ],
 };
 

@@ -3,6 +3,7 @@ import styles from '@/components/attacker/AttackerPanel.module.css';
 import { AttackerPreAttackOptions } from '@/components/attacker/AttackerPreAttackOptions';
 import { StepControl } from '@/components/ui/StepControl';
 import { Panel, PanelFooterSection, PanelTitle } from '@/components/ui/ui';
+import { crowdingOutRange } from '@/core/activation/crowdingOut';
 import { gangingUpRange } from '@/core/activation/gangingUp';
 import { INFLUENCE_MIN } from '@/core/shared/constants';
 import { formatSigned } from '@/core/shared/format';
@@ -20,6 +21,7 @@ export const AttackerPanel = () => {
   } = useMeatGrinderSimulation();
 
   const gangingUpBounds = gangingUpRange(attacker, damageMods);
+  const crowdingOutBounds = crowdingOutRange(attacker, damageMods);
   const gangingUpLabel = formatSigned(gangingUp);
   const crowdingOutLabel = formatSigned(-crowdingOut);
 
@@ -56,8 +58,8 @@ export const AttackerPanel = () => {
         <StepControl
           label="Crowding Out"
           value={crowdingOut}
-          min={attacker.crowdingOut.min}
-          max={attacker.crowdingOut.max}
+          min={crowdingOutBounds.min}
+          max={crowdingOutBounds.max}
           onChange={(value) => dispatch({ type: 'crowdingOut', value })}
           valueLabel={crowdingOutLabel}
           ariaSubject="Crowding Out"
