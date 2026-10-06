@@ -10,6 +10,7 @@ import {
   PLAY_ARM,
   PLAY_DAMAGE,
   PLAY_DEF,
+  PLAY_HALF_HEALTH,
   PLAY_NOOP,
   PLAY_REPEATABLE,
   PLAY_TAC,
@@ -26,6 +27,14 @@ describe('character play effects', () => {
     expect(characterPlayHasEffect(PLAY_DAMAGE)).toBe(true);
     expect(characterPlayEffectSummary(PLAY_DAMAGE)).toBe(
       '3 DMG. Once per turn.',
+    );
+  });
+
+  it('describes current-HP damage and counts it as an effect', () => {
+    expect(characterPlayHasEffect(PLAY_HALF_HEALTH)).toBe(true);
+    expect(characterPlayEffectSummary(PLAY_HALF_HEALTH)).toBe(
+      "Condition DMG equal to 1/2 of the target's current HP, rounded down. " +
+        'Once per turn.',
     );
   });
 

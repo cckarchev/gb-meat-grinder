@@ -154,6 +154,14 @@ export const PLAY_DAMAGE: CharacterPlay = {
   oncePerTurn: true,
 };
 
+/** Condition damage of half the target's current HP, like The Bigger They Are... */
+export const PLAY_HALF_HEALTH: CharacterPlay = {
+  id: 'playHalfHealth',
+  label: 'Play Half Health',
+  currentHealthDivisor: 2,
+  oncePerTurn: true,
+};
+
 export const makeAttacker = (
   overrides: Partial<AttackerData> = {},
 ): AttackerData => {
@@ -202,6 +210,9 @@ export const threeOf = (id: string): AttackPlan => {
 /** Enemy ARM in the neutral roll params: nothing to strip. */
 const NEUTRAL_ARMOR = 0;
 
+/** Target HP in the neutral roll params: enough to survive any test plan. */
+export const NEUTRAL_TARGET_HP = 20;
+
 /** Swings in the neutral roll params. */
 const NEUTRAL_BASE_COUNT = 2;
 
@@ -223,6 +234,7 @@ export const makeRollParams = (
     bonusTimeByAttack: [],
     initialTacModifier: 0,
     activeBaseCount: NEUTRAL_BASE_COUNT,
+    targetHp: NEUTRAL_TARGET_HP,
     ...overrides,
   };
 };

@@ -257,6 +257,7 @@ const runScenario = (
     initialTacModifier: scenario.initialTacModifier,
     enemyKnockedDown: scenario.enemyKnockedDown,
     activeBaseCount,
+    targetHp: scenario.hp,
   };
 
   const clamp = () => {

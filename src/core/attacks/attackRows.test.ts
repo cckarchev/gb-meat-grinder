@@ -18,7 +18,12 @@ import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { pickEffectsForLaterSwings } from '@/core/playbook/rowEffects';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
+import {
+  makeAttacker,
+  modsWith,
+  NEUTRAL_TARGET_HP,
+  NO_MODS,
+} from '@/core/testing/fixtures';
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
 
@@ -73,6 +78,7 @@ describe('activation order', () => {
         damageMods: NO_MODS,
         activeBaseCount: 2,
         chargeAttackIndex: NO_ATTACK_INDEX,
+        targetHp: NEUTRAL_TARGET_HP,
       },
     );
 
@@ -110,6 +116,7 @@ describe('rows outside the activation', () => {
         damageMods: NO_MODS,
         activeBaseCount,
         chargeAttackIndex: NO_ATTACK_INDEX,
+        targetHp: NEUTRAL_TARGET_HP,
       },
     );
 

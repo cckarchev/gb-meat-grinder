@@ -13,8 +13,14 @@ export type SwingState = {
   effectsBefore: CarriedEffects;
   /** The damaging play live on each pick of this swing (null when none). */
   damagingPlayBySlot: readonly (CharacterPlay | null)[];
-  /** Effective DMG of that play (0 when none). */
+  /** Effective DMG of that play (0 when none), assuming every earlier pick lands. */
   playDamageBySlot: readonly number[];
+  /**
+   * The play's {@link CharacterPlay.currentHealthDivisor} on each slot (0 when
+   * its damage does not depend on the target's HP), so the odds can recompute
+   * it for each HP the target may have left.
+   */
+  healthPlayDivisorBySlot: readonly number[];
   /** The target is Burning before this swing (pre-applied or lit by an earlier one). */
   targetBurningBefore: boolean;
   /** +DMG on this swing's playbook damage results (Burning Passion). */
@@ -34,5 +40,9 @@ export type ActivationTimeline = readonly SwingState[];
 /** The activation-wide inputs the timeline reads. */
 export type TimelineParams = Pick<
   ActivationRollParams,
-  'attacker' | 'damageMods' | 'activeBaseCount' | 'chargeAttackIndex'
+  | 'attacker'
+  | 'damageMods'
+  | 'activeBaseCount'
+  | 'chargeAttackIndex'
+  | 'targetHp'
 >;

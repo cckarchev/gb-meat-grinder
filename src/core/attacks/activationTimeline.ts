@@ -41,6 +41,7 @@ const EMPTY_SWING_STATE: SwingState = {
   effectsBefore: NO_CARRIED_EFFECTS,
   damagingPlayBySlot: [],
   playDamageBySlot: [],
+  healthPlayDivisorBySlot: [],
   targetBurningBefore: false,
   playbookDamageBonus: 0,
   chargeTraitDamage: 0,
@@ -168,27 +169,81 @@ export const swingPlayDamage = (state: SwingState): number => {
   return state.playDamageBySlot.reduce((sum, damage) => sum + damage, 0);
 };
 
+/** Condition damage of a play that deals the target's current HP over `divisor`. */
+const currentHealthDamage = (hpLeft: number, divisor: number): number => {
+  const remaining = Math.max(0, hpLeft);
+
+  return Math.floor(remaining / divisor);
+};
+
+/**
+ * A swing's play damage by slot when the target has `hpLeft` HP before it:
+ * plays scaled by current HP are recomputed, the rest keep their damage.
+ */
+export const playDamageForHealth = (
+  state: SwingState,
+  hpLeft: number,
+): number[] => {
+  return state.playDamageBySlot.map((damage, slot) => {
+    const divisor = state.healthPlayDivisorBySlot[slot] ?? 0;
+
+    if (divisor <= 0) {
+      return damage;
+    }
+
+    return currentHealthDamage(hpLeft, divisor);
+  });
+};
+
+/** Whether any of a swing's plays deals damage scaled by the target's current HP. */
+export const swingHasHealthPlay = (state: SwingState): boolean => {
+  return state.healthPlayDivisorBySlot.some((divisor) => divisor > 0);
+};
+
+/** Damage a swing deals when every pick on it lands: card results, plays and charge. */
+const swingDamageIfAllHit = (
+  params: TimelineParams,
+  row: readonly WrapPick[],
+  state: SwingState,
+): number => {
+  const { attacker, damageMods } = params;
+  const swingMods = withSwingDamageBonus(damageMods, state.playbookDamageBonus);
+
+  const cardDamage = row.reduce((sum, id) => {
+    if (id == null) {
+      return sum;
+    }
+
+    return sum + effectiveDamageForChoice(attacker, id, swingMods);
+  }, 0);
+
+  return cardDamage + swingPlayDamage(state) + state.chargeDamage;
+};
+
 type SwingPlayDamage = Pick<
   SwingState,
-  'damagingPlayBySlot' | 'playDamageBySlot'
+  'damagingPlayBySlot' | 'playDamageBySlot' | 'healthPlayDivisorBySlot'
 >;
 
 /**
  * The damaging plays one swing's picks trigger. A Once Per Turn play deals its
  * damage only on the first pick that triggers it; `usedOncePerTurn` carries
- * those across the walk.
+ * those across the walk. `hpLeft` is the target's HP before this swing, for
+ * plays scaled by current HP.
  */
 const swingPlayDamageFor = (
   plan: AttackPlan,
   params: TimelineParams,
   attackIndex: number,
   usedOncePerTurn: Set<string>,
+  hpLeft: number,
 ): SwingPlayDamage => {
   const { attacker, damageMods } = params;
   const row = plan.wrapPicks[attackIndex] ?? [];
 
   const damagingPlayBySlot: (CharacterPlay | null)[] = row.map(() => null);
   const playDamageBySlot: number[] = row.map(() => 0);
+  const healthPlayDivisorBySlot: number[] = row.map(() => 0);
 
   row.forEach((id, pickIndex) => {
     if (id == null || !choiceUsesCharacterPlay(attacker, id)) {
@@ -204,8 +259,10 @@ const swingPlayDamageFor = (
 
     const play = getCharacterPlay(attacker, playId);
     const printedDamage = play?.damage ?? 0;
+    const divisor = play?.currentHealthDivisor ?? 0;
+    const dealsDamage = printedDamage > 0 || divisor > 0;
 
-    if (play == null || printedDamage <= 0) {
+    if (play == null || !dealsDamage) {
       return;
     }
 
@@ -220,6 +277,14 @@ const swingPlayDamageFor = (
     }
 
     damagingPlayBySlot[pickIndex] = play;
+
+    if (divisor > 0) {
+      healthPlayDivisorBySlot[pickIndex] = divisor;
+      playDamageBySlot[pickIndex] = currentHealthDamage(hpLeft, divisor);
+
+      return;
+    }
+
     playDamageBySlot[pickIndex] = effectivePlaybookDamage(
       attacker,
       printedDamage,
@@ -227,7 +292,7 @@ const swingPlayDamageFor = (
     );
   });
 
-  return { damagingPlayBySlot, playDamageBySlot };
+  return { damagingPlayBySlot, playDamageBySlot, healthPlayDivisorBySlot };
 };
 
 export const activationTimeline = (
@@ -258,6 +323,9 @@ export const activationTimeline = (
 
   const usedOncePerTurn = new Set<string>();
 
+  // All-hit damage dealt so far, for plays scaled by the target's current HP.
+  let damageDealt = 0;
+
   const states: SwingState[] = wrapPicks.map(() => preAppliedState);
 
   const order = activationAttackIndices(
@@ -270,7 +338,13 @@ export const activationTimeline = (
   for (const attackIndex of order) {
     const state: SwingState = {
       effectsBefore: sumEffects(named),
-      ...swingPlayDamageFor(plan, params, attackIndex, usedOncePerTurn),
+      ...swingPlayDamageFor(
+        plan,
+        params,
+        attackIndex,
+        usedOncePerTurn,
+        params.targetHp - damageDealt,
+      ),
       targetBurningBefore: burning,
       playbookDamageBonus: burning ? passionBonus : 0,
       ...swingChargeDamageFor(plan, params, attackIndex),
@@ -279,6 +353,8 @@ export const activationTimeline = (
     states[attackIndex] = state;
 
     const row = wrapPicks[attackIndex] ?? [];
+
+    damageDealt += swingDamageIfAllHit(params, row, state);
 
     for (let pickIndex = 0; pickIndex < row.length; pickIndex++) {
       const pickEffects = pickEffectsForLaterSwings(

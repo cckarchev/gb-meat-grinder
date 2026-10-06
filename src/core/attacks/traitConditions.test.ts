@@ -11,6 +11,7 @@ import {
   CONDITION_GUILD,
   makeAttacker,
   modsWith,
+  NEUTRAL_TARGET_HP,
   NO_MODS,
   PLAY_DAMAGE,
   threeOf,
@@ -30,6 +31,7 @@ const timelineFor = (
     damageMods,
     activeBaseCount: SWINGS,
     chargeAttackIndex: NO_ATTACK_INDEX,
+    targetHp: NEUTRAL_TARGET_HP,
   });
 };
 
@@ -147,6 +149,7 @@ describe('Burning Passion', () => {
       damageMods: mods,
       activeBaseCount: 1,
       chargeAttackIndex: NO_ATTACK_INDEX,
+      targetHp: NEUTRAL_TARGET_HP,
     });
 
     // `gb` card 1 + 1 Burning Passion, play 3 untouched.

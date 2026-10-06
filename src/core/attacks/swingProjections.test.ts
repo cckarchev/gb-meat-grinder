@@ -50,6 +50,7 @@ const input = (
       damageMods: scenario.damageMods,
       activeBaseCount: scenario.activeBaseCount,
       chargeAttackIndex: NO_ATTACK_INDEX,
+      targetHp: scenario.targetHp,
     },
   );
 

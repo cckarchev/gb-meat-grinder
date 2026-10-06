@@ -8,6 +8,7 @@ import {
   makeRollParams,
   NO_MODS,
   PLAY_DAMAGE,
+  PLAY_HALF_HEALTH,
 } from '@/core/testing/fixtures';
 
 describe('planDamageOutcome', () => {
@@ -71,5 +72,52 @@ describe('planDamageOutcome', () => {
 
     // With 20 dice both swings almost surely reach `gb`: 1 + 3, then 1.
     expect(outcome.expectedDamage).toBeCloseTo(5, 2);
+  });
+
+  it('scales a current-HP play by the damage each roll actually dealt before it', () => {
+    const attacker = makeAttacker({ characterPlays: [PLAY_HALF_HEALTH] });
+    const wrapPicks = [['one'], ['gb']];
+    const characterPlayPicks = [[null], ['playHalfHealth']];
+    const plan = { wrapPicks, characterPlayPicks };
+    const targetHp = 10;
+
+    const timeline = activationTimeline(
+      plan,
+      makeRollParams({ attacker, targetHp }),
+    );
+
+    // A coin flip for `one`, then a sure `gb`.
+    const coinFlip: AttackRollContext = {
+      attackIndex: 0,
+      tac: 1,
+      armor: 0,
+      defMinRoll: 4,
+      pHit: 0.5,
+      netSuccessesNeeded: 1,
+      prob: 0.5,
+    };
+
+    const sureHit: AttackRollContext = {
+      attackIndex: 1,
+      tac: 3,
+      armor: 0,
+      defMinRoll: 2,
+      pHit: 1,
+      netSuccessesNeeded: 3,
+      prob: 1,
+    };
+
+    const outcome = planDamageOutcome(
+      attacker,
+      [coinFlip, sureHit],
+      wrapPicks,
+      NO_MODS,
+      0,
+      targetHp,
+      timeline,
+    );
+
+    // Miss: 0 + 1 + half of 10 = 6. Hit: 1 + 1 + half of 9 = 6.
+    expect([...outcome.damageDistribution]).toEqual([[6, 1]]);
   });
 });

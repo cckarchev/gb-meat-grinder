@@ -46,7 +46,8 @@ type PrintedDamageSource = { label: string; amount: number };
 
 /**
  * The damaging plays live on the given swings, by play, at their printed amount
- * (Tough Hide and buffs are itemized on their own lines).
+ * (Tough Hide and buffs are itemized on their own lines). A play scaled by the
+ * target's current HP is unmodified, so it is listed at the damage it deals.
  */
 export const characterPlayDamageSources = (
   timeline: ActivationTimeline,
@@ -57,16 +58,20 @@ export const characterPlayDamageSources = (
   for (const attackIndex of attackIndexes) {
     const state = swingStateAt(timeline, attackIndex);
 
-    for (const play of state.damagingPlayBySlot) {
+    state.damagingPlayBySlot.forEach((play, slot) => {
       if (play == null) {
-        continue;
+        return;
       }
 
-      const printed = play.damage ?? 0;
+      const scalesWithHealth = state.healthPlayDivisorBySlot[slot] > 0;
+      const amount = scalesWithHealth
+        ? state.playDamageBySlot[slot]
+        : (play.damage ?? 0);
+
       const source = byPlay.get(play.id) ?? { label: play.label, amount: 0 };
 
-      byPlay.set(play.id, { ...source, amount: source.amount + printed });
-    }
+      byPlay.set(play.id, { ...source, amount: source.amount + amount });
+    });
   }
 
   return [...byPlay.values()];
@@ -136,12 +141,23 @@ export const damageModifierBreakdown = (
         effectivePlaybookDamage(attacker, cardDamage, damageMods);
     }
 
-    // Play damage is not a playbook damage result: no Burning Passion.
-    for (const play of state.damagingPlayBySlot) {
-      if (play != null) {
-        printedAmounts.push({ printed: play.damage ?? 0, mods: damageMods });
+    // Play damage is not a playbook damage result: no Burning Passion. A play
+    // scaled by current HP is unmodified, so it only adds to the total.
+    state.damagingPlayBySlot.forEach((play, slot) => {
+      if (play == null) {
+        return;
       }
-    }
+
+      const scalesWithHealth = state.healthPlayDivisorBySlot[slot] > 0;
+
+      if (scalesWithHealth) {
+        totalEffective += state.playDamageBySlot[slot];
+
+        return;
+      }
+
+      printedAmounts.push({ printed: play.damage ?? 0, mods: damageMods });
+    });
 
     for (const { printed, mods } of printedAmounts) {
       const effective = effectivePlaybookDamage(attacker, printed, mods);

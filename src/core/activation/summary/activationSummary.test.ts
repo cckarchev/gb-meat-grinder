@@ -10,7 +10,12 @@ import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { activeTraitFlatDamage } from '@/core/damage/damage';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
+import {
+  makeAttacker,
+  modsWith,
+  NEUTRAL_TARGET_HP,
+  NO_MODS,
+} from '@/core/testing/fixtures';
 import { sweepingCharge } from '@/data/characterTraits';
 
 /** A swing that always rolls exactly `tac` net successes. */
@@ -60,6 +65,7 @@ const input = (
       damageMods: scenario.damageMods,
       activeBaseCount: scenario.activeBaseCount,
       chargeAttackIndex: NO_ATTACK_INDEX,
+      targetHp: scenario.targetHp,
     },
   );
 
@@ -164,6 +170,7 @@ describe('summarizeActivation', () => {
         damageMods: NO_MODS,
         activeBaseCount: 2,
         chargeAttackIndex: chargeRow,
+        targetHp: NEUTRAL_TARGET_HP,
       },
     );
 

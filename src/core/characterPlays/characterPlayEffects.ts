@@ -27,7 +27,8 @@ export const characterPlayHasEffect = (play: CharacterPlay): boolean => {
     play.tacBonusForLater ||
       play.defReductionForLater ||
       play.armorReduction ||
-      play.damage,
+      play.damage ||
+      play.currentHealthDivisor,
   );
 };
 
@@ -37,6 +38,13 @@ export const characterPlayEffectSummary = (play: CharacterPlay): string => {
 
   if (play.damage) {
     effects.push(`${play.damage} DMG`);
+  }
+
+  if (play.currentHealthDivisor) {
+    effects.push(
+      `Condition DMG equal to 1/${play.currentHealthDivisor} of the target's ` +
+        'current HP, rounded down',
+    );
   }
 
   if (play.tacBonusForLater) {

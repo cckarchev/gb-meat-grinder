@@ -22,6 +22,8 @@ export type ActivationRollParams = {
   initialTacModifier: number;
   /** Active base attacks this activation (derived from traits + influence). */
   activeBaseCount: number;
+  /** Target HP before the activation, for plays that scale with current HP. */
+  targetHp: number;
 };
 
 export type AttackRollContext = {

@@ -30,6 +30,13 @@ export type CharacterPlay = {
    */
   damage?: number;
   /**
+   * Condition damage equal to the target's current HP divided by this, rounded
+   * down (The Bigger They Are... = 2). Current HP is taken before the swing's
+   * own card damage, since the attacker chooses that order. It is unmodified:
+   * Tough Hide and +DMG buffs do not apply.
+   */
+  currentHealthDivisor?: number;
+  /**
    * Once Per Turn, copied from the card: picking it on one swing removes it from
    * later swings. It only limits availability; effects of the same name never
    * stack either way (see MODELING.md, "Stacking").

@@ -60,3 +60,16 @@ export const impale: CharacterPlay = {
   damage: 3,
   oncePerTurn: true,
 };
+
+/**
+ * Cross Cut's The Bigger They Are...: condition damage equal to half the
+ * target's current HP, rounded down. Unmodified, and taken before the swing's
+ * own card damage (the attacker orders the effects, so that is always best).
+ * The log pile placement does not affect the attack math.
+ */
+export const theBiggerTheyAre: CharacterPlay = {
+  id: 'theBiggerTheyAre',
+  label: 'The Bigger They Are...',
+  currentHealthDivisor: 2,
+  oncePerTurn: true,
+};

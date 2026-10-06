@@ -4728,6 +4728,5396 @@ exports[`engine golden scenarios > Cast > tough hide with buffs (utility) 1`] = 
 }
 `;
 
+exports[`engine golden scenarios > Cross Cut > base (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 28,
+    "totalEffective": 28,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000002,
+    ],
+    [
+      1,
+      0.000019,
+    ],
+    [
+      2,
+      0.000127,
+    ],
+    [
+      3,
+      0.000586,
+    ],
+    [
+      4,
+      0.002084,
+    ],
+    [
+      5,
+      0.005994,
+    ],
+    [
+      6,
+      0.014409,
+    ],
+    [
+      7,
+      0.029542,
+    ],
+    [
+      8,
+      0.052379,
+    ],
+    [
+      9,
+      0.081075,
+    ],
+    [
+      10,
+      0.110264,
+    ],
+    [
+      11,
+      0.132327,
+    ],
+    [
+      12,
+      0.140483,
+    ],
+    [
+      13,
+      0.13208,
+    ],
+    [
+      14,
+      0.109962,
+    ],
+    [
+      15,
+      0.080965,
+    ],
+    [
+      16,
+      0.052601,
+    ],
+    [
+      17,
+      0.030049,
+    ],
+    [
+      18,
+      0.015022,
+    ],
+    [
+      19,
+      0.006531,
+    ],
+    [
+      20,
+      0.002449,
+    ],
+    [
+      21,
+      0.000784,
+    ],
+    [
+      22,
+      0.000211,
+    ],
+    [
+      23,
+      0.000047,
+    ],
+    [
+      24,
+      0.000008,
+    ],
+    [
+      25,
+      0.000001,
+    ],
+    [
+      26,
+      0,
+    ],
+    [
+      27,
+      0,
+    ],
+    [
+      28,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    7,
+    7,
+    7,
+    7,
+  ],
+  "expectedDamage": 12.015625,
+  "expectedHpRemaining": 2.375819,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.29863,
+  "killingBlowIndex": 1,
+  "likelyDamage": [
+    8,
+    16,
+  ],
+  "rowLabels": [
+    "6 → 1",
+    "6 → 1",
+    "6 → 1",
+    "6 → 1",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+      "m1",
+    ],
+    [
+      "dmg6",
+      "m1",
+    ],
+    [
+      "dmg6",
+      "m1",
+    ],
+    [
+      "dmg6",
+      "m1",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > base (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0.000001,
+    ],
+    [
+      4,
+      0.000009,
+    ],
+    [
+      5,
+      0.000051,
+    ],
+    [
+      6,
+      0.000238,
+    ],
+    [
+      7,
+      0.000955,
+    ],
+    [
+      8,
+      0.003347,
+    ],
+    [
+      9,
+      0.010219,
+    ],
+    [
+      10,
+      0.027044,
+    ],
+    [
+      11,
+      0.061072,
+    ],
+    [
+      12,
+      0.119344,
+    ],
+    [
+      13,
+      0.185507,
+    ],
+    [
+      14,
+      0.230534,
+    ],
+    [
+      15,
+      0.21366,
+    ],
+    [
+      16,
+      0.148018,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 13.713774,
+  "expectedHpRemaining": 0.795922,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.592212,
+  "killingBlowIndex": 3,
+  "likelyDamage": [
+    11,
+    16,
+  ],
+  "rowLabels": [
+    "4KD → >",
+    "4KD → >",
+    "4KD → >",
+    "4KD → >",
+  ],
+  "wrapPicks": [
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > base (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 7,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000204,
+    ],
+    [
+      1,
+      0.001007,
+    ],
+    [
+      2,
+      0.0034,
+    ],
+    [
+      3,
+      0.008811,
+    ],
+    [
+      4,
+      0.019134,
+    ],
+    [
+      5,
+      0.035192,
+    ],
+    [
+      6,
+      0.057667,
+    ],
+    [
+      7,
+      0.083664,
+    ],
+    [
+      8,
+      0.107519,
+    ],
+    [
+      9,
+      0.125071,
+    ],
+    [
+      10,
+      0.131304,
+    ],
+    [
+      11,
+      0.122566,
+    ],
+    [
+      12,
+      0.102182,
+    ],
+    [
+      13,
+      0.078417,
+    ],
+    [
+      14,
+      0.053704,
+    ],
+    [
+      15,
+      0.032481,
+    ],
+    [
+      16,
+      0.018861,
+    ],
+    [
+      17,
+      0.01163,
+    ],
+    [
+      18,
+      0.005673,
+    ],
+    [
+      19,
+      0.001513,
+    ],
+  ],
+  "damageIfAllHits": [
+    7,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 9.980469,
+  "expectedHpRemaining": 4.154882,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.123862,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    6,
+    14,
+  ],
+  "rowLabels": [
+    "CUP → >",
+    "CUP → >",
+    "CUP → >",
+    "CUP → >",
+  ],
+  "wrapPicks": [
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > bonus time (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 9,
+      "pHit": 0.5,
+      "prob": 0.000977,
+      "tac": 10,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.5,
+      "prob": 0.001953,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.5,
+      "prob": 0.001953,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.5,
+      "prob": 0.001953,
+      "tac": 9,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 33,
+    "totalEffective": 33,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0.000001,
+    ],
+    [
+      2,
+      0.00001,
+    ],
+    [
+      3,
+      0.000053,
+    ],
+    [
+      4,
+      0.000229,
+    ],
+    [
+      5,
+      0.000804,
+    ],
+    [
+      6,
+      0.002371,
+    ],
+    [
+      7,
+      0.006005,
+    ],
+    [
+      8,
+      0.013251,
+    ],
+    [
+      9,
+      0.025748,
+    ],
+    [
+      10,
+      0.044377,
+    ],
+    [
+      11,
+      0.068212,
+    ],
+    [
+      12,
+      0.093869,
+    ],
+    [
+      13,
+      0.115956,
+    ],
+    [
+      14,
+      0.128795,
+    ],
+    [
+      15,
+      0.128739,
+    ],
+    [
+      16,
+      0.115819,
+    ],
+    [
+      17,
+      0.09373,
+    ],
+    [
+      18,
+      0.068153,
+    ],
+    [
+      19,
+      0.044441,
+    ],
+    [
+      20,
+      0.025922,
+    ],
+    [
+      21,
+      0.013479,
+    ],
+    [
+      22,
+      0.006221,
+    ],
+    [
+      23,
+      0.002534,
+    ],
+    [
+      24,
+      0.000905,
+    ],
+    [
+      25,
+      0.000281,
+    ],
+    [
+      26,
+      0.000075,
+    ],
+    [
+      27,
+      0.000017,
+    ],
+    [
+      28,
+      0.000003,
+    ],
+    [
+      29,
+      0,
+    ],
+    [
+      30,
+      0,
+    ],
+    [
+      31,
+      0,
+    ],
+    [
+      32,
+      0,
+    ],
+    [
+      33,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    9,
+    8,
+    8,
+    8,
+  ],
+  "expectedDamage": 14.506836,
+  "expectedHpRemaining": 0.965326,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.629115,
+  "killingBlowIndex": 1,
+  "likelyDamage": [
+    11,
+    18,
+  ],
+  "rowLabels": [
+    "6 → 3",
+    "6 → 2",
+    "6 → 2",
+    "6 → 2",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+      "m3",
+    ],
+    [
+      "dmg6",
+      "m2",
+    ],
+    [
+      "dmg6",
+      "m2",
+    ],
+    [
+      "dmg6",
+      "m2",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > bonus time (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 9,
+      "pHit": 0.5,
+      "prob": 0.000977,
+      "tac": 10,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.143068,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.143068,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.143068,
+      "tac": 9,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0,
+    ],
+    [
+      4,
+      0,
+    ],
+    [
+      5,
+      0.000002,
+    ],
+    [
+      6,
+      0.000012,
+    ],
+    [
+      7,
+      0.000065,
+    ],
+    [
+      8,
+      0.000303,
+    ],
+    [
+      9,
+      0.001261,
+    ],
+    [
+      10,
+      0.004604,
+    ],
+    [
+      11,
+      0.014432,
+    ],
+    [
+      12,
+      0.041534,
+    ],
+    [
+      13,
+      0.095123,
+    ],
+    [
+      14,
+      0.178972,
+    ],
+    [
+      15,
+      0.260997,
+    ],
+    [
+      16,
+      0.366911,
+    ],
+    [
+      17,
+      0.029676,
+    ],
+    [
+      18,
+      0.006107,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 14.859674,
+  "expectedHpRemaining": 0.248602,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.842664,
+  "killingBlowIndex": 3,
+  "likelyDamage": [
+    13,
+    16,
+  ],
+  "rowLabels": [
+    "4KD → KD",
+    "4KD → >",
+    "4KD → >",
+    "4KD → >",
+  ],
+  "wrapPicks": [
+    [
+      "four_kd",
+      "kd",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > bonus time (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 9,
+      "pHit": 0.5,
+      "prob": 0.000977,
+      "tac": 10,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.143068,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.143068,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.143068,
+      "tac": 9,
+    },
+  ],
+  "bonusTimeByAttack": [
+    true,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 7,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.002967,
+    ],
+    [
+      1,
+      0.01224,
+    ],
+    [
+      2,
+      0.033249,
+    ],
+    [
+      3,
+      0.061066,
+    ],
+    [
+      4,
+      0.08362,
+    ],
+    [
+      5,
+      0.038503,
+    ],
+    [
+      6,
+      0.070178,
+    ],
+    [
+      7,
+      0.181426,
+    ],
+    [
+      8,
+      0.094773,
+    ],
+    [
+      9,
+      0.045354,
+    ],
+    [
+      10,
+      0.083589,
+    ],
+    [
+      11,
+      0.131251,
+    ],
+    [
+      12,
+      0.043342,
+    ],
+    [
+      13,
+      0.024629,
+    ],
+    [
+      14,
+      0.035389,
+    ],
+    [
+      15,
+      0.036425,
+    ],
+    [
+      16,
+      0.008681,
+    ],
+    [
+      17,
+      0.004577,
+    ],
+    [
+      18,
+      0.004701,
+    ],
+    [
+      19,
+      0.00345,
+    ],
+    [
+      20,
+      0.000504,
+    ],
+    [
+      21,
+      0.000084,
+    ],
+  ],
+  "damageIfAllHits": [
+    7,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 8.186845,
+  "expectedHpRemaining": 5.920339,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.093812,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    3,
+    13,
+  ],
+  "rowLabels": [
+    "CUP → KD",
+    "CUP → >",
+    "CUP → >",
+    "CUP → >",
+  ],
+  "wrapPicks": [
+    [
+      "cup",
+      "kd",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > charge into stance (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 11,
+      "pHit": 0.333333,
+      "prob": 0.000002,
+      "tac": 12,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 25,
+    "totalEffective": 25,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000067,
+    ],
+    [
+      1,
+      0.000572,
+    ],
+    [
+      2,
+      0.002715,
+    ],
+    [
+      3,
+      0.009021,
+    ],
+    [
+      4,
+      0.023034,
+    ],
+    [
+      5,
+      0.047441,
+    ],
+    [
+      6,
+      0.081088,
+    ],
+    [
+      7,
+      0.117112,
+    ],
+    [
+      8,
+      0.144592,
+    ],
+    [
+      9,
+      0.153757,
+    ],
+    [
+      10,
+      0.14146,
+    ],
+    [
+      11,
+      0.11286,
+    ],
+    [
+      12,
+      0.078129,
+    ],
+    [
+      13,
+      0.04689,
+    ],
+    [
+      14,
+      0.024344,
+    ],
+    [
+      15,
+      0.010894,
+    ],
+    [
+      16,
+      0.00418,
+    ],
+    [
+      17,
+      0.001365,
+    ],
+    [
+      18,
+      0.000376,
+    ],
+    [
+      19,
+      0.000086,
+    ],
+    [
+      20,
+      0.000016,
+    ],
+    [
+      21,
+      0.000002,
+    ],
+    [
+      22,
+      0,
+    ],
+    [
+      23,
+      0,
+    ],
+    [
+      24,
+      0,
+    ],
+    [
+      25,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    11,
+    7,
+    7,
+    0,
+  ],
+  "expectedDamage": 9.01552,
+  "expectedHpRemaining": 5.009877,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.041264,
+  "killingBlowIndex": 1,
+  "likelyDamage": [
+    6,
+    12,
+  ],
+  "rowLabels": [
+    "6 → 5",
+    "6 → 1",
+    "6 → 1",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+      "dmg5",
+    ],
+    [
+      "dmg6",
+      "m1",
+    ],
+    [
+      "dmg6",
+      "m1",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > charge into stance (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 10,
+      "pHit": 0.333333,
+      "prob": 0.000047,
+      "tac": 12,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0.000006,
+    ],
+    [
+      2,
+      0.000047,
+    ],
+    [
+      3,
+      0.000276,
+    ],
+    [
+      4,
+      0.001342,
+    ],
+    [
+      5,
+      0.005312,
+    ],
+    [
+      6,
+      0.017249,
+    ],
+    [
+      7,
+      0.045094,
+    ],
+    [
+      8,
+      0.106131,
+    ],
+    [
+      9,
+      0.171858,
+    ],
+    [
+      10,
+      0.223212,
+    ],
+    [
+      11,
+      0.221678,
+    ],
+    [
+      12,
+      0.196435,
+    ],
+    [
+      13,
+      0.009096,
+    ],
+    [
+      14,
+      0.001952,
+    ],
+    [
+      15,
+      0.000285,
+    ],
+    [
+      16,
+      0.000026,
+    ],
+  ],
+  "damageIfAllHits": [
+    8,
+    4,
+    4,
+    0,
+  ],
+  "expectedDamage": 10.025843,
+  "expectedHpRemaining": 3.974494,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.002263,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    8,
+    12,
+  ],
+  "rowLabels": [
+    "4KD → 4KD",
+    "4KD → >",
+    "4KD → >",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "four_kd",
+      "four_kd",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > charge into stance (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 11,
+      "pHit": 0.333333,
+      "prob": 0.000002,
+      "tac": 12,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 7,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "theBiggerTheyAre",
+      "theBiggerTheyAre",
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.001742,
+    ],
+    [
+      1,
+      0.006227,
+    ],
+    [
+      2,
+      0.016729,
+    ],
+    [
+      3,
+      0.035432,
+    ],
+    [
+      4,
+      0.063361,
+    ],
+    [
+      5,
+      0.092791,
+    ],
+    [
+      6,
+      0.122097,
+    ],
+    [
+      7,
+      0.141054,
+    ],
+    [
+      8,
+      0.136125,
+    ],
+    [
+      9,
+      0.119128,
+    ],
+    [
+      10,
+      0.09591,
+    ],
+    [
+      11,
+      0.066341,
+    ],
+    [
+      12,
+      0.039058,
+    ],
+    [
+      13,
+      0.030289,
+    ],
+    [
+      14,
+      0.022211,
+    ],
+    [
+      15,
+      0.010046,
+    ],
+    [
+      16,
+      0.001202,
+    ],
+    [
+      17,
+      0.000226,
+    ],
+    [
+      18,
+      0.000029,
+    ],
+    [
+      19,
+      0.000002,
+    ],
+  ],
+  "damageIfAllHits": [
+    7,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 7.78107,
+  "expectedHpRemaining": 6.232183,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.033715,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    4,
+    12,
+  ],
+  "rowLabels": [
+    "CUP → CUP",
+    "CUP → >",
+    "CUP → >",
+    "-",
+  ],
+  "wrapPicks": [
+    [
+      "cup",
+      "cup",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > cover (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.5,
+      "prob": 0.007813,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 24,
+    "totalEffective": 24,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000015,
+    ],
+    [
+      1,
+      0.00016,
+    ],
+    [
+      2,
+      0.000898,
+    ],
+    [
+      3,
+      0.003474,
+    ],
+    [
+      4,
+      0.01026,
+    ],
+    [
+      5,
+      0.02437,
+    ],
+    [
+      6,
+      0.048011,
+    ],
+    [
+      7,
+      0.080006,
+    ],
+    [
+      8,
+      0.114214,
+    ],
+    [
+      9,
+      0.140835,
+    ],
+    [
+      10,
+      0.150747,
+    ],
+    [
+      11,
+      0.140407,
+    ],
+    [
+      12,
+      0.113835,
+    ],
+    [
+      13,
+      0.080212,
+    ],
+    [
+      14,
+      0.048957,
+    ],
+    [
+      15,
+      0.025747,
+    ],
+    [
+      16,
+      0.011581,
+    ],
+    [
+      17,
+      0.004411,
+    ],
+    [
+      18,
+      0.001403,
+    ],
+    [
+      19,
+      0.000366,
+    ],
+    [
+      20,
+      0.000076,
+    ],
+    [
+      21,
+      0.000012,
+    ],
+    [
+      22,
+      0.000001,
+    ],
+    [
+      23,
+      0,
+    ],
+    [
+      24,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    6,
+    6,
+    6,
+    6,
+  ],
+  "expectedDamage": 10.03125,
+  "expectedHpRemaining": 4.038893,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.092556,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    7,
+    13,
+  ],
+  "rowLabels": [
+    "6",
+    "6",
+    "6",
+    "6",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > cover (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.226563,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.666667,
+      "prob": 0.570645,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.666667,
+      "prob": 0.570645,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.666667,
+      "prob": 0.570645,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0.000004,
+    ],
+    [
+      3,
+      0.000028,
+    ],
+    [
+      4,
+      0.00015,
+    ],
+    [
+      5,
+      0.000653,
+    ],
+    [
+      6,
+      0.00237,
+    ],
+    [
+      7,
+      0.007289,
+    ],
+    [
+      8,
+      0.019183,
+    ],
+    [
+      9,
+      0.043242,
+    ],
+    [
+      10,
+      0.083259,
+    ],
+    [
+      11,
+      0.135451,
+    ],
+    [
+      12,
+      0.184297,
+    ],
+    [
+      13,
+      0.201512,
+    ],
+    [
+      14,
+      0.172977,
+    ],
+    [
+      15,
+      0.107484,
+    ],
+    [
+      16,
+      0.0421,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 12.473165,
+  "expectedHpRemaining": 1.71852,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.322562,
+  "killingBlowIndex": 3,
+  "likelyDamage": [
+    10,
+    15,
+  ],
+  "rowLabels": [
+    "4KD",
+    "4KD",
+    "4KD",
+    "4KD",
+  ],
+  "wrapPicks": [
+    [
+      "four_kd",
+    ],
+    [
+      "four_kd",
+    ],
+    [
+      "four_kd",
+    ],
+    [
+      "four_kd",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > cover (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.0625,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.0625,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.0625,
+      "tac": 7,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.5,
+      "prob": 0.0625,
+      "tac": 7,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 7,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "theBiggerTheyAre",
+    ],
+    [
+      "theBiggerTheyAre",
+    ],
+    [
+      "theBiggerTheyAre",
+    ],
+    [
+      "theBiggerTheyAre",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000122,
+    ],
+    [
+      1,
+      0.000801,
+    ],
+    [
+      2,
+      0.003228,
+    ],
+    [
+      3,
+      0.009576,
+    ],
+    [
+      4,
+      0.022751,
+    ],
+    [
+      5,
+      0.044889,
+    ],
+    [
+      6,
+      0.075411,
+    ],
+    [
+      7,
+      0.109148,
+    ],
+    [
+      8,
+      0.137031,
+    ],
+    [
+      9,
+      0.149623,
+    ],
+    [
+      10,
+      0.141962,
+    ],
+    [
+      11,
+      0.116627,
+    ],
+    [
+      12,
+      0.082784,
+    ],
+    [
+      13,
+      0.051026,
+    ],
+    [
+      14,
+      0.027901,
+    ],
+    [
+      15,
+      0.014354,
+    ],
+    [
+      16,
+      0.00743,
+    ],
+    [
+      17,
+      0.00368,
+    ],
+    [
+      18,
+      0.00138,
+    ],
+    [
+      19,
+      0.000276,
+    ],
+  ],
+  "damageIfAllHits": [
+    7,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 9.1875,
+  "expectedHpRemaining": 4.859655,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.055022,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    6,
+    13,
+  ],
+  "rowLabels": [
+    "CUP",
+    "CUP",
+    "CUP",
+    "CUP",
+  ],
+  "wrapPicks": [
+    [
+      "cup",
+    ],
+    [
+      "cup",
+    ],
+    [
+      "cup",
+    ],
+    [
+      "cup",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > hard target (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 2,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.333333,
+      "prob": 0.000152,
+      "tac": 8,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 1,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.333333,
+      "prob": 0.000152,
+      "tac": 8,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 2,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.333333,
+      "prob": 0.000152,
+      "tac": 8,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 3,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 6,
+      "pHit": 0.333333,
+      "prob": 0.000152,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 24,
+    "totalEffective": 24,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.048062,
+    ],
+    [
+      1,
+      0.112145,
+    ],
+    [
+      2,
+      0.168218,
+    ],
+    [
+      3,
+      0.188856,
+    ],
+    [
+      4,
+      0.17152,
+    ],
+    [
+      5,
+      0.131185,
+    ],
+    [
+      6,
+      0.086469,
+    ],
+    [
+      7,
+      0.049833,
+    ],
+    [
+      8,
+      0.025341,
+    ],
+    [
+      9,
+      0.011433,
+    ],
+    [
+      10,
+      0.004588,
+    ],
+    [
+      11,
+      0.001638,
+    ],
+    [
+      12,
+      0.00052,
+    ],
+    [
+      13,
+      0.000146,
+    ],
+    [
+      14,
+      0.000036,
+    ],
+    [
+      15,
+      0.000008,
+    ],
+    [
+      16,
+      0.000001,
+    ],
+    [
+      17,
+      0,
+    ],
+    [
+      18,
+      0,
+    ],
+    [
+      19,
+      0,
+    ],
+    [
+      20,
+      0,
+    ],
+    [
+      21,
+      0,
+    ],
+    [
+      22,
+      0,
+    ],
+    [
+      23,
+      0,
+    ],
+    [
+      24,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    6,
+    6,
+    6,
+    6,
+  ],
+  "expectedDamage": 3.603109,
+  "expectedHpRemaining": 14.396891,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    1,
+    6,
+  ],
+  "rowLabels": [
+    "6",
+    "6",
+    "6",
+    "6",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+    [
+      "dmg6",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > hard target (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 2,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.333333,
+      "prob": 0.019662,
+      "tac": 8,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.144531,
+      "tac": 8,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.144531,
+      "tac": 8,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 4,
+      "pHit": 0.5,
+      "prob": 0.144531,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+    [
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.001414,
+    ],
+    [
+      1,
+      0.007243,
+    ],
+    [
+      2,
+      0.021998,
+    ],
+    [
+      3,
+      0.0485,
+    ],
+    [
+      4,
+      0.085462,
+    ],
+    [
+      5,
+      0.124023,
+    ],
+    [
+      6,
+      0.152243,
+    ],
+    [
+      7,
+      0.159635,
+    ],
+    [
+      8,
+      0.144,
+    ],
+    [
+      9,
+      0.111333,
+    ],
+    [
+      10,
+      0.073717,
+    ],
+    [
+      11,
+      0.041234,
+    ],
+    [
+      12,
+      0.019221,
+    ],
+    [
+      13,
+      0.007247,
+    ],
+    [
+      14,
+      0.002196,
+    ],
+    [
+      15,
+      0.000476,
+    ],
+    [
+      16,
+      0.000059,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 6.898034,
+  "expectedHpRemaining": 11.101966,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    4,
+    10,
+  ],
+  "rowLabels": [
+    "4KD",
+    "4KD",
+    "4KD",
+    "4KD",
+  ],
+  "wrapPicks": [
+    [
+      "four_kd",
+    ],
+    [
+      "four_kd",
+    ],
+    [
+      "four_kd",
+    ],
+    [
+      "four_kd",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > hard target (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 2,
+      "attackIndex": 0,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.333333,
+      "prob": 0.002591,
+      "tac": 8,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 1,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.333333,
+      "prob": 0.002591,
+      "tac": 8,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 2,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.333333,
+      "prob": 0.002591,
+      "tac": 8,
+    },
+    {
+      "armor": 2,
+      "attackIndex": 3,
+      "defMinRoll": 5,
+      "momentumAfter": 0,
+      "netSuccessesNeeded": 5,
+      "pHit": 0.333333,
+      "prob": 0.002591,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 9,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "theBiggerTheyAre",
+    ],
+    [
+      "theBiggerTheyAre",
+    ],
+    [
+      "theBiggerTheyAre",
+    ],
+    [
+      "theBiggerTheyAre",
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.048865,
+    ],
+    [
+      1,
+      0.113547,
+    ],
+    [
+      2,
+      0.16991,
+    ],
+    [
+      3,
+      0.190385,
+    ],
+    [
+      4,
+      0.172631,
+    ],
+    [
+      5,
+      0.130845,
+    ],
+    [
+      6,
+      0.084986,
+    ],
+    [
+      7,
+      0.047745,
+    ],
+    [
+      8,
+      0.023342,
+    ],
+    [
+      9,
+      0.010205,
+    ],
+    [
+      10,
+      0.004138,
+    ],
+    [
+      11,
+      0.001728,
+    ],
+    [
+      12,
+      0.000822,
+    ],
+    [
+      13,
+      0.000439,
+    ],
+    [
+      14,
+      0.000232,
+    ],
+    [
+      15,
+      0.000112,
+    ],
+    [
+      16,
+      0.000046,
+    ],
+    [
+      17,
+      0.000016,
+    ],
+    [
+      18,
+      0.000005,
+    ],
+    [
+      19,
+      0.000001,
+    ],
+    [
+      20,
+      0,
+    ],
+    [
+      21,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    9,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 3.573998,
+  "expectedHpRemaining": 14.426003,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.000006,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    1,
+    6,
+  ],
+  "rowLabels": [
+    "CUP",
+    "CUP",
+    "CUP",
+    "CUP",
+  ],
+  "wrapPicks": [
+    [
+      "cup",
+    ],
+    [
+      "cup",
+    ],
+    [
+      "cup",
+    ],
+    [
+      "cup",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > knocked down and snared (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.833333,
+      "prob": 0.193807,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.833333,
+      "prob": 0.193807,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.833333,
+      "prob": 0.193807,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.833333,
+      "prob": 0.193807,
+      "tac": 9,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 32,
+    "totalEffective": 32,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0,
+    ],
+    [
+      4,
+      0,
+    ],
+    [
+      5,
+      0,
+    ],
+    [
+      6,
+      0,
+    ],
+    [
+      7,
+      0,
+    ],
+    [
+      8,
+      0,
+    ],
+    [
+      9,
+      0,
+    ],
+    [
+      10,
+      0,
+    ],
+    [
+      11,
+      0,
+    ],
+    [
+      12,
+      0,
+    ],
+    [
+      13,
+      0.000001,
+    ],
+    [
+      14,
+      0.000003,
+    ],
+    [
+      15,
+      0.000016,
+    ],
+    [
+      16,
+      0.000068,
+    ],
+    [
+      17,
+      0.000257,
+    ],
+    [
+      18,
+      0.000877,
+    ],
+    [
+      19,
+      0.002671,
+    ],
+    [
+      20,
+      0.007233,
+    ],
+    [
+      21,
+      0.01736,
+    ],
+    [
+      22,
+      0.036722,
+    ],
+    [
+      23,
+      0.068004,
+    ],
+    [
+      24,
+      0.109292,
+    ],
+    [
+      25,
+      0.150748,
+    ],
+    [
+      26,
+      0.175872,
+    ],
+    [
+      27,
+      0.170199,
+    ],
+    [
+      28,
+      0.132968,
+    ],
+    [
+      29,
+      0.080587,
+    ],
+    [
+      30,
+      0.035553,
+    ],
+    [
+      31,
+      0.010158,
+    ],
+    [
+      32,
+      0.001411,
+    ],
+  ],
+  "damageIfAllHits": [
+    8,
+    8,
+    8,
+    8,
+  ],
+  "expectedDamage": 26,
+  "expectedHpRemaining": 0.000001,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.999999,
+  "killingBlowIndex": 1,
+  "likelyDamage": [
+    23,
+    29,
+  ],
+  "rowLabels": [
+    "6 → 2",
+    "6 → 2",
+    "6 → 2",
+    "6 → 2",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+      "m2",
+    ],
+    [
+      "dmg6",
+      "m2",
+    ],
+    [
+      "dmg6",
+      "m2",
+    ],
+    [
+      "dmg6",
+      "m2",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > knocked down and snared (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.833333,
+      "prob": 0.542659,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 9,
+      "pHit": 0.833333,
+      "prob": 0.161506,
+      "tac": 10,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 9,
+      "pHit": 0.833333,
+      "prob": 0.161506,
+      "tac": 10,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 9,
+      "pHit": 0.833333,
+      "prob": 0.161506,
+      "tac": 10,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0,
+    ],
+    [
+      4,
+      0,
+    ],
+    [
+      5,
+      0,
+    ],
+    [
+      6,
+      0,
+    ],
+    [
+      7,
+      0,
+    ],
+    [
+      8,
+      0,
+    ],
+    [
+      9,
+      0,
+    ],
+    [
+      10,
+      0,
+    ],
+    [
+      11,
+      0,
+    ],
+    [
+      12,
+      0.000001,
+    ],
+    [
+      13,
+      0.000018,
+    ],
+    [
+      14,
+      0.000211,
+    ],
+    [
+      15,
+      0.001754,
+    ],
+    [
+      16,
+      0.059043,
+    ],
+    [
+      17,
+      0.13179,
+    ],
+    [
+      18,
+      0.241335,
+    ],
+    [
+      19,
+      0.241025,
+    ],
+    [
+      20,
+      0.200979,
+    ],
+    [
+      21,
+      0.090444,
+    ],
+    [
+      22,
+      0.0334,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 18.791835,
+  "expectedHpRemaining": 0.000021,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.999981,
+  "killingBlowIndex": 3,
+  "likelyDamage": [
+    17,
+    21,
+  ],
+  "rowLabels": [
+    "4KD → >",
+    "4KD → KD",
+    "4KD → KD",
+    "4KD → KD",
+  ],
+  "wrapPicks": [
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "kd",
+    ],
+    [
+      "four_kd",
+      "kd",
+    ],
+    [
+      "four_kd",
+      "kd",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > knocked down and snared (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 2,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.833333,
+      "prob": 0.542659,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.833333,
+      "prob": 0.542659,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.833333,
+      "prob": 0.542659,
+      "tac": 9,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.833333,
+      "prob": 0.542659,
+      "tac": 9,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 7,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000004,
+    ],
+    [
+      1,
+      0.000077,
+    ],
+    [
+      2,
+      0.000899,
+    ],
+    [
+      3,
+      0.006742,
+    ],
+    [
+      4,
+      0.033716,
+    ],
+    [
+      5,
+      0.000063,
+    ],
+    [
+      6,
+      0.000387,
+    ],
+    [
+      7,
+      0.822985,
+    ],
+    [
+      8,
+      0.004383,
+    ],
+    [
+      9,
+      0.002705,
+    ],
+    [
+      10,
+      0.02026,
+    ],
+    [
+      11,
+      0.101236,
+    ],
+    [
+      12,
+      0.000234,
+    ],
+    [
+      13,
+      0.000388,
+    ],
+    [
+      14,
+      0.001661,
+    ],
+    [
+      15,
+      0.004153,
+    ],
+    [
+      16,
+      0.000005,
+    ],
+    [
+      17,
+      0.000011,
+    ],
+    [
+      18,
+      0.000034,
+    ],
+    [
+      19,
+      0.000057,
+    ],
+  ],
+  "damageIfAllHits": [
+    7,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 7.391456,
+  "expectedHpRemaining": 6.613161,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.005921,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    7,
+    11,
+  ],
+  "rowLabels": [
+    "CUP → >",
+    "CUP → >",
+    "CUP → >",
+    "CUP → >",
+  ],
+  "wrapPicks": [
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > resilient (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 21,
+    "totalEffective": 21,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000043,
+    ],
+    [
+      1,
+      0.000406,
+    ],
+    [
+      2,
+      0.002073,
+    ],
+    [
+      3,
+      0.007369,
+    ],
+    [
+      4,
+      0.020017,
+    ],
+    [
+      5,
+      0.043584,
+    ],
+    [
+      6,
+      0.07819,
+    ],
+    [
+      7,
+      0.117514,
+    ],
+    [
+      8,
+      0.149433,
+    ],
+    [
+      9,
+      0.161636,
+    ],
+    [
+      10,
+      0.149007,
+    ],
+    [
+      11,
+      0.116979,
+    ],
+    [
+      12,
+      0.077952,
+    ],
+    [
+      13,
+      0.04384,
+    ],
+    [
+      14,
+      0.02063,
+    ],
+    [
+      15,
+      0.008023,
+    ],
+    [
+      16,
+      0.002533,
+    ],
+    [
+      17,
+      0.000633,
+    ],
+    [
+      18,
+      0.000121,
+    ],
+    [
+      19,
+      0.000016,
+    ],
+    [
+      20,
+      0.000001,
+    ],
+    [
+      21,
+      0,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    7,
+    7,
+    7,
+  ],
+  "expectedDamage": 9.011719,
+  "expectedHpRemaining": 5.003845,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0.031958,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    6,
+    12,
+  ],
+  "rowLabels": [
+    "6 → 1",
+    "6 → 1",
+    "6 → 1",
+    "6 → 1",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+      "m1",
+    ],
+    [
+      "dmg6",
+      "m1",
+    ],
+    [
+      "dmg6",
+      "m1",
+    ],
+    [
+      "dmg6",
+      "m1",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > resilient (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 12,
+    "totalEffective": 12,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0.000004,
+    ],
+    [
+      2,
+      0.000034,
+    ],
+    [
+      3,
+      0.000205,
+    ],
+    [
+      4,
+      0.001023,
+    ],
+    [
+      5,
+      0.004189,
+    ],
+    [
+      6,
+      0.014151,
+    ],
+    [
+      7,
+      0.038882,
+    ],
+    [
+      8,
+      0.094028,
+    ],
+    [
+      9,
+      0.168795,
+    ],
+    [
+      10,
+      0.236799,
+    ],
+    [
+      11,
+      0.24223,
+    ],
+    [
+      12,
+      0.19966,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 10.08262,
+  "expectedHpRemaining": 3.91738,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    8,
+    12,
+  ],
+  "rowLabels": [
+    "4KD → >",
+    "4KD → >",
+    "4KD → >",
+    "4KD → >",
+  ],
+  "wrapPicks": [
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > resilient (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 0,
+      "pHit": 0.5,
+      "prob": 1,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 7,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.001135,
+    ],
+    [
+      1,
+      0.004913,
+    ],
+    [
+      2,
+      0.014546,
+    ],
+    [
+      3,
+      0.032471,
+    ],
+    [
+      4,
+      0.060155,
+    ],
+    [
+      5,
+      0.091591,
+    ],
+    [
+      6,
+      0.124828,
+    ],
+    [
+      7,
+      0.147053,
+    ],
+    [
+      8,
+      0.144282,
+    ],
+    [
+      9,
+      0.127743,
+    ],
+    [
+      10,
+      0.101588,
+    ],
+    [
+      11,
+      0.066176,
+    ],
+    [
+      12,
+      0.034674,
+    ],
+    [
+      13,
+      0.024638,
+    ],
+    [
+      14,
+      0.01729,
+    ],
+    [
+      15,
+      0.006916,
+    ],
+  ],
+  "damageIfAllHits": [
+    0,
+    7,
+    0,
+    0,
+  ],
+  "expectedDamage": 7.738281,
+  "expectedHpRemaining": 6.268635,
+  "ignoredAttackIndex": 0,
+  "killProbability": 0.024206,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    4,
+    11,
+  ],
+  "rowLabels": [
+    "CUP → >",
+    "CUP → >",
+    "CUP → >",
+    "CUP → >",
+  ],
+  "wrapPicks": [
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > soft target (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 8,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 32,
+    "totalEffective": 32,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0,
+    ],
+    [
+      4,
+      0,
+    ],
+    [
+      5,
+      0,
+    ],
+    [
+      6,
+      0,
+    ],
+    [
+      7,
+      0,
+    ],
+    [
+      8,
+      0.000001,
+    ],
+    [
+      9,
+      0.000008,
+    ],
+    [
+      10,
+      0.000036,
+    ],
+    [
+      11,
+      0.000143,
+    ],
+    [
+      12,
+      0.000499,
+    ],
+    [
+      13,
+      0.001536,
+    ],
+    [
+      14,
+      0.004168,
+    ],
+    [
+      15,
+      0.010004,
+    ],
+    [
+      16,
+      0.021258,
+    ],
+    [
+      17,
+      0.040016,
+    ],
+    [
+      18,
+      0.066693,
+    ],
+    [
+      19,
+      0.098285,
+    ],
+    [
+      20,
+      0.12777,
+    ],
+    [
+      21,
+      0.146023,
+    ],
+    [
+      22,
+      0.146023,
+    ],
+    [
+      23,
+      0.126977,
+    ],
+    [
+      24,
+      0.095233,
+    ],
+    [
+      25,
+      0.060949,
+    ],
+    [
+      26,
+      0.032819,
+    ],
+    [
+      27,
+      0.014586,
+    ],
+    [
+      28,
+      0.005209,
+    ],
+    [
+      29,
+      0.001437,
+    ],
+    [
+      30,
+      0.000287,
+    ],
+    [
+      31,
+      0.000037,
+    ],
+    [
+      32,
+      0.000002,
+    ],
+  ],
+  "damageIfAllHits": [
+    8,
+    8,
+    8,
+    8,
+  ],
+  "expectedDamage": 21.333333,
+  "expectedHpRemaining": 0,
+  "ignoredAttackIndex": -1,
+  "killProbability": 1,
+  "killingBlowIndex": 0,
+  "likelyDamage": [
+    18,
+    25,
+  ],
+  "rowLabels": [
+    "6 → 2",
+    "6 → 2",
+    "6 → 2",
+    "6 → 2",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+      "m2",
+    ],
+    [
+      "dmg6",
+      "m2",
+    ],
+    [
+      "dmg6",
+      "m2",
+    ],
+    [
+      "dmg6",
+      "m2",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > soft target (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.195092,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 2,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.833333,
+      "prob": 0.604677,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 2,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.833333,
+      "prob": 0.604677,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 2,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.833333,
+      "prob": 0.604677,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 16,
+    "totalEffective": 16,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0,
+    ],
+    [
+      1,
+      0,
+    ],
+    [
+      2,
+      0,
+    ],
+    [
+      3,
+      0,
+    ],
+    [
+      4,
+      0,
+    ],
+    [
+      5,
+      0,
+    ],
+    [
+      6,
+      0,
+    ],
+    [
+      7,
+      0,
+    ],
+    [
+      8,
+      0,
+    ],
+    [
+      9,
+      0,
+    ],
+    [
+      10,
+      0,
+    ],
+    [
+      11,
+      0.000007,
+    ],
+    [
+      12,
+      0.000211,
+    ],
+    [
+      13,
+      0.002779,
+    ],
+    [
+      14,
+      0.018859,
+    ],
+    [
+      15,
+      0.078641,
+    ],
+    [
+      16,
+      0.899504,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    4,
+    4,
+    4,
+  ],
+  "expectedDamage": 15.874426,
+  "expectedHpRemaining": 0,
+  "ignoredAttackIndex": -1,
+  "killProbability": 1,
+  "killingBlowIndex": 1,
+  "likelyDamage": [
+    15,
+    16,
+  ],
+  "rowLabels": [
+    "4KD → >",
+    "4KD → >",
+    "4KD → >",
+    "4KD → >",
+  ],
+  "wrapPicks": [
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > soft target (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 0,
+      "attackIndex": 0,
+      "defMinRoll": 3,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.195092,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.195092,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.195092,
+      "tac": 8,
+    },
+    {
+      "armor": 0,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.195092,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 4,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000062,
+    ],
+    [
+      1,
+      0.000995,
+    ],
+    [
+      2,
+      0.006974,
+    ],
+    [
+      3,
+      0.027993,
+    ],
+    [
+      4,
+      0.372917,
+    ],
+    [
+      5,
+      0.008209,
+    ],
+    [
+      6,
+      0.038248,
+    ],
+    [
+      7,
+      0.122401,
+    ],
+    [
+      8,
+      0.259096,
+    ],
+    [
+      9,
+      0.009065,
+    ],
+    [
+      10,
+      0.025978,
+    ],
+    [
+      11,
+      0.051927,
+    ],
+    [
+      12,
+      0.059831,
+    ],
+    [
+      13,
+      0.001953,
+    ],
+    [
+      14,
+      0.004031,
+    ],
+    [
+      15,
+      0.005784,
+    ],
+    [
+      16,
+      0.004537,
+    ],
+  ],
+  "damageIfAllHits": [
+    4,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 6.662399,
+  "expectedHpRemaining": 1.904461,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.422202,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    4,
+    11,
+  ],
+  "rowLabels": [
+    "CUP → >",
+    "CUP → >",
+    "CUP → >",
+    "CUP → >",
+  ],
+  "wrapPicks": [
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > tough hide with buffs (damage) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 24,
+    "totalEffective": 20,
+    "toughHideReduction": 4,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000436,
+    ],
+    [
+      1,
+      0.002642,
+    ],
+    [
+      2,
+      0.0093,
+    ],
+    [
+      3,
+      0.023687,
+    ],
+    [
+      4,
+      0.04767,
+    ],
+    [
+      5,
+      0.079386,
+    ],
+    [
+      6,
+      0.112331,
+    ],
+    [
+      7,
+      0.137354,
+    ],
+    [
+      8,
+      0.14666,
+    ],
+    [
+      9,
+      0.137602,
+    ],
+    [
+      10,
+      0.113785,
+    ],
+    [
+      11,
+      0.082936,
+    ],
+    [
+      12,
+      0.05315,
+    ],
+    [
+      13,
+      0.029783,
+    ],
+    [
+      14,
+      0.01446,
+    ],
+    [
+      15,
+      0.006,
+    ],
+    [
+      16,
+      0.002084,
+    ],
+    [
+      17,
+      0.000586,
+    ],
+    [
+      18,
+      0.000127,
+    ],
+    [
+      19,
+      0.000019,
+    ],
+    [
+      20,
+      0.000002,
+    ],
+  ],
+  "damageIfAllHits": [
+    5,
+    5,
+    5,
+    5,
+  ],
+  "expectedDamage": 8.140625,
+  "expectedHpRemaining": 5.871912,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.023278,
+  "killingBlowIndex": 2,
+  "likelyDamage": [
+    5,
+    12,
+  ],
+  "rowLabels": [
+    "5 → >",
+    "5 → >",
+    "5 → >",
+    "5 → >",
+  ],
+  "wrapPicks": [
+    [
+      "dmg6",
+      "push",
+    ],
+    [
+      "dmg6",
+      "push",
+    ],
+    [
+      "dmg6",
+      "push",
+    ],
+    [
+      "dmg6",
+      "push",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > tough hide with buffs (knockdown) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 3,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 3,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 3,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.666667,
+      "prob": 0.039018,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 16,
+    "totalEffective": 12,
+    "toughHideReduction": 4,
+  },
+  "characterPlayPicks": [
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+    [
+      null,
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.000001,
+    ],
+    [
+      1,
+      0.000013,
+    ],
+    [
+      2,
+      0.000088,
+    ],
+    [
+      3,
+      0.000497,
+    ],
+    [
+      4,
+      0.002173,
+    ],
+    [
+      5,
+      0.007594,
+    ],
+    [
+      6,
+      0.023421,
+    ],
+    [
+      7,
+      0.057371,
+    ],
+    [
+      8,
+      0.115245,
+    ],
+    [
+      9,
+      0.201384,
+    ],
+    [
+      10,
+      0.230534,
+    ],
+    [
+      11,
+      0.21366,
+    ],
+    [
+      12,
+      0.148018,
+    ],
+  ],
+  "damageIfAllHits": [
+    3,
+    3,
+    3,
+    3,
+  ],
+  "expectedDamage": 9.756703,
+  "expectedHpRemaining": 4.243297,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    8,
+    12,
+  ],
+  "rowLabels": [
+    "4KD → >",
+    "4KD → >",
+    "4KD → >",
+    "4KD → >",
+  ],
+  "wrapPicks": [
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+    [
+      "four_kd",
+      "push",
+    ],
+  ],
+}
+`;
+
+exports[`engine golden scenarios > Cross Cut > tough hide with buffs (utility) 1`] = `
+{
+  "attacks": [
+    {
+      "armor": 1,
+      "attackIndex": 0,
+      "defMinRoll": 4,
+      "momentumAfter": 1,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 1,
+      "defMinRoll": 4,
+      "momentumAfter": 2,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 2,
+      "defMinRoll": 4,
+      "momentumAfter": 3,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+    {
+      "armor": 1,
+      "attackIndex": 3,
+      "defMinRoll": 4,
+      "momentumAfter": 4,
+      "netSuccessesNeeded": 7,
+      "pHit": 0.5,
+      "prob": 0.003906,
+      "tac": 8,
+    },
+  ],
+  "bonusTimeByAttack": [
+    false,
+    false,
+    false,
+    false,
+  ],
+  "breakdown": {
+    "buffBonuses": [],
+    "rawCardDamage": 0,
+    "totalEffective": 7,
+    "toughHideReduction": 0,
+  },
+  "characterPlayPicks": [
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+    [
+      "theBiggerTheyAre",
+      null,
+    ],
+  ],
+  "damageDistribution": [
+    [
+      0,
+      0.003491,
+    ],
+    [
+      1,
+      0.013209,
+    ],
+    [
+      2,
+      0.034504,
+    ],
+    [
+      3,
+      0.06878,
+    ],
+    [
+      4,
+      0.106101,
+    ],
+    [
+      5,
+      0.137842,
+    ],
+    [
+      6,
+      0.148729,
+    ],
+    [
+      7,
+      0.137138,
+    ],
+    [
+      8,
+      0.109901,
+    ],
+    [
+      9,
+      0.07873,
+    ],
+    [
+      10,
+      0.055058,
+    ],
+    [
+      11,
+      0.038488,
+    ],
+    [
+      12,
+      0.028914,
+    ],
+    [
+      13,
+      0.020299,
+    ],
+    [
+      14,
+      0.01163,
+    ],
+    [
+      15,
+      0.005673,
+    ],
+    [
+      16,
+      0.001513,
+    ],
+  ],
+  "damageIfAllHits": [
+    7,
+    0,
+    0,
+    0,
+  ],
+  "expectedDamage": 6.699219,
+  "expectedHpRemaining": 7.30948,
+  "ignoredAttackIndex": -1,
+  "killProbability": 0.018817,
+  "killingBlowIndex": -1,
+  "likelyDamage": [
+    3,
+    11,
+  ],
+  "rowLabels": [
+    "CUP → >",
+    "CUP → >",
+    "CUP → >",
+    "CUP → >",
+  ],
+  "wrapPicks": [
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+    [
+      "cup",
+      "push",
+    ],
+  ],
+}
+`;
+
 exports[`engine golden scenarios > Thresher > base (damage) 1`] = `
 {
   "attacks": [

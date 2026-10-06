@@ -55,6 +55,7 @@ describe('deriveSimulation', () => {
       bonusTimeByAttack: state.bonusTimeByAttack,
       initialTacModifier: 0,
       activeBaseCount,
+      targetHp: state.hp,
     });
 
     expect(derived.effectiveEnemyDef).toBe(3);

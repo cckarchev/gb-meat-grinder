@@ -95,6 +95,12 @@ Charge alone depends on the roll of its own (charge) swing.
   influence **or** triggered for free off a `GB` playbook result. The calculator only
   plans GB triggers.
 - `OPT` = **Once Per Turn**: picking it on one swing removes it from later swings.
+- **Plays scaled by current HP** (*The Bigger They Are...*: condition damage equal to
+  half the target's current health, rounded down). The attacking player chooses the
+  order an attack's effects resolve, and resolving the play first always deals at least
+  as much, so it uses the target's HP **before that attack's own card damage** (after
+  every earlier attack). In the odds it is recomputed for every damage total the
+  earlier swings may have dealt, not taken from the all-hit plan.
 
 ## Damage sources
 
@@ -107,6 +113,7 @@ Charge alone depends on the roll of its own (charge) swing.
 | **Playbook damage results** | reduces | +1 | +1 while Burning |
 | **Character plays** that cause damage (*Impale*) | reduces | +1 | no |
 | **Character traits** (*Sweeping Charge*, *Don't Fear The...*) | no | no | no |
+| **Condition damage** from plays (*The Bigger They Are...*) | no | no | no |
 
 ## Playbook symbols
 
