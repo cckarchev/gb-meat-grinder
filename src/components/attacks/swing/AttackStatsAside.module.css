@@ -59,6 +59,19 @@
   color: var(--text);
 }
 
+/*
+ * A value this swing changed: a chip filled with the guild color (set on the
+ * rail by the component), inked like a momentous playbook line so it reads
+ * on every guild, dark ones included.
+ */
+.value[data-changed] {
+  padding: 0 var(--space-3xs);
+  background: var(--guild-color);
+  color: var(--playbook-line-momentous-fg);
+  box-shadow: inset 0 0 0 var(--rule-width)
+    color-mix(in srgb, var(--guild-color) 60%, #000);
+}
+
 @media (max-width: 720px) {
   .rail {
     row-gap: var(--space-2xs);

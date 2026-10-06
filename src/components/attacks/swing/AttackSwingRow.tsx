@@ -41,9 +41,8 @@ type AttackSwingRowProps = {
   chargeAttackIndex: number;
   /** Enemy HP before this swing and after it if every pick hits. */
   hp: StatTransition;
-  def: StatTransition;
-  armor: StatTransition;
-  momentum: number;
+  /** Momentum before this swing and after it if every pick hits. */
+  momentum: StatTransition;
   bonusTime: boolean;
   bonusTimeMomentumPool: number;
   wrapOpen: boolean;
@@ -57,8 +56,6 @@ export const AttackSwingRow = ({
   isKillingBlow,
   chargeAttackIndex,
   hp,
-  def,
-  armor,
   momentum,
   bonusTime,
   bonusTimeMomentumPool,
@@ -73,6 +70,16 @@ export const AttackSwingRow = ({
     attack.armor,
     attack.netHitBonus,
   );
+
+  // What this swing rolls against, then what it leaves on the target.
+  const def: StatTransition = {
+    from: attack.defMinRoll,
+    to: attack.defMinRollAfter,
+  };
+  const armor: StatTransition = {
+    from: attack.armor,
+    to: attack.armorAfter,
+  };
 
   const hasWrapContinuation = rowHasWrapContinuation(wrapPicks[attackIndex]);
   const kind = attackKind(attacker, attackIndex, chargeAttackIndex);

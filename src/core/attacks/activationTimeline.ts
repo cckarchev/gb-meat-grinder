@@ -44,6 +44,7 @@ const NO_CARRIED_EFFECTS: CarriedEffects = {
 
 const EMPTY_SWING_STATE: SwingState = {
   effectsBefore: NO_CARRIED_EFFECTS,
+  effectsAfter: NO_CARRIED_EFFECTS,
   damagingPlayBySlot: [],
   playDamageBySlot: [],
   healthPlayDivisorBySlot: [],
@@ -369,6 +370,7 @@ export const activationTimeline = (
   const preAppliedState: SwingState = {
     ...EMPTY_SWING_STATE,
     effectsBefore: sumEffects(named),
+    effectsAfter: sumEffects(named),
     targetBurningBefore: burning,
     playbookDamageBonus: burning ? passionBonus : 0,
   };
@@ -398,6 +400,8 @@ export const activationTimeline = (
 
     const state: SwingState = {
       effectsBefore,
+      // Replaced below once this swing's own effects are in.
+      effectsAfter: effectsBefore,
       ...swingPlayDamageFor(
         plan,
         params,
@@ -452,11 +456,10 @@ export const activationTimeline = (
     }
 
     // On-damage traits (Searing Strike) only help the swings after this one.
-    if (!swingCausesDamage(params, row, state)) {
-      continue;
-    }
+    const causesDamage = swingCausesDamage(params, row, state);
+    const triggeredTraits = causesDamage ? onDamageTraits : [];
 
-    for (const trait of onDamageTraits) {
+    for (const trait of triggeredTraits) {
       const armorReduction = trait.onDamage?.armorReduction ?? 0;
       const effects: CarriedEffects = { ...NO_CARRIED_EFFECTS, armorReduction };
 
@@ -468,6 +471,8 @@ export const activationTimeline = (
         burning = true;
       }
     }
+
+    states[attackIndex] = { ...state, effectsAfter: sumEffects(named) };
   }
 
   return states;

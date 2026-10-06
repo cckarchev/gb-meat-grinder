@@ -1,6 +1,9 @@
 import styles from '@/components/attacks/swing/AttackStatsAside.module.css';
 import { Mono } from '@/components/ui/ui';
 import type { StatTransition } from '@/core/attacks/statTransitions';
+import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import type { CustomPropertyStyle } from '@/styles/customProperties';
+import { dataFlag } from '@/styles/dataFlag';
 
 const DEF_SUFFIX = '+';
 
@@ -8,7 +11,7 @@ type AttackStatsAsideProps = {
   def: StatTransition;
   armor: StatTransition;
   hp: StatTransition;
-  momentum: number;
+  momentum: StatTransition;
 };
 
 type TransitionValueProps = {
@@ -18,7 +21,8 @@ type TransitionValueProps = {
 
 /**
  * The value after this swing, preceded by the value before it and an arrow
- * when it changed. Each part has its own rail column so rows line up.
+ * when it changed, in which case the new value is a guild-colored chip. Each
+ * part has its own rail column so rows line up.
  */
 const TransitionValue = ({ transition, suffix = '' }: TransitionValueProps) => {
   const { from, to } = transition;
@@ -37,7 +41,7 @@ const TransitionValue = ({ transition, suffix = '' }: TransitionValueProps) => {
           </span>
         </>
       ) : null}
-      <Mono className={styles.value}>
+      <Mono className={styles.value} data-changed={dataFlag(changed)}>
         {to}
         {suffix}
       </Mono>
@@ -51,9 +55,15 @@ export const AttackStatsAside = ({
   hp,
   momentum,
 }: AttackStatsAsideProps) => {
+  const { attacker } = useMeatGrinderSimulation();
+  const guildColorStyle: CustomPropertyStyle = {
+    '--guild-color': attacker.guild.color,
+  };
+
   return (
     <aside
       className={styles.rail}
+      style={guildColorStyle}
       aria-label="Defense, armor, HP after this swing, and momentum"
     >
       <div className={styles.statRow}>
@@ -70,7 +80,7 @@ export const AttackStatsAside = ({
       </div>
       <div className={styles.statRow}>
         <span className={styles.caption}>Mom</span>
-        <Mono className={styles.value}>{momentum}</Mono>
+        <TransitionValue transition={momentum} />
       </div>
     </aside>
   );

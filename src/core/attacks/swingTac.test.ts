@@ -60,10 +60,10 @@ describe('swingTacAndDef', () => {
   };
 
   it('reads the plain TAC and DEF on the first swing', () => {
-    expect(swing(0)).toEqual({ tac: 6, defMinRoll: 2 });
+    expect(swing(0)).toEqual({ tac: 6, defMinRoll: 2, defMinRollAfter: 2 });
   });
 
   it('turns a DEF reduction past the floor into an extra die', () => {
-    expect(swing(1)).toEqual({ tac: 7, defMinRoll: 2 });
+    expect(swing(1)).toEqual({ tac: 7, defMinRoll: 2, defMinRollAfter: 2 });
   });
 });

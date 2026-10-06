@@ -13,6 +13,8 @@ export type CarriedEffects = {
 /** What one swing inherits before it is rolled. */
 export type SwingState = {
   effectsBefore: CarriedEffects;
+  /** Effects carried once this swing lands, its own included. */
+  effectsAfter: CarriedEffects;
   /** The damaging play live on each pick of this swing (null when none). */
   damagingPlayBySlot: readonly (CharacterPlay | null)[];
   /** Effective DMG of that play (0 when none), assuming every earlier pick lands. */

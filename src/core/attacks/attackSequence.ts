@@ -10,7 +10,10 @@ import type {
   ActivationRollParams,
   AttackRollContext,
 } from '@/core/attacks/attackSequence.types';
-import { armorForAttackRow } from '@/core/attacks/swingDefense';
+import {
+  armorAfterAttackRow,
+  armorForAttackRow,
+} from '@/core/attacks/swingDefense';
 import { swingTacAndDef } from '@/core/attacks/swingTac';
 import {
   hitProbabilityPerDie,
@@ -42,7 +45,7 @@ export const computeAttackSequence = (
   const timeline = activationTimeline(plan, params);
 
   for (const attackIndex of order) {
-    const { tac, defMinRoll } = swingTacAndDef(
+    const { tac, defMinRoll, defMinRollAfter } = swingTacAndDef(
       plan,
       attackIndex,
       params,
@@ -51,6 +54,7 @@ export const computeAttackSequence = (
 
     const state = swingStateAt(timeline, attackIndex);
     const rowArmor = armorForAttackRow(armor, state);
+    const armorAfter = armorAfterAttackRow(armor, state);
     const { netHitBonus } = state;
 
     const pHit = hitProbabilityPerDie(defMinRoll);
@@ -72,6 +76,8 @@ export const computeAttackSequence = (
       tac,
       armor: rowArmor,
       defMinRoll,
+      defMinRollAfter,
+      armorAfter,
       pHit,
       netSuccessesNeeded,
       netHitBonus,

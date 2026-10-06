@@ -34,6 +34,10 @@ export type AttackRollContext = {
   /** Enemy ARM for this swing after every named reduction before it. */
   armor: number;
   defMinRoll: number;
+  /** DEF once this swing lands, with the reductions it applies. */
+  defMinRollAfter: number;
+  /** ARM once this swing lands, with the reductions it applies. */
+  armorAfter: number;
   pHit: number;
   netSuccessesNeeded: number;
   /** Net hits added after ARM, even to a roll that nets none (Instruction). */

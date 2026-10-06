@@ -60,3 +60,11 @@ export const armorForAttackRow = (
 ): number => {
   return Math.max(ARM_MIN, baseArmor - state.effectsBefore.armorReduction);
 };
+
+/** Enemy ARM once a swing lands, with the reductions it applies. */
+export const armorAfterAttackRow = (
+  baseArmor: number,
+  state: SwingState,
+): number => {
+  return Math.max(ARM_MIN, baseArmor - state.effectsAfter.armorReduction);
+};

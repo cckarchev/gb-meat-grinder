@@ -443,3 +443,54 @@ describe('net hits gained on the next attack (Instruction)', () => {
     expect(timeline.map((state) => state.netHitBonus)).toEqual([0, 0, 0]);
   });
 });
+
+describe('activationTimeline effects after each swing', () => {
+  it('leaves nothing after swings that carry no effect', () => {
+    const plan: AttackPlan = {
+      wrapPicks: [['one'], ['two']],
+      characterPlayPicks: [[null], [null]],
+    };
+
+    const timeline = activationTimeline(plan, params({ activeBaseCount: 2 }));
+
+    expect(timeline.map((state) => state.effectsAfter)).toEqual([NONE, NONE]);
+  });
+
+  it('includes the effects a swing applies, the last swing too', () => {
+    const plan: AttackPlan = {
+      wrapPicks: [['gb'], ['kd']],
+      characterPlayPicks: [['playTac'], [null]],
+    };
+
+    const timeline = activationTimeline(plan, params({ activeBaseCount: 2 }));
+
+    expect(timeline[0].effectsAfter).toEqual({ ...NONE, tacBonus: 2 });
+    expect(timeline[1].effectsAfter).toEqual({
+      ...NONE,
+      tacBonus: 2,
+      defReduction: 1,
+    });
+  });
+
+  it('includes the ARM an on-damage trait strips on that swing', () => {
+    const attacker = makeAttacker({
+      inf: 3,
+      characterPlays: [PLAY_ARM],
+      characterTraits: [TRAIT_ARM],
+    });
+
+    const plan: AttackPlan = {
+      wrapPicks: [['gb'], ['one']],
+      characterPlayPicks: [['playArm'], [null]],
+    };
+
+    const timeline = activationTimeline(
+      plan,
+      params({ attacker, activeBaseCount: 2 }),
+    );
+
+    expect(timeline.map((state) => state.effectsAfter.armorReduction)).toEqual([
+      2, 2,
+    ]);
+  });
+});

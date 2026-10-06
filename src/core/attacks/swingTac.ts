@@ -60,6 +60,8 @@ export const sumSwingTac = (terms: SwingTacTerms): number => {
 export type SwingTacAndDef = {
   tac: number;
   defMinRoll: number;
+  /** DEF once this swing lands, with the reductions it applies. */
+  defMinRollAfter: number;
 };
 
 /** TAC and to-hit DEF for one row: carry-over, DEF-floor dice, cover and Bonus Time combined. */
@@ -82,10 +84,8 @@ export const swingTacAndDef = (
     activeBaseCount,
   } = params;
 
-  const { tacBonus, defReduction } = swingStateAt(
-    timeline,
-    attackIndex,
-  ).effectsBefore;
+  const state = swingStateAt(timeline, attackIndex);
+  const { tacBonus, defReduction } = state.effectsBefore;
 
   const defForRow = enemyDefForSwing(
     enemyDef,
@@ -97,6 +97,10 @@ export const swingTacAndDef = (
 
   const tacFromDefCap = tacBonusFromDefReductionCap(defForRow, defReduction);
   const defMinRoll = effectiveDefMinRoll(defForRow, defReduction);
+  const defMinRollAfter = effectiveDefMinRoll(
+    defForRow,
+    state.effectsAfter.defReduction,
+  );
 
   const coverPenalty = coverTacPenaltyForAttack(
     attacker,
@@ -120,5 +124,5 @@ export const swingTacAndDef = (
     initialTacModifier,
   });
 
-  return { tac, defMinRoll };
+  return { tac, defMinRoll, defMinRollAfter };
 };

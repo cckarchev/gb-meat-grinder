@@ -26,11 +26,9 @@ export const AttacksPanel = () => {
     projection.remainingHp,
     projection.startingHp,
   );
-  const defTransitions = statTransitions(
-    attacks.map((attack) => attack.defMinRoll),
-  );
-  const armorTransitions = statTransitions(
-    attacks.map((attack) => attack.armor),
+  const momentumTransitions = statTransitions(
+    projection.momentum,
+    input.startingMomentum,
   );
 
   return (
@@ -48,9 +46,7 @@ export const AttacksPanel = () => {
           isKillingBlow={displayIndex === killingBlowIndex}
           chargeAttackIndex={effectiveChargeAttackIndex}
           hp={hpTransitions[displayIndex]}
-          def={defTransitions[displayIndex]}
-          armor={armorTransitions[displayIndex]}
-          momentum={projection.momentum[displayIndex]}
+          momentum={momentumTransitions[displayIndex]}
           bonusTime={effectiveBonusTimeByAttack[attack.attackIndex] === true}
           bonusTimeMomentumPool={projection.bonusTimePool[displayIndex]}
           wrapOpen={wrapExpansion.isOpen(attack.attackIndex)}

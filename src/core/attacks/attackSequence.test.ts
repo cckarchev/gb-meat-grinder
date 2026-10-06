@@ -6,6 +6,7 @@ import {
   makeAttacker,
   makeRollParams,
   modsWith,
+  PLAY_ARM,
   TEAMMATE_GUILD,
 } from '@/core/testing/fixtures';
 
@@ -40,6 +41,8 @@ describe('computeAttackSequence', () => {
         tac: 6,
         armor: 1,
         defMinRoll: 4,
+        defMinRollAfter: 4,
+        armorAfter: 1,
         pHit: 0.5,
         netSuccessesNeeded: 2,
         netHitBonus: 0,
@@ -50,6 +53,8 @@ describe('computeAttackSequence', () => {
         tac: 6,
         armor: 1,
         defMinRoll: 4,
+        defMinRollAfter: 4,
+        armorAfter: 1,
         pHit: 0.5,
         netSuccessesNeeded: 1,
         netHitBonus: 0,
@@ -99,5 +104,54 @@ describe('the activation timeline of the sequence', () => {
     const { timeline } = computeAttackSequence(plan, params);
 
     expect(timeline).toEqual(activationTimeline(plan, params));
+  });
+});
+
+describe('computeAttackSequence DEF and ARM after each swing', () => {
+  it('shows a KD lowering DEF on the swing that picks it', () => {
+    const plan = {
+      wrapPicks: [['kd'], ['one']],
+      characterPlayPicks: [[null], [null]],
+    };
+
+    const { attacks } = computeAttackSequence(plan, params);
+
+    expect(attacks.map((attack) => attack.defMinRoll)).toEqual([4, 3]);
+    expect(attacks.map((attack) => attack.defMinRollAfter)).toEqual([3, 3]);
+  });
+
+  it('shows an ARM play lowering ARM on the swing that picks it', () => {
+    const armorPlayer = makeRollParams({
+      ...params,
+      attacker: makeAttacker({ tac: 6, inf: 3, characterPlays: [PLAY_ARM] }),
+    });
+
+    const plan = {
+      wrapPicks: [['gb'], ['one']],
+      characterPlayPicks: [['playArm'], [null]],
+    };
+
+    const { attacks } = computeAttackSequence(plan, armorPlayer);
+
+    expect(attacks.map((attack) => attack.armor)).toEqual([1, 0]);
+    expect(attacks.map((attack) => attack.armorAfter)).toEqual([0, 0]);
+  });
+
+  it('keeps the charge-only stance DEF on the charge swing after it lands', () => {
+    const chargingIntoStance = makeRollParams({
+      ...params,
+      chargeAttackIndex: 0,
+      enemyDefensiveStance: STANCE,
+    });
+
+    const plan = {
+      wrapPicks: [['one'], ['one']],
+      characterPlayPicks: [[null], [null]],
+    };
+
+    const { attacks } = computeAttackSequence(plan, chargingIntoStance);
+
+    expect(attacks.map((attack) => attack.defMinRoll)).toEqual([5, 4]);
+    expect(attacks.map((attack) => attack.defMinRollAfter)).toEqual([5, 4]);
   });
 });
