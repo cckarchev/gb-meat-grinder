@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   activationTimeline,
+  playDamageForHealth,
+  swingDamageMods,
   swingStateAt,
 } from '@/core/attacks/activationTimeline';
 import type { TimelineParams } from '@/core/attacks/activationTimeline.types';
@@ -10,12 +12,16 @@ import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 import {
   makeAttacker,
   modsWith,
+  NEUTRAL_TARGET_HP,
   NO_MODS,
   PLAY_ARM,
+  PLAY_ASSIST,
   PLAY_DAMAGE,
   PLAY_DEF,
+  PLAY_HALF_HEALTH,
   PLAY_REPEATABLE,
   PLAY_TAC,
+  TRAIT_ARM,
 } from '@/core/testing/fixtures';
 
 const params = (overrides: Partial<TimelineParams> = {}): TimelineParams => {
@@ -27,11 +33,18 @@ const params = (overrides: Partial<TimelineParams> = {}): TimelineParams => {
     damageMods: NO_MODS,
     activeBaseCount: 3,
     chargeAttackIndex: NO_ATTACK_INDEX,
+    targetHp: NEUTRAL_TARGET_HP,
+    enemyKnockedDown: false,
     ...overrides,
   };
 };
 
-const NONE = { tacBonus: 0, defReduction: 0, armorReduction: 0 };
+const NONE = {
+  tacBonus: 0,
+  defReduction: 0,
+  armorReduction: 0,
+  damageBonus: 0,
+};
 
 describe('activationTimeline carried effects', () => {
   it('starts every swing with nothing when no pick carries an effect', () => {
@@ -153,6 +166,28 @@ describe('named effects do not stack', () => {
     expect(timeline[1].effectsBefore.armorReduction).toBe(2);
   });
 
+  it('applies a passive ARM trait to every swing and stacks it with a play', () => {
+    const attacker = makeAttacker({
+      inf: 3,
+      characterPlays: [PLAY_ARM],
+      characterTraits: [TRAIT_ARM],
+    });
+
+    const plan: AttackPlan = {
+      wrapPicks: [['gb'], ['one']],
+      characterPlayPicks: [['playArm'], [null]],
+    };
+
+    const timeline = activationTimeline(
+      plan,
+      params({ attacker, activeBaseCount: 2 }),
+    );
+
+    expect(timeline.map((state) => state.effectsBefore.armorReduction)).toEqual(
+      [1, 2],
+    );
+  });
+
   it('applies a play that is not Once Per Turn only once', () => {
     const attacker = makeAttacker({
       inf: 3,
@@ -167,6 +202,42 @@ describe('named effects do not stack', () => {
     const timeline = activationTimeline(plan, params({ attacker }));
 
     expect(timeline[2].effectsBefore.tacBonus).toBe(1);
+  });
+});
+
+describe('Assist', () => {
+  const attacker = makeAttacker({ inf: 3, characterPlays: [PLAY_ASSIST] });
+
+  const plan: AttackPlan = {
+    wrapPicks: [['gb'], ['two'], ['two']],
+    characterPlayPicks: [['playAssist'], [null], [null]],
+  };
+
+  it('gives later swings +1 TAC and +1 DMG while a named model engages', () => {
+    const timeline = activationTimeline(
+      plan,
+      params({ attacker, damageMods: modsWith({ assistEngaged: true }) }),
+    );
+
+    expect(timeline.map((state) => state.effectsBefore.tacBonus)).toEqual([
+      0, 1, 1,
+    ]);
+    expect(timeline.map((state) => state.playbookDamageBonus)).toEqual([
+      0, 1, 1,
+    ]);
+  });
+
+  it('gives nothing when no named model engages', () => {
+    const timeline = activationTimeline(plan, params({ attacker }));
+
+    expect(timeline.map((state) => state.effectsBefore)).toEqual([
+      NONE,
+      NONE,
+      NONE,
+    ]);
+    expect(timeline.map((state) => state.playbookDamageBonus)).toEqual([
+      0, 0, 0,
+    ]);
   });
 });
 
@@ -203,5 +274,110 @@ describe('damaging character plays', () => {
 
     expect(toughHide[0].playDamageBySlot).toEqual([2]);
     expect(sharp[0].playDamageBySlot).toEqual([4]);
+  });
+});
+
+describe('character plays that deal damage from the target current HP', () => {
+  const attacker = makeAttacker({ characterPlays: [PLAY_HALF_HEALTH] });
+
+  const fourThenHalf: AttackPlan = {
+    wrapPicks: [['four'], ['gb']],
+    characterPlayPicks: [[null], ['playHalfHealth']],
+  };
+
+  it('deals half the HP left after the earlier swings, rounded down', () => {
+    const targetHp = 15;
+    const timeline = activationTimeline(
+      fourThenHalf,
+      params({ attacker, targetHp }),
+    );
+
+    // 15 - 4 = 11 HP left, half rounded down is 5.
+    expect(timeline[1].playDamageBySlot).toEqual([5]);
+  });
+
+  it('uses the HP before its own swing, not after the card damage', () => {
+    const targetHp = 10;
+    const halfFirst: AttackPlan = {
+      wrapPicks: [['gb']],
+      characterPlayPicks: [['playHalfHealth']],
+    };
+
+    const timeline = activationTimeline(
+      halfFirst,
+      params({ attacker, targetHp, activeBaseCount: 1 }),
+    );
+
+    expect(timeline[0].playDamageBySlot).toEqual([5]);
+  });
+
+  it('is unmodified by Tough Hide and damage buffs', () => {
+    const targetHp = 15;
+
+    const toughHide = activationTimeline(
+      fourThenHalf,
+      params({ attacker, targetHp, damageMods: modsWith({ toughHide: true }) }),
+    );
+
+    const sharp = activationTimeline(
+      fourThenHalf,
+      params({
+        attacker,
+        targetHp,
+        damageMods: modsWith({ buffs: { sharp: true } }),
+      }),
+    );
+
+    // The 4 becomes 3 under Tough Hide (12 left) and 5 with Sharp (10 left).
+    expect(toughHide[1].playDamageBySlot).toEqual([6]);
+    expect(sharp[1].playDamageBySlot).toEqual([5]);
+  });
+
+  it('deals nothing once the earlier swings have taken out the target', () => {
+    const targetHp = 3;
+    const timeline = activationTimeline(
+      fourThenHalf,
+      params({ attacker, targetHp }),
+    );
+
+    expect(timeline[1].playDamageBySlot).toEqual([0]);
+  });
+
+  it('records the divisor on the slot so the odds can recompute it', () => {
+    const timeline = activationTimeline(fourThenHalf, params({ attacker }));
+
+    expect(timeline[0].healthPlayDivisorBySlot).toEqual([0]);
+    expect(timeline[1].healthPlayDivisorBySlot).toEqual([2]);
+  });
+
+  it('recomputes the play damage for any HP left', () => {
+    const timeline = activationTimeline(fourThenHalf, params({ attacker }));
+    const hpLeft = 9;
+
+    expect(playDamageForHealth(timeline[1], hpLeft)).toEqual([4]);
+  });
+});
+
+describe('swingDamageMods', () => {
+  const attacker = makeAttacker({ inf: 3, characterPlays: [PLAY_ASSIST] });
+  const mods = modsWith({ assistEngaged: true });
+
+  const timeline = activationTimeline(
+    {
+      wrapPicks: [['gb'], ['two'], ['two']],
+      characterPlayPicks: [['playAssist'], [null], [null]],
+    },
+    params({ attacker, damageMods: mods }),
+  );
+
+  it('keeps the activation mods on a swing without a bonus', () => {
+    expect(swingDamageMods(mods, timeline, 0)).toBe(mods);
+  });
+
+  it('adds the swing playbook damage bonus, so the pips show it', () => {
+    expect(swingDamageMods(mods, timeline, 1)).toEqual({
+      ...mods,
+      swingDamageBonus: 1,
+    });
   });
 });

@@ -21,11 +21,13 @@ const NO_EFFECTS: PickEffects = {
   tacBonusForLater: 0,
   defReductionForLater: 0,
   armorReduction: 0,
+  damageBonusForLater: 0,
 };
 
 /**
- * Effects this pick carries into later swings. A Knock Down after the first one, or
- * a Once Per Turn play an earlier pick already used, adds nothing.
+ * Effects this pick carries into later swings. A Knock Down after the first one
+ * or on a target that starts Knocked Down, or a Once Per Turn play an earlier
+ * pick already used, adds nothing.
  */
 export const pickEffectsForLaterSwings = (
   attacker: AttackerData,
@@ -35,6 +37,7 @@ export const pickEffectsForLaterSwings = (
   pickIndex: number,
   damageMods: PlaybookDamageMods,
   activeBaseCount: number,
+  enemyKnockedDown: boolean,
 ): PickEffects => {
   const id = wrapPicks[attackIndex][pickIndex];
 
@@ -53,6 +56,7 @@ export const pickEffectsForLaterSwings = (
       pickIndex,
       damageMods,
       activeBaseCount,
+      enemyKnockedDown,
     );
 
   if (redundantKnockDown) {
@@ -64,6 +68,7 @@ export const pickEffectsForLaterSwings = (
       tacBonusForLater: result.tacBonusForLater ?? 0,
       defReductionForLater: result.defReductionForLater ?? 0,
       armorReduction: 0,
+      damageBonusForLater: 0,
     };
   }
 
@@ -88,7 +93,7 @@ export const pickEffectsForLaterSwings = (
     return NO_EFFECTS;
   }
 
-  return characterPlayPickEffects(attacker, play);
+  return characterPlayPickEffects(attacker, play, damageMods.assistEngaged);
 };
 
 /**

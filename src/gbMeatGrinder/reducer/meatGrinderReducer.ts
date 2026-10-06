@@ -121,6 +121,11 @@ const transition = (
 
       return withReclampedPlan(state, { damageMods });
     }
+    case 'assistEngaged': {
+      const damageMods = { ...state.damageMods, assistEngaged: action.value };
+
+      return withReclampedPlan(state, { damageMods });
+    }
     case 'guildBuff': {
       const buffs = { ...state.damageMods.buffs, [action.id]: action.value };
       const damageMods = { ...state.damageMods, buffs };

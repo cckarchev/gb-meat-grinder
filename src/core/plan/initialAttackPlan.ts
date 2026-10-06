@@ -14,6 +14,7 @@ import {
 import {
   ARM_DEFAULT,
   DEF_DEFAULT,
+  HP_DEFAULT,
   NO_ATTACK_INDEX,
 } from '@/core/shared/constants';
 import type { AttackerData } from '@/data/attackers/attacker.types';
@@ -44,5 +45,6 @@ export const createInitialAttackPlan = (
     initialTacModifier: 0,
     enemyKnockedDown: false,
     activeBaseCount: activeBaseAttackCount(attacker, influence, charging),
+    targetHp: HP_DEFAULT,
   });
 };

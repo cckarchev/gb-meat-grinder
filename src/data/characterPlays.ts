@@ -60,3 +60,35 @@ export const impale: CharacterPlay = {
   damage: 3,
   oncePerTurn: true,
 };
+
+/**
+ * Cross Cut's The Bigger They Are...: condition damage equal to half the
+ * target's current HP, rounded down. Unmodified, and taken before the swing's
+ * own card damage (the attacker orders the effects, so that is always best).
+ * The log pile placement does not affect the attack math.
+ */
+export const theBiggerTheyAre: CharacterPlay = {
+  id: 'theBiggerTheyAre',
+  label: 'The Bigger They Are...',
+  currentHealthDivisor: 2,
+  oncePerTurn: true,
+};
+
+/** Bucker's Hoisting and Hauling: moves a log pile marker, no effect on the attack math. */
+export const hoistingAndHauling: CharacterPlay = {
+  id: 'hoistingAndHauling',
+  label: 'Hoisting and Hauling',
+  oncePerTurn: false,
+};
+
+/**
+ * Bucker's Axe A Question: he gains Assist [Mallet, Oak]. While Mallet or Oak
+ * engages the target, his later attacks get +1 TAC and +1 DMG to playbook
+ * damage results.
+ */
+export const axeAQuestion: CharacterPlay = {
+  id: 'axeAQuestion',
+  label: 'Axe A Question',
+  grantsAssist: ['Mallet', 'Oak'],
+  oncePerTurn: false,
+};

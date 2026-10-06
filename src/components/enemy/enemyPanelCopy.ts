@@ -1,4 +1,6 @@
 import {
+  ASSIST_DAMAGE_BONUS,
+  ASSIST_TAC_BONUS,
   COVER_TAC_PENALTY,
   DEFENSIVE_STANCE_DEF_BONUS,
   KNOCKED_DOWN_DEF_PENALTY,
@@ -22,6 +24,22 @@ export const TOOLTIP_SNARED = `Target starts the activation Snared: -${SNARED_DE
 
 export const TOOLTIP_BURNING =
   'Target starts the activation Burning. Matters to attackers with Burning Passion.';
+
+const ENGAGER_SEPARATOR = ' or ';
+
+export const labelAssistEngaged = (named: readonly string[]): string => {
+  return `Engaged by ${named.join(ENGAGER_SEPARATOR)}`;
+};
+
+export const tooltipAssistEngaged = (named: readonly string[]): string => {
+  const engagers = named.join(ENGAGER_SEPARATOR);
+
+  return (
+    `${engagers} engages the target. Once Assist is gained (Axe A Question), ` +
+    `later attacks get +${ASSIST_TAC_BONUS} TAC and +${ASSIST_DAMAGE_BONUS} DMG ` +
+    'to playbook damage results.'
+  );
+};
 
 export const TOOLTIP_RESILIENCE =
   'Resilience: the activation’s first attack is wholly ignored (no damage, effects, wraps, momentum, or Berserker trigger) and carries nothing over to later attacks. That swing is shown but disabled.';

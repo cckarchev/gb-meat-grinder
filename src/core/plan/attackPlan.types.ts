@@ -41,7 +41,4 @@ export type CharacterPlayEditParams = {
 };
 
 /** Inputs that bound a legal attack plan; see `clampAttackPlan`. */
-export type AttackPlanClampParams = ActivationRollParams & {
-  /** Target is already Knocked Down (disables the playbook KD). */
-  enemyKnockedDown: boolean;
-};
+export type AttackPlanClampParams = ActivationRollParams;

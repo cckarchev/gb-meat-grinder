@@ -1,5 +1,7 @@
 import type { AttackerData } from '@/data/attackers/attacker.types';
+import { bucker } from '@/data/attackers/bucker';
 import { cast } from '@/data/attackers/cast';
+import { crossCut } from '@/data/attackers/crossCut';
 import { thresher } from '@/data/attackers/thresher';
 import { veteranBoar } from '@/data/attackers/veteranBoar';
 import { veteranCinder } from '@/data/attackers/veteranCinder';
@@ -12,6 +14,8 @@ export const ATTACKERS: readonly AttackerData[] = [
   thresher,
   cast,
   veteranCinder,
+  crossCut,
+  bucker,
 ];
 
 /** Fallback model when an id can't be resolved. */

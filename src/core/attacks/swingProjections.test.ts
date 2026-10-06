@@ -35,6 +35,7 @@ const input = (
     startingMomentum: 0,
     activeBaseCount: 2,
     targetHp: 10,
+    enemyKnockedDown: false,
     ...overrides,
   };
 
@@ -50,6 +51,8 @@ const input = (
       damageMods: scenario.damageMods,
       activeBaseCount: scenario.activeBaseCount,
       chargeAttackIndex: NO_ATTACK_INDEX,
+      targetHp: scenario.targetHp,
+      enemyKnockedDown: false,
     },
   );
 

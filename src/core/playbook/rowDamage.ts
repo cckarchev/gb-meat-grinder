@@ -25,6 +25,10 @@ import type { AttackerData } from '@/data/attackers/attacker.types';
 
 const TRAIT_ID_SEPARATOR = '+';
 
+/** The breakdown line for the +DMG Assist carries into later swings. */
+const ASSIST_LINE_ID = 'assist';
+const ASSIST_LINE_LABEL = 'Assist';
+
 /** The breakdown line for Burning Passion-like traits, named after them. */
 const burningPassionLine = (
   attacker: AttackerData,
@@ -46,7 +50,8 @@ type PrintedDamageSource = { label: string; amount: number };
 
 /**
  * The damaging plays live on the given swings, by play, at their printed amount
- * (Tough Hide and buffs are itemized on their own lines).
+ * (Tough Hide and buffs are itemized on their own lines). A play scaled by the
+ * target's current HP is unmodified, so it is listed at the damage it deals.
  */
 export const characterPlayDamageSources = (
   timeline: ActivationTimeline,
@@ -57,16 +62,20 @@ export const characterPlayDamageSources = (
   for (const attackIndex of attackIndexes) {
     const state = swingStateAt(timeline, attackIndex);
 
-    for (const play of state.damagingPlayBySlot) {
+    state.damagingPlayBySlot.forEach((play, slot) => {
       if (play == null) {
-        continue;
+        return;
       }
 
-      const printed = play.damage ?? 0;
+      const scalesWithHealth = state.healthPlayDivisorBySlot[slot] > 0;
+      const amount = scalesWithHealth
+        ? state.playDamageBySlot[slot]
+        : (play.damage ?? 0);
+
       const source = byPlay.get(play.id) ?? { label: play.label, amount: 0 };
 
-      byPlay.set(play.id, { ...source, amount: source.amount + printed });
-    }
+      byPlay.set(play.id, { ...source, amount: source.amount + amount });
+    });
   }
 
   return [...byPlay.values()];
@@ -89,6 +98,7 @@ export const damageModifierBreakdown = (
   let toughHideReduction = 0;
   let totalEffective = 0;
   let passionBonus = 0;
+  let assistBonus = 0;
 
   const buffBonuses = availableBuffs(attacker).map((buff) => ({
     id: buff.id,
@@ -115,6 +125,11 @@ export const damageModifierBreakdown = (
       state.playbookDamageBonus,
     );
 
+    // The swing bonus is Burning Passion plus the carried Assist DMG.
+    const carriedBonus = state.effectsBefore.damageBonus;
+    const passionOnly = state.playbookDamageBonus - carriedBonus;
+    const passionMods = withSwingDamageBonus(damageMods, passionOnly);
+
     const printedAmounts: { printed: number; mods: PlaybookDamageMods }[] = [];
 
     for (const id of wrapPicks[attackIndex]) {
@@ -131,17 +146,43 @@ export const damageModifierBreakdown = (
       rawCardDamage += cardDamage;
       printedAmounts.push({ printed: cardDamage, mods: swingMods });
 
-      passionBonus +=
-        effectivePlaybookDamage(attacker, cardDamage, swingMods) -
-        effectivePlaybookDamage(attacker, cardDamage, damageMods);
+      const withSwingBonus = effectivePlaybookDamage(
+        attacker,
+        cardDamage,
+        swingMods,
+      );
+      const withPassion = effectivePlaybookDamage(
+        attacker,
+        cardDamage,
+        passionMods,
+      );
+      const withNeither = effectivePlaybookDamage(
+        attacker,
+        cardDamage,
+        damageMods,
+      );
+
+      passionBonus += withPassion - withNeither;
+      assistBonus += withSwingBonus - withPassion;
     }
 
-    // Play damage is not a playbook damage result: no Burning Passion.
-    for (const play of state.damagingPlayBySlot) {
-      if (play != null) {
-        printedAmounts.push({ printed: play.damage ?? 0, mods: damageMods });
+    // Play damage is not a playbook damage result: no Burning Passion. A play
+    // scaled by current HP is unmodified, so it only adds to the total.
+    state.damagingPlayBySlot.forEach((play, slot) => {
+      if (play == null) {
+        return;
       }
-    }
+
+      const scalesWithHealth = state.healthPlayDivisorBySlot[slot] > 0;
+
+      if (scalesWithHealth) {
+        totalEffective += state.playDamageBySlot[slot];
+
+        return;
+      }
+
+      printedAmounts.push({ printed: play.damage ?? 0, mods: damageMods });
+    });
 
     for (const { printed, mods } of printedAmounts) {
       const effective = effectivePlaybookDamage(attacker, printed, mods);
@@ -172,6 +213,14 @@ export const damageModifierBreakdown = (
   // Listed only when it adds damage, so breakdowns without it keep their shape.
   if (passionBonus > 0) {
     buffBonuses.push(burningPassionLine(attacker, damageMods, passionBonus));
+  }
+
+  if (assistBonus > 0) {
+    buffBonuses.push({
+      id: ASSIST_LINE_ID,
+      label: ASSIST_LINE_LABEL,
+      bonus: assistBonus,
+    });
   }
 
   return {

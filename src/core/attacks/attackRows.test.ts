@@ -18,7 +18,12 @@ import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
 import { rowDamageIfAllHit } from '@/core/playbook/rowDamage';
 import { pickEffectsForLaterSwings } from '@/core/playbook/rowEffects';
 import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker, modsWith, NO_MODS } from '@/core/testing/fixtures';
+import {
+  makeAttacker,
+  modsWith,
+  NEUTRAL_TARGET_HP,
+  NO_MODS,
+} from '@/core/testing/fixtures';
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
 
@@ -26,6 +31,7 @@ const NO_EFFECTS = {
   tacBonusForLater: 0,
   defReductionForLater: 0,
   armorReduction: 0,
+  damageBonusForLater: 0,
 };
 
 describe('activation order', () => {
@@ -73,6 +79,8 @@ describe('activation order', () => {
         damageMods: NO_MODS,
         activeBaseCount: 2,
         chargeAttackIndex: NO_ATTACK_INDEX,
+        targetHp: NEUTRAL_TARGET_HP,
+        enemyKnockedDown: false,
       },
     );
 
@@ -110,6 +118,8 @@ describe('rows outside the activation', () => {
         damageMods: NO_MODS,
         activeBaseCount,
         chargeAttackIndex: NO_ATTACK_INDEX,
+        targetHp: NEUTRAL_TARGET_HP,
+        enemyKnockedDown: false,
       },
     );
 
@@ -141,7 +151,16 @@ describe('rows outside the activation', () => {
 
   it('give no effects for an empty pick', () => {
     expect(
-      pickEffectsForLaterSwings(attacker, [[null]], [[null]], 0, 0, NO_MODS, 1),
+      pickEffectsForLaterSwings(
+        attacker,
+        [[null]],
+        [[null]],
+        0,
+        0,
+        NO_MODS,
+        1,
+        false,
+      ),
     ).toEqual(NO_EFFECTS);
   });
 });

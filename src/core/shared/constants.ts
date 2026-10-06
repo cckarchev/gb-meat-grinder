@@ -51,6 +51,12 @@ export const KNOCKED_DOWN_DEF_PENALTY = 1;
 /** DEF a Snared target loses. */
 export const SNARED_DEF_PENALTY = 1;
 
+/** +TAC Assist gives while a named friendly model engages the target. */
+export const ASSIST_TAC_BONUS = 1;
+
+/** +DMG to playbook damage results Assist gives while a named model engages the target. */
+export const ASSIST_DAMAGE_BONUS = 1;
+
 /** Damage Tough Hide removes from each playbook line with card damage. */
 export const TOUGH_HIDE_DAMAGE_PENALTY = 1;
 

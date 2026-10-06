@@ -36,5 +36,6 @@ export const clampParams = (state: MeatGrinderState): AttackPlanClampParams => {
     initialTacModifier: stats.initialTacModifier,
     enemyKnockedDown: state.enemyKnockedDown,
     activeBaseCount: stats.activeBaseCount,
+    targetHp: state.hp,
   };
 };

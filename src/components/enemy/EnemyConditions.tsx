@@ -2,18 +2,24 @@ import {
   LABEL_CONDITIONS,
   LABEL_KNOCKED_DOWN,
   LABEL_SNARED,
+  labelAssistEngaged,
   TOOLTIP_BURNING,
   TOOLTIP_KNOCKED_DOWN,
   TOOLTIP_SNARED,
+  tooltipAssistEngaged,
 } from '@/components/enemy/enemyPanelCopy';
 import { ToggleGroup } from '@/components/ui/ToggleGroup';
 import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
+import { assistNamedModels } from '@/core/characterPlays/characterPlayEffects';
 import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
 
 /** Game conditions the target starts the activation with. */
 export const EnemyConditions = () => {
-  const { enemyKnockedDown, enemySnared, damageMods, dispatch } =
+  const { attacker, enemyKnockedDown, enemySnared, damageMods, dispatch } =
     useMeatGrinderSimulation();
+
+  const assistNamed = assistNamedModels(attacker);
+  const hasAssist = assistNamed.length > 0;
 
   return (
     <ToggleGroup title={LABEL_CONDITIONS}>
@@ -38,6 +44,15 @@ export const EnemyConditions = () => {
       >
         Burning
       </TooltipCheckbox>
+      {hasAssist && (
+        <TooltipCheckbox
+          checked={damageMods.assistEngaged}
+          onChange={(value) => dispatch({ type: 'assistEngaged', value })}
+          tooltip={tooltipAssistEngaged(assistNamed)}
+        >
+          {labelAssistEngaged(assistNamed)}
+        </TooltipCheckbox>
+      )}
     </ToggleGroup>
   );
 };

@@ -16,6 +16,7 @@ import {
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
 } from '@/data/attackers/statRanges';
+import type { CharacterTrait } from '@/data/characterTraits';
 import { searingStrike } from '@/data/characterTraits';
 import type { Guild } from '@/data/guilds/guild.types';
 
@@ -154,6 +155,30 @@ export const PLAY_DAMAGE: CharacterPlay = {
   oncePerTurn: true,
 };
 
+/** Condition damage of half the target's current HP, like The Bigger They Are... */
+export const PLAY_HALF_HEALTH: CharacterPlay = {
+  id: 'playHalfHealth',
+  label: 'Play Half Health',
+  currentHealthDivisor: 2,
+  oncePerTurn: true,
+};
+
+/** Grants Assist [Mallet, Oak], like Axe A Question. */
+export const PLAY_ASSIST: CharacterPlay = {
+  id: 'playAssist',
+  label: 'Play Assist',
+  grantsAssist: ['Mallet', 'Oak'],
+  oncePerTurn: false,
+};
+
+/** A passive -1 ARM during every attack, like Anatomical Precision. */
+export const TRAIT_ARM: CharacterTrait = {
+  id: 'traitArm',
+  label: 'Trait ARM',
+  tooltip: '',
+  armorReduction: 1,
+};
+
 export const makeAttacker = (
   overrides: Partial<AttackerData> = {},
 ): AttackerData => {
@@ -202,6 +227,9 @@ export const threeOf = (id: string): AttackPlan => {
 /** Enemy ARM in the neutral roll params: nothing to strip. */
 const NEUTRAL_ARMOR = 0;
 
+/** Target HP in the neutral roll params: enough to survive any test plan. */
+export const NEUTRAL_TARGET_HP = 20;
+
 /** Swings in the neutral roll params. */
 const NEUTRAL_BASE_COUNT = 2;
 
@@ -223,6 +251,8 @@ export const makeRollParams = (
     bonusTimeByAttack: [],
     initialTacModifier: 0,
     activeBaseCount: NEUTRAL_BASE_COUNT,
+    targetHp: NEUTRAL_TARGET_HP,
+    enemyKnockedDown: false,
     ...overrides,
   };
 };

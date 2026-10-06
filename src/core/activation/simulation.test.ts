@@ -55,6 +55,8 @@ describe('deriveSimulation', () => {
       bonusTimeByAttack: state.bonusTimeByAttack,
       initialTacModifier: 0,
       activeBaseCount,
+      targetHp: state.hp,
+      enemyKnockedDown: false,
     });
 
     expect(derived.effectiveEnemyDef).toBe(3);
@@ -161,6 +163,7 @@ describe('one named source across a guild buff and a play', () => {
       damageMods: {
         toughHide: false,
         targetBurning: false,
+        assistEngaged: false,
         buffs: { theyAintTough: true },
       },
       attackPlan: { wrapPicks, characterPlayPicks },

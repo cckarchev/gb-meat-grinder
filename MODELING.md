@@ -42,6 +42,15 @@ Classify every effect by **whose state it describes**:
   such as Searing Strike from *Tempered Steel*) are **attacker-side**: an attacker buff,
   shown on the Attacker panel. An ability whose *effect* lands on the target later in the
   activation is still attacker-side, because it is something the attacker does.
+  A passive trait that weakens the target only *during the model's own attacks* (Bucker's
+  *Anatomical Precision*, −1 ARM, `CharacterTrait.armorReduction`) is attacker-side too:
+  it holds from the first swing and stacks with other named −ARM effects.
+- **Assist [named models]** needs two things: one of the named friendly models engages the
+  target (an enemy condition toggle, `assistEngaged`, shown only to models with an Assist
+  play) **and** the attacker has gained Assist through its play (Bucker's *Axe A
+  Question*, `CharacterPlay.grantsAssist`). Only then do the **later** swings get +1 TAC
+  and +1 DMG to playbook damage results (not to play damage), itemized as an "Assist"
+  line in the damage breakdown.
 
 Guild effects stay **availability-scoped to the attacker's guild even when they land on
 the enemy.** Blacksmiths cannot use *They Ain't Tough!*, and Farmers and Butchers cannot
@@ -95,6 +104,12 @@ Charge alone depends on the roll of its own (charge) swing.
   influence **or** triggered for free off a `GB` playbook result. The calculator only
   plans GB triggers.
 - `OPT` = **Once Per Turn**: picking it on one swing removes it from later swings.
+- **Plays scaled by current HP** (*The Bigger They Are...*: condition damage equal to
+  half the target's current health, rounded down). The attacking player chooses the
+  order an attack's effects resolve, and resolving the play first always deals at least
+  as much, so it uses the target's HP **before that attack's own card damage** (after
+  every earlier attack). In the odds it is recomputed for every damage total the
+  earlier swings may have dealt, not taken from the all-hit plan.
 
 ## Damage sources
 
@@ -107,6 +122,7 @@ Charge alone depends on the roll of its own (charge) swing.
 | **Playbook damage results** | reduces | +1 | +1 while Burning |
 | **Character plays** that cause damage (*Impale*) | reduces | +1 | no |
 | **Character traits** (*Sweeping Charge*, *Don't Fear The...*) | no | no | no |
+| **Condition damage** from plays (*The Bigger They Are...*) | no | no | no |
 
 ## Playbook symbols
 
@@ -133,6 +149,12 @@ A momentous playbook result earns **1 momentum** on a hit, subject to one rule:
   earns nothing, and its chip is shown "zeroed".
 - A momentous result **without printed damage** (e.g. a momentous `GB` or `<<`) always
   earns momentum, and its chip is shown momentous as usual.
+
+Momentum is earned by picking a **valid** result. A `KD` on a target that is already
+Knocked Down (from the Enemy panel or an earlier KD this activation) is not one, so a
+line whose only effect is that KD, momentous or not, cannot be picked and earns nothing.
+A KD line with another effect (damage, a dodge, a push, a play) stays pickable: only its
+KD is dropped.
 
 Damage from other sources on the same attack does not rescue a zeroed result: a `1;M`
 zeroed by Tough Hide earns no momentum even when *Sweeping Charge* deals its 3 DMG on

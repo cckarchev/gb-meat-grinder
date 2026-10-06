@@ -53,6 +53,8 @@ export const stateForAttacker = (
     damageMods: {
       toughHide: prev?.damageMods.toughHide ?? false,
       targetBurning: prev?.damageMods.targetBurning ?? false,
+      // Who engages the target is named per model, so it does not carry over.
+      assistEngaged: false,
       buffs: {},
     },
     activeTraits: {},

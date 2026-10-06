@@ -100,6 +100,7 @@ export const WrapSlotPickGrid = ({
                   return (
                     <PlaybookLineButton
                       key={result.id}
+                      attackIndex={attackIndex}
                       id={result.id}
                       selected={selected}
                       knockDownLocked={

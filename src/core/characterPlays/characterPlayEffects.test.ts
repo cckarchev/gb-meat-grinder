@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  assistNamedModels,
   characterPlayEffectSummary,
   characterPlayHasEffect,
   characterPlayPickEffects,
@@ -8,8 +9,10 @@ import type { CharacterPlay } from '@/core/playbook/playbook.types';
 import {
   makeAttacker,
   PLAY_ARM,
+  PLAY_ASSIST,
   PLAY_DAMAGE,
   PLAY_DEF,
+  PLAY_HALF_HEALTH,
   PLAY_NOOP,
   PLAY_REPEATABLE,
   PLAY_TAC,
@@ -19,13 +22,51 @@ const NO_EFFECTS = {
   tacBonusForLater: 0,
   defReductionForLater: 0,
   armorReduction: 0,
+  damageBonusForLater: 0,
 };
 
+const ENGAGED = true;
+const NOT_ENGAGED = false;
+
 describe('character play effects', () => {
+  it('grants Assist +1 TAC and +1 DMG to later attacks while a named model engages', () => {
+    const attacker = makeAttacker({ characterPlays: [PLAY_ASSIST] });
+
+    expect(characterPlayPickEffects(attacker, 'playAssist', ENGAGED)).toEqual({
+      ...NO_EFFECTS,
+      tacBonusForLater: 1,
+      damageBonusForLater: 1,
+    });
+  });
+
+  it('grants nothing from Assist when no named model engages', () => {
+    const attacker = makeAttacker({ characterPlays: [PLAY_ASSIST] });
+
+    expect(
+      characterPlayPickEffects(attacker, 'playAssist', NOT_ENGAGED),
+    ).toEqual(NO_EFFECTS);
+  });
+
+  it('describes Assist and counts it as an effect', () => {
+    expect(characterPlayHasEffect(PLAY_ASSIST)).toBe(true);
+    expect(characterPlayEffectSummary(PLAY_ASSIST)).toBe(
+      'Assist [Mallet, Oak]: +1 TAC and +1 DMG to playbook damage results on ' +
+        'later attacks while Mallet or Oak engages the target.',
+    );
+  });
+
   it('describes play damage and counts it as an effect', () => {
     expect(characterPlayHasEffect(PLAY_DAMAGE)).toBe(true);
     expect(characterPlayEffectSummary(PLAY_DAMAGE)).toBe(
       '3 DMG. Once per turn.',
+    );
+  });
+
+  it('describes current-HP damage and counts it as an effect', () => {
+    expect(characterPlayHasEffect(PLAY_HALF_HEALTH)).toBe(true);
+    expect(characterPlayEffectSummary(PLAY_HALF_HEALTH)).toBe(
+      "Condition DMG equal to 1/2 of the target's current HP, rounded down. " +
+        'Once per turn.',
     );
   });
 
@@ -37,6 +78,7 @@ describe('character play effects', () => {
       characterPlayPickEffects(
         makeAttacker({ characterPlays: [PLAY_ARM] }),
         'playArm',
+        NOT_ENGAGED,
       ),
     ).toEqual({
       ...NO_EFFECTS,
@@ -76,5 +118,17 @@ describe('character play effects', () => {
     expect(characterPlayEffectSummary(combined)).toBe(
       '+1 TAC on later attacks; -1 enemy ARM on later attacks. Once per turn.',
     );
+  });
+});
+
+describe('assistNamedModels', () => {
+  it('lists the models named by the attacker Assist plays', () => {
+    const attacker = makeAttacker({ characterPlays: [PLAY_TAC, PLAY_ASSIST] });
+
+    expect(assistNamedModels(attacker)).toEqual(['Mallet', 'Oak']);
+  });
+
+  it('is empty for a model without Assist', () => {
+    expect(assistNamedModels(makeAttacker())).toEqual([]);
   });
 });

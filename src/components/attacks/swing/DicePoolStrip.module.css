@@ -55,10 +55,16 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
+  margin-top: 0;
   cursor: pointer;
   color: var(--text);
   font-size: var(--font-size-md);
   user-select: none;
+}
+
+/* The Bonus Time checkbox reuses the tooltip checkbox row; center its box. */
+.poolToggle input {
+  margin-top: 0;
 }
 
 .poolToggle[data-disabled] {

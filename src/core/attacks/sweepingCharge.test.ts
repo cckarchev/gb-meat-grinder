@@ -8,6 +8,7 @@ import {
   CONDITION_GUILD,
   makeAttacker,
   modsWith,
+  NEUTRAL_TARGET_HP,
   NO_MODS,
   planOf,
 } from '@/core/testing/fixtures';
@@ -31,6 +32,8 @@ const timelineFor = (plan: AttackPlan, mods = NO_MODS) => {
     damageMods: mods,
     activeBaseCount: SWINGS,
     chargeAttackIndex: CHARGE_ROW,
+    targetHp: NEUTRAL_TARGET_HP,
+    enemyKnockedDown: false,
   });
 };
 

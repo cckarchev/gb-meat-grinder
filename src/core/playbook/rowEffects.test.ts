@@ -6,6 +6,7 @@ const NO_EFFECTS = {
   tacBonusForLater: 0,
   defReductionForLater: 0,
   armorReduction: 0,
+  damageBonusForLater: 0,
 };
 
 describe('plain playbook lines', () => {
@@ -28,6 +29,7 @@ describe('plain playbook lines', () => {
         0,
         NO_MODS,
         1,
+        false,
       ),
     ).toEqual(NO_EFFECTS);
   });
@@ -40,11 +42,46 @@ describe('Knock Down', () => {
 
   it('gives later swings -1 DEF only from the first KD', () => {
     expect(
-      pickEffectsForLaterSwings(attacker, wrapPicks, noPlays, 0, 0, NO_MODS, 2),
+      pickEffectsForLaterSwings(
+        attacker,
+        wrapPicks,
+        noPlays,
+        0,
+        0,
+        NO_MODS,
+        2,
+        false,
+      ),
     ).toEqual({ ...NO_EFFECTS, defReductionForLater: 1 });
 
     expect(
-      pickEffectsForLaterSwings(attacker, wrapPicks, noPlays, 1, 0, NO_MODS, 2),
+      pickEffectsForLaterSwings(
+        attacker,
+        wrapPicks,
+        noPlays,
+        1,
+        0,
+        NO_MODS,
+        2,
+        false,
+      ),
+    ).toEqual(NO_EFFECTS);
+  });
+
+  it('gives nothing when the target starts Knocked Down', () => {
+    const enemyKnockedDown = true;
+
+    expect(
+      pickEffectsForLaterSwings(
+        attacker,
+        wrapPicks,
+        noPlays,
+        0,
+        0,
+        NO_MODS,
+        2,
+        enemyKnockedDown,
+      ),
     ).toEqual(NO_EFFECTS);
   });
 });
@@ -63,6 +100,7 @@ describe('character plays in row effects', () => {
         0,
         NO_MODS,
         2,
+        false,
       ),
     ).toEqual(NO_EFFECTS);
 
@@ -75,6 +113,7 @@ describe('character plays in row effects', () => {
         0,
         NO_MODS,
         2,
+        false,
       ),
     ).toEqual({ ...NO_EFFECTS, defReductionForLater: 1 });
   });
@@ -89,6 +128,7 @@ describe('character plays in row effects', () => {
         0,
         NO_MODS,
         2,
+        false,
       ),
     ).toEqual({ ...NO_EFFECTS, tacBonusForLater: 2 });
   });

@@ -1,7 +1,14 @@
 /** Kill chance, expected damage and HP left for a whole activation. */
 
-import { swingStateAt } from '@/core/attacks/activationTimeline';
-import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
+import {
+  playDamageForHealth,
+  swingHasHealthPlay,
+  swingStateAt,
+} from '@/core/attacks/activationTimeline';
+import type {
+  ActivationTimeline,
+  SwingState,
+} from '@/core/attacks/activationTimeline.types';
 import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { withSwingDamageBonus } from '@/core/damage/damage';
 import type {
@@ -35,9 +42,53 @@ const withFlatDamage = (
   return shifted;
 };
 
+/** One swing's damage distribution when the target has `hpLeft` HP before it. */
+const swingDistributionAt = (
+  attacker: AttackerData,
+  attack: AttackRollContext,
+  picks: readonly WrapPick[],
+  swingMods: PlaybookDamageMods,
+  state: SwingState,
+  hpLeft: number,
+): DamageDistribution => {
+  const extras = {
+    playDamageBySlot: playDamageForHealth(state, hpLeft),
+    chargeTraitDamage: state.chargeTraitDamage,
+  };
+
+  const pickedDamage: DamageForNet = (net) => {
+    return pickedDamageForNet(attacker, swingMods, picks, net, extras);
+  };
+
+  return swingDamageDistribution(attack, pickedDamage);
+};
+
+/**
+ * Adds a swing whose play damage scales with the target's current HP: for each
+ * damage total so far, the swing is rolled against the HP that total leaves.
+ */
+const addHealthDependentSwing = (
+  total: DamageDistribution,
+  swingAt: (hpLeft: number) => DamageDistribution,
+  targetHp: number,
+): DamageDistribution => {
+  const next: DamageDistribution = new Map();
+
+  for (const [damageSoFar, probSoFar] of total) {
+    const swing = swingAt(targetHp - damageSoFar);
+
+    for (const [swingDamage, swingProb] of swing) {
+      addProbability(next, damageSoFar + swingDamage, probSoFar * swingProb);
+    }
+  }
+
+  return next;
+};
+
 /**
  * Convolves every swing's damage distribution, where each swing only deals the
- * damage of the lines actually picked, then reports the chance the activation
+ * damage of the lines actually picked (a play scaled by current HP is rolled
+ * per damage total instead, since it depends on what came before), then reports the chance the activation
  * drops the target and the mean damage dealt. `flatDamage` is guaranteed
  * (activated traits) and applied as a baseline.
  */
@@ -55,19 +106,26 @@ export const planDamageOutcome = (
   for (const attack of attacks) {
     const picks = wrapPicks[attack.attackIndex] ?? [];
     const state = swingStateAt(timeline, attack.attackIndex);
-    const extras = {
-      playDamageBySlot: state.playDamageBySlot,
-      chargeTraitDamage: state.chargeTraitDamage,
-    };
     const swingMods = withSwingDamageBonus(mods, state.playbookDamageBonus);
 
-    const pickedDamage: DamageForNet = (net) => {
-      return pickedDamageForNet(attacker, swingMods, picks, net, extras);
+    const swingAt = (hpLeft: number): DamageDistribution => {
+      return swingDistributionAt(
+        attacker,
+        attack,
+        picks,
+        swingMods,
+        state,
+        hpLeft,
+      );
     };
 
-    const swing = swingDamageDistribution(attack, pickedDamage);
+    if (swingHasHealthPlay(state)) {
+      total = addHealthDependentSwing(total, swingAt, targetHp);
 
-    total = convolve(total, swing);
+      continue;
+    }
+
+    total = convolve(total, swingAt(targetHp));
   }
 
   // Fold guaranteed flat damage into the distribution so every stat below is

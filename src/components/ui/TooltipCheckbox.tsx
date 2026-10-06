@@ -3,12 +3,15 @@ import { TooltipBubble } from '@/components/ui/TooltipBubble';
 import styles from '@/components/ui/TooltipCheckbox.module.css';
 import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
 import { dataFlag } from '@/styles/dataFlag';
+import { joinClassNames } from '@/styles/joinClassNames';
 
 type TooltipCheckboxProps = {
   checked: boolean;
   onChange: (checked: boolean) => void;
   tooltip: string;
   disabled?: boolean;
+  /** Extra class for the row, to fit it into another layout (e.g. an inline strip). */
+  className?: string;
   children: ReactNode;
 };
 
@@ -21,6 +24,7 @@ export const TooltipCheckbox = ({
   onChange,
   tooltip,
   disabled = false,
+  className,
   children,
 }: TooltipCheckboxProps) => {
   const { open, tooltipId, wrapperProps, triggerProps } =
@@ -41,7 +45,10 @@ export const TooltipCheckbox = ({
   };
 
   return (
-    <label className={styles.checkOption} data-disabled={dataFlag(disabled)}>
+    <label
+      className={joinClassNames(styles.checkOption, className)}
+      data-disabled={dataFlag(disabled)}
+    >
       <input
         type="checkbox"
         checked={checked}

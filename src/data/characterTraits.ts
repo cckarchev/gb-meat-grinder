@@ -13,6 +13,8 @@ export type CharacterTrait = {
   active?: boolean;
   /** Unmodified DMG dealt when an active trait is activated. */
   flatDamage?: number;
+  /** -ARM on the enemy during every attack from this model (Anatomical Precision). */
+  armorReduction?: number;
   /** What a target damaged by this model suffers for the later swings (Searing Strike). */
   onDamage?: { armorReduction?: number; burning?: boolean };
   /** +DMG to playbook damage results while the target is Burning (Burning Passion). */
@@ -57,4 +59,12 @@ export const sweepingCharge: CharacterTrait = {
     'do not apply). It lands with the charge attack, so later attacks see ' +
     'Searing Strike.',
   chargeDamage: 3,
+};
+
+/** Bucker's Anatomical Precision: the target suffers -1 ARM during each of his attacks. */
+export const anatomicalPrecision: CharacterTrait = {
+  id: 'anatomicalPrecision',
+  label: 'Anatomical Precision',
+  tooltip: 'During an attack from this model, enemy models suffer -1 ARM.',
+  armorReduction: 1,
 };

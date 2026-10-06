@@ -74,6 +74,8 @@ export const deriveSimulation = (
     bonusTimeByAttack: effectiveBonusTimeByAttack,
     initialTacModifier,
     activeBaseCount,
+    targetHp: scenario.hp,
+    enemyKnockedDown: scenario.enemyKnockedDown,
   });
 
   // The ignored swing is always first in activation order.

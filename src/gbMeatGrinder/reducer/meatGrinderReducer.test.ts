@@ -175,7 +175,23 @@ describe('damage modifiers', () => {
     expect(state.damageMods).toEqual({
       toughHide: true,
       targetBurning: false,
+      assistEngaged: false,
       buffs: { weakPoint: true },
     });
+  });
+
+  it('toggles a named model engaging the target and drops it on a model change', () => {
+    const engaged = reduce(initialState(PICK_THRESHER), {
+      type: 'assistEngaged',
+      value: true,
+    });
+
+    const switched = reduce(engaged, {
+      type: 'selectAttacker',
+      id: veteranBoar.id,
+    });
+
+    expect(engaged.damageMods.assistEngaged).toBe(true);
+    expect(switched.damageMods.assistEngaged).toBe(false);
   });
 });
