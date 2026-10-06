@@ -124,9 +124,7 @@ const preAppliedEffects = (
       armorReduction: buff.armorReduction ?? 0,
     };
 
-    if (hasAnyEffect(effects)) {
-      named.set(buff.id, effects);
-    }
+    addNamedEffect(named, buff.id, effects);
   }
 
   for (const trait of attackerTraits(params.attacker, params.damageMods)) {
@@ -135,9 +133,7 @@ const preAppliedEffects = (
       armorReduction: trait.armorReduction ?? 0,
     };
 
-    if (hasAnyEffect(effects)) {
-      named.set(trait.id, effects);
-    }
+    addNamedEffect(named, trait.id, effects);
   }
 
   return named;

@@ -75,7 +75,7 @@ export const AttackStatsAside = ({
     <aside
       className={styles.rail}
       style={guildColorStyle(attacker.guild.color)}
-      aria-label="Defense, armor, HP after this swing, and momentum"
+      aria-label="Defense, armor, HP and momentum before and after this swing"
     >
       <StatRow caption="DEF" transition={def} suffix={DEF_SUFFIX} />
       <StatRow caption="ARM" transition={armor} />
