@@ -24,6 +24,8 @@ export type ActivationRollParams = {
   activeBaseCount: number;
   /** Target HP before the activation, for plays that scale with current HP. */
   targetHp: number;
+  /** Target is already Knocked Down, so no playbook KD lowers its DEF again. */
+  enemyKnockedDown: boolean;
 };
 
 export type AttackRollContext = {

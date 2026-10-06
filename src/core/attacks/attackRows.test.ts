@@ -79,6 +79,7 @@ describe('activation order', () => {
         activeBaseCount: 2,
         chargeAttackIndex: NO_ATTACK_INDEX,
         targetHp: NEUTRAL_TARGET_HP,
+        enemyKnockedDown: false,
       },
     );
 
@@ -117,6 +118,7 @@ describe('rows outside the activation', () => {
         activeBaseCount,
         chargeAttackIndex: NO_ATTACK_INDEX,
         targetHp: NEUTRAL_TARGET_HP,
+        enemyKnockedDown: false,
       },
     );
 
@@ -148,7 +150,16 @@ describe('rows outside the activation', () => {
 
   it('give no effects for an empty pick', () => {
     expect(
-      pickEffectsForLaterSwings(attacker, [[null]], [[null]], 0, 0, NO_MODS, 1),
+      pickEffectsForLaterSwings(
+        attacker,
+        [[null]],
+        [[null]],
+        0,
+        0,
+        NO_MODS,
+        1,
+        false,
+      ),
     ).toEqual(NO_EFFECTS);
   });
 });

@@ -31,6 +31,7 @@ const params = (overrides: Partial<TimelineParams> = {}): TimelineParams => {
     activeBaseCount: 3,
     chargeAttackIndex: NO_ATTACK_INDEX,
     targetHp: NEUTRAL_TARGET_HP,
+    enemyKnockedDown: false,
     ...overrides,
   };
 };

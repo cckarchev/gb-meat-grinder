@@ -45,4 +45,5 @@ export type TimelineParams = Pick<
   | 'activeBaseCount'
   | 'chargeAttackIndex'
   | 'targetHp'
+  | 'enemyKnockedDown'
 >;

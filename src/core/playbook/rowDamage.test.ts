@@ -29,6 +29,7 @@ describe('damageModifierBreakdown', () => {
         activeBaseCount: 2,
         chargeAttackIndex: NO_ATTACK_INDEX,
         targetHp: NEUTRAL_TARGET_HP,
+        enemyKnockedDown: false,
       },
     );
 
@@ -61,6 +62,7 @@ describe('play damage in the all-hit projection', () => {
         activeBaseCount: 2,
         chargeAttackIndex: NO_ATTACK_INDEX,
         targetHp: NEUTRAL_TARGET_HP,
+        enemyKnockedDown: false,
       },
     );
 
@@ -85,6 +87,7 @@ describe('play damage in the breakdown', () => {
       activeBaseCount: 1,
       chargeAttackIndex: NO_ATTACK_INDEX,
       targetHp: NEUTRAL_TARGET_HP,
+      enemyKnockedDown: false,
     },
   );
 
@@ -126,6 +129,7 @@ describe('current-HP play damage in the projection and breakdown', () => {
       activeBaseCount: 1,
       chargeAttackIndex: NO_ATTACK_INDEX,
       targetHp,
+      enemyKnockedDown: false,
     },
   );
 

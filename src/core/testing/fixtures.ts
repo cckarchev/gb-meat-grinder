@@ -235,6 +235,7 @@ export const makeRollParams = (
     initialTacModifier: 0,
     activeBaseCount: NEUTRAL_BASE_COUNT,
     targetHp: NEUTRAL_TARGET_HP,
+    enemyKnockedDown: false,
     ...overrides,
   };
 };

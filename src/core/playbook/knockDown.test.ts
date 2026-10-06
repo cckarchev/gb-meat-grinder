@@ -1,10 +1,19 @@
 import { describe, expect, it } from 'vitest';
+import { deriveSimulation } from '@/core/activation/simulation';
+import { attackArraySize } from '@/core/attacks/attackStructure';
 import {
   knockDownIsOnlyEffect,
   knockDownTakenBeforePick,
 } from '@/core/playbook/knockDown';
+import type { WrapPick } from '@/core/playbook/playbook.types';
 import { getPlaybookResult } from '@/core/playbook/playbookIndex';
-import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+import { NO_ATTACK_INDEX } from '@/core/shared/constants';
+import {
+  makeAttacker,
+  NEUTRAL_TARGET_HP,
+  NO_MODS,
+  planOf,
+} from '@/core/testing/fixtures';
 import { thresher } from '@/data/attackers/thresher';
 
 describe('knockDownTakenBeforePick', () => {
@@ -49,5 +58,55 @@ describe('knockDownIsOnlyEffect', () => {
     expect(knockDownIsOnlyEffect(getPlaybookResult(thresher, 'm2'))).toBe(
       false,
     );
+  });
+});
+
+describe('Knock Down on a target that starts Knocked Down', () => {
+  const attacker = makeAttacker();
+
+  // `kd` also dodges, so the clamp keeps it; only its KD must be dropped.
+  const knockDownThenOne = () => {
+    const picks: WrapPick[][] = [['kd'], ['one']];
+
+    while (picks.length < attackArraySize(attacker)) {
+      picks.push([]);
+    }
+
+    return picks;
+  };
+
+  const derive = (enemyKnockedDown: boolean) => {
+    const picks = knockDownThenOne();
+
+    return deriveSimulation(attacker, {
+      enemyDef: 4,
+      armor: 0,
+      hp: NEUTRAL_TARGET_HP,
+      influence: attacker.inf,
+      charging: false,
+      chargeAttackIndex: NO_ATTACK_INDEX,
+      enemyHasCover: false,
+      enemyDefensiveStance: false,
+      enemyKnockedDown,
+      enemySnared: false,
+      enemyResilience: false,
+      gangingUp: 0,
+      crowdingOut: 0,
+      bonusTimeByAttack: picks.map(() => false),
+      damageMods: NO_MODS,
+      activeTraits: {},
+      attackPlan: planOf(picks),
+    });
+  };
+
+  it('carries the KD into later swings when the target is standing', () => {
+    expect(derive(false).timeline[1].effectsBefore.defReduction).toBe(1);
+  });
+
+  it('does not lower DEF again for later swings', () => {
+    const derived = derive(true);
+
+    expect(derived.timeline[1].effectsBefore.defReduction).toBe(0);
+    expect(derived.attacks[1].defMinRoll).toBe(derived.attacks[0].defMinRoll);
   });
 });

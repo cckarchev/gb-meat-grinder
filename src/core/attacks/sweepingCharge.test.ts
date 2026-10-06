@@ -33,6 +33,7 @@ const timelineFor = (plan: AttackPlan, mods = NO_MODS) => {
     activeBaseCount: SWINGS,
     chargeAttackIndex: CHARGE_ROW,
     targetHp: NEUTRAL_TARGET_HP,
+    enemyKnockedDown: false,
   });
 };
 

@@ -32,6 +32,7 @@ const timelineFor = (
     activeBaseCount: SWINGS,
     chargeAttackIndex: NO_ATTACK_INDEX,
     targetHp: NEUTRAL_TARGET_HP,
+    enemyKnockedDown: false,
   });
 };
 
@@ -150,6 +151,7 @@ describe('Burning Passion', () => {
       activeBaseCount: 1,
       chargeAttackIndex: NO_ATTACK_INDEX,
       targetHp: NEUTRAL_TARGET_HP,
+      enemyKnockedDown: false,
     });
 
     // `gb` card 1 + 1 Burning Passion, play 3 untouched.

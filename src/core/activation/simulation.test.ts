@@ -56,6 +56,7 @@ describe('deriveSimulation', () => {
       initialTacModifier: 0,
       activeBaseCount,
       targetHp: state.hp,
+      enemyKnockedDown: false,
     });
 
     expect(derived.effectiveEnemyDef).toBe(3);

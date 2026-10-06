@@ -75,6 +75,7 @@ export const deriveSimulation = (
     initialTacModifier,
     activeBaseCount,
     targetHp: scenario.hp,
+    enemyKnockedDown: scenario.enemyKnockedDown,
   });
 
   // The ignored swing is always first in activation order.

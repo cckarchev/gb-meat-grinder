@@ -365,6 +365,7 @@ export const activationTimeline = (
         pickIndex,
         damageMods,
         activeBaseCount,
+        params.enemyKnockedDown,
       );
 
       const effects: CarriedEffects = {
