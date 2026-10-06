@@ -214,13 +214,15 @@ const swingPlayAmounts = (
 /**
  * Sums card pip damage and the marginal effects of Tough Hide and each of the
  * attacker's damage buffs across all active rows (same scope as
- * {@link rowDamageIfAllHit}). Damaging plays add to the totals and to the Tough
- * Hide and buff lines, but not to the card damage.
+ * {@link rowDamageIfAllHit}), or only the rows in `countedAttackIndexes` when
+ * given. Damaging plays add to the totals and to the Tough Hide and buff lines,
+ * but not to the card damage.
  */
 export const damageModifierBreakdown = (
   order: ActivationOrderParams,
   wrapPicks: WrapPick[][],
   timeline: ActivationTimeline,
+  countedAttackIndexes?: ReadonlySet<number>,
 ): DamageModifierBreakdown => {
   const { attacker, damageMods } = order;
 
@@ -238,8 +240,9 @@ export const damageModifierBreakdown = (
 
   for (let attackIndex = 0; attackIndex < wrapPicks.length; attackIndex++) {
     const active = attackRowIsActive(order, wrapPicks, attackIndex);
+    const counted = countedAttackIndexes?.has(attackIndex) ?? true;
 
-    if (!active) {
+    if (!active || !counted) {
       continue;
     }
 

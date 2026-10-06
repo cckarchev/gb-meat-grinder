@@ -16,7 +16,10 @@ import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import { damageQuantile } from '@/core/damage/damageDistribution';
 import { planDamageOutcome } from '@/core/damage/killOdds';
 import { isAttackIndex } from '@/core/shared/attackIndex';
-import { KILLING_BLOW_MOMENTUM } from '@/core/shared/constants';
+import {
+  KILLING_BLOW_MOMENTUM,
+  NO_ATTACK_INDEX,
+} from '@/core/shared/constants';
 
 /** The damage range shown is the 10th to 90th percentile of outcomes. */
 export const DAMAGE_RANGE_LOW_QUANTILE = 0.1;
@@ -81,9 +84,17 @@ export const summarizeActivation = (
     1,
   );
 
+  // Swings after the killing blow are still rolled whenever an earlier one
+  // whiffs, so the odds cover every swing Resilience does not ignore.
+  const rolledAttacks = activeSwings(
+    input.attacks,
+    input.ignoredDisplayIndex,
+    NO_ATTACK_INDEX,
+  );
+
   const outcome = planDamageOutcome(
     input.attacker,
-    activeAttacks,
+    rolledAttacks,
     input.wrapPicks,
     input.damageMods,
     flatDamage,
@@ -107,7 +118,7 @@ export const summarizeActivation = (
       killingBlowMomentum,
       bonusTimeSpends,
     ),
-    damageDealtTooltip: damageDealtTooltip(input),
+    damageDealtTooltip: damageDealtTooltip(input, activeAttacks),
     planFailureProbability: 1 - planSuccessProbability,
     killProbability: outcome.killProbability,
     expectedDamage: outcome.expectedDamage,

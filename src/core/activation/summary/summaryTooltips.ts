@@ -7,6 +7,7 @@ import {
   joinTraitLabels,
 } from '@/core/attackers/buffsAndTraits';
 import { swingStateAt } from '@/core/attacks/activationTimeline';
+import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
 import {
   characterPlayDamageSources,
   damageModifierBreakdown,
@@ -34,8 +35,13 @@ export const netMomentumTooltip = (
   return `${tooltip}.`;
 };
 
-export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
+/** Itemizes the damage of `activeAttacks`, the swings through the killing blow. */
+export const damageDealtTooltip = (
+  input: ActivationSummaryInput,
+  activeAttacks: readonly AttackRollContext[],
+): string => {
   const { flatDamage } = input;
+  const activeIndexes = activeAttacks.map((swing) => swing.attackIndex);
 
   const breakdown = damageModifierBreakdown(
     {
@@ -45,9 +51,8 @@ export const damageDealtTooltip = (input: ActivationSummaryInput): string => {
     },
     input.wrapPicks,
     input.timeline,
+    new Set(activeIndexes),
   );
-
-  const activeIndexes = input.attacks.map((swing) => swing.attackIndex);
 
   const chargeDamage = sumOf(activeIndexes, (attackIndex) => {
     return swingStateAt(input.timeline, attackIndex).chargeDamage;

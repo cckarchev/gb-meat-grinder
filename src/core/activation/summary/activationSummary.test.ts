@@ -233,6 +233,56 @@ describe('summarizeActivation', () => {
     expect(summary.planFailureProbability).toBeCloseTo(0.75);
   });
 
+  it('still rolls the swings after the killing blow in case an earlier one whiffs', () => {
+    // Net 0, 1 or 2 with odds 1/4, 1/2, 1/4: deals 0, 1 (`one`) or 2.
+    const shaky = makeRollContext({
+      attackIndex: 0,
+      tac: 2,
+      armor: 0,
+      defMinRoll: 4,
+      pHit: 0.5,
+      netSuccessesNeeded: 2,
+      netHitBonus: 0,
+      prob: 0.25,
+    });
+
+    const summary = summarizeActivation(
+      input({
+        attacks: [shaky, certainSwing(1, 2), certainSwing(2, 2)],
+        attacker: makeAttacker({ inf: 3 }),
+        activeBaseCount: 3,
+        wrapPicks: [['two'], ['two'], ['two']],
+        bonusTimeByAttack: [false, false, false],
+        targetHp: 4,
+        killingBlowIndex: 1,
+      }),
+    );
+
+    // The plan ends at the second swing, but the third always makes up the gap.
+    expect(summary.activeAttacks).toHaveLength(2);
+    expect(summary.planFailureProbability).toBeCloseTo(0.75);
+    expect(summary.killProbability).toBeCloseTo(1);
+    expect(summary.expectedDamage).toBeCloseTo(4);
+    expect(summary.expectedHpRemaining).toBeCloseTo(0);
+  });
+
+  it('itemizes damage only through the killing blow', () => {
+    const summary = summarizeActivation(
+      input({
+        attacks: [certainSwing(0, 2), certainSwing(1, 2), certainSwing(2, 2)],
+        wrapPicks: [['two'], ['two'], ['two']],
+        bonusTimeByAttack: [false, false, false],
+        attacker: makeAttacker({ inf: 3 }),
+        activeBaseCount: 3,
+        targetHp: 4,
+        killingBlowIndex: 1,
+      }),
+    );
+
+    expect(summary.totalDamageIfAllHit).toBe(4);
+    expect(summary.damageDealtTooltip).toBe('4 from card pips = 4.');
+  });
+
   it('reports kill odds and the likely damage band', () => {
     const lethal = summarizeActivation(input({ targetHp: 4 }));
     const short = summarizeActivation(input({ targetHp: 5 }));

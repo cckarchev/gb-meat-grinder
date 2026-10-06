@@ -45,6 +45,23 @@ const withFlatDamage = (
   return shifted;
 };
 
+/**
+ * Clamp every damage value to `maxDamage`: once the target is down, later
+ * swings have nothing left to hit.
+ */
+const cappedAt = (
+  dist: DamageDistribution,
+  maxDamage: number,
+): DamageDistribution => {
+  const capped: DamageDistribution = new Map();
+
+  for (const [damage, prob] of dist) {
+    addProbability(capped, Math.min(damage, maxDamage), prob);
+  }
+
+  return capped;
+};
+
 /** One swing's damage distribution when the target has `hpLeft` HP before it. */
 const swingDistributionAt = (
   attacker: AttackerData,
@@ -94,7 +111,8 @@ const addHealthDependentSwing = (
  * per damage total instead, since it depends on what came before), then
  * reports the chance the activation drops the target and the mean damage
  * dealt. `flatDamage` is guaranteed (activated traits) and applied as a
- * baseline.
+ * baseline. Damage is capped at the target's HP, so a swing after the target
+ * is already down adds nothing.
  */
 export const planDamageOutcome = (
   attacker: AttackerData,
@@ -105,6 +123,9 @@ export const planDamageOutcome = (
   targetHp: number,
   timeline: ActivationTimeline,
 ): ActivationDamageOutcome => {
+  // Swings can only take what the guaranteed flat damage leaves.
+  const hpLeftForSwings = Math.max(0, targetHp - flatDamage);
+
   let total: DamageDistribution = new Map([[0, 1]]);
 
   for (const attack of attacks) {
@@ -123,18 +144,20 @@ export const planDamageOutcome = (
       );
     };
 
-    if (swingHasHealthPlay(state)) {
-      total = addHealthDependentSwing(total, swingAt, targetHp);
+    const uncapped = swingHasHealthPlay(state)
+      ? addHealthDependentSwing(total, swingAt, targetHp)
+      : convolve(total, swingAt(targetHp));
 
-      continue;
-    }
-
-    total = convolve(total, swingAt(targetHp));
+    total = cappedAt(uncapped, hpLeftForSwings);
   }
 
   // Fold guaranteed flat damage into the distribution so every stat below is
-  // expressed in terms of total damage actually dealt to the target.
-  const damageDistribution = withFlatDamage(total, flatDamage);
+  // expressed in terms of total damage actually dealt to the target, which
+  // flat damage alone may already exceed.
+  const damageDistribution = cappedAt(
+    withFlatDamage(total, flatDamage),
+    targetHp,
+  );
 
   let expectedDamage = 0;
   let expectedHpRemaining = 0;

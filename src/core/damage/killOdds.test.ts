@@ -51,6 +51,42 @@ describe('planDamageOutcome', () => {
     ]);
   });
 
+  it('counts only the damage the target can still take', () => {
+    const attacker = makeAttacker();
+
+    const sureTwo = (attackIndex: number): AttackRollContext => {
+      return makeRollContext({
+        attackIndex,
+        tac: 2,
+        armor: 0,
+        defMinRoll: 2,
+        pHit: 1,
+        netSuccessesNeeded: 2,
+        netHitBonus: 0,
+        prob: 1,
+      });
+    };
+
+    const flatDamage = 1;
+    const targetHp = 4;
+
+    // 1 flat + 2 + 2 would be 5, but the target only has 4 HP to lose.
+    const outcome = planDamageOutcome(
+      attacker,
+      [sureTwo(0), sureTwo(1)],
+      [['two'], ['two']],
+      NO_MODS,
+      flatDamage,
+      targetHp,
+      [],
+    );
+
+    expect(outcome.killProbability).toBe(1);
+    expect(outcome.expectedDamage).toBe(4);
+    expect(outcome.expectedHpRemaining).toBe(0);
+    expect([...outcome.damageDistribution]).toEqual([[4, 1]]);
+  });
+
   it('counts an Once Per Turn damaging play once across the activation', () => {
     const attacker = makeAttacker({ characterPlays: [PLAY_DAMAGE], tac: 20 });
     const wrapPicks = [['gb'], ['gb']];
