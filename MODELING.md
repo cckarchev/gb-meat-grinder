@@ -17,9 +17,9 @@ rulings not on cards are quoted from the rulebook or the rules channel.
 
 Bonuses and penalties from the **same named source are not cumulative**: an effect with
 the same name applies once, however many times or ways it lands (a teammate's
-pre-applied debuff, a character play, a trait). **Different names stack**: *They Ain't
-Tough!* (−1) + *Weak Point* (−1) + *Searing Strike* (−1) = −3 ARM, floored at 0. The rare
-cards that say "each time" (e.g. *Bleed the Cleats*) are the exception.
+pre-applied debuff, a character play, a trait). **Different names stack**: _They Ain't
+Tough!_ (−1) + _Weak Point_ (−1) + _Searing Strike_ (−1) = −3 ARM, floored at 0. The rare
+cards that say "each time" (e.g. _Bleed the Cleats_) are the exception.
 
 > Bonuses and penalties from the same named sources aren't cumulative. Effects and
 > abilities of the same name aren't cumulative.
@@ -34,55 +34,54 @@ again, not whether its effect stacks. It is copied from each card.
 ## Buffs vs. debuffs
 
 Classify every effect by **whose state it describes**:
-
 - The **target's state** (−ARM, −DEF, Burning, Tough Hide, already carrying Searing
   Strike) is **enemy-side**: an enemy debuff or condition, shown on the Enemy panel
   (`target: 'enemy'`).
 - The **attacker's capabilities** (+damage, +TAC, ignoring Tough Hide, gaining an ability
-  such as Searing Strike from *Tempered Steel*) are **attacker-side**: an attacker buff,
-  shown on the Attacker panel. An ability whose *effect* lands on the target later in the
+  such as Searing Strike from _Tempered Steel_) are **attacker-side**: an attacker buff,
+  shown on the Attacker panel. An ability whose _effect_ lands on the target later in the
   activation is still attacker-side, because it is something the attacker does.
-  A passive trait that weakens the target only *during the model's own attacks* (Bucker's
-  *Anatomical Precision*, −1 ARM, `CharacterTrait.armorReduction`) is attacker-side too:
+  A passive trait that weakens the target only _during the model's own attacks_ (Bucker's
+  _Anatomical Precision_, −1 ARM, `CharacterTrait.armorReduction`) is attacker-side too:
   it holds from the first swing and stacks with other named −ARM effects.
 - **Assist [named models]** needs two things: one of the named friendly models engages the
   target (a toggle among the Enemy panel's guild debuffs, `assistEngaged`, shown only to
   models with an Assist play) **and** the attacker has gained Assist through its play
-  (Bucker's *Axe A Question*, `CharacterPlay.grantsAssist`). Only then do the **later**
+  (Bucker's _Axe A Question_, `CharacterPlay.grantsAssist`). Only then do the **later**
   swings get +1 TAC and +1 DMG to playbook damage results (not to play damage), itemized
   as an "Assist" line in the damage breakdown. While the named model engages, it also
   gives ganging up, so the Ganging Up control cannot go below +1
   (`ASSIST_ENGAGED_GANGING_UP_MIN`, `gangingUpRange`).
 
 Teammate effects that depend on board position or on something that already happened
-this turn (Oak's melee zone for *Cut 'Em Down*, a Loved Creature mascot taking damage,
-ganging up with Festival for *Lend a Hand*) are plain toggles: the user says whether
-they hold. A toggle that needs a teammate giving ganging up (*Lend a Hand*,
+this turn (Oak's melee zone for _Cut 'Em Down_, a Loved Creature mascot taking damage,
+ganging up with Festival for _Lend a Hand_) are plain toggles: the user says whether
+they hold. A toggle that needs a teammate giving ganging up (_Lend a Hand_,
 `GuildBuff.gangingUpMin`) also keeps the Ganging Up control at +1 or more, like an engaged
-Assist model (`gangingUpRange`). Plays that also deal damage to the target (*Dirty Knives*, *Thousand Cuts*)
+Assist model (`gangingUpRange`). Plays that also deal damage to the target (_Dirty Knives_, _Thousand Cuts_)
 only model their −DEF; the user lowers the target's HP for their damage.
 
-A legendary aura with effects on both sides (Ox's *Get 'Em Lads!*: +1 DMG and −1 ARM)
+A legendary aura with effects on both sides (Ox's _Get 'Em Lads!_: +1 DMG and −1 ARM)
 is one toggle on the Attacker panel, named once for the stacking rule, so its −1 ARM
-stacks with *They Ain't Tough!*.
+stacks with _They Ain't Tough!_.
 
-*Maximum Effort* (`damageResultsMomentous`) makes every non-momentous playbook result
+_Maximum Effort_ (`damageResultsMomentous`) makes every non-momentous playbook result
 **with printed damage** momentous. It then follows the momentum rules below: a result
 zeroed by Tough Hide earns nothing.
 
-*Instruction* (Hearth, `firstAttackNetHitBonus`) gives the **first attack of the
+_Instruction_ (Hearth, `firstAttackNetHitBonus`) gives the **first attack of the
 activation** +2 net hits, added **after ARM** and even to a roll that nets none:
 `net = max(0, hits − ARM) + 2`, so that attack cannot miss and reaches higher playbook
 columns (and wraps). Only the first swing gets it, whatever it picks, even one Resilience
 ignores. It is for Apprentice models; every Blacksmith in the calculator is one, so a
 Master added later must list it in `excludedGuildBuffs`.
 
-*One at a Time Lads!* (Furnace, `ignoresCrowdingOut`) pins the Crowding Out control at 0
+_One at a Time Lads!_ (Furnace, `ignoresCrowdingOut`) pins the Crowding Out control at 0
 while on (`crowdingOutRange`).
 
 Guild effects stay **availability-scoped to the attacker's guild even when they land on
-the enemy.** Blacksmiths cannot use *They Ain't Tough!*, and Farmers and Butchers cannot
-use *Searing Strike*. A model listed as the source of an effect, or one that cannot share a team with its source
+the enemy.** Blacksmiths cannot use _They Ain't Tough!_, and Farmers and Butchers cannot
+use _Searing Strike_. A model listed as the source of an effect, or one that cannot share a team with its source
 (a captain cannot take another captain's effects: Thresher gets neither of Festival's), is
 listed in `excludedGuildBuffs` and sees it disabled on either panel.
 
@@ -95,36 +94,35 @@ Damage is resolved **per attack**:
 
 Effects that trigger "when this model damages the target" therefore resolve **after** the
 whole attack.
-
-- A **conditional damage buff** (e.g. *Burning Passion*: +1 DMG while the target is
+- A **conditional damage buff** (e.g. _Burning Passion_: +1 DMG while the target is
   Burning) applies to an attack only if the condition was present **before** that attack.
-- An effect applied **after** damage (e.g. *Searing Strike*: the damaged target suffers
+- An effect applied **after** damage (e.g. _Searing Strike_: the damaged target suffers
   −1 ARM and Burning) does **not** help the attack that triggered it, nor any wrap result
   inside that attack. Every **later** attack benefits.
 - **Damage reduced to 0 is no damage.** "If damage is reduced to 0 (e.g. by Tough Hide),
   no damage has been caused." An attack whose results all end at 0 effective DMG has
   caused no damage and triggers nothing.
 - The trigger is **any damage this model deals the target**, attributed to the swing it
-  happens on: card damage, a damaging character play (*Impale*), or the charge damage of
-  *Sweeping Charge*. A swing that deals none (`>`, `T`, `><`, a GB with no damaging play,
+  happens on: card damage, a damaging character play (_Impale_), or the charge damage of
+  _Sweeping Charge_. A swing that deals none (`>`, `T`, `><`, a GB with no damaging play,
   or a hit zeroed by Tough Hide) triggers nothing.
-- *Sweeping Charge* adds 3 DMG to the charge attack **only when that attack picks at
+- _Sweeping Charge_ adds 3 DMG to the charge attack **only when that attack picks at
   least one playbook damage result** (a numbered pip); a charge that picks only GB, KD,
-  dodges or pushes does not trigger it. It needs a damage result *picked*, not damage
-  *caused*: a `1` reduced to 0 by Tough Hide still triggers it (and still earns no
+  dodges or pushes does not trigger it. It needs a damage result _picked_, not damage
+  _caused_: a `1` reduced to 0 by Tough Hide still triggers it (and still earns no
   momentum). Its 3 DMG is unmodified and is damage caused, so it triggers Searing Strike
   for later swings even when every card result was zeroed. It lands with the charge
   attack, so that attack is still resolved at full ARM.
 - In the **odds**, a charge roll that falls short of its picked line falls back to the
   best line it reaches, like any other swing. If that fallback is a damage result,
-  *Sweeping Charge* triggers, even when the picked line had no damage: a charge that
+  _Sweeping Charge_ triggers, even when the picked line had no damage: a charge that
   picked `>` and rolled 1 net takes `1` and adds the 3 DMG. The all-hit projection and
-  its tooltip assume the picked line, so they show no *Sweeping Charge* for that charge.
+  its tooltip assume the picked line, so they show no _Sweeping Charge_ for that charge.
   A worse roll can therefore deal more damage than the plan shows.
 
 **Plan assumption.** When deciding whether a later swing sees a condition, the calculator
 assumes the plan's earlier swings land and reach their picked lines. This is the same
-assumption used for carried effects like *Singled Out* and *They Ain't Tough!*. Sweeping
+assumption used for carried effects like _Singled Out_ and _They Ain't Tough!_. Sweeping
 Charge alone depends on the roll of its own (charge) swing.
 
 ## Character plays
@@ -133,7 +131,7 @@ Charge alone depends on the roll of its own (charge) swing.
   influence **or** triggered for free off a `GB` playbook result. The calculator only
   plans GB triggers.
 - `OPT` = **Once Per Turn**: picking it on one swing removes it from later swings.
-- **Plays scaled by current HP** (*The Bigger They Are...*: condition damage equal to
+- **Plays scaled by current HP** (_The Bigger They Are..._: condition damage equal to
   half the target's current health, rounded down). The attacking player chooses the
   order an attack's effects resolve, and resolving the play first always deals at least
   as much, so it uses the target's HP **before that attack's own card damage** (after
@@ -146,12 +144,12 @@ Charge alone depends on the roll of its own (charge) swing.
 > character traits. In the case of multiple playbook damage results (e.g. from a wrapped
 > attack), Tough Hide reduces each individual result by 1 DMG.
 
-| Source | Tough Hide | Tooled Up / The Owner / Get 'Em Lads! | Butchery / Burning Passion / Assist | Our Tools Are Sharp |
-|---|:-:|:-:|:-:|:-:|
-| **Playbook damage results** | reduces | +1 | +1 | ignores Tough Hide |
-| **Character plays** that cause damage (*Impale*) | reduces | +1 | no | no |
-| **Character traits** (*Sweeping Charge*, *Don't Fear The...*) | no | no | no | no |
-| **Condition damage** from plays (*The Bigger They Are...*) | no | no | no | no |
+| Source                                                        | Tough Hide | Tooled Up / The Owner / Get 'Em Lads! | Butchery / Burning Passion / Assist | Our Tools Are Sharp |
+| ------------------------------------------------------------- | :--------: | :-----------------------------------: | :---------------------------------: | :-----------------: |
+| **Playbook damage results**                                   |  reduces   |                  +1                   |                 +1                  | ignores Tough Hide  |
+| **Character plays** that cause damage (_Impale_)              |  reduces   |                  +1                   |                 no                  |         no          |
+| **Character traits** (_Sweeping Charge_, _Don't Fear The..._) |     no     |                  no                   |                 no                  |         no          |
+| **Condition damage** from plays (_The Bigger They Are..._)    |     no     |                  no                   |                 no                  |         no          |
 
 In the code a guild buff's `damageBonus` reaches plays and playbook results, while
 `playbookDamageBonus` reaches playbook results only (`effectivePlayDamage` vs.
@@ -162,21 +160,20 @@ In the code a guild buff's `damageBonus` reaches plays and playbook results, whi
 Symbols as printed on the card; only damage, momentum, KD, pushes and plays affect the
 math:
 
-| Symbol | Meaning | Math effect |
-|---|---|---|
-| `1`, `2`, … | Damage | damage |
-| momentous (tinted) | Generates momentum | momentum |
-| `GB` | Guild Ball: may trigger a character play | depends on the play |
-| `KD` | Knocked Down (−1 DEF; does nothing on a target already Knocked Down) | DEF |
-| `>` / `>>` | Push / double push (clears the target's cover for later swings) | cover |
-| `><` | Push + dodge; the push clears cover like `>` | cover |
-| `<` / `<<` | Dodge / double dodge | none |
-| `T` | Tackle | none |
+| Symbol             | Meaning                                                              | Math effect         |
+| ------------------ | -------------------------------------------------------------------- | ------------------- |
+| `1`, `2`, …        | Damage                                                               | damage              |
+| momentous (tinted) | Generates momentum                                                   | momentum            |
+| `GB`               | Guild Ball: may trigger a character play                             | depends on the play |
+| `KD`               | Knocked Down (−1 DEF; does nothing on a target already Knocked Down) | DEF                 |
+| `>` / `>>`         | Push / double push (clears the target's cover for later swings)      | cover               |
+| `><`               | Push + dodge; the push clears cover like `>`                         | cover               |
+| `<` / `<<`         | Dodge / double dodge                                                 | none                |
+| `T`                | Tackle                                                               | none                |
 
 ## Momentum
 
 A momentous playbook result earns **1 momentum** on a hit, subject to one rule:
-
 - A momentous result **with printed damage** earns momentum only if it **causes damage**.
   If modifiers reduce it to 0 (e.g. a `1` under Tough Hide), its effect was negated: it
   earns nothing, and its chip is shown "zeroed".
@@ -190,7 +187,7 @@ A KD line with another effect (damage, a dodge, a push, a play) stays pickable: 
 KD is dropped.
 
 Damage from other sources on the same attack does not rescue a zeroed result: a `1;M`
-zeroed by Tough Hide earns no momentum even when *Sweeping Charge* deals its 3 DMG on
+zeroed by Tough Hide earns no momentum even when _Sweeping Charge_ deals its 3 DMG on
 that charge.
 
 Taking the target out earns `KILLING_BLOW_MOMENTUM` on top, and Bonus Time spends
