@@ -1,35 +1,36 @@
 /** One pass over the activation: what each swing inherits from the swings before it. */
 
-import { activeBuffs, attackerTraits } from '@/core/attackers/buffsAndTraits';
+import { activeBuffs, attackerTraits } from "@/core/attackers/buffsAndTraits";
 import type {
   ActivationTimeline,
   CarriedEffects,
   SwingState,
   TimelineParams,
-} from '@/core/attacks/activationTimeline.types';
-import { activationAttackIndices } from '@/core/attacks/attackRows';
-import { isChargeSwing } from '@/core/attacks/attackStructure';
+} from "@/core/attacks/activationTimeline.types";
+import { activationAttackIndices } from "@/core/attacks/attackRows";
+import { isChargeSwing } from "@/core/attacks/attackStructure";
 import {
   swingPlayDamage,
   swingPlayDamageFor,
-} from '@/core/attacks/swingPlayDamage';
+} from "@/core/attacks/swingPlayDamage";
 import {
   chargeTraitDamage,
   effectiveDamageForChoice,
   withSwingDamageBonus,
-} from '@/core/damage/damage';
-import type { AttackPlan } from '@/core/plan/attackPlan.types';
+} from "@/core/damage/damage";
+import type { AttackPlan } from "@/core/plan/attackPlan.types";
 import type {
   PlaybookDamageMods,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/playbookIndex';
+} from "@/core/playbook/playbook.types";
+import { getPlaybookResult } from "@/core/playbook/playbookIndex";
 import {
   pickEffectName,
   pickEffectsForLaterSwings,
-} from '@/core/playbook/rowEffects';
-import { sumOf } from '@/core/shared/sumOf';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/rowEffects";
+import { sumOf } from "@/core/shared/sumOf";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import type { CharacterTrait } from "@/data/characterTraits";
 
 const NO_CARRIED_EFFECTS: CarriedEffects = {
   tacBonus: 0,
@@ -55,9 +56,7 @@ const EMPTY_SWING_STATE: SwingState = {
 export const swingStateAt = (
   timeline: ActivationTimeline,
   attackIndex: number,
-): SwingState => {
-  return timeline[attackIndex] ?? EMPTY_SWING_STATE;
-};
+): SwingState => timeline[attackIndex] ?? EMPTY_SWING_STATE;
 
 /**
  * The mods one swing's playbook damage results are resolved with: the
@@ -66,9 +65,8 @@ export const swingStateAt = (
 export const swingStateDamageMods = (
   damageMods: PlaybookDamageMods,
   state: SwingState,
-): PlaybookDamageMods => {
-  return withSwingDamageBonus(damageMods, state.playbookDamageBonus);
-};
+): PlaybookDamageMods =>
+  withSwingDamageBonus(damageMods, state.playbookDamageBonus);
 
 /** {@link swingStateDamageMods} for the swing at `attackIndex` in `timeline`. */
 export const swingDamageMods = (
@@ -81,14 +79,11 @@ export const swingDamageMods = (
   return swingStateDamageMods(damageMods, state);
 };
 
-const hasAnyEffect = (effects: CarriedEffects): boolean => {
-  return (
-    effects.tacBonus !== 0 ||
-    effects.defReduction !== 0 ||
-    effects.armorReduction !== 0 ||
-    effects.damageBonus !== 0
-  );
-};
+const hasAnyEffect = (effects: CarriedEffects): boolean =>
+  effects.tacBonus !== 0 ||
+  effects.defReduction !== 0 ||
+  effects.armorReduction !== 0 ||
+  effects.damageBonus !== 0;
 
 /**
  * Records `effects` under `name` unless it is empty or that name already
@@ -144,9 +139,7 @@ const preAppliedEffects = (
  */
 const firstAttackNetHitBonus = (params: TimelineParams): number => {
   const bonuses = activeBuffs(params.attacker, params.damageMods).map(
-    (buff) => {
-      return buff.firstAttackNetHitBonus ?? 0;
-    },
+    (buff) => buff.firstAttackNetHitBonus ?? 0,
   );
 
   return Math.max(0, ...bonuses);
@@ -178,7 +171,7 @@ const damageBonusVsBurning = (params: TimelineParams): number => {
   return sumOf(traits, (trait) => trait.playbookDamageVsBurning);
 };
 
-type SwingChargeDamage = Pick<SwingState, 'chargeTraitDamage' | 'chargeDamage'>;
+type SwingChargeDamage = Pick<SwingState, "chargeTraitDamage" | "chargeDamage">;
 
 /**
  * Sweeping Charge-like damage on the charge swing. It triggers when the charge
@@ -200,9 +193,9 @@ const swingChargeDamageFor = (
   const traitDamage = chargeTraitDamage(attacker, damageMods);
   const row = plan.wrapPicks[attackIndex] ?? [];
 
-  const picksDamageResult = row.some((id) => {
-    return id != null && getPlaybookResult(attacker, id).damage > 0;
-  });
+  const picksDamageResult = row.some(
+    (id) => id != null && getPlaybookResult(attacker, id).damage > 0,
+  );
 
   return {
     chargeTraitDamage: traitDamage,
@@ -230,6 +223,77 @@ export const swingDamageIfAllHit = (
   return cardDamage + swingPlayDamage(state) + state.chargeDamage;
 };
 
+/**
+ * The state of a row no swing reaches: only what applies before the first
+ * swing.
+ */
+const preAppliedSwingState = (
+  named: ReadonlyMap<string, CarriedEffects>,
+  burning: boolean,
+  passionBonus: number,
+): SwingState => ({
+  ...EMPTY_SWING_STATE,
+  effectsBefore: sumEffects(named),
+  effectsAfter: sumEffects(named),
+  targetBurningBefore: burning,
+  playbookDamageBonus: burning ? passionBonus : 0,
+});
+
+/** Records the effects each pick on this swing carries to later swings. */
+const addPickEffects = (
+  named: Map<string, CarriedEffects>,
+  plan: AttackPlan,
+  params: TimelineParams,
+  attackIndex: number,
+): void => {
+  const row = plan.wrapPicks[attackIndex] ?? [];
+
+  for (let pickIndex = 0; pickIndex < row.length; pickIndex++) {
+    const position = { attackIndex, pickIndex };
+    const pickEffects = pickEffectsForLaterSwings(
+      params,
+      plan,
+      position,
+      params.enemyKnockedDown,
+    );
+
+    const effects: CarriedEffects = {
+      tacBonus: pickEffects.tacBonusForLater,
+      defReduction: pickEffects.defReductionForLater,
+      armorReduction: pickEffects.armorReductionForLater,
+      damageBonus: pickEffects.damageBonusForLater,
+    };
+
+    const name = pickEffectName(params.attacker, plan, position);
+
+    addNamedEffect(named, name, effects);
+  }
+};
+
+/**
+ * Records the effects of the on-damage traits a damaging swing triggers, and
+ * says whether any of them sets the target Burning.
+ */
+const addOnDamageTraitEffects = (
+  named: Map<string, CarriedEffects>,
+  traits: readonly CharacterTrait[],
+): boolean => {
+  let setsBurning = false;
+
+  for (const trait of traits) {
+    const armorReduction = trait.onDamage?.armorReduction ?? 0;
+    const effects: CarriedEffects = { ...NO_CARRIED_EFFECTS, armorReduction };
+
+    addNamedEffect(named, trait.id, effects);
+
+    if (trait.onDamage?.burning === true) {
+      setsBurning = true;
+    }
+  }
+
+  return setsBurning;
+};
+
 export const activationTimeline = (
   plan: AttackPlan,
   params: TimelineParams,
@@ -241,21 +305,13 @@ export const activationTimeline = (
   const named = preAppliedEffects(params);
   const passionBonus = damageBonusVsBurning(params);
   const onDamageTraits = attackerTraits(attacker, damageMods).filter(
-    (trait) => {
-      return trait.onDamage != null;
-    },
+    (trait) => trait.onDamage != null,
   );
 
   // Burning before the first swing comes from the toggled Burning condition.
   let burning = damageMods.targetBurning;
 
-  const preAppliedState: SwingState = {
-    ...EMPTY_SWING_STATE,
-    effectsBefore: sumEffects(named),
-    effectsAfter: sumEffects(named),
-    targetBurningBefore: burning,
-    playbookDamageBonus: burning ? passionBonus : 0,
-  };
+  const preAppliedState = preAppliedSwingState(named, burning, passionBonus);
 
   const usedOncePerTurn = new Set<string>();
 
@@ -300,41 +356,16 @@ export const activationTimeline = (
 
     damageDealt += swingDamage;
 
-    for (let pickIndex = 0; pickIndex < row.length; pickIndex++) {
-      const position = { attackIndex, pickIndex };
-      const pickEffects = pickEffectsForLaterSwings(
-        params,
-        plan,
-        position,
-        params.enemyKnockedDown,
-      );
-
-      const effects: CarriedEffects = {
-        tacBonus: pickEffects.tacBonusForLater,
-        defReduction: pickEffects.defReductionForLater,
-        armorReduction: pickEffects.armorReductionForLater,
-        damageBonus: pickEffects.damageBonusForLater,
-      };
-
-      const name = pickEffectName(attacker, plan, position);
-
-      addNamedEffect(named, name, effects);
-    }
+    addPickEffects(named, plan, params, attackIndex);
 
     // On-damage traits (Searing Strike) only help the swings after this one.
     // Every damage term is at least 0, so any damage at all means it hit.
     const causesDamage = swingDamage > 0;
     const triggeredTraits = causesDamage ? onDamageTraits : [];
+    const setsBurning = addOnDamageTraitEffects(named, triggeredTraits);
 
-    for (const trait of triggeredTraits) {
-      const armorReduction = trait.onDamage?.armorReduction ?? 0;
-      const effects: CarriedEffects = { ...NO_CARRIED_EFFECTS, armorReduction };
-
-      addNamedEffect(named, trait.id, effects);
-
-      if (trait.onDamage?.burning === true) {
-        burning = true;
-      }
+    if (setsBurning) {
+      burning = true;
     }
 
     states[attackIndex] = { ...state, effectsAfter: sumEffects(named) };

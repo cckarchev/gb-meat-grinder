@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import styles from '@/components/ui/ShareButton.module.css';
-import { ToggleButton } from '@/components/ui/ToggleButton';
-import { TooltipBubble } from '@/components/ui/TooltipBubble';
+import { useEffect, useState } from "react";
+import styles from "@/components/ui/ShareButton.module.css";
+import { ToggleButton } from "@/components/ui/ToggleButton";
+import { TooltipBubble } from "@/components/ui/TooltipBubble";
 
 /** How long the copy confirmation stays up. */
 const NOTICE_DURATION_MS = 1500;
 
-const COPIED_NOTICE = 'Link copied!';
-const FAILED_NOTICE = 'Could not copy the link';
+const COPIED_NOTICE = "Link copied!";
+const FAILED_NOTICE = "Could not copy the link";
 
 type ShareButtonProps = {
   /** Link copied to the clipboard on click. */

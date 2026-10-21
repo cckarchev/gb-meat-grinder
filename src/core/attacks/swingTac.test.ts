@@ -1,11 +1,11 @@
-import { describe, expect, it } from 'vitest';
-import { activationTimeline } from '@/core/attacks/activationTimeline';
-import { sumSwingTac, swingTacAndDef } from '@/core/attacks/swingTac';
-import { CHARGE_TAC_BONUS } from '@/core/shared/constants';
-import { makeAttacker, makeRollParams } from '@/core/testing/fixtures';
+import { describe, expect, it } from "vitest";
+import { activationTimeline } from "@/core/attacks/activationTimeline";
+import { sumSwingTac, swingTacAndDef } from "@/core/attacks/swingTac";
+import { CHARGE_TAC_BONUS } from "@/core/shared/constants";
+import { makeAttacker, makeRollParams } from "@/core/testing/fixtures";
 
-describe('sumSwingTac', () => {
-  it('sums base TAC, charge, bonuses and penalties', () => {
+describe("sumSwingTac", () => {
+  it("sums base TAC, charge, bonuses and penalties", () => {
     const baseTac = 6;
     const attacker = makeAttacker({ tac: baseTac });
     const carriedBonus = 2;
@@ -48,12 +48,12 @@ describe('sumSwingTac', () => {
   });
 });
 
-describe('swingTacAndDef', () => {
+describe("swingTacAndDef", () => {
   const attacker = makeAttacker({ tac: 6 });
   const FLOOR_DEF = 2;
 
   const plan = {
-    wrapPicks: [['kd'], ['one']],
+    wrapPicks: [["kd"], ["one"]],
     characterPlayPicks: [[null], [null]],
   };
 
@@ -65,11 +65,11 @@ describe('swingTacAndDef', () => {
     return swingTacAndDef(plan, attackIndex, params, timeline);
   };
 
-  it('reads the plain TAC and DEF on the first swing', () => {
+  it("reads the plain TAC and DEF on the first swing", () => {
     expect(swing(0)).toEqual({ tac: 6, defMinRoll: 2, defMinRollAfter: 2 });
   });
 
-  it('turns a DEF reduction past the floor into an extra die', () => {
+  it("turns a DEF reduction past the floor into an extra die", () => {
     expect(swing(1)).toEqual({ tac: 7, defMinRoll: 2, defMinRollAfter: 2 });
   });
 });

@@ -1,14 +1,14 @@
 /** Display labels for playbook lines and wrap rows. */
 
-import { effectiveDamageForChoice } from '@/core/damage/damage';
+import { effectiveDamageForChoice } from "@/core/damage/damage";
 import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/playbookIndex';
-import { EMPTY_VALUE_LABEL } from '@/core/shared/format';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/playbook.types";
+import { getPlaybookResult } from "@/core/playbook/playbookIndex";
+import { EMPTY_VALUE_LABEL } from "@/core/shared/format";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /**
  * Playbook button text: plain numeric pips (label matches damage) show the
@@ -21,7 +21,7 @@ export const playbookLineDisplayLabel = (
   mods: PlaybookDamageMods,
 ): string => {
   const result = getPlaybookResult(attacker, id);
-  const dodge = result.dodge ? '<' : '';
+  const dodge = result.dodge ? "<" : "";
 
   if (result.picksCharacterPlay && result.damage > 0) {
     return `${effectiveDamageForChoice(attacker, id, mods)}GB${dodge}`;
@@ -66,5 +66,5 @@ export const formatWrapRowSelectionLabel = (
     labels.push(playbookLineDisplayLabel(attacker, id, damageMods));
   }
 
-  return labels.length > 0 ? labels.join(' → ') : EMPTY_VALUE_LABEL;
+  return labels.length > 0 ? labels.join(" → ") : EMPTY_VALUE_LABEL;
 };

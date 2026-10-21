@@ -1,5 +1,5 @@
-import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
-import type { CharacterPlay } from '@/core/playbook/playbook.types';
+import type { ActivationRollParams } from "@/core/attacks/attackSequence.types";
+import type { CharacterPlay } from "@/core/playbook/playbook.types";
 
 /** Effects earlier swings leave on the target or the attacker for a later swing. */
 export type CarriedEffects = {
@@ -46,10 +46,10 @@ export type ActivationTimeline = readonly SwingState[];
 /** The activation-wide inputs the timeline reads. */
 export type TimelineParams = Pick<
   ActivationRollParams,
-  | 'attacker'
-  | 'damageMods'
-  | 'activeBaseCount'
-  | 'chargeAttackIndex'
-  | 'targetHp'
-  | 'enemyKnockedDown'
+  | "attacker"
+  | "damageMods"
+  | "activeBaseCount"
+  | "chargeAttackIndex"
+  | "targetHp"
+  | "enemyKnockedDown"
 >;

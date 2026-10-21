@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 /** Which swings have their wrap continuation expanded, by attack index. */
 export const useWrapExpansion = () => {
@@ -18,9 +18,7 @@ export const useWrapExpansion = () => {
     });
   };
 
-  const isOpen = (attackIndex: number): boolean => {
-    return expanded.has(attackIndex);
-  };
+  const isOpen = (attackIndex: number): boolean => expanded.has(attackIndex);
 
   return { isOpen, toggle };
 };

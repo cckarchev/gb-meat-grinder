@@ -1,21 +1,21 @@
-import { PlaybookColumnBlock } from '@/components/attacks/playbook/PlaybookColumnBlock';
-import type { PlaybookLineLock } from '@/components/attacks/playbook/PlaybookLineButton';
-import styles from '@/components/attacks/playbook/WrapSlotPickGrid.module.css';
+import { PlaybookColumnBlock } from "@/components/attacks/playbook/PlaybookColumnBlock";
+import type { PlaybookLineLock } from "@/components/attacks/playbook/PlaybookLineButton";
+import styles from "@/components/attacks/playbook/WrapSlotPickGrid.module.css";
 import {
   knockDownIsOnlyEffect,
   knockDownTakenBeforePick,
-} from '@/core/playbook/knockDown';
-import { stealsBall } from '@/core/playbook/oncePerActivation';
+} from "@/core/playbook/knockDown";
+import { stealsBall } from "@/core/playbook/oncePerActivation";
 import type {
   PlaybookChoiceId,
   PlaybookResult,
-} from '@/core/playbook/playbook.types';
-import { tackleTakenBeforePick } from '@/core/playbook/tackle';
-import { type SwingRoll, wrapSlotColumns } from '@/core/playbook/wrapSlots';
-import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-import type { CustomPropertyStyle } from '@/styles/customProperties';
-import { dataFlag } from '@/styles/dataFlag';
+} from "@/core/playbook/playbook.types";
+import { tackleTakenBeforePick } from "@/core/playbook/tackle";
+import { type SwingRoll, wrapSlotColumns } from "@/core/playbook/wrapSlots";
+import { PRIMARY_PICK_INDEX } from "@/core/shared/constants";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
+import type { CustomPropertyStyle } from "@/styles/customProperties";
+import { dataFlag } from "@/styles/dataFlag";
 
 /** Keeps the grid one track wide even when no column is reachable. */
 const MIN_COLUMN_COUNT = 1;
@@ -62,11 +62,11 @@ export const WrapSlotPickGrid = ({
 
   const lockFor = (result: PlaybookResult): PlaybookLineLock | undefined => {
     if (knockDownTaken && knockDownIsOnlyEffect(result)) {
-      return 'knockDown';
+      return "knockDown";
     }
 
     if (tackleTaken && stealsBall(result)) {
-      return 'tackle';
+      return "tackle";
     }
 
     return undefined;
@@ -79,7 +79,7 @@ export const WrapSlotPickGrid = ({
     const clearsPick = pickIndex !== PRIMARY_PICK_INDEX && reselected;
 
     dispatch({
-      type: 'wrapChoice',
+      type: "wrapChoice",
       attackIndex,
       pickIndex,
       id: clearsPick ? null : id,
@@ -87,7 +87,7 @@ export const WrapSlotPickGrid = ({
   };
 
   const columnCount = Math.max(MIN_COLUMN_COUNT, visibleColumns.length);
-  const gridStyle: CustomPropertyStyle = { '--column-count': columnCount };
+  const gridStyle: CustomPropertyStyle = { "--column-count": columnCount };
 
   return (
     <div

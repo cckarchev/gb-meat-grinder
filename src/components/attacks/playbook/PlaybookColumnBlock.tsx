@@ -1,32 +1,30 @@
-import styles from '@/components/attacks/playbook/PlaybookColumnBlock.module.css';
+import styles from "@/components/attacks/playbook/PlaybookColumnBlock.module.css";
 import {
   PlaybookLineButton,
   type PlaybookLineLock,
-} from '@/components/attacks/playbook/PlaybookLineButton';
+} from "@/components/attacks/playbook/PlaybookLineButton";
 import {
   probHeatBackground,
   probHeatBorder,
   probHeatTextColor,
-} from '@/components/attacks/playbook/probStyle';
+} from "@/components/attacks/playbook/probStyle";
 import type {
   PlaybookChoiceId,
   PlaybookResult,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import type { WrapSlotColumn } from '@/core/playbook/wrapSlots';
-import { formatPercent } from '@/core/shared/format';
-import type { CustomPropertyStyle } from '@/styles/customProperties';
+} from "@/core/playbook/playbook.types";
+import type { WrapSlotColumn } from "@/core/playbook/wrapSlots";
+import { formatPercent } from "@/core/shared/format";
+import type { CustomPropertyStyle } from "@/styles/customProperties";
 
 const HIT_CHANCE_DIGITS = 1;
 
 /** Heat colors for a column head, read by the CSS module. */
-const columnHeadStyle = (hitChance: number): CustomPropertyStyle => {
-  return {
-    '--heat-background': probHeatBackground(hitChance),
-    '--heat-text': probHeatTextColor(hitChance),
-    '--heat-border': probHeatBorder(hitChance),
-  };
-};
+const columnHeadStyle = (hitChance: number): CustomPropertyStyle => ({
+  "--heat-background": probHeatBackground(hitChance),
+  "--heat-text": probHeatTextColor(hitChance),
+  "--heat-border": probHeatBorder(hitChance),
+});
 
 type PlaybookColumnBlockProps = {
   attackIndex: number;

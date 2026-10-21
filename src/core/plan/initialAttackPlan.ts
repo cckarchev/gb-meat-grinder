@@ -3,21 +3,21 @@
 import {
   activeBaseAttackCount,
   attackArraySize,
-} from '@/core/attacks/attackStructure';
-import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from '@/core/damage/damage';
-import type { AttackPlan } from '@/core/plan/attackPlan.types';
-import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
+} from "@/core/attacks/attackStructure";
+import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from "@/core/damage/damage";
+import type { AttackPlan } from "@/core/plan/attackPlan.types";
+import { clampAttackPlan } from "@/core/plan/clampAttackPlan";
 import {
   defaultCharacterPlayPicks,
   defaultWrapPicks,
-} from '@/core/playbook/wrapSlots';
+} from "@/core/playbook/wrapSlots";
 import {
   ARM_DEFAULT,
   DEF_DEFAULT,
   HP_DEFAULT,
   NO_ATTACK_INDEX,
-} from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 export const createInitialAttackPlan = (
   attacker: AttackerData,

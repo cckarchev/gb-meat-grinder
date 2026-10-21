@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
-import styles from '@/components/attacker/AttackerModelSelect.module.css';
-import { Select } from '@/components/ui/ui';
-import { groupAttackersByGuild } from '@/core/attackers/attackerGroups';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { useMemo } from "react";
+import styles from "@/components/attacker/AttackerModelSelect.module.css";
+import { Select } from "@/components/ui/ui";
+import { groupAttackersByGuild } from "@/core/attackers/attackerGroups";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
 
 /** Model picker, grouped by guild. */
 export const AttackerModelSelect = () => {
@@ -21,7 +21,7 @@ export const AttackerModelSelect = () => {
         className={styles.select}
         value={attacker.id}
         onChange={(event) =>
-          dispatch({ type: 'selectAttacker', id: event.target.value })
+          dispatch({ type: "selectAttacker", id: event.target.value })
         }
         aria-label="Select attacker model"
       >

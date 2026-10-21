@@ -1,17 +1,17 @@
-import type { DerivedSimulation } from '@/core/activation/simulation.types';
+import type { DerivedSimulation } from "@/core/activation/simulation.types";
 
 /** Engine results the components read; the rest stays internal to the hook. */
 export const UI_ENGINE_RESULT_KEYS = [
-  'activeBaseCount',
-  'effectiveChargeAttackIndex',
-  'effectiveWrapPicks',
-  'effectiveBonusTimeByAttack',
-  'ignoredDisplayIndex',
-  'attacks',
-  'timeline',
-  'rowDamageIfHit',
-  'flatDamage',
-  'killingBlowIndex',
+  "activeBaseCount",
+  "effectiveChargeAttackIndex",
+  "effectiveWrapPicks",
+  "effectiveBonusTimeByAttack",
+  "ignoredDisplayIndex",
+  "attacks",
+  "timeline",
+  "rowDamageIfHit",
+  "flatDamage",
+  "killingBlowIndex",
 ] as const satisfies readonly (keyof DerivedSimulation)[];
 
 export type UiEngineResults = Pick<
@@ -22,9 +22,7 @@ export type UiEngineResults = Pick<
 export const pickUiEngineResults = (
   derived: DerivedSimulation,
 ): UiEngineResults => {
-  const entries = UI_ENGINE_RESULT_KEYS.map((key) => {
-    return [key, derived[key]];
-  });
+  const entries = UI_ENGINE_RESULT_KEYS.map((key) => [key, derived[key]]);
 
   // `fromEntries` loses the key-to-value pairing the key list guarantees.
   return Object.fromEntries(entries) as UiEngineResults;

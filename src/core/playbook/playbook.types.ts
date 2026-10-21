@@ -119,7 +119,7 @@ export type PlaybookDamageMods = {
 };
 
 /** Playbook line button look for momentous damage pips (after Tough Hide / buffs). */
-export type MomentousLineStyle = 'heat' | 'zeroed' | 'none';
+export type MomentousLineStyle = "heat" | "zeroed" | "none";
 
 /** Per-pick character play slot; `null` when that pick is not GB / 1GB. */
 export type CharacterPlayPickSlot = CharacterPlayPick | null;

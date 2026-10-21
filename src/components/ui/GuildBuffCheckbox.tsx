@@ -1,8 +1,8 @@
-import { tooltipExcludedBuff } from '@/components/ui/guildBuffCopy';
-import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
-import { guildBuffIsExcluded } from '@/core/attackers/buffsAndTraits';
-import type { GuildBuff } from '@/data/guilds/guild.types';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { tooltipExcludedBuff } from "@/components/ui/guildBuffCopy";
+import { TooltipCheckbox } from "@/components/ui/TooltipCheckbox";
+import { guildBuffIsExcluded } from "@/core/attackers/buffsAndTraits";
+import type { GuildBuff } from "@/data/guilds/guild.types";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
 
 type GuildBuffCheckboxProps = {
   buff: GuildBuff;
@@ -22,7 +22,7 @@ export const GuildBuffCheckbox = ({ buff }: GuildBuffCheckboxProps) => {
     <TooltipCheckbox
       disabled={excluded}
       checked={!excluded && damageMods.buffs[buff.id] === true}
-      onChange={(value) => dispatch({ type: 'guildBuff', id: buff.id, value })}
+      onChange={(value) => dispatch({ type: "guildBuff", id: buff.id, value })}
       tooltip={tooltip}
     >
       {buff.label}

@@ -1,14 +1,14 @@
 /** Enemy DEF and ARM for a swing after stance, conditions and earlier plays. */
 
-import type { SwingState } from '@/core/attacks/activationTimeline.types';
-import { isChargeSwing } from '@/core/attacks/attackStructure';
-import { clamp } from '@/core/shared/clamp';
+import type { SwingState } from "@/core/attacks/activationTimeline.types";
+import { isChargeSwing } from "@/core/attacks/attackStructure";
+import { clamp } from "@/core/shared/clamp";
 import {
   ARM_MIN,
   DEF_MAX,
   DEF_MIN,
   DEFENSIVE_STANCE_DEF_BONUS,
-} from '@/core/shared/constants';
+} from "@/core/shared/constants";
 
 /**
  * Effective enemy DEF stat for this row: the charge into Defensive Stance gains
@@ -49,22 +49,16 @@ export const effectiveDefMinRoll = (
 export const tacBonusFromDefReductionCap = (
   baseDef: number,
   defReduction: number,
-): number => {
-  return Math.max(0, DEF_MIN - (baseDef - defReduction));
-};
+): number => Math.max(0, DEF_MIN - (baseDef - defReduction));
 
 /** Enemy ARM for a swing: the base minus what earlier swings left on the target. */
 export const armorForAttackRow = (
   baseArmor: number,
   state: SwingState,
-): number => {
-  return Math.max(ARM_MIN, baseArmor - state.effectsBefore.armorReduction);
-};
+): number => Math.max(ARM_MIN, baseArmor - state.effectsBefore.armorReduction);
 
 /** Enemy ARM once a swing lands, with the reductions it applies. */
 export const armorAfterAttackRow = (
   baseArmor: number,
   state: SwingState,
-): number => {
-  return Math.max(ARM_MIN, baseArmor - state.effectsAfter.armorReduction);
-};
+): number => Math.max(ARM_MIN, baseArmor - state.effectsAfter.armorReduction);

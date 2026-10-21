@@ -1,44 +1,42 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 import {
   type ScenarioStatsInput,
   scenarioEffectiveStats,
-} from '@/core/activation/scenarioStats';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { makeAttacker } from '@/core/testing/fixtures';
+} from "@/core/activation/scenarioStats";
+import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+import { makeAttacker } from "@/core/testing/fixtures";
 
 const attacker = makeAttacker();
 
 const input = (
   overrides: Partial<ScenarioStatsInput> = {},
-): ScenarioStatsInput => {
-  return {
-    influence: attacker.inf,
-    charging: false,
-    chargeAttackIndex: 1,
-    enemyDef: 5,
-    enemyKnockedDown: false,
-    enemySnared: false,
-    gangingUp: 0,
-    crowdingOut: 0,
-    ...overrides,
-  };
-};
+): ScenarioStatsInput => ({
+  influence: attacker.inf,
+  charging: false,
+  chargeAttackIndex: 1,
+  enemyDef: 5,
+  enemyKnockedDown: false,
+  enemySnared: false,
+  gangingUp: 0,
+  crowdingOut: 0,
+  ...overrides,
+});
 
-describe('scenarioEffectiveStats', () => {
-  it('buys one base attack per influence when not charging', () => {
+describe("scenarioEffectiveStats", () => {
+  it("buys one base attack per influence when not charging", () => {
     const stats = scenarioEffectiveStats(attacker, input());
 
     expect(stats.activeBaseCount).toBe(attacker.inf);
     expect(stats.effectiveChargeAttackIndex).toBe(NO_ATTACK_INDEX);
   });
 
-  it('uses the chosen charge row while charging', () => {
+  it("uses the chosen charge row while charging", () => {
     const stats = scenarioEffectiveStats(attacker, input({ charging: true }));
 
     expect(stats.effectiveChargeAttackIndex).toBe(1);
   });
 
-  it('applies Knocked Down and Snared to DEF', () => {
+  it("applies Knocked Down and Snared to DEF", () => {
     const stats = scenarioEffectiveStats(
       attacker,
       input({ enemyKnockedDown: true, enemySnared: true }),
@@ -49,7 +47,7 @@ describe('scenarioEffectiveStats', () => {
     expect(stats.effectiveEnemyDef).toBe(defKnockedDownAndSnared);
   });
 
-  it('nets Ganging Up against Crowding Out', () => {
+  it("nets Ganging Up against Crowding Out", () => {
     const stats = scenarioEffectiveStats(
       attacker,
       input({ gangingUp: 2, crowdingOut: 1 }),

@@ -1,12 +1,12 @@
-import styles from '@/components/attacks/plays/CharacterPlaySelection.module.css';
-import { PlayPill } from '@/components/attacks/plays/PlayPill';
+import styles from "@/components/attacks/plays/CharacterPlaySelection.module.css";
+import { PlayPill } from "@/components/attacks/plays/PlayPill";
 import {
   characterPlayEffectSummary,
   characterPlayHasEffect,
-} from '@/core/characterPlays/characterPlayEffects';
-import { characterPlayAvailabilityForPick } from '@/core/characterPlays/characterPlayUsage';
-import { attackOrdinal } from '@/core/shared/format';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+} from "@/core/characterPlays/characterPlayEffects";
+import { characterPlayAvailabilityForPick } from "@/core/characterPlays/characterPlayUsage";
+import { attackOrdinal } from "@/core/shared/format";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
 
 type CharacterPlaySelectionProps = {
   /** Slots of this swing whose pick grants a character play. */
@@ -60,7 +60,7 @@ export const CharacterPlaySelection = ({
       {actionable.map(({ pickIndex, available }, slotIndex) => {
         const pick = characterPlayPicks[attackIndex]?.[pickIndex];
         const slotOrdinal = slotIndex + 1;
-        const slotSuffix = multipleSlots ? `, play ${slotOrdinal}` : '';
+        const slotSuffix = multipleSlots ? `, play ${slotOrdinal}` : "";
 
         return (
           <div className={styles.slotRow} key={pickIndex}>
@@ -82,7 +82,7 @@ export const CharacterPlaySelection = ({
                     ariaLabel={`${play.label} (${summary}) for attack ${attackNumber}${slotSuffix}`}
                     onClick={() =>
                       dispatch({
-                        type: 'characterPlayPick',
+                        type: "characterPlayPick",
                         attackIndex,
                         pickIndex,
                         pick: play.id,

@@ -1,20 +1,20 @@
-import type { ReactNode } from 'react';
-import styles from '@/components/ui/ToggleGroup.module.css';
-import type { CustomPropertyStyle } from '@/styles/customProperties';
+import type { ReactNode } from "react";
+import styles from "@/components/ui/ToggleGroup.module.css";
+import type { CustomPropertyStyle } from "@/styles/customProperties";
 
 type ToggleGroupLayoutProps = {
   children: ReactNode;
 };
 
 /** Panel footer holding toggle groups stacked with even spacing. */
-export const ToggleGroupStack = ({ children }: ToggleGroupLayoutProps) => {
-  return <div className={styles.toggleGroupStack}>{children}</div>;
-};
+export const ToggleGroupStack = ({ children }: ToggleGroupLayoutProps) => (
+  <div className={styles.toggleGroupStack}>{children}</div>
+);
 
 /** Two toggle groups side by side, stacked on the narrowest screens. */
-export const ToggleGroupPair = ({ children }: ToggleGroupLayoutProps) => {
-  return <div className={styles.toggleGroupPair}>{children}</div>;
-};
+export const ToggleGroupPair = ({ children }: ToggleGroupLayoutProps) => (
+  <div className={styles.toggleGroupPair}>{children}</div>
+);
 
 type ToggleGroupProps = {
   title: string;
@@ -31,8 +31,8 @@ export const ToggleGroup = ({
   children,
 }: ToggleGroupProps) => {
   // An unset color leaves the CSS fallback (muted) in place.
-  const labelStyle: CustomPropertyStyle = { '--group-label-color': color };
-  const listStyle: CustomPropertyStyle = { '--group-columns': columns };
+  const labelStyle: CustomPropertyStyle = { "--group-label-color": color };
+  const listStyle: CustomPropertyStyle = { "--group-columns": columns };
 
   return (
     <section>

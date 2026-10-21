@@ -4,5 +4,5 @@ export const joinClassNames = (
 ): string => {
   const presentClassNames = classNames.filter(Boolean);
 
-  return presentClassNames.join(' ');
+  return presentClassNames.join(" ");
 };

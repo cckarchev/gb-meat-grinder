@@ -1,18 +1,18 @@
-import { lovedCreature, singledOut } from '@/data/guildBuffs';
-import type { Guild } from '@/data/guilds/guild.types';
+import { lovedCreature, singledOut } from "@/data/guildBuffs";
+import type { Guild } from "@/data/guilds/guild.types";
 
 export const lumberjacks: Guild = {
-  id: 'lumberjacks',
-  name: 'Lumberjacks',
-  color: '#416abb',
+  id: "lumberjacks",
+  name: "Lumberjacks",
+  color: "#416abb",
   buffs: [
     singledOut,
     lovedCreature,
     {
-      id: 'cutEmDown',
+      id: "cutEmDown",
       label: "Cut 'Em Down",
       tooltip: "Within Oak's melee zone, the enemy model suffers -1 DEF.",
-      target: 'enemy',
+      target: "enemy",
       defReduction: 1,
     },
   ],

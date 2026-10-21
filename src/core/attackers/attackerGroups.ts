@@ -1,13 +1,12 @@
-import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 type AttackerGroup = {
   name: string;
   models: AttackerData[];
 };
 
-const byName = (a: { name: string }, b: { name: string }): number => {
-  return a.name.localeCompare(b.name);
-};
+const byName = (a: { name: string }, b: { name: string }): number =>
+  a.name.localeCompare(b.name);
 
 /** Models grouped by guild for the model picker, guilds and models by name. */
 export const groupAttackersByGuild = (

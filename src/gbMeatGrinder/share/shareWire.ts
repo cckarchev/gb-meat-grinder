@@ -4,13 +4,13 @@
  * blob.
  */
 
-import { toBase64Url } from '@/core/shared/base64Url';
-import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
-import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
-import { attackerOf } from '@/gbMeatGrinder/reducer/stateSelectors';
+import { toBase64Url } from "@/core/shared/base64Url";
+import { stateForAttacker } from "@/gbMeatGrinder/reducer/meatGrinderInitialState";
+import type { MeatGrinderState } from "@/gbMeatGrinder/reducer/reducer.types";
+import { attackerOf } from "@/gbMeatGrinder/reducer/stateSelectors";
 
-export const SHARE_MODEL_PARAM = 'model';
-export const SHARE_STATE_PARAM = 's';
+export const SHARE_MODEL_PARAM = "model";
+export const SHARE_STATE_PARAM = "s";
 
 export const SHARE_WIRE_VERSION = 1;
 
@@ -54,9 +54,8 @@ type ShareWire = {
 /** A partial wire: the compact one written to a link, or whatever a link holds. */
 export type WireFields = Partial<Record<keyof ShareWire, unknown>>;
 
-const activeIds = (flags: Record<string, boolean>): string[] => {
-  return Object.keys(flags).filter((id) => flags[id]);
-};
+const activeIds = (flags: Record<string, boolean>): string[] =>
+  Object.keys(flags).filter((id) => flags[id]);
 
 /** `items` without the run of trailing entries `isDroppable` accepts. */
 const withoutTrailing = <T>(
@@ -79,51 +78,47 @@ const withoutTrailing = <T>(
 };
 
 /** Empty slots at the end of a row replay as no-ops, so they are left out. */
-const withoutTrailingEmptySlots = (row: readonly Slot[]): Slot[] => {
-  return withoutTrailing(row, (slot) => slot === null);
-};
+const withoutTrailingEmptySlots = (row: readonly Slot[]): Slot[] =>
+  withoutTrailing(row, (slot) => slot === null);
 
-const wireOf = (state: MeatGrinderState): ShareWire => {
-  return {
-    v: SHARE_WIRE_VERSION,
-    d: state.enemyDef,
-    a: state.armor,
-    h: state.hp,
-    i: state.influence,
-    c: state.charging,
-    ci: state.chargeAttackIndex,
-    cv: state.enemyHasCover,
-    ds: state.enemyDefensiveStance,
-    kd: state.enemyKnockedDown,
-    sn: state.enemySnared,
-    rs: state.enemyResilience,
-    m: state.startingMomentum,
-    g: state.gangingUp,
-    co: state.crowdingOut,
-    th: state.damageMods.toughHide,
-    bu: state.damageMods.targetBurning,
-    ae: state.damageMods.assistEngaged,
-    b: activeIds(state.damageMods.buffs),
-    t: activeIds(state.activeTraits),
-    bt: state.bonusTimeByAttack,
-    w: state.attackPlan.wrapPicks.map(withoutTrailingEmptySlots),
-    p: state.attackPlan.characterPlayPicks.map(withoutTrailingEmptySlots),
-  };
-};
+const wireOf = (state: MeatGrinderState): ShareWire => ({
+  v: SHARE_WIRE_VERSION,
+  d: state.enemyDef,
+  a: state.armor,
+  h: state.hp,
+  i: state.influence,
+  c: state.charging,
+  ci: state.chargeAttackIndex,
+  cv: state.enemyHasCover,
+  ds: state.enemyDefensiveStance,
+  kd: state.enemyKnockedDown,
+  sn: state.enemySnared,
+  rs: state.enemyResilience,
+  m: state.startingMomentum,
+  g: state.gangingUp,
+  co: state.crowdingOut,
+  th: state.damageMods.toughHide,
+  bu: state.damageMods.targetBurning,
+  ae: state.damageMods.assistEngaged,
+  b: activeIds(state.damageMods.buffs),
+  t: activeIds(state.activeTraits),
+  bt: state.bonusTimeByAttack,
+  w: state.attackPlan.wrapPicks.map(withoutTrailingEmptySlots),
+  p: state.attackPlan.characterPlayPicks.map(withoutTrailingEmptySlots),
+});
 
 type WireValue = ShareWire[keyof ShareWire];
 
-const sameWireValue = (a: unknown, b: unknown): boolean => {
-  return JSON.stringify(a) === JSON.stringify(b);
-};
+const sameWireValue = (a: unknown, b: unknown): boolean =>
+  JSON.stringify(a) === JSON.stringify(b);
 
 /** The part of `value` a decoder starting from `defaultValue` needs, or `undefined`. */
 const wireDelta = (value: WireValue, defaultValue: WireValue): unknown => {
   if (Array.isArray(value) && Array.isArray(defaultValue)) {
     // Trailing entries that match the defaults index by index are left out.
-    const kept = withoutTrailing<unknown>(value, (item, index) => {
-      return sameWireValue(item, defaultValue[index]);
-    });
+    const kept = withoutTrailing<unknown>(value, (item, index) =>
+      sameWireValue(item, defaultValue[index]),
+    );
 
     return kept.length > 0 ? kept : undefined;
   }
@@ -155,7 +150,7 @@ export const shareParamsOf = (state: MeatGrinderState): URLSearchParams => {
   const defaults = stateForAttacker(attackerOf(state));
   const compact = compactWire(wireOf(state), wireOf(defaults));
   const params = new URLSearchParams({ [SHARE_MODEL_PARAM]: state.attackerId });
-  const hasChoices = Object.keys(compact).some((key) => key !== 'v');
+  const hasChoices = Object.keys(compact).some((key) => key !== "v");
 
   if (hasChoices) {
     params.set(SHARE_STATE_PARAM, toBase64Url(JSON.stringify(compact)));

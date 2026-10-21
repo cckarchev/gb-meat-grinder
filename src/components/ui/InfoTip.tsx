@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
-import styles from '@/components/ui/InfoTip.module.css';
-import { TooltipBubble } from '@/components/ui/TooltipBubble';
-import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
+import type { ReactNode } from "react";
+import styles from "@/components/ui/InfoTip.module.css";
+import { TooltipBubble } from "@/components/ui/TooltipBubble";
+import { useTooltipOpen } from "@/components/ui/useTooltipOpen";
 
 type InfoTipProps = {
   content: string;

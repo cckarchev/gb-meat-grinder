@@ -1,27 +1,27 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 import {
   effectiveBonusTimeForResilience,
   effectiveCharacterPlayPicksForResilience,
   effectiveWrapPicksForResilience,
   resilienceIgnoredAttackIndex,
-} from '@/core/damage/resilience';
-import { makeAttacker, orderFor } from '@/core/testing/fixtures';
+} from "@/core/damage/resilience";
+import { makeAttacker, orderFor } from "@/core/testing/fixtures";
 
 const RESILIENT = true;
 const NOT_RESILIENT = false;
 const NONE_IGNORED = -1;
 
-describe('resilienceIgnoredAttackIndex', () => {
+describe("resilienceIgnoredAttackIndex", () => {
   const attacker = makeAttacker();
-  const wrapPicks = [['one'], ['two']];
+  const wrapPicks = [["one"], ["two"]];
 
-  it('is the first swing in activation order for a Resilient target', () => {
+  it("is the first swing in activation order for a Resilient target", () => {
     expect(
       resilienceIgnoredAttackIndex(orderFor(attacker, 2), wrapPicks, RESILIENT),
     ).toBe(0);
   });
 
-  it('is -1 when the target is not Resilient or nothing swings', () => {
+  it("is -1 when the target is not Resilient or nothing swings", () => {
     expect(
       resilienceIgnoredAttackIndex(
         orderFor(attacker, 2),
@@ -36,20 +36,20 @@ describe('resilienceIgnoredAttackIndex', () => {
   });
 });
 
-describe('effective plan copies', () => {
-  it('blank only the ignored row', () => {
+describe("effective plan copies", () => {
+  it("blank only the ignored row", () => {
     expect(
-      effectiveWrapPicksForResilience([['one', 'two'], ['four']], 0),
-    ).toEqual([[null, null], ['four']]);
+      effectiveWrapPicksForResilience([["one", "two"], ["four"]], 0),
+    ).toEqual([[null, null], ["four"]]);
 
     expect(
-      effectiveCharacterPlayPicksForResilience([['playTac'], ['playDef']], 1),
-    ).toEqual([['playTac'], [null]]);
+      effectiveCharacterPlayPicksForResilience([["playTac"], ["playDef"]], 1),
+    ).toEqual([["playTac"], [null]]);
   });
 
-  it('return the input unchanged when nothing is ignored', () => {
-    const wrapPicks = [['one']];
-    const characterPlayPicks = [['playTac']];
+  it("return the input unchanged when nothing is ignored", () => {
+    const wrapPicks = [["one"]];
+    const characterPlayPicks = [["playTac"]];
 
     expect(effectiveWrapPicksForResilience(wrapPicks, NONE_IGNORED)).toBe(
       wrapPicks,
@@ -63,7 +63,7 @@ describe('effective plan copies', () => {
     ).toBe(characterPlayPicks);
   });
 
-  it('force Bonus Time off on the ignored swing without mutating input', () => {
+  it("force Bonus Time off on the ignored swing without mutating input", () => {
     const bonusTime = [true, true];
 
     expect(effectiveBonusTimeForResilience(bonusTime, 0)).toEqual([

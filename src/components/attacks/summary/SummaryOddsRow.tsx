@@ -1,15 +1,15 @@
-import styles from '@/components/attacks/summary/attacksSummary.module.css';
-import { Mono } from '@/components/ui/ui';
-import { swingDamageMods } from '@/core/attacks/activationTimeline';
-import { attackKindLabel } from '@/core/attacks/attackKind';
-import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
-import { rowHasWrapPick } from '@/core/playbook/wrapSlots';
+import styles from "@/components/attacks/summary/attacksSummary.module.css";
+import { Mono } from "@/components/ui/ui";
+import { swingDamageMods } from "@/core/attacks/activationTimeline";
+import { attackKindLabel } from "@/core/attacks/attackKind";
+import { formatWrapRowSelectionLabel } from "@/core/playbook/playbookLabels";
+import { rowHasWrapPick } from "@/core/playbook/wrapSlots";
 import {
   attackOrdinal,
   EMPTY_VALUE_LABEL,
   formatPercent,
-} from '@/core/shared/format';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+} from "@/core/shared/format";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
 
 type SummaryOddsRowProps = {
   attackIndex: number;
@@ -42,9 +42,9 @@ export const SummaryOddsRow = ({
   return (
     <div className={styles.summaryRow}>
       <span className={styles.selectionLine}>
-        <Mono>{attackOrdinal(displayIndex)}</Mono>.{' '}
+        <Mono>{attackOrdinal(displayIndex)}</Mono>.{" "}
         {attackKindLabel(attacker, attackIndex, effectiveChargeAttackIndex)}
-        {' -> '}
+        {" -> "}
         <span className={styles.selectionPicksInline}>
           {formatWrapRowSelectionLabel(attacker, rowPicks ?? [], swingMods)}
         </span>

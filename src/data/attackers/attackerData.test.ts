@@ -4,12 +4,12 @@
  * rather than surface as a wrong number in the UI.
  */
 
-import { describe, expect, it } from 'vitest';
-import { ATTACKERS } from '@/data/attackers/registry';
-import type { Guild } from '@/data/guilds/guild.types';
+import { describe, expect, it } from "vitest";
+import { ATTACKERS } from "@/data/attackers/registry";
+import type { Guild } from "@/data/guilds/guild.types";
 
 const guildModules = import.meta.glob<Record<string, Guild>>(
-  ['@/data/guilds/*.ts', '!@/data/guilds/*.types.ts'],
+  ["@/data/guilds/*.ts", "!@/data/guilds/*.types.ts"],
   {
     eager: true,
   },
@@ -19,20 +19,19 @@ const GUILDS = Object.values(guildModules).flatMap((module) =>
   Object.values(module),
 );
 
-const duplicatesOf = (values: readonly string[]): string[] => {
-  return values.filter((value, index) => values.indexOf(value) !== index);
-};
+const duplicatesOf = (values: readonly string[]): string[] =>
+  values.filter((value, index) => values.indexOf(value) !== index);
 
-describe('attacker registry', () => {
-  it('has unique model ids', () => {
+describe("attacker registry", () => {
+  it("has unique model ids", () => {
     expect(duplicatesOf(ATTACKERS.map((attacker) => attacker.id))).toEqual([]);
   });
 });
 
-describe.each(ATTACKERS)('$name data', (attacker) => {
+describe.each(ATTACKERS)("$name data", (attacker) => {
   const results = attacker.playbook.flatMap((column) => column.results);
 
-  it('has sane base stats and ranges', () => {
+  it("has sane base stats and ranges", () => {
     expect(attacker.tac).toBeGreaterThan(0);
     expect(attacker.inf).toBeGreaterThanOrEqual(0);
 
@@ -45,7 +44,7 @@ describe.each(ATTACKERS)('$name data', (attacker) => {
     }
   });
 
-  it('has playbook columns in strictly ascending order from net 1', () => {
+  it("has playbook columns in strictly ascending order from net 1", () => {
     const nets = attacker.playbook.map((column) => column.netSuccesses);
     const sorted = [...nets].sort((a, b) => a - b);
 
@@ -54,7 +53,7 @@ describe.each(ATTACKERS)('$name data', (attacker) => {
     expect(new Set(nets).size).toBe(nets.length);
   });
 
-  it('has unique result ids with non-negative damage and a label', () => {
+  it("has unique result ids with non-negative damage and a label", () => {
     expect(duplicatesOf(results.map((result) => result.id))).toEqual([]);
 
     for (const result of results) {
@@ -63,7 +62,7 @@ describe.each(ATTACKERS)('$name data', (attacker) => {
     }
   });
 
-  it('lists character plays when any result picks one', () => {
+  it("lists character plays when any result picks one", () => {
     const picksPlay = results.some((result) => result.picksCharacterPlay);
 
     if (!picksPlay) {
@@ -73,7 +72,7 @@ describe.each(ATTACKERS)('$name data', (attacker) => {
     expect(attacker.characterPlays?.length ?? 0).toBeGreaterThan(0);
   });
 
-  it('only excludes buffs its guild actually grants', () => {
+  it("only excludes buffs its guild actually grants", () => {
     const guildBuffIds = attacker.guild.buffs.map((buff) => buff.id);
 
     for (const excluded of attacker.excludedGuildBuffs ?? []) {
@@ -81,7 +80,7 @@ describe.each(ATTACKERS)('$name data', (attacker) => {
     }
   });
 
-  it('has unique traits, and every active trait deals damage', () => {
+  it("has unique traits, and every active trait deals damage", () => {
     const traits = attacker.characterTraits ?? [];
 
     expect(duplicatesOf(traits.map((trait) => trait.id))).toEqual([]);
@@ -92,12 +91,12 @@ describe.each(ATTACKERS)('$name data', (attacker) => {
   });
 });
 
-describe('guild data', () => {
-  it('loads every guild module', () => {
+describe("guild data", () => {
+  it("loads every guild module", () => {
     expect(GUILDS.length).toBe(Object.keys(guildModules).length);
   });
 
-  it('has unique guild ids and hex colors', () => {
+  it("has unique guild ids and hex colors", () => {
     expect(duplicatesOf(GUILDS.map((guild) => guild.id))).toEqual([]);
 
     for (const guild of GUILDS) {
@@ -105,7 +104,7 @@ describe('guild data', () => {
     }
   });
 
-  it.each(GUILDS)('$name has unique buff ids', (guild) => {
+  it.each(GUILDS)("$name has unique buff ids", (guild) => {
     expect(duplicatesOf(guild.buffs.map((buff) => buff.id))).toEqual([]);
   });
 });

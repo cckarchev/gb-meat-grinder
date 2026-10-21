@@ -28,7 +28,7 @@
 
 /* Sized in `em` so it scales with the rail's narrow-viewport font size. */
 .caption {
-  composes: monoCapsLabel from '../../../styles/mixins.module.css';
+  composes: monoCapsLabel from "../../../styles/mixins.module.css";
   grid-column: 1;
   justify-self: end;
   margin-right: var(--space-xs);

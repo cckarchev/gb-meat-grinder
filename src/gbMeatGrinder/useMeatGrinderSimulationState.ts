@@ -1,24 +1,23 @@
-import { useEffect, useMemo, useReducer } from 'react';
-import { deriveSimulation } from '@/core/activation/simulation';
-import { ATTACKERS } from '@/data/attackers/registry';
-import type { MeatGrinderSimulation } from '@/gbMeatGrinder/meatGrinderSimulation.types';
-import { createInitialMeatGrinderState } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
-import { meatGrinderReducer } from '@/gbMeatGrinder/reducer/meatGrinderReducer';
-import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
-import { attackerOf } from '@/gbMeatGrinder/reducer/stateSelectors';
+import { useEffect, useMemo, useReducer } from "react";
+import { deriveSimulation } from "@/core/activation/simulation";
+import { ATTACKERS } from "@/data/attackers/registry";
+import type { MeatGrinderSimulation } from "@/gbMeatGrinder/meatGrinderSimulation.types";
+import { createInitialMeatGrinderState } from "@/gbMeatGrinder/reducer/meatGrinderInitialState";
+import { meatGrinderReducer } from "@/gbMeatGrinder/reducer/meatGrinderReducer";
+import type { MeatGrinderState } from "@/gbMeatGrinder/reducer/reducer.types";
+import { attackerOf } from "@/gbMeatGrinder/reducer/stateSelectors";
 import {
   appUrl,
   clearLaunchParams,
   launchSharedState,
-} from '@/gbMeatGrinder/share/launchUrl';
-import { buildShareUrl } from '@/gbMeatGrinder/share/shareUrl';
-import { shareParamsOf } from '@/gbMeatGrinder/share/shareWire';
-import { pickUiEngineResults } from '@/gbMeatGrinder/uiEngineResults';
+} from "@/gbMeatGrinder/share/launchUrl";
+import { buildShareUrl } from "@/gbMeatGrinder/share/shareUrl";
+import { shareParamsOf } from "@/gbMeatGrinder/share/shareWire";
+import { pickUiEngineResults } from "@/gbMeatGrinder/uiEngineResults";
 
 /** The shared state the app was opened with, else a random model. */
-const createLaunchState = (): MeatGrinderState => {
-  return launchSharedState() ?? createInitialMeatGrinderState();
-};
+const createLaunchState = (): MeatGrinderState =>
+  launchSharedState() ?? createInitialMeatGrinderState();
 
 export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
   const [state, dispatch] = useReducer(

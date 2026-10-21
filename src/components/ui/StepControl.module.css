@@ -18,7 +18,7 @@
   }
 
   .stepButton {
-    composes: inputButton from '../../styles/mixins.module.css';
+    composes: inputButton from "../../styles/mixins.module.css";
     font-size: var(--font-size-lg);
     line-height: var(--line-height-none);
     width: 2.25rem;
@@ -33,7 +33,7 @@
 
   /* A read-only field: the input surface with tabular mono numerals. */
   .valueDisplay {
-    composes: inputSurface tabularMono from '../../styles/mixins.module.css';
+    composes: inputSurface tabularMono from "../../styles/mixins.module.css";
     flex: 1;
     min-width: 5.5rem;
     text-align: center;

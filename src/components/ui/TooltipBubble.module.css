@@ -23,12 +23,12 @@
     text-transform: none;
   }
 
-  .tooltipBubble[data-size='compact'] {
+  .tooltipBubble[data-size="compact"] {
     --bubble-max-width: 16rem;
     --bubble-font-size: var(--font-size-xs);
   }
 
-  .tooltipBubble[data-size='regular'] {
+  .tooltipBubble[data-size="regular"] {
     --bubble-max-width: 18rem;
     --bubble-font-size: var(--font-size-sm);
   }

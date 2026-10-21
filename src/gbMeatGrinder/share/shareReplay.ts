@@ -4,10 +4,10 @@
  * validation and clamping as clicks in the UI.
  */
 
-import { availableBuffs } from '@/core/attackers/buffsAndTraits';
-import { playbookIndex } from '@/core/playbook/playbookIndex';
-import { fromBase64Url } from '@/core/shared/base64Url';
-import { clamp } from '@/core/shared/clamp';
+import { availableBuffs } from "@/core/attackers/buffsAndTraits";
+import { playbookIndex } from "@/core/playbook/playbookIndex";
+import { fromBase64Url } from "@/core/shared/base64Url";
+import { clamp } from "@/core/shared/clamp";
 import {
   ARM_MAX,
   ARM_MIN,
@@ -15,51 +15,46 @@ import {
   DEF_MIN,
   HP_MAX,
   HP_MIN,
-} from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
-import { findAttackerById } from '@/data/attackers/registry';
-import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
-import { meatGrinderReducer } from '@/gbMeatGrinder/reducer/meatGrinderReducer';
+} from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { findAttackerById } from "@/data/attackers/registry";
+import { stateForAttacker } from "@/gbMeatGrinder/reducer/meatGrinderInitialState";
+import { meatGrinderReducer } from "@/gbMeatGrinder/reducer/meatGrinderReducer";
 import type {
   BooleanActionType,
   MeatGrinderAction,
   MeatGrinderState,
   NumberActionType,
-} from '@/gbMeatGrinder/reducer/reducer.types';
-import { attackerOf } from '@/gbMeatGrinder/reducer/stateSelectors';
+} from "@/gbMeatGrinder/reducer/reducer.types";
+import { attackerOf } from "@/gbMeatGrinder/reducer/stateSelectors";
 import {
   SHARE_MODEL_PARAM,
   SHARE_STATE_PARAM,
   SHARE_WIRE_VERSION,
   type Slot,
   type WireFields,
-} from '@/gbMeatGrinder/share/shareWire';
+} from "@/gbMeatGrinder/share/shareWire";
 
 const readNumber = (value: unknown): number | undefined => {
-  const isFiniteNumber = typeof value === 'number' && Number.isFinite(value);
+  const isFiniteNumber = typeof value === "number" && Number.isFinite(value);
 
   return isFiniteNumber ? value : undefined;
 };
 
-const readBoolean = (value: unknown): boolean | undefined => {
-  return typeof value === 'boolean' ? value : undefined;
-};
+const readBoolean = (value: unknown): boolean | undefined =>
+  typeof value === "boolean" ? value : undefined;
 
-const readArray = (value: unknown): unknown[] => {
-  return Array.isArray(value) ? value : [];
-};
+const readArray = (value: unknown): unknown[] =>
+  Array.isArray(value) ? value : [];
 
-const readStrings = (value: unknown): string[] => {
-  return readArray(value).filter((item) => typeof item === 'string');
-};
+const readStrings = (value: unknown): string[] =>
+  readArray(value).filter((item) => typeof item === "string");
 
-const readSlot = (value: unknown): Slot => {
-  return typeof value === 'string' ? value : null;
-};
+const readSlot = (value: unknown): Slot =>
+  typeof value === "string" ? value : null;
 
-const readGrid = (value: unknown): Slot[][] => {
-  return readArray(value).map((row) => readArray(row).map(readSlot));
-};
+const readGrid = (value: unknown): Slot[][] =>
+  readArray(value).map((row) => readArray(row).map(readSlot));
 
 /** The wire's fields, or `null` when the blob is unreadable or another version. */
 const parseWire = (encoded: string): WireFields | null => {
@@ -71,9 +66,9 @@ const parseWire = (encoded: string): WireFields | null => {
 
   try {
     const parsed: unknown = JSON.parse(json);
-    const isObject = typeof parsed === 'object' && parsed !== null;
+    const isObject = typeof parsed === "object" && parsed !== null;
 
-    if (!isObject || !('v' in parsed) || parsed.v !== SHARE_WIRE_VERSION) {
+    if (!isObject || !("v" in parsed) || parsed.v !== SHARE_WIRE_VERSION) {
       return null;
     }
 
@@ -133,36 +128,36 @@ const setupActions = (
 
   for (const id of readStrings(wire.t)) {
     if (traitIds.has(id)) {
-      actions.push({ type: 'activeTrait', id, value: true });
+      actions.push({ type: "activeTrait", id, value: true });
     }
   }
 
-  addNumber('influence', wire.i);
-  addBoolean('charging', wire.c);
-  addNumber('chargeAttackIndex', wire.ci);
+  addNumber("influence", wire.i);
+  addBoolean("charging", wire.c);
+  addNumber("chargeAttackIndex", wire.ci);
 
-  addNumber('enemyDef', wire.d, DEF_MIN, DEF_MAX);
-  addNumber('armor', wire.a, ARM_MIN, ARM_MAX);
-  addNumber('hp', wire.h, HP_MIN, HP_MAX);
-  addBoolean('enemyHasCover', wire.cv);
-  addBoolean('enemyDefensiveStance', wire.ds);
-  addBoolean('enemyKnockedDown', wire.kd);
-  addBoolean('enemySnared', wire.sn);
-  addBoolean('enemyResilience', wire.rs);
+  addNumber("enemyDef", wire.d, DEF_MIN, DEF_MAX);
+  addNumber("armor", wire.a, ARM_MIN, ARM_MAX);
+  addNumber("hp", wire.h, HP_MIN, HP_MAX);
+  addBoolean("enemyHasCover", wire.cv);
+  addBoolean("enemyDefensiveStance", wire.ds);
+  addBoolean("enemyKnockedDown", wire.kd);
+  addBoolean("enemySnared", wire.sn);
+  addBoolean("enemyResilience", wire.rs);
 
-  addBoolean('toughHide', wire.th);
-  addBoolean('targetBurning', wire.bu);
-  addBoolean('assistEngaged', wire.ae);
+  addBoolean("toughHide", wire.th);
+  addBoolean("targetBurning", wire.bu);
+  addBoolean("assistEngaged", wire.ae);
 
   for (const id of readStrings(wire.b)) {
     if (buffIds.has(id)) {
-      actions.push({ type: 'guildBuff', id, value: true });
+      actions.push({ type: "guildBuff", id, value: true });
     }
   }
 
-  addNumber('startingMomentum', wire.m);
-  addNumber('gangingUp', wire.g);
-  addNumber('crowdingOut', wire.co);
+  addNumber("startingMomentum", wire.m);
+  addNumber("gangingUp", wire.g);
+  addNumber("crowdingOut", wire.co);
 
   return actions;
 };
@@ -183,13 +178,11 @@ const attackReplaysOf = (
   const wrapGrid = readGrid(wire.w);
   const playGrid = readGrid(wire.p);
 
-  return Array.from({ length: attackCount }, (_, attackIndex) => {
-    return {
-      bonusTime: readBoolean(bonusTimes[attackIndex]),
-      wrapRow: wrapGrid[attackIndex] ?? [],
-      playRow: playGrid[attackIndex] ?? [],
-    };
-  });
+  return Array.from({ length: attackCount }, (_, attackIndex) => ({
+    bonusTime: readBoolean(bonusTimes[attackIndex]),
+    wrapRow: wrapGrid[attackIndex] ?? [],
+    playRow: playGrid[attackIndex] ?? [],
+  }));
 };
 
 /**
@@ -208,7 +201,7 @@ const replayAttack = (
 
   if (bonusTime !== undefined) {
     next = meatGrinderReducer(next, {
-      type: 'bonusTime',
+      type: "bonusTime",
       attackIndex,
       value: bonusTime,
     });
@@ -225,7 +218,7 @@ const replayAttack = (
     }
 
     next = meatGrinderReducer(next, {
-      type: 'wrapChoice',
+      type: "wrapChoice",
       attackIndex,
       pickIndex,
       id,
@@ -238,7 +231,7 @@ const replayAttack = (
     }
 
     next = meatGrinderReducer(next, {
-      type: 'characterPlayPick',
+      type: "characterPlayPick",
       attackIndex,
       pickIndex,
       pick: play,
@@ -281,7 +274,7 @@ export const stateFromShareParams = (
     return null;
   }
 
-  const encoded = params.get(SHARE_STATE_PARAM) ?? '';
+  const encoded = params.get(SHARE_STATE_PARAM) ?? "";
   const wire = parseWire(encoded);
 
   if (!wire) {

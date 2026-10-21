@@ -1,20 +1,20 @@
-import styles from '@/components/attacks/playbook/PlaybookLineButton.module.css';
-import { momentousLineStyle } from '@/core/activation/momentousLines';
-import { swingDamageMods } from '@/core/attacks/activationTimeline';
-import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
-import { playbookLineDisplaySegments } from '@/core/playbook/playbookLabels';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-import { dataFlag } from '@/styles/dataFlag';
-import { guildColorStyle } from '@/styles/guildColorStyle';
+import styles from "@/components/attacks/playbook/PlaybookLineButton.module.css";
+import { momentousLineStyle } from "@/core/activation/momentousLines";
+import { swingDamageMods } from "@/core/attacks/activationTimeline";
+import type { PlaybookChoiceId } from "@/core/playbook/playbook.types";
+import { playbookLineDisplaySegments } from "@/core/playbook/playbookLabels";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
+import { dataFlag } from "@/styles/dataFlag";
+import { guildColorStyle } from "@/styles/guildColorStyle";
 
 /** Why a line cannot be picked: its once-per-activation effect is already used. */
-export type PlaybookLineLock = 'knockDown' | 'tackle';
+export type PlaybookLineLock = "knockDown" | "tackle";
 
 const LOCKED_TITLES: Record<PlaybookLineLock, string> = {
   knockDown:
-    'Knock Down unavailable: the target is already Knocked Down or an earlier pick knocks it down (only one KD applies)',
+    "Knock Down unavailable: the target is already Knocked Down or an earlier pick knocks it down (only one KD applies)",
   tackle:
-    'Tackle unavailable: an earlier pick already tackled and took the ball (only one Tackle applies)',
+    "Tackle unavailable: an earlier pick already tackled and took the ball (only one Tackle applies)",
 };
 
 type PlaybookLineButtonProps = {
@@ -42,7 +42,7 @@ export const PlaybookLineButton = ({
   const swingMods = swingDamageMods(damageMods, timeline, attackIndex);
   const momentousStyle = momentousLineStyle(attacker, id, swingMods);
   const segments = playbookLineDisplaySegments(attacker, id, swingMods);
-  const action = selected ? 'Selected' : 'Select';
+  const action = selected ? "Selected" : "Select";
   const locked = lock !== undefined;
   const lockedTitle = locked ? LOCKED_TITLES[lock] : undefined;
 
@@ -55,7 +55,7 @@ export const PlaybookLineButton = ({
       data-momentous={momentousStyle}
       data-selected={dataFlag(selected)}
       aria-pressed={selected}
-      aria-label={`${action} playbook result ${segments.join(' ')}, ${hitChanceLabel} to hit`}
+      aria-label={`${action} playbook result ${segments.join(" ")}, ${hitChanceLabel} to hit`}
       title={lockedTitle}
       onClick={onClick}
     >

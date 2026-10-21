@@ -1,7 +1,7 @@
 /** Per-swing attack roll context produced by `computeAttackSequence`. */
 
-import type { PlaybookDamageMods } from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { PlaybookDamageMods } from "@/core/playbook/playbook.types";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /** Activation-wide inputs every swing's TAC, DEF and ARM are computed from. */
 export type ActivationRollParams = {
@@ -34,7 +34,7 @@ export type ActivationRollParams = {
  */
 export type ActivationOrderParams = Pick<
   ActivationRollParams,
-  'attacker' | 'damageMods' | 'activeBaseCount'
+  "attacker" | "damageMods" | "activeBaseCount"
 >;
 
 export type AttackRollContext = {
@@ -55,4 +55,4 @@ export type AttackRollContext = {
 };
 
 /** Kind of swing a row represents (charge / berserker / base). */
-export type AttackKind = 'charge' | 'berserker' | 'base';
+export type AttackKind = "charge" | "berserker" | "base";

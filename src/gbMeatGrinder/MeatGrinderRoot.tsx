@@ -1,12 +1,12 @@
-import { AttackerPanel } from '@/components/attacker/AttackerPanel';
-import { AttacksPanel } from '@/components/attacks/AttacksPanel';
-import { EnemyPanel } from '@/components/enemy/EnemyPanel';
-import { SetupPanelsRow } from '@/components/ui/SetupPanelsRow';
-import { ShareButton } from '@/components/ui/ShareButton';
-import { ToggleButton } from '@/components/ui/ToggleButton';
-import styles from '@/gbMeatGrinder/MeatGrinderRoot.module.css';
-import { MeatGrinderSimulationContext } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-import { useMeatGrinderSimulationState } from '@/gbMeatGrinder/useMeatGrinderSimulationState';
+import { AttackerPanel } from "@/components/attacker/AttackerPanel";
+import { AttacksPanel } from "@/components/attacks/AttacksPanel";
+import { EnemyPanel } from "@/components/enemy/EnemyPanel";
+import { SetupPanelsRow } from "@/components/ui/SetupPanelsRow";
+import { ShareButton } from "@/components/ui/ShareButton";
+import { ToggleButton } from "@/components/ui/ToggleButton";
+import styles from "@/gbMeatGrinder/MeatGrinderRoot.module.css";
+import { MeatGrinderSimulationContext } from "@/gbMeatGrinder/useMeatGrinderSimulation";
+import { useMeatGrinderSimulationState } from "@/gbMeatGrinder/useMeatGrinderSimulationState";
 
 export const MeatGrinderRoot = () => {
   const simulation = useMeatGrinderSimulationState();
@@ -31,7 +31,7 @@ export const MeatGrinderRoot = () => {
           <ToggleButton
             className={styles.resetButton}
             type="button"
-            onClick={() => simulation.dispatch({ type: 'reset' })}
+            onClick={() => simulation.dispatch({ type: "reset" })}
           >
             Reset
           </ToggleButton>

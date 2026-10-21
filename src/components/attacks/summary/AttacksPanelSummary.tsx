@@ -1,18 +1,18 @@
-import { useMemo } from 'react';
-import styles from '@/components/attacks/summary/attacksSummary.module.css';
+import { useMemo } from "react";
+import styles from "@/components/attacks/summary/attacksSummary.module.css";
 import {
   TOOLTIP_DAMAGE_RANGE,
   TOOLTIP_EXPECTED_DAMAGE,
   TOOLTIP_HP_LEFT,
   TOOLTIP_KILL,
   TOOLTIP_PLAN_FAILS,
-} from '@/components/attacks/summary/attacksSummaryCopy';
-import { SummaryOddsRow } from '@/components/attacks/summary/SummaryOddsRow';
-import { SummaryStat } from '@/components/attacks/summary/SummaryStat';
-import { useActivationInput } from '@/components/attacks/useActivationInput';
-import { PanelTitle } from '@/components/ui/ui';
-import { summarizeActivation } from '@/core/activation/summary/activationSummary';
-import { formatPercent, formatRange, formatSigned } from '@/core/shared/format';
+} from "@/components/attacks/summary/attacksSummaryCopy";
+import { SummaryOddsRow } from "@/components/attacks/summary/SummaryOddsRow";
+import { SummaryStat } from "@/components/attacks/summary/SummaryStat";
+import { useActivationInput } from "@/components/attacks/useActivationInput";
+import { PanelTitle } from "@/components/ui/ui";
+import { summarizeActivation } from "@/core/activation/summary/activationSummary";
+import { formatPercent, formatRange, formatSigned } from "@/core/shared/format";
 
 const EXPECTED_VALUE_DIGITS = 1;
 

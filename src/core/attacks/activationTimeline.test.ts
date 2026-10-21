@@ -1,17 +1,17 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 import {
   activationTimeline,
   swingDamageMods,
   swingStateAt,
-} from '@/core/attacks/activationTimeline';
-import type { TimelineParams } from '@/core/attacks/activationTimeline.types';
+} from "@/core/attacks/activationTimeline";
+import type { TimelineParams } from "@/core/attacks/activationTimeline.types";
 import {
   playDamageForHealth,
   slotScalesWithHealth,
-} from '@/core/attacks/swingPlayDamage';
-import type { AttackPlan } from '@/core/plan/attackPlan.types';
-import type { CharacterPlay } from '@/core/playbook/playbook.types';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
+} from "@/core/attacks/swingPlayDamage";
+import type { AttackPlan } from "@/core/plan/attackPlan.types";
+import type { CharacterPlay } from "@/core/playbook/playbook.types";
+import { NO_ATTACK_INDEX } from "@/core/shared/constants";
 import {
   makeAttacker,
   modsWith,
@@ -26,22 +26,20 @@ import {
   PLAY_TAC,
   TEAMMATE_GUILD,
   TRAIT_ARM,
-} from '@/core/testing/fixtures';
+} from "@/core/testing/fixtures";
 
-const params = (overrides: Partial<TimelineParams> = {}): TimelineParams => {
-  return {
-    attacker: makeAttacker({
-      inf: 3,
-      characterPlays: [PLAY_TAC, PLAY_DEF, PLAY_ARM],
-    }),
-    damageMods: NO_MODS,
-    activeBaseCount: 3,
-    chargeAttackIndex: NO_ATTACK_INDEX,
-    targetHp: NEUTRAL_TARGET_HP,
-    enemyKnockedDown: false,
-    ...overrides,
-  };
-};
+const params = (overrides: Partial<TimelineParams> = {}): TimelineParams => ({
+  attacker: makeAttacker({
+    inf: 3,
+    characterPlays: [PLAY_TAC, PLAY_DEF, PLAY_ARM],
+  }),
+  damageMods: NO_MODS,
+  activeBaseCount: 3,
+  chargeAttackIndex: NO_ATTACK_INDEX,
+  targetHp: NEUTRAL_TARGET_HP,
+  enemyKnockedDown: false,
+  ...overrides,
+});
 
 const NONE = {
   tacBonus: 0,
@@ -50,10 +48,10 @@ const NONE = {
   damageBonus: 0,
 };
 
-describe('activationTimeline carried effects', () => {
-  it('starts every swing with nothing when no pick carries an effect', () => {
+describe("activationTimeline carried effects", () => {
+  it("starts every swing with nothing when no pick carries an effect", () => {
     const plan: AttackPlan = {
-      wrapPicks: [['one'], ['two'], ['four']],
+      wrapPicks: [["one"], ["two"], ["four"]],
       characterPlayPicks: [[null], [null], [null]],
     };
 
@@ -66,10 +64,10 @@ describe('activationTimeline carried effects', () => {
     ]);
   });
 
-  it('carries a play and a KD into later swings only', () => {
+  it("carries a play and a KD into later swings only", () => {
     const plan: AttackPlan = {
-      wrapPicks: [['gb'], ['kd'], ['one']],
-      characterPlayPicks: [['playTac'], [null], [null]],
+      wrapPicks: [["gb"], ["kd"], ["one"]],
+      characterPlayPicks: [["playTac"], [null], [null]],
     };
 
     const timeline = activationTimeline(plan, params());
@@ -83,10 +81,10 @@ describe('activationTimeline carried effects', () => {
     });
   });
 
-  it('carries an ARM play into later swings', () => {
+  it("carries an ARM play into later swings", () => {
     const plan: AttackPlan = {
-      wrapPicks: [['gb'], ['one'], ['one']],
-      characterPlayPicks: [['playArm'], [null], [null]],
+      wrapPicks: [["gb"], ["one"], ["one"]],
+      characterPlayPicks: [["playArm"], [null], [null]],
     };
 
     const timeline = activationTimeline(plan, params());
@@ -95,13 +93,13 @@ describe('activationTimeline carried effects', () => {
     expect(timeline[2].effectsBefore.armorReduction).toBe(1);
   });
 
-  it('applies an ARM play picked twice only once', () => {
+  it("applies an ARM play picked twice only once", () => {
     const anyTurnArm: CharacterPlay = { ...PLAY_ARM, oncePerTurn: false };
     const attacker = makeAttacker({ inf: 3, characterPlays: [anyTurnArm] });
 
     const plan: AttackPlan = {
-      wrapPicks: [['gb'], ['gb'], ['one']],
-      characterPlayPicks: [['playArm'], ['playArm'], [null]],
+      wrapPicks: [["gb"], ["gb"], ["one"]],
+      characterPlayPicks: [["playArm"], ["playArm"], [null]],
     };
 
     const timeline = activationTimeline(plan, params({ attacker }));
@@ -109,11 +107,13 @@ describe('activationTimeline carried effects', () => {
     expect(timeline[0].effectsBefore.armorReduction).toBe(0);
     expect(timeline[2].effectsBefore.armorReduction).toBe(1);
   });
+});
 
-  it('gives rows outside the activation no carry-over', () => {
+describe("activationTimeline carry-over to rows without a swing", () => {
+  it("gives rows outside the activation no carry-over", () => {
     const plan: AttackPlan = {
-      wrapPicks: [['gb'], ['one'], ['one']],
-      characterPlayPicks: [['playTac'], [null], [null]],
+      wrapPicks: [["gb"], ["one"], ["one"]],
+      characterPlayPicks: [["playTac"], [null], [null]],
     };
 
     const timeline = activationTimeline(plan, params({ activeBaseCount: 1 }));
@@ -122,10 +122,10 @@ describe('activationTimeline carried effects', () => {
     expect(timeline[2].effectsBefore).toEqual(NONE);
   });
 
-  it('gives rows past the plan no carry-over', () => {
+  it("gives rows past the plan no carry-over", () => {
     const plan: AttackPlan = {
-      wrapPicks: [['gb']],
-      characterPlayPicks: [['playTac']],
+      wrapPicks: [["gb"]],
+      characterPlayPicks: [["playTac"]],
     };
 
     const timeline = activationTimeline(plan, params({ activeBaseCount: 1 }));
@@ -136,10 +136,67 @@ describe('activationTimeline carried effects', () => {
   });
 });
 
-describe('named effects do not stack', () => {
-  it('applies a pre-applied guild ARM debuff from the first swing', () => {
+describe("named effects do not stack", () => {
+  it("stacks effects with different names", () => {
     const plan: AttackPlan = {
-      wrapPicks: [['one'], ['one']],
+      wrapPicks: [["gb"], ["one"]],
+      characterPlayPicks: [["playArm"], [null]],
+    };
+
+    const timeline = activationTimeline(
+      plan,
+      params({
+        activeBaseCount: 2,
+        damageMods: modsWith({ buffs: { sunder: true } }),
+      }),
+    );
+
+    expect(timeline[1].effectsBefore.armorReduction).toBe(2);
+  });
+
+  it("applies a passive ARM trait to every swing and stacks it with a play", () => {
+    const attacker = makeAttacker({
+      inf: 3,
+      characterPlays: [PLAY_ARM],
+      characterTraits: [TRAIT_ARM],
+    });
+
+    const plan: AttackPlan = {
+      wrapPicks: [["gb"], ["one"]],
+      characterPlayPicks: [["playArm"], [null]],
+    };
+
+    const timeline = activationTimeline(
+      plan,
+      params({ attacker, activeBaseCount: 2 }),
+    );
+
+    expect(timeline.map((state) => state.effectsBefore.armorReduction)).toEqual(
+      [1, 2],
+    );
+  });
+
+  it("applies a play that is not Once Per Turn only once", () => {
+    const attacker = makeAttacker({
+      inf: 3,
+      characterPlays: [PLAY_REPEATABLE],
+    });
+
+    const plan: AttackPlan = {
+      wrapPicks: [["gb"], ["gb"], ["one"]],
+      characterPlayPicks: [["playRepeatable"], ["playRepeatable"], [null]],
+    };
+
+    const timeline = activationTimeline(plan, params({ attacker }));
+
+    expect(timeline[2].effectsBefore.tacBonus).toBe(1);
+  });
+});
+
+describe("pre-applied guild debuffs", () => {
+  it("applies a pre-applied guild ARM debuff from the first swing", () => {
+    const plan: AttackPlan = {
+      wrapPicks: [["one"], ["one"]],
       characterPlayPicks: [[null], [null]],
     };
 
@@ -155,27 +212,10 @@ describe('named effects do not stack', () => {
     expect(timeline[1].effectsBefore.armorReduction).toBe(1);
   });
 
-  it('stacks effects with different names', () => {
-    const plan: AttackPlan = {
-      wrapPicks: [['gb'], ['one']],
-      characterPlayPicks: [['playArm'], [null]],
-    };
-
-    const timeline = activationTimeline(
-      plan,
-      params({
-        activeBaseCount: 2,
-        damageMods: modsWith({ buffs: { sunder: true } }),
-      }),
-    );
-
-    expect(timeline[1].effectsBefore.armorReduction).toBe(2);
-  });
-
-  it('applies a pre-applied guild DEF debuff from the first swing', () => {
+  it("applies a pre-applied guild DEF debuff from the first swing", () => {
     const attacker = makeAttacker({ guild: TEAMMATE_GUILD });
     const plan: AttackPlan = {
-      wrapPicks: [['one'], ['one']],
+      wrapPicks: [["one"], ["one"]],
       characterPlayPicks: [[null], [null]],
     };
 
@@ -192,55 +232,17 @@ describe('named effects do not stack', () => {
       1, 1,
     ]);
   });
-
-  it('applies a passive ARM trait to every swing and stacks it with a play', () => {
-    const attacker = makeAttacker({
-      inf: 3,
-      characterPlays: [PLAY_ARM],
-      characterTraits: [TRAIT_ARM],
-    });
-
-    const plan: AttackPlan = {
-      wrapPicks: [['gb'], ['one']],
-      characterPlayPicks: [['playArm'], [null]],
-    };
-
-    const timeline = activationTimeline(
-      plan,
-      params({ attacker, activeBaseCount: 2 }),
-    );
-
-    expect(timeline.map((state) => state.effectsBefore.armorReduction)).toEqual(
-      [1, 2],
-    );
-  });
-
-  it('applies a play that is not Once Per Turn only once', () => {
-    const attacker = makeAttacker({
-      inf: 3,
-      characterPlays: [PLAY_REPEATABLE],
-    });
-
-    const plan: AttackPlan = {
-      wrapPicks: [['gb'], ['gb'], ['one']],
-      characterPlayPicks: [['playRepeatable'], ['playRepeatable'], [null]],
-    };
-
-    const timeline = activationTimeline(plan, params({ attacker }));
-
-    expect(timeline[2].effectsBefore.tacBonus).toBe(1);
-  });
 });
 
-describe('Assist', () => {
+describe("Assist", () => {
   const attacker = makeAttacker({ inf: 3, characterPlays: [PLAY_ASSIST] });
 
   const plan: AttackPlan = {
-    wrapPicks: [['gb'], ['two'], ['two']],
-    characterPlayPicks: [['playAssist'], [null], [null]],
+    wrapPicks: [["gb"], ["two"], ["two"]],
+    characterPlayPicks: [["playAssist"], [null], [null]],
   };
 
-  it('gives later swings +1 TAC and +1 DMG while a named model engages', () => {
+  it("gives later swings +1 TAC and +1 DMG while a named model engages", () => {
     const timeline = activationTimeline(
       plan,
       params({ attacker, damageMods: modsWith({ assistEngaged: true }) }),
@@ -254,7 +256,7 @@ describe('Assist', () => {
     ]);
   });
 
-  it('gives nothing when no named model engages', () => {
+  it("gives nothing when no named model engages", () => {
     const timeline = activationTimeline(plan, params({ attacker }));
 
     expect(timeline.map((state) => state.effectsBefore)).toEqual([
@@ -268,28 +270,28 @@ describe('Assist', () => {
   });
 });
 
-describe('damaging character plays', () => {
+describe("damaging character plays", () => {
   const attacker = makeAttacker({ characterPlays: [PLAY_DAMAGE] });
   const playDamage = 3;
 
   const twoGbs: AttackPlan = {
-    wrapPicks: [['gb'], ['gb']],
-    characterPlayPicks: [['playDamage'], ['playDamage']],
+    wrapPicks: [["gb"], ["gb"]],
+    characterPlayPicks: [["playDamage"], ["playDamage"]],
   };
 
-  it('puts the play damage on the slot that triggers it', () => {
+  it("puts the play damage on the slot that triggers it", () => {
     const timeline = activationTimeline(twoGbs, params({ attacker }));
 
     expect(timeline[0].playDamageBySlot).toEqual([playDamage]);
   });
 
-  it('deals an Once Per Turn play only the first time', () => {
+  it("deals an Once Per Turn play only the first time", () => {
     const timeline = activationTimeline(twoGbs, params({ attacker }));
 
     expect(timeline[1].playDamageBySlot).toEqual([0]);
   });
 
-  it('applies Tough Hide and damage buffs to it', () => {
+  it("applies Tough Hide and damage buffs to it", () => {
     const toughHide = activationTimeline(
       twoGbs,
       params({ attacker, damageMods: modsWith({ toughHide: true }) }),
@@ -304,7 +306,7 @@ describe('damaging character plays', () => {
     expect(sharp[0].playDamageBySlot).toEqual([playDamage + 1]);
   });
 
-  it('skips a bonus limited to playbook damage results', () => {
+  it("skips a bonus limited to playbook damage results", () => {
     const butcher = makeAttacker({
       guild: TEAMMATE_GUILD,
       characterPlays: [PLAY_DAMAGE],
@@ -322,20 +324,18 @@ describe('damaging character plays', () => {
   });
 });
 
-describe('character plays that deal damage from the target current HP', () => {
-  const attacker = makeAttacker({ characterPlays: [PLAY_HALF_HEALTH] });
-  const fourDamage = 4;
+const attacker = makeAttacker({ characterPlays: [PLAY_HALF_HEALTH] });
+const fourDamage = 4;
 
-  const halfOf = (hp: number): number => {
-    return Math.floor(hp / 2);
-  };
+const halfOf = (hp: number): number => Math.floor(hp / 2);
 
-  const fourThenHalf: AttackPlan = {
-    wrapPicks: [['four'], ['gb']],
-    characterPlayPicks: [[null], ['playHalfHealth']],
-  };
+const fourThenHalf: AttackPlan = {
+  wrapPicks: [["four"], ["gb"]],
+  characterPlayPicks: [[null], ["playHalfHealth"]],
+};
 
-  it('deals half the HP left after the earlier swings, rounded down', () => {
+describe("character plays that deal damage from the target current HP", () => {
+  it("deals half the HP left after the earlier swings, rounded down", () => {
     const targetHp = 15;
     const timeline = activationTimeline(
       fourThenHalf,
@@ -348,11 +348,11 @@ describe('character plays that deal damage from the target current HP', () => {
     ]);
   });
 
-  it('uses the HP before its own swing, not after the card damage', () => {
+  it("uses the HP before its own swing, not after the card damage", () => {
     const targetHp = 10;
     const halfFirst: AttackPlan = {
-      wrapPicks: [['gb']],
-      characterPlayPicks: [['playHalfHealth']],
+      wrapPicks: [["gb"]],
+      characterPlayPicks: [["playHalfHealth"]],
     };
 
     const timeline = activationTimeline(
@@ -363,7 +363,7 @@ describe('character plays that deal damage from the target current HP', () => {
     expect(timeline[0].playDamageBySlot).toEqual([halfOf(targetHp)]);
   });
 
-  it('is unmodified by Tough Hide and damage buffs', () => {
+  it("is unmodified by Tough Hide and damage buffs", () => {
     const targetHp = 15;
 
     const toughHide = activationTimeline(
@@ -388,8 +388,10 @@ describe('character plays that deal damage from the target current HP', () => {
       halfOf(targetHp - (fourDamage + 1)),
     ]);
   });
+});
 
-  it('deals nothing once the earlier swings have taken out the target', () => {
+describe("current-HP play damage per slot", () => {
+  it("deals nothing once the earlier swings have taken out the target", () => {
     const targetHp = 3;
     const timeline = activationTimeline(
       fourThenHalf,
@@ -399,21 +401,21 @@ describe('character plays that deal damage from the target current HP', () => {
     expect(timeline[1].playDamageBySlot).toEqual([0]);
   });
 
-  it('records the divisor on the slot so the odds can recompute it', () => {
+  it("records the divisor on the slot so the odds can recompute it", () => {
     const timeline = activationTimeline(fourThenHalf, params({ attacker }));
 
     expect(timeline[0].healthPlayDivisorBySlot).toEqual([0]);
     expect(timeline[1].healthPlayDivisorBySlot).toEqual([2]);
   });
 
-  it('recomputes the play damage for any HP left', () => {
+  it("recomputes the play damage for any HP left", () => {
     const timeline = activationTimeline(fourThenHalf, params({ attacker }));
     const hpLeft = 9;
 
     expect(playDamageForHealth(timeline[1], hpLeft)).toEqual([halfOf(hpLeft)]);
   });
 
-  it('marks only the slot whose play scales with the HP left', () => {
+  it("marks only the slot whose play scales with the HP left", () => {
     const timeline = activationTimeline(fourThenHalf, params({ attacker }));
 
     expect(slotScalesWithHealth(timeline[0], 0)).toBe(false);
@@ -421,23 +423,23 @@ describe('character plays that deal damage from the target current HP', () => {
   });
 });
 
-describe('swingDamageMods', () => {
+describe("swingDamageMods", () => {
   const attacker = makeAttacker({ inf: 3, characterPlays: [PLAY_ASSIST] });
   const mods = modsWith({ assistEngaged: true });
 
   const timeline = activationTimeline(
     {
-      wrapPicks: [['gb'], ['two'], ['two']],
-      characterPlayPicks: [['playAssist'], [null], [null]],
+      wrapPicks: [["gb"], ["two"], ["two"]],
+      characterPlayPicks: [["playAssist"], [null], [null]],
     },
     params({ attacker, damageMods: mods }),
   );
 
-  it('keeps the activation mods on a swing without a bonus', () => {
+  it("keeps the activation mods on a swing without a bonus", () => {
     expect(swingDamageMods(mods, timeline, 0)).toBe(mods);
   });
 
-  it('adds the swing playbook damage bonus, so the pips show it', () => {
+  it("adds the swing playbook damage bonus, so the pips show it", () => {
     expect(swingDamageMods(mods, timeline, 1)).toEqual({
       ...mods,
       swingDamageBonus: 1,
@@ -445,14 +447,14 @@ describe('swingDamageMods', () => {
   });
 });
 
-describe('net hits gained on the next attack (Instruction)', () => {
+describe("net hits gained on the next attack (Instruction)", () => {
   const attacker = makeAttacker({ guild: TEAMMATE_GUILD });
   const plan: AttackPlan = {
-    wrapPicks: [['one'], ['one'], ['one']],
+    wrapPicks: [["one"], ["one"], ["one"]],
     characterPlayPicks: [[null], [null], [null]],
   };
 
-  it('lands on the first swing of the activation only', () => {
+  it("lands on the first swing of the activation only", () => {
     const timeline = activationTimeline(
       plan,
       params({ attacker, damageMods: modsWith({ buffs: { coach: true } }) }),
@@ -461,17 +463,17 @@ describe('net hits gained on the next attack (Instruction)', () => {
     expect(timeline.map((state) => state.netHitBonus)).toEqual([2, 0, 0]);
   });
 
-  it('gives nothing while the buff is off', () => {
+  it("gives nothing while the buff is off", () => {
     const timeline = activationTimeline(plan, params({ attacker }));
 
     expect(timeline.map((state) => state.netHitBonus)).toEqual([0, 0, 0]);
   });
 });
 
-describe('activationTimeline effects after each swing', () => {
-  it('leaves nothing after swings that carry no effect', () => {
+describe("activationTimeline effects after each swing", () => {
+  it("leaves nothing after swings that carry no effect", () => {
     const plan: AttackPlan = {
-      wrapPicks: [['one'], ['two']],
+      wrapPicks: [["one"], ["two"]],
       characterPlayPicks: [[null], [null]],
     };
 
@@ -480,10 +482,10 @@ describe('activationTimeline effects after each swing', () => {
     expect(timeline.map((state) => state.effectsAfter)).toEqual([NONE, NONE]);
   });
 
-  it('includes the effects a swing applies, the last swing too', () => {
+  it("includes the effects a swing applies, the last swing too", () => {
     const plan: AttackPlan = {
-      wrapPicks: [['gb'], ['kd']],
-      characterPlayPicks: [['playTac'], [null]],
+      wrapPicks: [["gb"], ["kd"]],
+      characterPlayPicks: [["playTac"], [null]],
     };
 
     const timeline = activationTimeline(plan, params({ activeBaseCount: 2 }));
@@ -496,7 +498,7 @@ describe('activationTimeline effects after each swing', () => {
     });
   });
 
-  it('includes the ARM an on-damage trait strips on that swing', () => {
+  it("includes the ARM an on-damage trait strips on that swing", () => {
     const attacker = makeAttacker({
       inf: 3,
       characterPlays: [PLAY_ARM],
@@ -504,8 +506,8 @@ describe('activationTimeline effects after each swing', () => {
     });
 
     const plan: AttackPlan = {
-      wrapPicks: [['gb'], ['one']],
-      characterPlayPicks: [['playArm'], [null]],
+      wrapPicks: [["gb"], ["one"]],
+      characterPlayPicks: [["playArm"], [null]],
     };
 
     const timeline = activationTimeline(

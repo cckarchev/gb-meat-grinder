@@ -26,20 +26,20 @@
 
 /* Accent per standout kind. `--kind-accent` also colors the corner brackets,
    which render inside the block. */
-.attackBlock[data-kind='charge'] {
+.attackBlock[data-kind="charge"] {
   --kind-accent: var(--accent-charge);
   --kind-soft: var(--accent-charge-soft);
 }
 
-.attackBlock[data-kind='berserker'] {
+.attackBlock[data-kind="berserker"] {
   --kind-accent: var(--accent-berserker);
   --kind-soft: var(--accent-berserker-soft);
 }
 
 /* Focused attacks read via a crisp 1px accent border plus the corner brackets,
    with no heavy halo, which clashed with the brackets. */
-.attackBlock[data-kind='charge'],
-.attackBlock[data-kind='berserker'] {
+.attackBlock[data-kind="charge"],
+.attackBlock[data-kind="berserker"] {
   border-color: var(--kind-accent);
   background: color-mix(in srgb, var(--kind-soft) 16%, var(--panel));
 }

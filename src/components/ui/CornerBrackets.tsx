@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties } from "react";
 
 /** Stroke width of each bracket, in px. */
 const BRACKET_THICKNESS = 2;
@@ -8,23 +8,23 @@ const BRACKET_INSET = -1;
 
 type Corner = {
   key: string;
-  vertical: 'top' | 'bottom';
-  horizontal: 'left' | 'right';
+  vertical: "top" | "bottom";
+  horizontal: "left" | "right";
 };
 
 const CORNERS: readonly Corner[] = [
-  { key: 'top-left', vertical: 'top', horizontal: 'left' },
-  { key: 'top-right', vertical: 'top', horizontal: 'right' },
-  { key: 'bottom-left', vertical: 'bottom', horizontal: 'left' },
-  { key: 'bottom-right', vertical: 'bottom', horizontal: 'right' },
+  { key: "top-left", vertical: "top", horizontal: "left" },
+  { key: "top-right", vertical: "top", horizontal: "right" },
+  { key: "bottom-left", vertical: "bottom", horizontal: "left" },
+  { key: "bottom-right", vertical: "bottom", horizontal: "right" },
 ];
 
 /** The border property that draws each side's arm of a bracket. */
 const BORDER_SIDE = {
-  top: 'borderTop',
-  bottom: 'borderBottom',
-  left: 'borderLeft',
-  right: 'borderRight',
+  top: "borderTop",
+  bottom: "borderBottom",
+  left: "borderLeft",
+  right: "borderRight",
 } as const;
 
 type CornerBracketsProps = {
@@ -44,10 +44,10 @@ export const CornerBrackets = ({ accent, size }: CornerBracketsProps) => {
     <>
       {CORNERS.map(({ key, vertical, horizontal }) => {
         const style: CSSProperties = {
-          position: 'absolute',
+          position: "absolute",
           width: size,
           height: size,
-          pointerEvents: 'none',
+          pointerEvents: "none",
           [vertical]: BRACKET_INSET,
           [horizontal]: BRACKET_INSET,
           [BORDER_SIDE[vertical]]: line,

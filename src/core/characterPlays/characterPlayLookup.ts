@@ -1,21 +1,19 @@
 /** Which character plays an attacker's GB results can trigger, and the default one. */
 
-import type { PickPosition } from '@/core/plan/attackPlan.types';
+import type { PickPosition } from "@/core/plan/attackPlan.types";
 import type {
   CharacterPlay,
   CharacterPlayPickSlot,
   PlaybookChoiceId,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/playbook.types";
+import { choiceUsesCharacterPlay } from "@/core/playbook/playbookIndex";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /** Character plays this attacker's GB / 1GB results can trigger (from the catalog). */
 export const characterPlaysForAttacker = (
   attacker: AttackerData,
-): readonly CharacterPlay[] => {
-  return attacker.characterPlays ?? [];
-};
+): readonly CharacterPlay[] => attacker.characterPlays ?? [];
 
 export const getCharacterPlay = (
   attacker: AttackerData,
@@ -31,9 +29,7 @@ export const getCharacterPlay = (
 /** Play picked by default when a GB result is chosen: the first guild play. */
 export const defaultCharacterPlayId = (
   attacker: AttackerData,
-): CharacterPlayPickSlot => {
-  return characterPlaysForAttacker(attacker)[0]?.id ?? null;
-};
+): CharacterPlayPickSlot => characterPlaysForAttacker(attacker)[0]?.id ?? null;
 
 /** The play a pick resolves to: the one in its slot, or the default when empty. */
 export const effectivePlayForPick = (
@@ -67,9 +63,7 @@ export const playSlotForPick = (
 export const initialCharacterPlayFor = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
-): CharacterPlayPickSlot => {
-  return playSlotForPick(attacker, id, null);
-};
+): CharacterPlayPickSlot => playSlotForPick(attacker, id, null);
 
 /** Slots of a swing's wrap row whose pick grants a character play. */
 export const characterPlayPickIndexes = (

@@ -3,17 +3,17 @@
 import {
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
-} from '@/core/activation/momentum';
-import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import { hpAfterDamage } from '@/core/damage/hpAfterDamage';
+} from "@/core/activation/momentum";
+import type { ActivationTimeline } from "@/core/attacks/activationTimeline.types";
+import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
+import { hpAfterDamage } from "@/core/damage/hpAfterDamage";
 import type {
   PlaybookDamageMods,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import { isAttackIndex } from '@/core/shared/attackIndex';
-import { KILLING_BLOW_MOMENTUM } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/playbook.types";
+import { isAttackIndex } from "@/core/shared/attackIndex";
+import { KILLING_BLOW_MOMENTUM } from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 export type SwingProjectionInput = {
   attacker: AttackerData;
@@ -78,19 +78,16 @@ const momentumAfterEachSwing = (input: SwingProjectionInput): number[] => {
   );
 };
 
-const bonusTimePoolBeforeEachSwing = (
-  input: SwingProjectionInput,
-): number[] => {
-  return input.attacks.map((swing) =>
+const bonusTimePoolBeforeEachSwing = (input: SwingProjectionInput): number[] =>
+  input.attacks.map((swing) =>
     momentumPoolBeforeBonusTime(swing.attackIndex, input),
   );
-};
 
-export const projectSwings = (input: SwingProjectionInput): SwingProjection => {
-  return {
-    startingHp: hpAfterDamage(input.targetHp, input.flatDamage),
-    remainingHp: remainingHpAfterEachSwing(input),
-    momentum: momentumAfterEachSwing(input),
-    bonusTimePool: bonusTimePoolBeforeEachSwing(input),
-  };
-};
+export const projectSwings = (
+  input: SwingProjectionInput,
+): SwingProjection => ({
+  startingHp: hpAfterDamage(input.targetHp, input.flatDamage),
+  remainingHp: remainingHpAfterEachSwing(input),
+  momentum: momentumAfterEachSwing(input),
+  bonusTimePool: bonusTimePoolBeforeEachSwing(input),
+});

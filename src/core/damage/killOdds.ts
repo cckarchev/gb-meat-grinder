@@ -3,33 +3,33 @@
 import {
   swingStateAt,
   swingStateDamageMods,
-} from '@/core/attacks/activationTimeline';
+} from "@/core/attacks/activationTimeline";
 import type {
   ActivationTimeline,
   SwingState,
-} from '@/core/attacks/activationTimeline.types';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+} from "@/core/attacks/activationTimeline.types";
+import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
 import {
   playDamageForHealth,
   swingHasHealthPlay,
-} from '@/core/attacks/swingPlayDamage';
+} from "@/core/attacks/swingPlayDamage";
 import type {
   ActivationDamageOutcome,
   DamageDistribution,
   DamageForNet,
-} from '@/core/damage/damage.types';
+} from "@/core/damage/damage.types";
 import {
   addProbability,
   convolve,
   swingDamageDistribution,
-} from '@/core/damage/damageDistribution';
-import { hpAfterDamage } from '@/core/damage/hpAfterDamage';
-import { pickedDamageForNet } from '@/core/damage/pickedDamage';
+} from "@/core/damage/damageDistribution";
+import { hpAfterDamage } from "@/core/damage/hpAfterDamage";
+import { pickedDamageForNet } from "@/core/damage/pickedDamage";
 import type {
   PlaybookDamageMods,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/playbook.types";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /** Shift every damage value by the guaranteed `flatDamage`. */
 const withFlatDamage = (
@@ -76,9 +76,8 @@ const swingDistributionAt = (
     chargeTraitDamage: state.chargeTraitDamage,
   };
 
-  const pickedDamage: DamageForNet = (net) => {
-    return pickedDamageForNet(attacker, swingMods, picks, net, extras);
-  };
+  const pickedDamage: DamageForNet = (net) =>
+    pickedDamageForNet(attacker, swingMods, picks, net, extras);
 
   return swingDamageDistribution(attack, pickedDamage);
 };
@@ -133,16 +132,8 @@ export const planDamageOutcome = (
     const state = swingStateAt(timeline, attack.attackIndex);
     const swingMods = swingStateDamageMods(mods, state);
 
-    const swingAt = (hpLeft: number): DamageDistribution => {
-      return swingDistributionAt(
-        attacker,
-        attack,
-        picks,
-        swingMods,
-        state,
-        hpLeft,
-      );
-    };
+    const swingAt = (hpLeft: number): DamageDistribution =>
+      swingDistributionAt(attacker, attack, picks, swingMods, state, hpLeft);
 
     const uncapped = swingHasHealthPlay(state)
       ? addHealthDependentSwing(total, swingAt, targetHp)

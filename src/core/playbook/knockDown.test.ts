@@ -1,31 +1,31 @@
-import { describe, expect, it } from 'vitest';
-import { deriveSimulation } from '@/core/activation/simulation';
-import { attackArraySize } from '@/core/attacks/attackStructure';
+import { describe, expect, it } from "vitest";
+import { deriveSimulation } from "@/core/activation/simulation";
+import { attackArraySize } from "@/core/attacks/attackStructure";
 import {
   knockDownIsOnlyEffect,
   knockDownTakenBeforePick,
-} from '@/core/playbook/knockDown';
-import type { WrapPick } from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/playbookIndex';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
+} from "@/core/playbook/knockDown";
+import type { WrapPick } from "@/core/playbook/playbook.types";
+import { getPlaybookResult } from "@/core/playbook/playbookIndex";
+import { NO_ATTACK_INDEX } from "@/core/shared/constants";
 import {
   makeAttacker,
   NEUTRAL_TARGET_HP,
   NO_MODS,
   orderFor,
   planOf,
-} from '@/core/testing/fixtures';
-import { crossCut } from '@/data/attackers/crossCut';
-import { thresher } from '@/data/attackers/thresher';
+} from "@/core/testing/fixtures";
+import { crossCut } from "@/data/attackers/crossCut";
+import { thresher } from "@/data/attackers/thresher";
 
-describe('knockDownTakenBeforePick', () => {
+describe("knockDownTakenBeforePick", () => {
   const attacker = makeAttacker();
-  const wrapPicks = [['kd'], ['kd']];
+  const wrapPicks = [["kd"], ["kd"]];
   const order = orderFor(attacker, 2);
   const firstSwing = { attackIndex: 0, pickIndex: 0 };
   const secondSwing = { attackIndex: 1, pickIndex: 0 };
 
-  it('allows only the first KD in the activation', () => {
+  it("allows only the first KD in the activation", () => {
     expect(knockDownTakenBeforePick(order, wrapPicks, firstSwing, false)).toBe(
       false,
     );
@@ -40,44 +40,44 @@ describe('knockDownTakenBeforePick', () => {
   });
 });
 
-describe('knockDownIsOnlyEffect', () => {
-  const fixtureKnockDown = getPlaybookResult(makeAttacker(), 'kd');
+describe("knockDownIsOnlyEffect", () => {
+  const fixtureKnockDown = getPlaybookResult(makeAttacker(), "kd");
 
-  it('is true for a line whose only effect is the Knock Down', () => {
+  it("is true for a line whose only effect is the Knock Down", () => {
     const bareKnockDown = { ...fixtureKnockDown, dodge: false };
 
     expect(knockDownIsOnlyEffect(bareKnockDown)).toBe(true);
   });
 
-  it('is true for a momentous KD with nothing else', () => {
-    const momentousKnockDown = getPlaybookResult(crossCut, 'kd');
+  it("is true for a momentous KD with nothing else", () => {
+    const momentousKnockDown = getPlaybookResult(crossCut, "kd");
 
     expect(knockDownIsOnlyEffect(momentousKnockDown)).toBe(true);
   });
 
-  it('is false when the line also dodges', () => {
+  it("is false when the line also dodges", () => {
     expect(knockDownIsOnlyEffect(fixtureKnockDown)).toBe(false);
   });
 
-  it('is false when the line also deals damage', () => {
-    expect(knockDownIsOnlyEffect(getPlaybookResult(thresher, 'm3_kd'))).toBe(
+  it("is false when the line also deals damage", () => {
+    expect(knockDownIsOnlyEffect(getPlaybookResult(thresher, "m3_kd"))).toBe(
       false,
     );
   });
 
-  it('is false for a line without Knock Down', () => {
-    expect(knockDownIsOnlyEffect(getPlaybookResult(thresher, 'm2'))).toBe(
+  it("is false for a line without Knock Down", () => {
+    expect(knockDownIsOnlyEffect(getPlaybookResult(thresher, "m2"))).toBe(
       false,
     );
   });
 });
 
-describe('Knock Down on a target that starts Knocked Down', () => {
+describe("Knock Down on a target that starts Knocked Down", () => {
   const attacker = makeAttacker();
 
   // `kd` also dodges, so the clamp keeps it; only its KD must be dropped.
   const knockDownThenOne = () => {
-    const picks: WrapPick[][] = [['kd'], ['one']];
+    const picks: WrapPick[][] = [["kd"], ["one"]];
 
     while (picks.length < attackArraySize(attacker)) {
       picks.push([]);
@@ -110,11 +110,11 @@ describe('Knock Down on a target that starts Knocked Down', () => {
     });
   };
 
-  it('carries the KD into later swings when the target is standing', () => {
+  it("carries the KD into later swings when the target is standing", () => {
     expect(derive(false).timeline[1].effectsBefore.defReduction).toBe(1);
   });
 
-  it('does not lower DEF again for later swings', () => {
+  it("does not lower DEF again for later swings", () => {
     const derived = derive(true);
 
     expect(derived.timeline[1].effectsBefore.defReduction).toBe(0);

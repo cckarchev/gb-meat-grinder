@@ -1,5 +1,5 @@
 .attackHeading {
-  composes: displayHeading from '../../../styles/mixins.module.css';
+  composes: displayHeading from "../../../styles/mixins.module.css";
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -10,7 +10,7 @@
 }
 
 .killingBlowBadge {
-  composes: capsLabel from '../../../styles/mixins.module.css';
+  composes: capsLabel from "../../../styles/mixins.module.css";
   padding: var(--space-4xs) var(--space-xs);
   border-radius: var(--radius);
   font-size: var(--font-size-2xs);

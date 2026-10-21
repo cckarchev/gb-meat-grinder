@@ -2,6 +2,4 @@
 export const tooltipExcludedBuff = (
   buffTooltip: string,
   modelName: string,
-): string => {
-  return `${buffTooltip} (not available to ${modelName})`;
-};
+): string => `${buffTooltip} (not available to ${modelName})`;

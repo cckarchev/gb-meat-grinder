@@ -20,7 +20,7 @@
   }
 
   .panelTitle {
-    composes: monoCapsLabel from '../../styles/mixins.module.css';
+    composes: monoCapsLabel from "../../styles/mixins.module.css";
     font-size: var(--font-size-xs);
     color: var(--accent);
     margin: 0 0 var(--space-lg);
@@ -34,12 +34,12 @@
   }
 
   .select {
-    composes: inputSurface from '../../styles/mixins.module.css';
+    composes: inputSurface from "../../styles/mixins.module.css";
     padding: var(--space-sm) var(--space-md);
   }
 
   .mono {
-    composes: tabularMono from '../../styles/mixins.module.css';
+    composes: tabularMono from "../../styles/mixins.module.css";
   }
 
   /* Lives beside `.panel` because a CSS module can only select its own classes. */

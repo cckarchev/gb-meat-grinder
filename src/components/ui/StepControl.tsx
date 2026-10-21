@@ -1,5 +1,5 @@
-import { useId } from 'react';
-import styles from '@/components/ui/StepControl.module.css';
+import { useId } from "react";
+import styles from "@/components/ui/StepControl.module.css";
 
 /** How far one button press moves the value. */
 const STEP = 1;

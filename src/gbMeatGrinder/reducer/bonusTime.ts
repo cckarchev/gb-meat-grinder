@@ -6,31 +6,28 @@
 import {
   canAffordBonusTime,
   sanitizeBonusTimeFlags,
-} from '@/core/activation/bonusTimeFlags';
-import { momentumPoolBeforeBonusTime } from '@/core/activation/momentum';
-import type { MomentumParams } from '@/core/activation/momentum.types';
-import { rowEqual } from '@/core/shared/gridEqual';
-import { withReclampedPlan } from '@/gbMeatGrinder/reducer/planReclamp';
-import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
+} from "@/core/activation/bonusTimeFlags";
+import { momentumPoolBeforeBonusTime } from "@/core/activation/momentum";
+import type { MomentumParams } from "@/core/activation/momentum.types";
+import { rowEqual } from "@/core/shared/gridEqual";
+import { withReclampedPlan } from "@/gbMeatGrinder/reducer/planReclamp";
+import type { MeatGrinderState } from "@/gbMeatGrinder/reducer/reducer.types";
 import {
   activeBaseCountOf,
   attackerOf,
-} from '@/gbMeatGrinder/reducer/stateSelectors';
+} from "@/gbMeatGrinder/reducer/stateSelectors";
 
-const momentumParams = (state: MeatGrinderState): MomentumParams => {
-  return {
-    attacker: attackerOf(state),
-    wrapPicks: state.attackPlan.wrapPicks,
-    damageMods: state.damageMods,
-    startingMomentum: state.startingMomentum,
-    bonusTimeByAttack: state.bonusTimeByAttack,
-    activeBaseCount: activeBaseCountOf(state),
-  };
-};
+const momentumParams = (state: MeatGrinderState): MomentumParams => ({
+  attacker: attackerOf(state),
+  wrapPicks: state.attackPlan.wrapPicks,
+  damageMods: state.damageMods,
+  startingMomentum: state.startingMomentum,
+  bonusTimeByAttack: state.bonusTimeByAttack,
+  activeBaseCount: activeBaseCountOf(state),
+});
 
-const sanitizedBonusTime = (state: MeatGrinderState): boolean[] => {
-  return sanitizeBonusTimeFlags(momentumParams(state));
-};
+const sanitizedBonusTime = (state: MeatGrinderState): boolean[] =>
+  sanitizeBonusTimeFlags(momentumParams(state));
 
 export const toggleBonusTime = (
   state: MeatGrinderState,

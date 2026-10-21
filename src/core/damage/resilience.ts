@@ -9,14 +9,14 @@
  * blank row makes the swing contribute nothing and carry nothing forward.
  */
 
-import { activationAttackIndices } from '@/core/attacks/attackRows';
-import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
+import { activationAttackIndices } from "@/core/attacks/attackRows";
+import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
 import type {
   CharacterPlayPickSlot,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import { isAttackIndex } from '@/core/shared/attackIndex';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
+} from "@/core/playbook/playbook.types";
+import { isAttackIndex } from "@/core/shared/attackIndex";
+import { NO_ATTACK_INDEX } from "@/core/shared/constants";
 
 /**
  * Attack-array index of the swing a Resilient target ignores: the first swing
@@ -46,26 +46,23 @@ const withIgnoredRowBlanked = <T>(
     return rows;
   }
 
-  return rows.map((row, attackIndex) => {
-    return attackIndex === ignoredIndex ? row.map(() => null) : row;
-  });
+  return rows.map((row, attackIndex) =>
+    attackIndex === ignoredIndex ? row.map(() => null) : row,
+  );
 };
 
 /** Wrap picks with the ignored swing's row blanked (unchanged when none). */
 export const effectiveWrapPicksForResilience = (
   wrapPicks: WrapPick[][],
   ignoredIndex: number,
-): WrapPick[][] => {
-  return withIgnoredRowBlanked(wrapPicks, ignoredIndex);
-};
+): WrapPick[][] => withIgnoredRowBlanked(wrapPicks, ignoredIndex);
 
 /** Character-play picks with the ignored swing's row blanked (unchanged when none). */
 export const effectiveCharacterPlayPicksForResilience = (
   characterPlayPicks: CharacterPlayPickSlot[][],
   ignoredIndex: number,
-): CharacterPlayPickSlot[][] => {
-  return withIgnoredRowBlanked(characterPlayPicks, ignoredIndex);
-};
+): CharacterPlayPickSlot[][] =>
+  withIgnoredRowBlanked(characterPlayPicks, ignoredIndex);
 
 /** Bonus-Time flags with the ignored swing forced off (unchanged when none). */
 export const effectiveBonusTimeForResilience = (

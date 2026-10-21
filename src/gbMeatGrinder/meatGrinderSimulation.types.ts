@@ -1,19 +1,19 @@
-import type { Dispatch } from 'react';
+import type { Dispatch } from "react";
 import type {
   CharacterPlayPickSlot,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/playbook.types";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import type {
   MeatGrinderAction,
   MeatGrinderState,
-} from '@/gbMeatGrinder/reducer/reducer.types';
-import type { UiEngineResults } from '@/gbMeatGrinder/uiEngineResults';
+} from "@/gbMeatGrinder/reducer/reducer.types";
+import type { UiEngineResults } from "@/gbMeatGrinder/uiEngineResults";
 
 /** Editable state the components read as is. */
 type UiEditableState = Omit<
   MeatGrinderState,
-  'attackerId' | 'attackPlan' | 'bonusTimeByAttack'
+  "attackerId" | "attackPlan" | "bonusTimeByAttack"
 >;
 
 /** React hook + context value for the Meat Grinder simulation. */

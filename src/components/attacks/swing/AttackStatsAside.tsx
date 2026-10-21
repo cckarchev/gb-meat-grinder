@@ -1,11 +1,11 @@
-import styles from '@/components/attacks/swing/AttackStatsAside.module.css';
-import { Mono } from '@/components/ui/ui';
-import type { StatTransition } from '@/core/attacks/statTransitions';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
-import { dataFlag } from '@/styles/dataFlag';
-import { guildColorStyle } from '@/styles/guildColorStyle';
+import styles from "@/components/attacks/swing/AttackStatsAside.module.css";
+import { Mono } from "@/components/ui/ui";
+import type { StatTransition } from "@/core/attacks/statTransitions";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
+import { dataFlag } from "@/styles/dataFlag";
+import { guildColorStyle } from "@/styles/guildColorStyle";
 
-const DEF_SUFFIX = '+';
+const DEF_SUFFIX = "+";
 
 type AttackStatsAsideProps = {
   def: StatTransition;
@@ -24,7 +24,7 @@ type TransitionValueProps = {
  * when it changed, in which case the new value is a guild-colored chip. Each
  * part has its own rail column so rows line up.
  */
-const TransitionValue = ({ transition, suffix = '' }: TransitionValueProps) => {
+const TransitionValue = ({ transition, suffix = "" }: TransitionValueProps) => {
   const { from, to } = transition;
   const changed = from !== to;
 
@@ -54,14 +54,12 @@ type StatRowProps = TransitionValueProps & {
 };
 
 /** One stat on the rail: its caption, then its before and after values. */
-const StatRow = ({ caption, transition, suffix }: StatRowProps) => {
-  return (
-    <div className={styles.statRow}>
-      <span className={styles.caption}>{caption}</span>
-      <TransitionValue transition={transition} suffix={suffix} />
-    </div>
-  );
-};
+const StatRow = ({ caption, transition, suffix }: StatRowProps) => (
+  <div className={styles.statRow}>
+    <span className={styles.caption}>{caption}</span>
+    <TransitionValue transition={transition} suffix={suffix} />
+  </div>
+);
 
 export const AttackStatsAside = ({
   def,

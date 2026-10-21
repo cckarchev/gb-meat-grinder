@@ -1,12 +1,12 @@
-import { describe, expect, it } from 'vitest';
-import { statTransitions } from '@/core/attacks/statTransitions';
+import { describe, expect, it } from "vitest";
+import { statTransitions } from "@/core/attacks/statTransitions";
 
 const STARTING_VALUE = 14;
 const FIRST_SWING = 11;
 const LATER_SWINGS = 8;
 
-describe('statTransitions', () => {
-  it('pairs each swing with the one before it, the first with the starting value', () => {
+describe("statTransitions", () => {
+  it("pairs each swing with the one before it, the first with the starting value", () => {
     expect(
       statTransitions(
         [FIRST_SWING, LATER_SWINGS, LATER_SWINGS],
@@ -19,7 +19,7 @@ describe('statTransitions', () => {
     ]);
   });
 
-  it('returns nothing for an activation without swings', () => {
+  it("returns nothing for an activation without swings", () => {
     expect(statTransitions([], STARTING_VALUE)).toEqual([]);
   });
 });

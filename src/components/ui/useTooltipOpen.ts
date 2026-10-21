@@ -1,4 +1,4 @@
-import { type KeyboardEvent, useEffect, useId, useRef, useState } from 'react';
+import { type KeyboardEvent, useEffect, useId, useRef, useState } from "react";
 
 /**
  * Open state for a hover / focus tooltip. It opens on hover or focus and closes
@@ -22,9 +22,9 @@ export const useTooltipOpen = <TWrapper extends HTMLElement>() => {
       }
     };
 
-    document.addEventListener('mousedown', closeOnOutsideClick);
+    document.addEventListener("mousedown", closeOnOutsideClick);
 
-    return () => document.removeEventListener('mousedown', closeOnOutsideClick);
+    return () => document.removeEventListener("mousedown", closeOnOutsideClick);
   }, [open]);
 
   const wrapperProps = {
@@ -34,11 +34,11 @@ export const useTooltipOpen = <TWrapper extends HTMLElement>() => {
   };
 
   const triggerProps = {
-    'aria-describedby': open ? tooltipId : undefined,
+    "aria-describedby": open ? tooltipId : undefined,
     onFocus: () => setOpen(true),
     onBlur: () => setOpen(false),
     onKeyDown: (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         setOpen(false);
       }
     },

@@ -1,12 +1,12 @@
 /** Discrete damage distributions: one swing's, the sum of several, and their quantiles. */
 
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
 import type {
   DamageDistribution,
   DamageForNet,
   ReadonlyDamageDistribution,
-} from '@/core/damage/damage.types';
-import { binomialPmf, maxNetSuccessesForRoll } from '@/core/damage/probability';
+} from "@/core/damage/damage.types";
+import { binomialPmf, maxNetSuccessesForRoll } from "@/core/damage/probability";
 
 /** Add `prob` to the probability already recorded for `damage`. */
 export const addProbability = (

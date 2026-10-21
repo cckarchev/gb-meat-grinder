@@ -1,10 +1,10 @@
-import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
+import type { ActivationRollParams } from "@/core/attacks/attackSequence.types";
 import type {
   CharacterPlayPick,
   CharacterPlayPickSlot,
   PlaybookChoiceId,
   WrapPick,
-} from '@/core/playbook/playbook.types';
+} from "@/core/playbook/playbook.types";
 
 export type AttackPlan = {
   wrapPicks: WrapPick[][];

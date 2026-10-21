@@ -2,13 +2,13 @@ import {
   LABEL_GUILD_DEBUFFS,
   labelAssistEngaged,
   tooltipAssistEngaged,
-} from '@/components/enemy/enemyPanelCopy';
-import { GuildBuffCheckbox } from '@/components/ui/GuildBuffCheckbox';
-import { ToggleGroup } from '@/components/ui/ToggleGroup';
-import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
-import { guildBuffsFor } from '@/core/attackers/buffsAndTraits';
-import { assistNamedModels } from '@/core/characterPlays/characterPlayEffects';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+} from "@/components/enemy/enemyPanelCopy";
+import { GuildBuffCheckbox } from "@/components/ui/GuildBuffCheckbox";
+import { ToggleGroup } from "@/components/ui/ToggleGroup";
+import { TooltipCheckbox } from "@/components/ui/TooltipCheckbox";
+import { guildBuffsFor } from "@/core/attackers/buffsAndTraits";
+import { assistNamedModels } from "@/core/characterPlays/characterPlayEffects";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
 
 const DEBUFF_COLUMNS = 2;
 
@@ -20,7 +20,7 @@ const DEBUFF_COLUMNS = 2;
 export const EnemyGuildDebuffs = () => {
   const { attacker, damageMods, dispatch } = useMeatGrinderSimulation();
 
-  const debuffs = guildBuffsFor(attacker, 'enemy');
+  const debuffs = guildBuffsFor(attacker, "enemy");
   const assistNamed = assistNamedModels(attacker);
   const hasAssist = assistNamed.length > 0;
 
@@ -40,7 +40,7 @@ export const EnemyGuildDebuffs = () => {
       {hasAssist ? (
         <TooltipCheckbox
           checked={damageMods.assistEngaged}
-          onChange={(value) => dispatch({ type: 'assistEngaged', value })}
+          onChange={(value) => dispatch({ type: "assistEngaged", value })}
           tooltip={tooltipAssistEngaged(assistNamed)}
         >
           {labelAssistEngaged(assistNamed)}

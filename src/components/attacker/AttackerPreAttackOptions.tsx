@@ -7,15 +7,15 @@ import {
   labelActivatedTrait,
   TOOLTIP_CHARGE,
   TOOLTIP_CHARGE_FURIOUS,
-} from '@/components/attacker/attackerPanelCopy';
-import { GuildBuffCheckbox } from '@/components/ui/GuildBuffCheckbox';
-import { ToggleGroup, ToggleGroupStack } from '@/components/ui/ToggleGroup';
-import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
+} from "@/components/attacker/attackerPanelCopy";
+import { GuildBuffCheckbox } from "@/components/ui/GuildBuffCheckbox";
+import { ToggleGroup, ToggleGroupStack } from "@/components/ui/ToggleGroup";
+import { TooltipCheckbox } from "@/components/ui/TooltipCheckbox";
 import {
   activatableTraits,
   guildBuffsFor,
-} from '@/core/attackers/buffsAndTraits';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+} from "@/core/attackers/buffsAndTraits";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
 
 /** Charging, then guild buffs and activated traits under guild-colored titles. */
 export const AttackerPreAttackOptions = () => {
@@ -30,7 +30,7 @@ export const AttackerPreAttackOptions = () => {
     ? LABEL_CHARGE_COST_FURIOUS
     : LABEL_CHARGE_COST;
 
-  const buffs = guildBuffsFor(attacker, 'attacker');
+  const buffs = guildBuffsFor(attacker, "attacker");
 
   const toggleableTraits = activatableTraits(attacker);
 
@@ -38,7 +38,7 @@ export const AttackerPreAttackOptions = () => {
     <ToggleGroupStack>
       <TooltipCheckbox
         checked={charging}
-        onChange={(value) => dispatch({ type: 'charging', value })}
+        onChange={(value) => dispatch({ type: "charging", value })}
         tooltip={chargeTooltip}
       >
         {LABEL_CHARGING}
@@ -61,7 +61,7 @@ export const AttackerPreAttackOptions = () => {
               key={trait.id}
               checked={activeTraits[trait.id] === true}
               onChange={(value) =>
-                dispatch({ type: 'activeTrait', id: trait.id, value })
+                dispatch({ type: "activeTrait", id: trait.id, value })
               }
               tooltip={trait.tooltip}
             >

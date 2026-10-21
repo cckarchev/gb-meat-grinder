@@ -1,13 +1,13 @@
-import { AttackerModelSelect } from '@/components/attacker/AttackerModelSelect';
-import styles from '@/components/attacker/AttackerPanel.module.css';
-import { AttackerPreAttackOptions } from '@/components/attacker/AttackerPreAttackOptions';
-import { StepControl } from '@/components/ui/StepControl';
-import { Panel, PanelFooterSection, PanelTitle } from '@/components/ui/ui';
-import { crowdingOutRange } from '@/core/activation/crowdingOut';
-import { gangingUpRange } from '@/core/activation/gangingUp';
-import { INFLUENCE_MIN } from '@/core/shared/constants';
-import { formatSigned } from '@/core/shared/format';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { AttackerModelSelect } from "@/components/attacker/AttackerModelSelect";
+import styles from "@/components/attacker/AttackerPanel.module.css";
+import { AttackerPreAttackOptions } from "@/components/attacker/AttackerPreAttackOptions";
+import { StepControl } from "@/components/ui/StepControl";
+import { Panel, PanelFooterSection, PanelTitle } from "@/components/ui/ui";
+import { crowdingOutRange } from "@/core/activation/crowdingOut";
+import { gangingUpRange } from "@/core/activation/gangingUp";
+import { INFLUENCE_MIN } from "@/core/shared/constants";
+import { formatSigned } from "@/core/shared/format";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
 
 export const AttackerPanel = () => {
   const {
@@ -35,7 +35,7 @@ export const AttackerPanel = () => {
           value={influence}
           min={INFLUENCE_MIN}
           max={attacker.inf}
-          onChange={(value) => dispatch({ type: 'influence', value })}
+          onChange={(value) => dispatch({ type: "influence", value })}
           ariaSubject="influence"
         />
         <StepControl
@@ -43,7 +43,7 @@ export const AttackerPanel = () => {
           value={startingMomentum}
           min={attacker.startingMomentum.min}
           max={attacker.startingMomentum.max}
-          onChange={(value) => dispatch({ type: 'startingMomentum', value })}
+          onChange={(value) => dispatch({ type: "startingMomentum", value })}
           ariaSubject="starting momentum"
         />
         <StepControl
@@ -51,7 +51,7 @@ export const AttackerPanel = () => {
           value={gangingUp}
           min={gangingUpBounds.min}
           max={gangingUpBounds.max}
-          onChange={(value) => dispatch({ type: 'gangingUp', value })}
+          onChange={(value) => dispatch({ type: "gangingUp", value })}
           valueLabel={gangingUpLabel}
           ariaSubject="Ganging Up"
         />
@@ -60,7 +60,7 @@ export const AttackerPanel = () => {
           value={crowdingOut}
           min={crowdingOutBounds.min}
           max={crowdingOutBounds.max}
-          onChange={(value) => dispatch({ type: 'crowdingOut', value })}
+          onChange={(value) => dispatch({ type: "crowdingOut", value })}
           valueLabel={crowdingOutLabel}
           ariaSubject="Crowding Out"
         />

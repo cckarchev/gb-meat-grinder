@@ -1,4 +1,4 @@
-import type { StatRange } from '@/data/attackers/attacker.types';
+import type { StatRange } from "@/data/attackers/attacker.types";
 
 /**
  * Assumed caps, not card values: they keep each input within what can

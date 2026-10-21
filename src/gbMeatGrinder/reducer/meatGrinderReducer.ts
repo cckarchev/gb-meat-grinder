@@ -1,35 +1,35 @@
 /** App state transitions: each action patches the state and keeps the plan legal. */
 
-import { crowdingOutRange } from '@/core/activation/crowdingOut';
-import { gangingUpRange } from '@/core/activation/gangingUp';
-import { clampChargeAttackIndex } from '@/core/attacks/attackStructure';
+import { crowdingOutRange } from "@/core/activation/crowdingOut";
+import { gangingUpRange } from "@/core/activation/gangingUp";
+import { clampChargeAttackIndex } from "@/core/attacks/attackStructure";
 import {
   nextPlanAfterCharacterPlayPick,
   nextPlanAfterClearWrapContinuation,
   nextPlanAfterWrapChoice,
-} from '@/core/plan/planEdits';
-import type { PlaybookDamageMods } from '@/core/playbook/playbook.types';
-import { clamp, clampToRange } from '@/core/shared/clamp';
-import { INFLUENCE_MIN } from '@/core/shared/constants';
-import { attackerById } from '@/data/attackers/registry';
+} from "@/core/plan/planEdits";
+import type { PlaybookDamageMods } from "@/core/playbook/playbook.types";
+import { clamp, clampToRange } from "@/core/shared/clamp";
+import { INFLUENCE_MIN } from "@/core/shared/constants";
+import { attackerById } from "@/data/attackers/registry";
 import {
   resanitizeBonusTime,
   toggleBonusTime,
-} from '@/gbMeatGrinder/reducer/bonusTime';
-import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
+} from "@/gbMeatGrinder/reducer/bonusTime";
+import { stateForAttacker } from "@/gbMeatGrinder/reducer/meatGrinderInitialState";
 import {
   applyPlanEdit,
   withReclampedCharge,
   withReclampedPlan,
-} from '@/gbMeatGrinder/reducer/planReclamp';
+} from "@/gbMeatGrinder/reducer/planReclamp";
 import type {
   MeatGrinderAction,
   MeatGrinderState,
-} from '@/gbMeatGrinder/reducer/reducer.types';
+} from "@/gbMeatGrinder/reducer/reducer.types";
 import {
   activeBaseCountOf,
   attackerOf,
-} from '@/gbMeatGrinder/reducer/stateSelectors';
+} from "@/gbMeatGrinder/reducer/stateSelectors";
 
 /**
  * New damage mods, with ganging up and crowding out pulled back into the ranges
@@ -52,121 +52,156 @@ const withDamageMods = (
   return withReclampedPlan(state, { damageMods, gangingUp, crowdingOut });
 };
 
-const transition = (
+/** Actions that describe the target. */
+const ENEMY_ACTION_TYPES = [
+  "enemyDef",
+  "armor",
+  "hp",
+  "enemyHasCover",
+  "enemyDefensiveStance",
+  "enemyKnockedDown",
+  "enemySnared",
+  "enemyResilience",
+] as const;
+
+type EnemyAction = Extract<
+  MeatGrinderAction,
+  { type: (typeof ENEMY_ACTION_TYPES)[number] }
+>;
+
+const isEnemyAction = (action: MeatGrinderAction): action is EnemyAction =>
+  (ENEMY_ACTION_TYPES as readonly string[]).includes(action.type);
+
+const enemyTransition = (
   state: MeatGrinderState,
-  action: MeatGrinderAction,
+  action: EnemyAction,
 ): MeatGrinderState => {
   switch (action.type) {
-    case 'reset': {
-      // Reset everything to defaults but keep the currently selected model.
-      return stateForAttacker(attackerOf(state));
-    }
-    case 'selectAttacker': {
-      if (action.id === state.attackerId) {
-        return state;
-      }
-
-      return stateForAttacker(attackerById(action.id), state);
-    }
-    case 'enemyDef': {
+    case "enemyDef": {
       return withReclampedPlan(state, { enemyDef: action.value });
     }
-    case 'armor': {
+    case "armor": {
       return withReclampedPlan(state, { armor: action.value });
     }
-    case 'hp': {
+    case "hp": {
       return { ...state, hp: action.value };
     }
-    case 'influence': {
-      const influence = clamp(
-        action.value,
-        INFLUENCE_MIN,
-        attackerOf(state).inf,
-      );
-
-      return withReclampedCharge(state, { influence });
-    }
-    case 'charging': {
-      return withReclampedCharge(state, { charging: action.value });
-    }
-    case 'chargeAttackIndex': {
-      const chargeAttackIndex = clampChargeAttackIndex(
-        action.value,
-        activeBaseCountOf(state),
-      );
-
-      return withReclampedPlan(state, { chargeAttackIndex });
-    }
-    case 'enemyHasCover': {
+    case "enemyHasCover": {
       return withReclampedPlan(state, { enemyHasCover: action.value });
     }
-    case 'enemyDefensiveStance': {
+    case "enemyDefensiveStance": {
       return withReclampedPlan(state, { enemyDefensiveStance: action.value });
     }
-    case 'enemyKnockedDown': {
+    case "enemyKnockedDown": {
       return withReclampedPlan(state, { enemyKnockedDown: action.value });
     }
-    case 'enemySnared': {
+    case "enemySnared": {
       return withReclampedPlan(state, { enemySnared: action.value });
     }
-    case 'enemyResilience': {
+    case "enemyResilience": {
       // Resilience only changes which swings are *ignored* downstream; it never
       // alters the editable plan's validity, so no re-clamp is needed.
       return { ...state, enemyResilience: action.value };
     }
-    case 'startingMomentum': {
-      const startingMomentum = clampToRange(
-        action.value,
-        attackerOf(state).startingMomentum,
-      );
+    default: {
+      const _exhaustive: never = action;
 
-      return { ...state, startingMomentum };
+      return _exhaustive;
     }
-    case 'gangingUp': {
+  }
+};
+
+/** Actions that change the damage mods or the ranges they allow. */
+const DAMAGE_MOD_ACTION_TYPES = [
+  "gangingUp",
+  "crowdingOut",
+  "toughHide",
+  "targetBurning",
+  "assistEngaged",
+  "guildBuff",
+] as const;
+
+type DamageModAction = Extract<
+  MeatGrinderAction,
+  { type: (typeof DAMAGE_MOD_ACTION_TYPES)[number] }
+>;
+
+const isDamageModAction = (
+  action: MeatGrinderAction,
+): action is DamageModAction =>
+  (DAMAGE_MOD_ACTION_TYPES as readonly string[]).includes(action.type);
+
+const damageModTransition = (
+  state: MeatGrinderState,
+  action: DamageModAction,
+): MeatGrinderState => {
+  switch (action.type) {
+    case "gangingUp": {
       const range = gangingUpRange(attackerOf(state), state.damageMods);
       const gangingUp = clampToRange(action.value, range);
 
       return withReclampedPlan(state, { gangingUp });
     }
-    case 'crowdingOut': {
+    case "crowdingOut": {
       const range = crowdingOutRange(attackerOf(state), state.damageMods);
       const crowdingOut = clampToRange(action.value, range);
 
       return withReclampedPlan(state, { crowdingOut });
     }
-    case 'toughHide': {
+    case "toughHide": {
       const damageMods = { ...state.damageMods, toughHide: action.value };
 
       return withDamageMods(state, damageMods);
     }
-    case 'targetBurning': {
+    case "targetBurning": {
       const damageMods = { ...state.damageMods, targetBurning: action.value };
 
       return withDamageMods(state, damageMods);
     }
-    case 'assistEngaged': {
+    case "assistEngaged": {
       const damageMods = { ...state.damageMods, assistEngaged: action.value };
 
       return withDamageMods(state, damageMods);
     }
-    case 'guildBuff': {
+    case "guildBuff": {
       const buffs = { ...state.damageMods.buffs, [action.id]: action.value };
       const damageMods = { ...state.damageMods, buffs };
 
       return withDamageMods(state, damageMods);
     }
-    case 'activeTrait': {
-      const activeTraits = {
-        ...state.activeTraits,
-        [action.id]: action.value,
-      };
+    default: {
+      const _exhaustive: never = action;
 
-      return { ...state, activeTraits };
+      return _exhaustive;
     }
-    case 'bonusTime': {
+  }
+};
+
+/** Actions that edit the attack plan itself. */
+const PLAN_ACTION_TYPES = [
+  "bonusTime",
+  "wrapChoice",
+  "clearWrapContinuation",
+  "characterPlayPick",
+] as const;
+
+type PlanAction = Extract<
+  MeatGrinderAction,
+  { type: (typeof PLAN_ACTION_TYPES)[number] }
+>;
+
+const isPlanAction = (action: MeatGrinderAction): action is PlanAction =>
+  (PLAN_ACTION_TYPES as readonly string[]).includes(action.type);
+
+const planTransition = (
+  state: MeatGrinderState,
+  action: PlanAction,
+): MeatGrinderState => {
+  switch (action.type) {
+    case "bonusTime": {
       return toggleBonusTime(state, action.attackIndex, action.value);
     }
-    case 'wrapChoice': {
+    case "wrapChoice": {
       const edited = nextPlanAfterWrapChoice(
         state.attackPlan,
         action,
@@ -175,7 +210,7 @@ const transition = (
 
       return applyPlanEdit(state, edited);
     }
-    case 'clearWrapContinuation': {
+    case "clearWrapContinuation": {
       const edited = nextPlanAfterClearWrapContinuation(
         state.attackPlan,
         action.attackIndex,
@@ -184,7 +219,7 @@ const transition = (
 
       return applyPlanEdit(state, edited);
     }
-    case 'characterPlayPick': {
+    case "characterPlayPick": {
       const edited = nextPlanAfterCharacterPlayPick(state.attackPlan, action, {
         attacker: attackerOf(state),
         damageMods: state.damageMods,
@@ -192,6 +227,78 @@ const transition = (
       });
 
       return applyPlanEdit(state, edited);
+    }
+    default: {
+      const _exhaustive: never = action;
+
+      return _exhaustive;
+    }
+  }
+};
+
+const transition = (
+  state: MeatGrinderState,
+  action: MeatGrinderAction,
+): MeatGrinderState => {
+  if (isEnemyAction(action)) {
+    return enemyTransition(state, action);
+  }
+
+  if (isDamageModAction(action)) {
+    return damageModTransition(state, action);
+  }
+
+  if (isPlanAction(action)) {
+    return planTransition(state, action);
+  }
+
+  switch (action.type) {
+    case "reset": {
+      // Reset everything to defaults but keep the currently selected model.
+      return stateForAttacker(attackerOf(state));
+    }
+    case "selectAttacker": {
+      if (action.id === state.attackerId) {
+        return state;
+      }
+
+      return stateForAttacker(attackerById(action.id), state);
+    }
+    case "influence": {
+      const influence = clamp(
+        action.value,
+        INFLUENCE_MIN,
+        attackerOf(state).inf,
+      );
+
+      return withReclampedCharge(state, { influence });
+    }
+    case "charging": {
+      return withReclampedCharge(state, { charging: action.value });
+    }
+    case "chargeAttackIndex": {
+      const chargeAttackIndex = clampChargeAttackIndex(
+        action.value,
+        activeBaseCountOf(state),
+      );
+
+      return withReclampedPlan(state, { chargeAttackIndex });
+    }
+    case "startingMomentum": {
+      const startingMomentum = clampToRange(
+        action.value,
+        attackerOf(state).startingMomentum,
+      );
+
+      return { ...state, startingMomentum };
+    }
+    case "activeTrait": {
+      const activeTraits = {
+        ...state.activeTraits,
+        [action.id]: action.value,
+      };
+
+      return { ...state, activeTraits };
     }
     default: {
       const _exhaustive: never = action;
@@ -209,6 +316,4 @@ const transition = (
 export const meatGrinderReducer = (
   state: MeatGrinderState,
   action: MeatGrinderAction,
-): MeatGrinderState => {
-  return resanitizeBonusTime(transition(state, action));
-};
+): MeatGrinderState => resanitizeBonusTime(transition(state, action));

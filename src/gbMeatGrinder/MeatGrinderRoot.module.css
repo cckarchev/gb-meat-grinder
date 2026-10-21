@@ -20,7 +20,7 @@
 }
 
 .title {
-  composes: displayHeading from '../styles/mixins.module.css';
+  composes: displayHeading from "../styles/mixins.module.css";
   font-size: var(--font-size-2xl);
   line-height: var(--line-height-none);
   margin: 0;

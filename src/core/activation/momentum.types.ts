@@ -1,8 +1,8 @@
 import type {
   PlaybookDamageMods,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/playbook.types";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /** Everything the momentum pool depends on across one activation. */
 export type MomentumParams = {

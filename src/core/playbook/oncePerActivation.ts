@@ -1,25 +1,22 @@
 /** Playbook effects that only apply once per activation: Knock Down and Tackle. */
 
-import { picksBeforeInActivation } from '@/core/attacks/attackRows';
-import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
-import type { PickPosition } from '@/core/plan/attackPlan.types';
-import type { PlaybookResult, WrapPick } from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/playbookIndex';
+import { picksBeforeInActivation } from "@/core/attacks/attackRows";
+import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
+import type { PickPosition } from "@/core/plan/attackPlan.types";
+import type { PlaybookResult, WrapPick } from "@/core/playbook/playbook.types";
+import { getPlaybookResult } from "@/core/playbook/playbookIndex";
 
 export type PlaybookResultMatcher = (result: PlaybookResult) => boolean;
 
-export const appliesKnockDown: PlaybookResultMatcher = (result) => {
-  return result.appliesKnockDown === true;
-};
+export const appliesKnockDown: PlaybookResultMatcher = (result) =>
+  result.appliesKnockDown === true;
 
-export const stealsBall: PlaybookResultMatcher = (result) => {
-  return result.stealsBall === true;
-};
+export const stealsBall: PlaybookResultMatcher = (result) =>
+  result.stealsBall === true;
 
 /** True for a line whose effect can only apply once per activation. */
-export const isOncePerActivation: PlaybookResultMatcher = (result) => {
-  return appliesKnockDown(result) || stealsBall(result);
-};
+export const isOncePerActivation: PlaybookResultMatcher = (result) =>
+  appliesKnockDown(result) || stealsBall(result);
 
 /**
  * True if a strictly earlier wrap pick (activation order) is a line that
@@ -33,7 +30,7 @@ export const matchingPickBefore = (
 ): boolean => {
   const earlierPicks = picksBeforeInActivation(order, wrapPicks, position);
 
-  return earlierPicks.some((earlier) => {
-    return matches(getPlaybookResult(order.attacker, earlier.id));
-  });
+  return earlierPicks.some((earlier) =>
+    matches(getPlaybookResult(order.attacker, earlier.id)),
+  );
 };

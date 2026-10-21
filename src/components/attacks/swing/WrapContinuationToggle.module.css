@@ -1,5 +1,5 @@
 .toggleButton {
-  composes: inputButton from '../../../styles/mixins.module.css';
+  composes: inputButton from "../../../styles/mixins.module.css";
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -33,7 +33,7 @@
 }
 
 .caret::before {
-  content: '▼';
+  content: "▼";
 }
 
 @media (max-width: 720px) {

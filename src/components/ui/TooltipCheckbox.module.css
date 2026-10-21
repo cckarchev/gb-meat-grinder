@@ -29,7 +29,7 @@
 
   /* Plain label text (clicking it toggles the box), hinting at its tooltip. */
   .labelText {
-    composes: tooltipHint from '../../styles/mixins.module.css';
+    composes: tooltipHint from "../../styles/mixins.module.css";
     position: relative;
   }
 }

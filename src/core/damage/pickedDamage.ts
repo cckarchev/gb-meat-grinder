@@ -1,17 +1,17 @@
 /** Damage one roll deals when you stick to the playbook lines you picked. */
 
-import { effectiveDamageForChoice } from '@/core/damage/damage';
+import { effectiveDamageForChoice } from "@/core/damage/damage";
 import type {
   PlaybookDamageMods,
   WrapPick,
-} from '@/core/playbook/playbook.types';
+} from "@/core/playbook/playbook.types";
 import {
   getPlaybookResult,
   maxPlaybookNet,
   netSuccessesForChoice,
-} from '@/core/playbook/playbookIndex';
-import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/playbookIndex";
+import { MIN_PLAYBOOK_NET } from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /** Damage a swing deals besides its card results, by where it lands. */
 export type SwingDamageExtras = {
@@ -25,14 +25,13 @@ export type SwingDamageExtras = {
 const damageLineWithinBudget = (
   attacker: AttackerData,
   budget: number,
-): boolean => {
-  return attacker.playbook.some((column) => {
+): boolean =>
+  attacker.playbook.some((column) => {
     const affordable =
       column.netSuccesses >= MIN_PLAYBOOK_NET && column.netSuccesses <= budget;
 
     return affordable && column.results.some((result) => result.damage > 0);
   });
-};
 
 /** Most card damage reachable in a single playbook column within `budget` net. */
 const bestDamageWithinBudget = (

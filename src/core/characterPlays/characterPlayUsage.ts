@@ -1,20 +1,20 @@
 /** Once Per Turn bookkeeping: which plays earlier picks used up and which remain. */
 
-import { picksBeforeInActivation } from '@/core/attacks/attackRows';
-import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
+import { picksBeforeInActivation } from "@/core/attacks/attackRows";
+import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
 import {
   characterPlaysForAttacker,
   effectivePlayForPick,
   getCharacterPlay,
-} from '@/core/characterPlays/characterPlayLookup';
-import type { AttackPlan, PickPosition } from '@/core/plan/attackPlan.types';
+} from "@/core/characterPlays/characterPlayLookup";
+import type { AttackPlan, PickPosition } from "@/core/plan/attackPlan.types";
 import type {
   CharacterPlay,
   CharacterPlayPick,
   CharacterPlayUsage,
-} from '@/core/playbook/playbook.types';
-import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/playbook.types";
+import { choiceUsesCharacterPlay } from "@/core/playbook/playbookIndex";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /**
  * Character plays already taken on picks strictly before `(attackIndex,
@@ -57,11 +57,8 @@ export const characterPlayUsageBeforePick = (
 const unusedCharacterPlays = (
   attacker: AttackerData,
   used: CharacterPlayUsage,
-): CharacterPlay[] => {
-  return characterPlaysForAttacker(attacker).filter(
-    (play) => !used.has(play.id),
-  );
-};
+): CharacterPlay[] =>
+  characterPlaysForAttacker(attacker).filter((play) => !used.has(play.id));
 
 /** Character plays still choosable on this pick (those not used by earlier picks). */
 export const characterPlayAvailabilityForPick = (

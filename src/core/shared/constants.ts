@@ -64,7 +64,7 @@ export const ASSIST_ENGAGED_GANGING_UP_MIN = 1;
 export const TOUGH_HIDE_DAMAGE_PENALTY = 1;
 
 /** Effect name every playbook Knock Down shares, so only one ever applies. */
-export const KNOCKED_DOWN_EFFECT = 'knockedDown';
+export const KNOCKED_DOWN_EFFECT = "knockedDown";
 
 /** TAC a swing gains for being the charge. */
 export const CHARGE_TAC_BONUS = 4;

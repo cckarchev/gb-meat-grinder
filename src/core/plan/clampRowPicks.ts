@@ -5,21 +5,21 @@
 import {
   initialCharacterPlayFor,
   playSlotForPick,
-} from '@/core/characterPlays/characterPlayLookup';
-import type { AttackPlanRow } from '@/core/plan/attackPlan.types';
-import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
+} from "@/core/characterPlays/characterPlayLookup";
+import type { AttackPlanRow } from "@/core/plan/attackPlan.types";
+import type { PlaybookChoiceId } from "@/core/playbook/playbook.types";
 import {
   cheapestChoiceId,
   maxPlaybookNet,
   netSuccessesForChoice,
-} from '@/core/playbook/playbookIndex';
-import { wrapSlotBudget, wrapSlotCount } from '@/core/playbook/wrapSlots';
+} from "@/core/playbook/playbookIndex";
+import { wrapSlotBudget, wrapSlotCount } from "@/core/playbook/wrapSlots";
 import {
   FIRST_WRAP_PICK_INDEX,
   MIN_PLAYBOOK_NET,
   PRIMARY_PICK_INDEX,
-} from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /** First line of the widest column within `maxNet`. */
 const firstReachableChoiceId = (
@@ -31,9 +31,9 @@ const firstReachableChoiceId = (
   }
 
   const targetNet = Math.min(maxNet, maxPlaybookNet(attacker));
-  const column = attacker.playbook.find((candidate) => {
-    return candidate.netSuccesses === targetNet;
-  });
+  const column = attacker.playbook.find(
+    (candidate) => candidate.netSuccesses === targetNet,
+  );
 
   return column?.results[0].id ?? cheapestChoiceId(attacker);
 };

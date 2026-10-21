@@ -1,47 +1,47 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 import {
   characterPlayAvailabilityForPick,
   characterPlayUsageBeforePick,
-} from '@/core/characterPlays/characterPlayUsage';
+} from "@/core/characterPlays/characterPlayUsage";
 import {
   makeAttacker,
   orderFor,
   PLAY_DEF,
   PLAY_REPEATABLE,
   PLAY_TAC,
-} from '@/core/testing/fixtures';
+} from "@/core/testing/fixtures";
 
-describe('character play usage', () => {
+describe("character play usage", () => {
   const attacker = makeAttacker();
-  const gbTwice = [['gb'], ['gb']];
+  const gbTwice = [["gb"], ["gb"]];
   const secondSwing = { attackIndex: 1, pickIndex: 0 };
 
-  it('uses up Once Per Turn plays on earlier picks', () => {
+  it("uses up Once Per Turn plays on earlier picks", () => {
     const used = characterPlayUsageBeforePick(
       orderFor(attacker, 2),
-      { wrapPicks: gbTwice, characterPlayPicks: [['playTac'], [null]] },
+      { wrapPicks: gbTwice, characterPlayPicks: [["playTac"], [null]] },
       secondSwing,
     );
 
-    expect([...used]).toEqual(['playTac']);
+    expect([...used]).toEqual(["playTac"]);
   });
 
-  it('never uses up plays that are not Once Per Turn', () => {
+  it("never uses up plays that are not Once Per Turn", () => {
     const repeatable = makeAttacker({ characterPlays: [PLAY_REPEATABLE] });
 
     const used = characterPlayUsageBeforePick(
       orderFor(repeatable, 2),
-      { wrapPicks: gbTwice, characterPlayPicks: [['playRepeatable'], [null]] },
+      { wrapPicks: gbTwice, characterPlayPicks: [["playRepeatable"], [null]] },
       secondSwing,
     );
 
     expect(used.size).toBe(0);
   });
 
-  it('reports which plays remain available', () => {
+  it("reports which plays remain available", () => {
     const plan = {
       wrapPicks: gbTwice,
-      characterPlayPicks: [['playTac'], [null]],
+      characterPlayPicks: [["playTac"], [null]],
     };
 
     const availability = characterPlayAvailabilityForPick(

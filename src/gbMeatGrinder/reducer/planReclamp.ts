@@ -1,17 +1,16 @@
 /** State transitions that keep the attack plan legal after a state change or plan edit. */
 
-import { clampChargeAttackIndex } from '@/core/attacks/attackStructure';
-import type { AttackPlan } from '@/core/plan/attackPlan.types';
-import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
-import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
+import { clampChargeAttackIndex } from "@/core/attacks/attackStructure";
+import type { AttackPlan } from "@/core/plan/attackPlan.types";
+import { clampAttackPlan } from "@/core/plan/clampAttackPlan";
+import type { MeatGrinderState } from "@/gbMeatGrinder/reducer/reducer.types";
 import {
   activeBaseCountOf,
   clampParams,
-} from '@/gbMeatGrinder/reducer/stateSelectors';
+} from "@/gbMeatGrinder/reducer/stateSelectors";
 
-const clampPlan = (state: MeatGrinderState, plan: AttackPlan): AttackPlan => {
-  return clampAttackPlan(plan, clampParams(state));
-};
+const clampPlan = (state: MeatGrinderState, plan: AttackPlan): AttackPlan =>
+  clampAttackPlan(plan, clampParams(state));
 
 /** Apply `patch`, then re-clamp the existing plan against the patched state. */
 export const withReclampedPlan = (

@@ -1,13 +1,13 @@
-import type { PlaybookColumn } from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { PlaybookColumn } from "@/core/playbook/playbook.types";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from '@/data/attackers/statRanges';
-import { axeAQuestion, hoistingAndHauling } from '@/data/characterPlays';
-import { anatomicalPrecision } from '@/data/characterTraits';
-import { lumberjacks } from '@/data/guilds/lumberjacks';
+} from "@/data/attackers/statRanges";
+import { axeAQuestion, hoistingAndHauling } from "@/data/characterPlays";
+import { anatomicalPrecision } from "@/data/characterTraits";
+import { lumberjacks } from "@/data/guilds/lumberjacks";
 
 /**
  * Bucker playbook, from the card: `GB;M`/`1;M`, `>;M`/`2;M`, `T;M`/`KD;M`,
@@ -22,15 +22,15 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 1,
     results: [
       {
-        id: 'gb',
-        label: 'GB',
+        id: "gb",
+        label: "GB",
         damage: 0,
         momentum: true,
         picksCharacterPlay: true,
       },
       {
-        id: 'm1',
-        label: '1',
+        id: "m1",
+        label: "1",
         damage: 1,
         momentum: true,
       },
@@ -40,15 +40,15 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 2,
     results: [
       {
-        id: 'push',
-        label: '>',
+        id: "push",
+        label: ">",
         damage: 0,
         momentum: true,
         clearsCover: true,
       },
       {
-        id: 'm2',
-        label: '2',
+        id: "m2",
+        label: "2",
         damage: 2,
         momentum: true,
       },
@@ -58,15 +58,15 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 3,
     results: [
       {
-        id: 'tackle',
-        label: 'T',
+        id: "tackle",
+        label: "T",
         damage: 0,
         stealsBall: true,
         momentum: true,
       },
       {
-        id: 'kd',
-        label: 'KD',
+        id: "kd",
+        label: "KD",
         defReductionForLater: 1,
         damage: 0,
         momentum: true,
@@ -78,8 +78,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 4,
     results: [
       {
-        id: 'dmg3',
-        label: '3',
+        id: "dmg3",
+        label: "3",
         damage: 3,
       },
     ],
@@ -88,14 +88,14 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 5,
     results: [
       {
-        id: 'push_push',
-        label: '>>',
+        id: "push_push",
+        label: ">>",
         damage: 0,
         clearsCover: true,
       },
       {
-        id: 'dmg4',
-        label: '4',
+        id: "dmg4",
+        label: "4",
         damage: 4,
       },
     ],
@@ -103,8 +103,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
 ];
 
 export const bucker: AttackerData = {
-  id: 'bucker',
-  name: 'Bucker',
+  id: "bucker",
+  name: "Bucker",
   tac: 5,
   inf: 4,
   furious: false,

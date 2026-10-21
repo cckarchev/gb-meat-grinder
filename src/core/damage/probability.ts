@@ -21,9 +21,8 @@ const binomialCoeff = (n: number, k: number): number => {
   return coefficient;
 };
 
-export const binomialPmf = (n: number, p: number, k: number): number => {
-  return binomialCoeff(n, k) * p ** k * (1 - p) ** (n - k);
-};
+export const binomialPmf = (n: number, p: number, k: number): number =>
+  binomialCoeff(n, k) * p ** k * (1 - p) ** (n - k);
 
 /** Per-die hit chance: DEF is minimum successful roll (Guild Ball style 2+ … 6+). */
 export const hitProbabilityPerDie = (defMinRoll: number): number => {

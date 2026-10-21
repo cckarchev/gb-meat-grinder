@@ -38,7 +38,7 @@
 }
 
 .readoutLabel {
-  composes: monoCapsLabel from '../../../styles/mixins.module.css';
+  composes: monoCapsLabel from "../../../styles/mixins.module.css";
   font-size: var(--font-size-2xs);
 }
 

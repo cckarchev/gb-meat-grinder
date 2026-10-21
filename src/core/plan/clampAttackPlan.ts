@@ -2,27 +2,25 @@
  * Keeps a wrap / character-play plan legal as the inputs that bound it change.
  */
 
-import { sanitizeCharacterPlayPicks } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
+import { sanitizeCharacterPlayPicks } from "@/core/characterPlays/sanitizeCharacterPlayPicks";
 import type {
   AttackPlan,
   AttackPlanClampParams,
-} from '@/core/plan/attackPlan.types';
-import { clampAttackRow } from '@/core/plan/clampAttackRow';
+} from "@/core/plan/attackPlan.types";
+import { clampAttackRow } from "@/core/plan/clampAttackRow";
 import {
   stripDuplicateKnockDown,
   stripDuplicateTackle,
-} from '@/core/plan/clampOncePerActivation';
-import { gridEqual } from '@/core/shared/gridEqual';
+} from "@/core/plan/clampOncePerActivation";
+import { gridEqual } from "@/core/shared/gridEqual";
 
 /** Safety cap for the clamp fixpoint loop; real plans settle in a few passes. */
 const MAX_CLAMP_PASSES = 30;
 
-const clonePlan = (plan: AttackPlan): AttackPlan => {
-  return {
-    wrapPicks: plan.wrapPicks.map((row) => [...row]),
-    characterPlayPicks: plan.characterPlayPicks.map((row) => [...row]),
-  };
-};
+const clonePlan = (plan: AttackPlan): AttackPlan => ({
+  wrapPicks: plan.wrapPicks.map((row) => [...row]),
+  characterPlayPicks: plan.characterPlayPicks.map((row) => [...row]),
+});
 
 /** Re-check play picks that depend on earlier GB / 1GB choices. Mutates `draft`. */
 const sanitizeCharacterPlays = (

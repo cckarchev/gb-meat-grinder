@@ -3,10 +3,10 @@
 import {
   coverSwingClockIndices,
   wrapPickClearsCover,
-} from '@/core/playbook/coverClearing';
-import type { WrapPick } from '@/core/playbook/playbook.types';
-import { COVER_TAC_PENALTY } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/coverClearing";
+import type { WrapPick } from "@/core/playbook/playbook.types";
+import { COVER_TAC_PENALTY } from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /**
  * Cover: `COVER_TAC_PENALTY` fewer dice on this attack while the enemy is in terrain.

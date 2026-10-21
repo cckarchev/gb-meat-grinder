@@ -1,12 +1,12 @@
-import { clamp } from '@/core/shared/clamp';
+import { clamp } from "@/core/shared/clamp";
 import {
   BERSERKER_ROWS_PER_BASE,
   CHARGE_ATTACK_COUNT,
   CHARGE_INFLUENCE_COST,
   FERAL_ATTACK_COUNT,
   NO_ATTACK_INDEX,
-} from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /**
  * Influence the charge consumes: free for Furious models, otherwise
@@ -59,9 +59,7 @@ export const clampChargeAttackIndex = (
 export const effectiveChargeIndex = (
   charging: boolean,
   chargeAttackIndex: number,
-): number => {
-  return charging ? chargeAttackIndex : NO_ATTACK_INDEX;
-};
+): number => (charging ? chargeAttackIndex : NO_ATTACK_INDEX);
 
 /** Whether this row is the charge: the chosen charge row, while still an active base. */
 export const isChargeSwing = (
@@ -87,9 +85,8 @@ export const maxBaseAttackCount = (attacker: AttackerData): number => {
 };
 
 /** Berserker rows live at `maxBaseAttackCount + baseIndex`, so this is the offset. */
-export const berserkerRowOffset = (attacker: AttackerData): number => {
-  return maxBaseAttackCount(attacker);
-};
+export const berserkerRowOffset = (attacker: AttackerData): number =>
+  maxBaseAttackCount(attacker);
 
 /** Total rows the attack-plan arrays reserve (bases + one Berserker slot each). */
 export const attackArraySize = (attacker: AttackerData): number => {

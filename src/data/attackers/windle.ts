@@ -1,12 +1,12 @@
-import type { PlaybookColumn } from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { PlaybookColumn } from "@/core/playbook/playbook.types";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from '@/data/attackers/statRanges';
-import { snackBreak } from '@/data/characterPlays';
-import { farmers } from '@/data/guilds/farmers';
+} from "@/data/attackers/statRanges";
+import { snackBreak } from "@/data/characterPlays";
+import { farmers } from "@/data/guilds/farmers";
 
 /**
  * Windle playbook. All damage results are momentous. The momentous-2 on column
@@ -19,14 +19,14 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 1,
     results: [
       {
-        id: 'push',
-        label: '>',
+        id: "push",
+        label: ">",
         damage: 0,
         clearsCover: true,
       },
       {
-        id: 'm2',
-        label: '2',
+        id: "m2",
+        label: "2",
         damage: 2,
         momentum: true,
       },
@@ -36,15 +36,15 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 2,
     results: [
       {
-        id: 'kd',
-        label: 'KD',
+        id: "kd",
+        label: "KD",
         defReductionForLater: 1,
         damage: 0,
         appliesKnockDown: true,
       },
       {
-        id: 'm3',
-        label: '3',
+        id: "m3",
+        label: "3",
         damage: 3,
         momentum: true,
       },
@@ -54,14 +54,14 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 3,
     results: [
       {
-        id: 'push_push',
-        label: '>>',
+        id: "push_push",
+        label: ">>",
         damage: 0,
         clearsCover: true,
       },
       {
-        id: 'm2_gb',
-        label: '2',
+        id: "m2_gb",
+        label: "2",
         damage: 2,
         momentum: true,
         picksCharacterPlay: true,
@@ -72,8 +72,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 4,
     results: [
       {
-        id: 'm4',
-        label: '4',
+        id: "m4",
+        label: "4",
         damage: 4,
         momentum: true,
       },
@@ -83,8 +83,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 5,
     results: [
       {
-        id: 'm5',
-        label: '5',
+        id: "m5",
+        label: "5",
         damage: 5,
         momentum: true,
       },
@@ -93,8 +93,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
 ];
 
 export const windle: AttackerData = {
-  id: 'windle',
-  name: 'Windle',
+  id: "windle",
+  name: "Windle",
   tac: 6,
   inf: 2,
   furious: false,

@@ -1,7 +1,7 @@
-import styles from '@/components/attacks/swing/AttackHeading.module.css';
-import { attackKindLabel } from '@/core/attacks/attackKind';
-import { KILLING_BLOW_MOMENTUM } from '@/core/shared/constants';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import styles from "@/components/attacks/swing/AttackHeading.module.css";
+import { attackKindLabel } from "@/core/attacks/attackKind";
+import { KILLING_BLOW_MOMENTUM } from "@/core/shared/constants";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
 
 type AttackHeadingProps = {
   attackIndex: number;

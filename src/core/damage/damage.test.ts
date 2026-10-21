@@ -1,26 +1,26 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
 import {
   activeTraitFlatDamage,
   effectiveEnemyDef,
   effectivePlaybookDamage,
   effectivePlayDamage,
   playbookDamageBonusSum,
-} from '@/core/damage/damage';
+} from "@/core/damage/damage";
 import {
   makeAttacker,
   modsWith,
   NO_MODS,
   PASSIVE_TRAIT,
   TEAMMATE_GUILD,
-} from '@/core/testing/fixtures';
-import { dontFearTheReaper } from '@/data/characterTraits';
+} from "@/core/testing/fixtures";
+import { dontFearTheReaper } from "@/data/characterTraits";
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
 
-describe('buffs and damage', () => {
+describe("buffs and damage", () => {
   const attacker = makeAttacker();
 
-  it('sums the damage bonus of active buffs only', () => {
+  it("sums the damage bonus of active buffs only", () => {
     expect(playbookDamageBonusSum(attacker, NO_MODS)).toBe(0);
 
     expect(
@@ -28,7 +28,7 @@ describe('buffs and damage', () => {
     ).toBe(1);
   });
 
-  it('applies Tough Hide and buffs only to lines with card damage', () => {
+  it("applies Tough Hide and buffs only to lines with card damage", () => {
     expect(effectivePlaybookDamage(attacker, 0, TOUGH_HIDE)).toBe(0);
     expect(effectivePlaybookDamage(attacker, 2, TOUGH_HIDE)).toBe(1);
     expect(effectivePlaybookDamage(attacker, 1, TOUGH_HIDE)).toBe(0);
@@ -42,7 +42,7 @@ describe('buffs and damage', () => {
     ).toBe(2);
   });
 
-  it('applies a playbook-only bonus to playbook damage but not to play damage', () => {
+  it("applies a playbook-only bonus to playbook damage but not to play damage", () => {
     const butcher = makeAttacker({ guild: TEAMMATE_GUILD });
     const carve = modsWith({ buffs: { carve: true } });
 
@@ -50,14 +50,14 @@ describe('buffs and damage', () => {
     expect(effectivePlayDamage(butcher, 2, carve)).toBe(2);
   });
 
-  it('applies an any-damage bonus to play damage too', () => {
+  it("applies an any-damage bonus to play damage too", () => {
     const sharp = modsWith({ buffs: { sharp: true } });
 
     expect(effectivePlayDamage(attacker, 2, sharp)).toBe(2 + 1);
     expect(effectivePlayDamage(attacker, 2, TOUGH_HIDE)).toBe(1);
   });
 
-  it('ignores Tough Hide with a Condition Damage buff', () => {
+  it("ignores Tough Hide with a Condition Damage buff", () => {
     const conditionMods = modsWith({
       toughHide: true,
       buffs: { condition: true },
@@ -66,7 +66,7 @@ describe('buffs and damage', () => {
     expect(effectivePlaybookDamage(attacker, 2, conditionMods)).toBe(2);
   });
 
-  it('lowers DEF for Knocked Down and Snared without a floor', () => {
+  it("lowers DEF for Knocked Down and Snared without a floor", () => {
     const def = 4;
     const defOverCap = 7;
     const defCap = 6;
@@ -76,7 +76,7 @@ describe('buffs and damage', () => {
     expect(effectiveEnemyDef(defOverCap, false, false)).toBe(defCap);
   });
 
-  it('adds the flat damage of activated traits only', () => {
+  it("adds the flat damage of activated traits only", () => {
     const attacker = makeAttacker({
       characterTraits: [dontFearTheReaper, PASSIVE_TRAIT],
     });

@@ -1,10 +1,10 @@
-import { attackArraySize } from '@/core/attacks/attackStructure';
-import { createInitialAttackPlan } from '@/core/plan/initialAttackPlan';
-import { clampToRange } from '@/core/shared/clamp';
-import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
-import { randomAttacker } from '@/data/attackers/registry';
-import type { MeatGrinderState } from '@/gbMeatGrinder/reducer/reducer.types';
+import { attackArraySize } from "@/core/attacks/attackStructure";
+import { createInitialAttackPlan } from "@/core/plan/initialAttackPlan";
+import { clampToRange } from "@/core/shared/clamp";
+import { ARM_DEFAULT, DEF_DEFAULT, HP_DEFAULT } from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { randomAttacker } from "@/data/attackers/registry";
+import type { MeatGrinderState } from "@/gbMeatGrinder/reducer/reducer.types";
 
 /** Fresh attacker-side state for a model, preserving enemy stats from `prev`. */
 export const stateForAttacker = (
@@ -62,6 +62,5 @@ export const stateForAttacker = (
   };
 };
 
-export const createInitialMeatGrinderState = (): MeatGrinderState => {
-  return stateForAttacker(randomAttacker());
-};
+export const createInitialMeatGrinderState = (): MeatGrinderState =>
+  stateForAttacker(randomAttacker());

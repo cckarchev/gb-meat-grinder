@@ -1,14 +1,14 @@
-import { describe, expect, it } from 'vitest';
-import { deriveSimulation } from '@/core/activation/simulation';
-import { veteranBoar } from '@/data/attackers/veteranBoar';
-import { stateForAttacker } from '@/gbMeatGrinder/reducer/meatGrinderInitialState';
+import { describe, expect, it } from "vitest";
+import { deriveSimulation } from "@/core/activation/simulation";
+import { veteranBoar } from "@/data/attackers/veteranBoar";
+import { stateForAttacker } from "@/gbMeatGrinder/reducer/meatGrinderInitialState";
 import {
   pickUiEngineResults,
   UI_ENGINE_RESULT_KEYS,
-} from '@/gbMeatGrinder/uiEngineResults';
+} from "@/gbMeatGrinder/uiEngineResults";
 
-describe('pickUiEngineResults', () => {
-  it('copies exactly the engine results the UI reads', () => {
+describe("pickUiEngineResults", () => {
+  it("copies exactly the engine results the UI reads", () => {
     const derived = deriveSimulation(
       veteranBoar,
       stateForAttacker(veteranBoar),

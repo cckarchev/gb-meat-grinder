@@ -6,49 +6,50 @@
  * update the snapshot on purpose.
  */
 
-import { describe, expect, it } from 'vitest';
-import { sanitizeBonusTimeFlags } from '@/core/activation/bonusTimeFlags';
-import { momentumAfterAttackInclusive } from '@/core/activation/momentum';
-import { deriveSimulation } from '@/core/activation/simulation';
-import type { ActivationScenario } from '@/core/activation/simulation.types';
+import { describe, expect, it } from "vitest";
+import { sanitizeBonusTimeFlags } from "@/core/activation/bonusTimeFlags";
+import { momentumAfterAttackInclusive } from "@/core/activation/momentum";
+import { deriveSimulation } from "@/core/activation/simulation";
+import type { ActivationScenario } from "@/core/activation/simulation.types";
 import {
   activatableTraits,
   availableBuffs,
-} from '@/core/attackers/buffsAndTraits';
-import { activationAttackIndices } from '@/core/attacks/attackRows';
+} from "@/core/attackers/buffsAndTraits";
+import { activationAttackIndices } from "@/core/attacks/attackRows";
 import {
   activeBaseAttackCount,
   attackArraySize,
-} from '@/core/attacks/attackStructure';
-import { maxPlaybookColumnForRow } from '@/core/attacks/maxPlaybookColumn';
-import { characterPlayAvailabilityForPick } from '@/core/characterPlays/characterPlayUsage';
+} from "@/core/attacks/attackStructure";
+import { maxPlaybookColumnForRow } from "@/core/attacks/maxPlaybookColumn";
+import { characterPlayAvailabilityForPick } from "@/core/characterPlays/characterPlayUsage";
 import {
   effectiveDamageForChoice,
   effectiveEnemyDef,
-} from '@/core/damage/damage';
-import { damageQuantile } from '@/core/damage/damageDistribution';
-import { planDamageOutcome } from '@/core/damage/killOdds';
-import { damageModifierBreakdown } from '@/core/damage/rowDamage';
-import type { AttackPlanClampParams } from '@/core/plan/attackPlan.types';
-import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
+} from "@/core/damage/damage";
+import { damageQuantile } from "@/core/damage/damageDistribution";
+import { planDamageOutcome } from "@/core/damage/killOdds";
+import { damageModifierBreakdown } from "@/core/damage/rowDamage";
 import type {
-  CharacterPlayPickSlot,
+  AttackPlan,
+  AttackPlanClampParams,
+} from "@/core/plan/attackPlan.types";
+import { clampAttackPlan } from "@/core/plan/clampAttackPlan";
+import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
   PlaybookResult,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
-import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
-import { formatWrapRowSelectionLabel } from '@/core/playbook/playbookLabels';
+} from "@/core/playbook/playbook.types";
+import { choiceUsesCharacterPlay } from "@/core/playbook/playbookIndex";
+import { formatWrapRowSelectionLabel } from "@/core/playbook/playbookLabels";
 import {
   defaultCharacterPlayPicks,
   defaultWrapPicks,
   wrapSlotBudget,
-} from '@/core/playbook/wrapSlots';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { orderFor } from '@/core/testing/fixtures';
-import type { AttackerData } from '@/data/attackers/attacker.types';
-import { ATTACKERS } from '@/data/attackers/registry';
+} from "@/core/playbook/wrapSlots";
+import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+import { orderFor } from "@/core/testing/fixtures";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { ATTACKERS } from "@/data/attackers/registry";
 
 const ROUNDING_DIGITS = 6;
 const PLAN_SETTLE_PASSES = 6;
@@ -75,10 +76,10 @@ type Scenario = {
   initialTacModifier: number;
 };
 
-type Strategy = 'damage' | 'utility' | 'knockdown';
+type Strategy = "damage" | "utility" | "knockdown";
 
 const BASE_SCENARIO: Scenario = {
-  name: 'base',
+  name: "base",
   enemyDef: 4,
   armor: 1,
   hp: 14,
@@ -98,48 +99,46 @@ const BASE_SCENARIO: Scenario = {
 
 const SCENARIOS: Scenario[] = [
   BASE_SCENARIO,
-  { ...BASE_SCENARIO, name: 'soft target', enemyDef: 3, armor: 0, hp: 8 },
-  { ...BASE_SCENARIO, name: 'hard target', enemyDef: 5, armor: 2, hp: 18 },
+  { ...BASE_SCENARIO, name: "soft target", enemyDef: 3, armor: 0, hp: 8 },
+  { ...BASE_SCENARIO, name: "hard target", enemyDef: 5, armor: 2, hp: 18 },
   {
     ...BASE_SCENARIO,
-    name: 'charge into stance',
+    name: "charge into stance",
     charging: true,
     enemyDefensiveStance: true,
   },
-  { ...BASE_SCENARIO, name: 'cover', enemyHasCover: true },
+  { ...BASE_SCENARIO, name: "cover", enemyHasCover: true },
   {
     ...BASE_SCENARIO,
-    name: 'knocked down and snared',
+    name: "knocked down and snared",
     enemyDef: 3,
     enemyKnockedDown: true,
     enemySnared: true,
   },
   {
     ...BASE_SCENARIO,
-    name: 'tough hide with buffs',
+    name: "tough hide with buffs",
     toughHide: true,
     allBuffs: true,
   },
   {
     ...BASE_SCENARIO,
-    name: 'resilient',
+    name: "resilient",
     enemyResilience: true,
     allActiveTraits: true,
   },
   {
     ...BASE_SCENARIO,
-    name: 'bonus time',
+    name: "bonus time",
     startingMomentum: 1,
     bonusTimeOnFirst: true,
     initialTacModifier: 1,
   },
 ];
 
-const STRATEGIES: Strategy[] = ['damage', 'utility', 'knockdown'];
+const STRATEGIES: Strategy[] = ["damage", "utility", "knockdown"];
 
-const round = (value: number): number => {
-  return Number(value.toFixed(ROUNDING_DIGITS));
-};
+const round = (value: number): number => Number(value.toFixed(ROUNDING_DIGITS));
 
 const KNOCKDOWN_PRIORITY = 4;
 const CHARACTER_PLAY_PRIORITY = 3;
@@ -148,11 +147,11 @@ const CHARACTER_PLAY_PRIORITY = 3;
 const UTILITY_SCALE = 100;
 
 const utilityScore = (result: PlaybookResult, strategy: Strategy): number => {
-  if (strategy === 'damage') {
+  if (strategy === "damage") {
     return 0;
   }
 
-  if (strategy === 'knockdown' && result.appliesKnockDown) {
+  if (strategy === "knockdown" && result.appliesKnockDown) {
     return KNOCKDOWN_PRIORITY;
   }
 
@@ -202,11 +201,19 @@ const pickLine = (
   return best;
 };
 
-const runScenario = (
+type ScenarioSetup = {
+  activeBaseCount: number;
+  damageMods: PlaybookDamageMods;
+  activeTraits: Record<string, boolean>;
+  requestedBonusTime: boolean[];
+  clampParams: AttackPlanClampParams;
+};
+
+/** The engine inputs a scenario turns into for one attacker. */
+const scenarioSetup = (
   attacker: AttackerData,
   scenario: Scenario,
-  strategy: Strategy,
-) => {
+): ScenarioSetup => {
   const size = attackArraySize(attacker);
 
   const activeBaseCount = activeBaseAttackCount(
@@ -236,8 +243,6 @@ const runScenario = (
     ]),
   );
 
-  const armor = scenario.armor;
-
   const enemyDef = effectiveEnemyDef(
     scenario.enemyDef,
     scenario.enemyKnockedDown,
@@ -249,15 +254,10 @@ const runScenario = (
     (_, i) => scenario.bonusTimeOnFirst && i === 0,
   );
 
-  let wrapPicks: WrapPick[][] = defaultWrapPicks(size);
-
-  let characterPlayPicks: CharacterPlayPickSlot[][] =
-    defaultCharacterPlayPicks(size);
-
   const clampParams: AttackPlanClampParams = {
     attacker,
     chargeAttackIndex,
-    armor,
+    armor: scenario.armor,
     enemyHasCover: scenario.enemyHasCover,
     enemyDefensiveStance: scenario.enemyDefensiveStance,
     damageMods,
@@ -269,73 +269,94 @@ const runScenario = (
     targetHp: scenario.hp,
   };
 
-  const clamp = () => {
-    const clamped = clampAttackPlan(
-      { wrapPicks, characterPlayPicks },
-      clampParams,
-    );
-
-    wrapPicks = clamped.wrapPicks;
-    characterPlayPicks = clamped.characterPlayPicks;
+  return {
+    activeBaseCount,
+    damageMods,
+    activeTraits,
+    requestedBonusTime,
+    clampParams,
   };
+};
 
-  clamp();
+/** Picks the strategy's line for every slot of one row, in place. */
+const pickRow = (
+  plan: AttackPlan,
+  clampParams: AttackPlanClampParams,
+  row: number,
+  strategy: Strategy,
+): void => {
+  const { attacker, damageMods } = clampParams;
+  const { wrapPicks, characterPlayPicks } = plan;
+  const maxNet = maxPlaybookColumnForRow(plan, row, clampParams);
 
-  for (let pass = 0; pass < PLAN_SETTLE_PASSES; pass++) {
-    const order = activationAttackIndices(clampParams, wrapPicks);
+  for (let slot = 0; slot < wrapPicks[row].length; slot++) {
+    const budget = wrapSlotBudget(attacker, maxNet, slot);
+    const line = pickLine(attacker, budget, damageMods, strategy);
 
-    for (const row of order) {
-      const maxNet = maxPlaybookColumnForRow(
-        { wrapPicks, characterPlayPicks },
-        row,
-        clampParams,
-      );
+    wrapPicks[row][slot] = line;
 
-      for (let slot = 0; slot < wrapPicks[row].length; slot++) {
-        const budget = wrapSlotBudget(attacker, maxNet, slot);
-        const line = pickLine(attacker, budget, damageMods, strategy);
-
-        wrapPicks[row][slot] = line;
-
-        if (!choiceUsesCharacterPlay(attacker, line)) {
-          characterPlayPicks[row][slot] = null;
-          continue;
-        }
-
-        const { available } = characterPlayAvailabilityForPick(
-          clampParams,
-          { wrapPicks, characterPlayPicks },
-          { attackIndex: row, pickIndex: slot },
-        );
-
-        const lastAvailable = available[available.length - 1];
-
-        characterPlayPicks[row][slot] = lastAvailable?.id ?? null;
-      }
+    if (!choiceUsesCharacterPlay(attacker, line)) {
+      characterPlayPicks[row][slot] = null;
+      continue;
     }
 
-    clamp();
+    const { available } = characterPlayAvailabilityForPick(clampParams, plan, {
+      attackIndex: row,
+      pickIndex: slot,
+    });
+
+    const lastAvailable = available[available.length - 1];
+
+    characterPlayPicks[row][slot] = lastAvailable?.id ?? null;
   }
+};
 
-  const bonusTimeByAttack = sanitizeBonusTimeFlags({
-    attacker,
-    wrapPicks,
-    damageMods,
-    startingMomentum: scenario.startingMomentum,
-    bonusTimeByAttack: requestedBonusTime,
-    activeBaseCount,
-  });
-
-  const momentumParams = {
-    attacker,
-    wrapPicks,
-    damageMods,
-    startingMomentum: scenario.startingMomentum,
-    bonusTimeByAttack,
-    activeBaseCount,
+/**
+ * Picks lines and re-clamps until the plan settles: each pass can unlock or
+ * remove picks the previous one could not see.
+ */
+const settledPlan = (
+  clampParams: AttackPlanClampParams,
+  strategy: Strategy,
+): AttackPlan => {
+  const size = attackArraySize(clampParams.attacker);
+  const initial: AttackPlan = {
+    wrapPicks: defaultWrapPicks(size),
+    characterPlayPicks: defaultCharacterPlayPicks(size),
   };
 
-  const activation: ActivationScenario = {
+  let plan = clampAttackPlan(initial, clampParams);
+
+  for (let pass = 0; pass < PLAN_SETTLE_PASSES; pass++) {
+    const order = activationAttackIndices(clampParams, plan.wrapPicks);
+
+    for (const row of order) {
+      pickRow(plan, clampParams, row, strategy);
+    }
+
+    plan = clampAttackPlan(plan, clampParams);
+  }
+
+  return plan;
+};
+
+/** The app state a scenario and its settled plan stand for. */
+const scenarioActivation = (
+  attacker: AttackerData,
+  scenario: Scenario,
+  setup: ScenarioSetup,
+  attackPlan: AttackPlan,
+): ActivationScenario => {
+  const bonusTimeByAttack = sanitizeBonusTimeFlags({
+    attacker,
+    wrapPicks: attackPlan.wrapPicks,
+    damageMods: setup.damageMods,
+    startingMomentum: scenario.startingMomentum,
+    bonusTimeByAttack: setup.requestedBonusTime,
+    activeBaseCount: setup.activeBaseCount,
+  });
+
+  return {
     enemyDef: scenario.enemyDef,
     armor: scenario.armor,
     hp: scenario.hp,
@@ -350,59 +371,21 @@ const runScenario = (
     gangingUp: scenario.initialTacModifier,
     crowdingOut: 0,
     bonusTimeByAttack,
-    damageMods,
-    activeTraits,
-    attackPlan: { wrapPicks, characterPlayPicks },
+    damageMods: setup.damageMods,
+    activeTraits: setup.activeTraits,
+    attackPlan,
   };
+};
 
-  const {
-    ignoredAttackIndex,
-    effectiveWrapPicks,
-    attacks,
-    timeline,
-    rowDamageIfHit,
-    flatDamage,
-    killingBlowIndex,
-  } = deriveSimulation(attacker, activation);
+type DamageOutcome = ReturnType<typeof planDamageOutcome>;
 
-  const outcome = planDamageOutcome(
-    attacker,
-    attacks,
-    effectiveWrapPicks,
-    damageMods,
-    flatDamage,
-    scenario.hp,
-    timeline,
-  );
-
+/** The odds of a plan, rounded so the snapshot is stable. */
+const outcomeSnapshot = (outcome: DamageOutcome) => {
   const sortedDistribution = [...outcome.damageDistribution].sort(
     ([a], [b]) => a - b,
   );
 
   return {
-    wrapPicks,
-    characterPlayPicks,
-    rowLabels: wrapPicks.map((row) =>
-      formatWrapRowSelectionLabel(attacker, row, damageMods),
-    ),
-    bonusTimeByAttack,
-    ignoredAttackIndex,
-    attacks: attacks.map((attack) => ({
-      ...attack,
-      pHit: round(attack.pHit),
-      prob: round(attack.prob),
-      momentumAfter: momentumAfterAttackInclusive(
-        attack.attackIndex,
-        momentumParams,
-      ),
-    })),
-    damageIfAllHits: rowDamageIfHit,
-    breakdown: damageModifierBreakdown(
-      orderFor(attacker, activeBaseCount, damageMods),
-      effectiveWrapPicks,
-      timeline,
-    ),
-    killingBlowIndex,
     killProbability: round(outcome.killProbability),
     expectedDamage: round(outcome.expectedDamage),
     expectedHpRemaining: round(outcome.expectedHpRemaining),
@@ -417,7 +400,69 @@ const runScenario = (
   };
 };
 
-describe('engine golden scenarios', () => {
+const runScenario = (
+  attacker: AttackerData,
+  scenario: Scenario,
+  strategy: Strategy,
+) => {
+  const setup = scenarioSetup(attacker, scenario);
+  const { activeBaseCount, damageMods } = setup;
+  const plan = settledPlan(setup.clampParams, strategy);
+  const activation = scenarioActivation(attacker, scenario, setup, plan);
+  const { wrapPicks, characterPlayPicks } = plan;
+  const { bonusTimeByAttack } = activation;
+
+  const momentumParams = {
+    attacker,
+    wrapPicks,
+    damageMods,
+    startingMomentum: scenario.startingMomentum,
+    bonusTimeByAttack,
+    activeBaseCount,
+  };
+
+  const simulation = deriveSimulation(attacker, activation);
+  const { effectiveWrapPicks, attacks, timeline } = simulation;
+
+  const outcome = planDamageOutcome(
+    attacker,
+    attacks,
+    effectiveWrapPicks,
+    damageMods,
+    simulation.flatDamage,
+    scenario.hp,
+    timeline,
+  );
+
+  return {
+    wrapPicks,
+    characterPlayPicks,
+    rowLabels: wrapPicks.map((row) =>
+      formatWrapRowSelectionLabel(attacker, row, damageMods),
+    ),
+    bonusTimeByAttack,
+    ignoredAttackIndex: simulation.ignoredAttackIndex,
+    attacks: attacks.map((attack) => ({
+      ...attack,
+      pHit: round(attack.pHit),
+      prob: round(attack.prob),
+      momentumAfter: momentumAfterAttackInclusive(
+        attack.attackIndex,
+        momentumParams,
+      ),
+    })),
+    damageIfAllHits: simulation.rowDamageIfHit,
+    breakdown: damageModifierBreakdown(
+      orderFor(attacker, activeBaseCount, damageMods),
+      effectiveWrapPicks,
+      timeline,
+    ),
+    killingBlowIndex: simulation.killingBlowIndex,
+    ...outcomeSnapshot(outcome),
+  };
+};
+
+describe("engine golden scenarios", () => {
   for (const attacker of ATTACKERS) {
     describe(attacker.name, () => {
       for (const scenario of SCENARIOS) {

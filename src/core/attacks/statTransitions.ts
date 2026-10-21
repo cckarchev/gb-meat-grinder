@@ -13,11 +13,10 @@ export type StatTransition = {
 export const statTransitions = (
   values: readonly number[],
   startingValue: number,
-): StatTransition[] => {
-  return values.map((to, index) => {
+): StatTransition[] =>
+  values.map((to, index) => {
     const isFirstSwing = index === 0;
     const from = isFirstSwing ? startingValue : values[index - 1];
 
     return { from, to };
   });
-};

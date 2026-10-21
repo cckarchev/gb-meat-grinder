@@ -1,9 +1,9 @@
-import type { FocusEvent, MouseEvent, ReactNode } from 'react';
-import { TooltipBubble } from '@/components/ui/TooltipBubble';
-import styles from '@/components/ui/TooltipCheckbox.module.css';
-import { useTooltipOpen } from '@/components/ui/useTooltipOpen';
-import { dataFlag } from '@/styles/dataFlag';
-import { joinClassNames } from '@/styles/joinClassNames';
+import type { FocusEvent, MouseEvent, ReactNode } from "react";
+import { TooltipBubble } from "@/components/ui/TooltipBubble";
+import styles from "@/components/ui/TooltipCheckbox.module.css";
+import { useTooltipOpen } from "@/components/ui/useTooltipOpen";
+import { dataFlag } from "@/styles/dataFlag";
+import { joinClassNames } from "@/styles/joinClassNames";
 
 type TooltipCheckboxProps = {
   checked: boolean;
@@ -32,7 +32,7 @@ export const TooltipCheckbox = ({
 
   // A mouse click focuses the box too; only keyboard focus should pin it open.
   const openOnKeyboardFocus = (event: FocusEvent<HTMLInputElement>) => {
-    const keyboardFocus = event.currentTarget.matches(':focus-visible');
+    const keyboardFocus = event.currentTarget.matches(":focus-visible");
 
     if (keyboardFocus) {
       triggerProps.onFocus();

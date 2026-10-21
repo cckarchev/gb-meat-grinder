@@ -1,13 +1,13 @@
-import { useMemo } from 'react';
-import styles from '@/components/attacks/AttacksPanel.module.css';
-import { useWrapExpansion } from '@/components/attacks/playbook/useWrapExpansion';
-import { AttacksPanelSummary } from '@/components/attacks/summary/AttacksPanelSummary';
-import { AttackSwingRow } from '@/components/attacks/swing/AttackSwingRow';
-import { useActivationInput } from '@/components/attacks/useActivationInput';
-import { swingIsSkipped } from '@/core/activation/summary/activationSummary';
-import { statTransitions } from '@/core/attacks/statTransitions';
-import { projectSwings } from '@/core/attacks/swingProjections';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { useMemo } from "react";
+import styles from "@/components/attacks/AttacksPanel.module.css";
+import { useWrapExpansion } from "@/components/attacks/playbook/useWrapExpansion";
+import { AttacksPanelSummary } from "@/components/attacks/summary/AttacksPanelSummary";
+import { AttackSwingRow } from "@/components/attacks/swing/AttackSwingRow";
+import { useActivationInput } from "@/components/attacks/useActivationInput";
+import { swingIsSkipped } from "@/core/activation/summary/activationSummary";
+import { statTransitions } from "@/core/attacks/statTransitions";
+import { projectSwings } from "@/core/attacks/swingProjections";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
 
 export const AttacksPanel = () => {
   const {

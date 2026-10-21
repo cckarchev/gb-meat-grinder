@@ -25,46 +25,46 @@ export type CharacterTrait = {
 
 /** Thresher's Don't Fear The... (activated, Once Per Turn). */
 export const dontFearTheReaper: CharacterTrait = {
-  id: 'dontFearTheReaper',
+  id: "dontFearTheReaper",
   label: "Don't Fear The...",
   tooltip:
-    'Remove a Harvest marker to deal 3 unmodified damage (a character trait: ' +
-    'Tough Hide and damage buffs do not apply).',
+    "Remove a Harvest marker to deal 3 unmodified damage (a character trait: " +
+    "Tough Hide and damage buffs do not apply).",
   active: true,
   flatDamage: 3,
 };
 
 export const searingStrike: CharacterTrait = {
-  id: 'searingStrike',
-  label: 'Searing Strike',
+  id: "searingStrike",
+  label: "Searing Strike",
   tooltip:
-    'Enemy models damaged by this model suffer -1 ARM for the rest of the ' +
-    'turn and the burning condition. Only later attacks benefit.',
+    "Enemy models damaged by this model suffer -1 ARM for the rest of the " +
+    "turn and the burning condition. Only later attacks benefit.",
   onDamage: { armorReduction: 1, burning: true },
 };
 
 export const burningPassion: CharacterTrait = {
-  id: 'burningPassion',
-  label: 'Burning Passion',
-  tooltip: '+1 DMG to playbook damage results while attacking a Burning enemy.',
+  id: "burningPassion",
+  label: "Burning Passion",
+  tooltip: "+1 DMG to playbook damage results while attacking a Burning enemy.",
   playbookDamageVsBurning: 1,
 };
 
 export const sweepingCharge: CharacterTrait = {
-  id: 'sweepingCharge',
-  label: 'Sweeping Charge',
+  id: "sweepingCharge",
+  label: "Sweeping Charge",
   tooltip:
-    'When the charge attack picks a playbook damage result, models in her ' +
-    'melee zone suffer 3 DMG (a character trait: Tough Hide and damage buffs ' +
-    'do not apply). It lands with the charge attack, so later attacks see ' +
-    'Searing Strike.',
+    "When the charge attack picks a playbook damage result, models in her " +
+    "melee zone suffer 3 DMG (a character trait: Tough Hide and damage buffs " +
+    "do not apply). It lands with the charge attack, so later attacks see " +
+    "Searing Strike.",
   chargeDamage: 3,
 };
 
 /** Bucker's Anatomical Precision: the target suffers -1 ARM during each of his attacks. */
 export const anatomicalPrecision: CharacterTrait = {
-  id: 'anatomicalPrecision',
-  label: 'Anatomical Precision',
-  tooltip: 'During an attack from this model, enemy models suffer -1 ARM.',
+  id: "anatomicalPrecision",
+  label: "Anatomical Precision",
+  tooltip: "During an attack from this model, enemy models suffer -1 ARM.",
   armorReduction: 1,
 };

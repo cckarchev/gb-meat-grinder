@@ -1,18 +1,18 @@
-import styles from '@/components/attacks/swing/DicePoolStrip.module.css';
-import { WrapContinuationToggle } from '@/components/attacks/swing/WrapContinuationToggle';
-import { TooltipCheckbox } from '@/components/ui/TooltipCheckbox';
-import { Mono } from '@/components/ui/ui';
+import styles from "@/components/attacks/swing/DicePoolStrip.module.css";
+import { WrapContinuationToggle } from "@/components/attacks/swing/WrapContinuationToggle";
+import { TooltipCheckbox } from "@/components/ui/TooltipCheckbox";
+import { Mono } from "@/components/ui/ui";
 import {
   BONUS_TIME_MOMENTUM_COST,
   BONUS_TIME_TAC_BONUS,
   CHARGE_TAC_BONUS,
-} from '@/core/shared/constants';
+} from "@/core/shared/constants";
 
 const BONUS_TIME_UNAFFORDABLE_TOOLTIP = `Bonus Time needs at least ${BONUS_TIME_MOMENTUM_COST} momentum before this attack (costs ${BONUS_TIME_MOMENTUM_COST} before the roll).`;
 
 const BONUS_TIME_TOOLTIP = `Bonus Time: +${BONUS_TIME_TAC_BONUS} Dice Pool this attack; spend ${BONUS_TIME_MOMENTUM_COST} momentum before rolling.`;
 
-type DicePoolStripProps = {
+export type DicePoolStripProps = {
   attackIndex: number;
   tac: number;
   /** Show the charge radio for this swing (charging, and not a berserker row). */

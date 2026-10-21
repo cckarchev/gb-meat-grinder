@@ -2,10 +2,10 @@ import type {
   ActivationOrderParams,
   ActivationRollParams,
   AttackRollContext,
-} from '@/core/attacks/attackSequence.types';
-import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from '@/core/damage/damage';
-import type { SwingDamageExtras } from '@/core/damage/pickedDamage';
-import type { AttackPlan } from '@/core/plan/attackPlan.types';
+} from "@/core/attacks/attackSequence.types";
+import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from "@/core/damage/damage";
+import type { SwingDamageExtras } from "@/core/damage/pickedDamage";
+import type { AttackPlan } from "@/core/plan/attackPlan.types";
 import type {
   CharacterPlay,
   CharacterPlayPickSlot,
@@ -13,17 +13,17 @@ import type {
   PlaybookDamageMods,
   PlaybookResult,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import { DEF_DEFAULT, NO_ATTACK_INDEX } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/playbook.types";
+import { DEF_DEFAULT, NO_ATTACK_INDEX } from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from '@/data/attackers/statRanges';
-import type { CharacterTrait } from '@/data/characterTraits';
-import { searingStrike } from '@/data/characterTraits';
-import type { Guild } from '@/data/guilds/guild.types';
+} from "@/data/attackers/statRanges";
+import type { CharacterTrait } from "@/data/characterTraits";
+import { searingStrike } from "@/data/characterTraits";
+import type { Guild } from "@/data/guilds/guild.types";
 
 /**
  * Synthetic model for core tests. Its playbook is small and every result has a
@@ -37,36 +37,34 @@ import type { Guild } from '@/data/guilds/guild.types';
  */
 
 const result = (
-  overrides: Partial<PlaybookResult> & Pick<PlaybookResult, 'id' | 'label'>,
-): PlaybookResult => {
-  return {
-    damage: 0,
-    ...overrides,
-  };
-};
+  overrides: Partial<PlaybookResult> & Pick<PlaybookResult, "id" | "label">,
+): PlaybookResult => ({
+  damage: 0,
+  ...overrides,
+});
 
 export const TEST_PLAYBOOK: readonly PlaybookColumn[] = [
   {
     netSuccesses: 1,
     results: [
-      result({ id: 'one', label: '1', damage: 1, momentum: true }),
-      result({ id: 'dodge', label: '<' }),
+      result({ id: "one", label: "1", damage: 1, momentum: true }),
+      result({ id: "dodge", label: "<" }),
     ],
   },
   {
     netSuccesses: 2,
     results: [
-      result({ id: 'push', label: '>', clearsCover: true }),
-      result({ id: 'two', label: '2', damage: 2, momentum: true }),
+      result({ id: "push", label: ">", clearsCover: true }),
+      result({ id: "two", label: "2", damage: 2, momentum: true }),
     ],
   },
   {
     netSuccesses: 3,
     results: [
-      result({ id: 'gb', label: '1GB', damage: 1, picksCharacterPlay: true }),
+      result({ id: "gb", label: "1GB", damage: 1, picksCharacterPlay: true }),
       result({
-        id: 'kd',
-        label: 'KD',
+        id: "kd",
+        label: "KD",
         defReductionForLater: 1,
         appliesKnockDown: true,
         dodge: true,
@@ -75,21 +73,21 @@ export const TEST_PLAYBOOK: readonly PlaybookColumn[] = [
   },
   {
     netSuccesses: 4,
-    results: [result({ id: 'four', label: '4', damage: 4, momentum: true })],
+    results: [result({ id: "four", label: "4", damage: 4, momentum: true })],
   },
 ];
 
 export const TEST_GUILD: Guild = {
-  id: 'testers',
-  name: 'Testers',
-  color: '#123456',
+  id: "testers",
+  name: "Testers",
+  color: "#123456",
   buffs: [
-    { id: 'sharp', label: 'Sharp', tooltip: '', damageBonus: 1 },
-    { id: 'sunder', label: 'Sunder', tooltip: '', armorReduction: 1 },
+    { id: "sharp", label: "Sharp", tooltip: "", damageBonus: 1 },
+    { id: "sunder", label: "Sunder", tooltip: "", armorReduction: 1 },
     {
-      id: 'condition',
-      label: 'Condition',
-      tooltip: '',
+      id: "condition",
+      label: "Condition",
+      tooltip: "",
       ignoresToughHide: true,
     },
   ],
@@ -97,25 +95,25 @@ export const TEST_GUILD: Guild = {
 
 /** A guild with condition-driven buffs: Tempered Steel-like and Searing Strike. */
 export const CONDITION_GUILD: Guild = {
-  id: 'conditioners',
-  name: 'Conditioners',
-  color: '#654321',
+  id: "conditioners",
+  name: "Conditioners",
+  color: "#654321",
   buffs: [
     {
-      id: 'steel',
-      label: 'Steel',
-      tooltip: '',
+      id: "steel",
+      label: "Steel",
+      tooltip: "",
       tacBonus: 1,
       grantsTraits: [searingStrike],
     },
     {
-      id: 'searingStrike',
-      label: 'Searing Strike',
-      tooltip: '',
-      target: 'enemy',
+      id: "searingStrike",
+      label: "Searing Strike",
+      tooltip: "",
+      target: "enemy",
       armorReduction: 1,
     },
-    { id: 'sharp', label: 'Sharp', tooltip: '', damageBonus: 1 },
+    { id: "sharp", label: "Sharp", tooltip: "", damageBonus: 1 },
   ],
 };
 
@@ -126,143 +124,137 @@ export const CONDITION_GUILD: Guild = {
  * attack (Instruction-like) and no crowding out (One at a Time Lads!-like).
  */
 export const TEAMMATE_GUILD: Guild = {
-  id: 'teammates',
-  name: 'Teammates',
-  color: '#abcdef',
+  id: "teammates",
+  name: "Teammates",
+  color: "#abcdef",
   buffs: [
-    { id: 'carve', label: 'Carve', tooltip: '', playbookDamageBonus: 1 },
+    { id: "carve", label: "Carve", tooltip: "", playbookDamageBonus: 1 },
     {
-      id: 'trip',
-      label: 'Trip',
-      tooltip: '',
-      target: 'enemy',
+      id: "trip",
+      label: "Trip",
+      tooltip: "",
+      target: "enemy",
       defReduction: 1,
     },
     {
-      id: 'effort',
-      label: 'Effort',
-      tooltip: '',
+      id: "effort",
+      label: "Effort",
+      tooltip: "",
       damageResultsMomentous: true,
     },
-    { id: 'gang', label: 'Gang', tooltip: '', tacBonus: 1, gangingUpMin: 1 },
+    { id: "gang", label: "Gang", tooltip: "", tacBonus: 1, gangingUpMin: 1 },
     {
-      id: 'coach',
-      label: 'Coach',
-      tooltip: '',
+      id: "coach",
+      label: "Coach",
+      tooltip: "",
       firstAttackNetHitBonus: 2,
     },
     {
-      id: 'spread',
-      label: 'Spread',
-      tooltip: '',
+      id: "spread",
+      label: "Spread",
+      tooltip: "",
       ignoresCrowdingOut: true,
     },
   ],
 };
 
 export const PLAY_TAC: CharacterPlay = {
-  id: 'playTac',
-  label: 'Play TAC',
+  id: "playTac",
+  label: "Play TAC",
   tacBonusForLater: 2,
   oncePerTurn: true,
 };
 
 export const PLAY_DEF: CharacterPlay = {
-  id: 'playDef',
-  label: 'Play DEF',
+  id: "playDef",
+  label: "Play DEF",
   defReductionForLater: 1,
   oncePerTurn: true,
 };
 
 export const PLAY_ARM: CharacterPlay = {
-  id: 'playArm',
-  label: 'Play ARM',
+  id: "playArm",
+  label: "Play ARM",
   armorReduction: 1,
   oncePerTurn: true,
 };
 
 export const PLAY_REPEATABLE: CharacterPlay = {
-  id: 'playRepeatable',
-  label: 'Play Repeatable',
+  id: "playRepeatable",
+  label: "Play Repeatable",
   tacBonusForLater: 1,
   oncePerTurn: false,
 };
 
 export const PLAY_NOOP: CharacterPlay = {
-  id: 'playNoop',
-  label: 'Play Noop',
+  id: "playNoop",
+  label: "Play Noop",
   oncePerTurn: true,
 };
 
 export const PLAY_DAMAGE: CharacterPlay = {
-  id: 'playDamage',
-  label: 'Play Damage',
+  id: "playDamage",
+  label: "Play Damage",
   damage: 3,
   oncePerTurn: true,
 };
 
 /** Condition damage of half the target's current HP, like The Bigger They Are... */
 export const PLAY_HALF_HEALTH: CharacterPlay = {
-  id: 'playHalfHealth',
-  label: 'Play Half Health',
+  id: "playHalfHealth",
+  label: "Play Half Health",
   currentHealthDivisor: 2,
   oncePerTurn: true,
 };
 
 /** Grants Assist [Mallet, Oak], like Axe A Question. */
 export const PLAY_ASSIST: CharacterPlay = {
-  id: 'playAssist',
-  label: 'Play Assist',
-  grantsAssist: ['Mallet', 'Oak'],
+  id: "playAssist",
+  label: "Play Assist",
+  grantsAssist: ["Mallet", "Oak"],
   oncePerTurn: false,
 };
 
 /** A passive -1 ARM during every attack, like Anatomical Precision. */
 export const TRAIT_ARM: CharacterTrait = {
-  id: 'traitArm',
-  label: 'Trait ARM',
-  tooltip: '',
+  id: "traitArm",
+  label: "Trait ARM",
+  tooltip: "",
   armorReduction: 1,
 };
 
 export const makeAttacker = (
   overrides: Partial<AttackerData> = {},
-): AttackerData => {
-  return {
-    id: 'tester',
-    name: 'Tester',
-    tac: 6,
-    inf: 2,
-    furious: false,
-    berserker: false,
-    feral: false,
-    playbook: TEST_PLAYBOOK,
-    guild: TEST_GUILD,
-    characterPlays: [PLAY_TAC, PLAY_DEF],
-    startingMomentum: STARTING_MOMENTUM_RANGE,
-    gangingUp: GANGING_UP_RANGE,
-    crowdingOut: CROWDING_OUT_RANGE,
-    ...overrides,
-  };
-};
+): AttackerData => ({
+  id: "tester",
+  name: "Tester",
+  tac: 6,
+  inf: 2,
+  furious: false,
+  berserker: false,
+  feral: false,
+  playbook: TEST_PLAYBOOK,
+  guild: TEST_GUILD,
+  characterPlays: [PLAY_TAC, PLAY_DEF],
+  startingMomentum: STARTING_MOMENTUM_RANGE,
+  gangingUp: GANGING_UP_RANGE,
+  crowdingOut: CROWDING_OUT_RANGE,
+  ...overrides,
+});
 
 /** No Tough Hide and no buffs: the calculator's default damage mods. */
 export const NO_MODS = DEFAULT_PLAYBOOK_DAMAGE_MODS;
 
 export const modsWith = (
   overrides: Partial<PlaybookDamageMods>,
-): PlaybookDamageMods => {
-  return { ...NO_MODS, ...overrides };
-};
+): PlaybookDamageMods => ({ ...NO_MODS, ...overrides });
 
 /** What decides the swing order for `attacker`, with no damage mods unless given. */
 export const orderFor = (
   attacker: AttackerData,
   activeBaseCount: number,
   damageMods: PlaybookDamageMods = NO_MODS,
-): ActivationOrderParams => {
-  return { attacker, damageMods, activeBaseCount };
-};
+): ActivationOrderParams => ({ attacker, damageMods, activeBaseCount });
 
 /** A swing that deals nothing besides its card results: no plays, no charge. */
 export const NO_SWING_EXTRAS: SwingDamageExtras = {
@@ -281,9 +273,7 @@ export const planOf = (
 };
 
 /** Three swings that each pick the same line once. */
-export const threeOf = (id: string): AttackPlan => {
-  return planOf([[id], [id], [id]]);
-};
+export const threeOf = (id: string): AttackPlan => planOf([[id], [id], [id]]);
 
 /** Enemy ARM in the neutral roll params: nothing to strip. */
 const NEUTRAL_ARMOR = 0;
@@ -300,23 +290,21 @@ const NEUTRAL_BASE_COUNT = 2;
  */
 export const makeRollParams = (
   overrides: Partial<ActivationRollParams> = {},
-): ActivationRollParams => {
-  return {
-    attacker: makeAttacker(),
-    chargeAttackIndex: NO_ATTACK_INDEX,
-    armor: NEUTRAL_ARMOR,
-    enemyHasCover: false,
-    enemyDefensiveStance: false,
-    damageMods: NO_MODS,
-    enemyDef: DEF_DEFAULT,
-    bonusTimeByAttack: [],
-    initialTacModifier: 0,
-    activeBaseCount: NEUTRAL_BASE_COUNT,
-    targetHp: NEUTRAL_TARGET_HP,
-    enemyKnockedDown: false,
-    ...overrides,
-  };
-};
+): ActivationRollParams => ({
+  attacker: makeAttacker(),
+  chargeAttackIndex: NO_ATTACK_INDEX,
+  armor: NEUTRAL_ARMOR,
+  enemyHasCover: false,
+  enemyDefensiveStance: false,
+  damageMods: NO_MODS,
+  enemyDef: DEF_DEFAULT,
+  bonusTimeByAttack: [],
+  initialTacModifier: 0,
+  activeBaseCount: NEUTRAL_BASE_COUNT,
+  targetHp: NEUTRAL_TARGET_HP,
+  enemyKnockedDown: false,
+  ...overrides,
+});
 
 /** DEF roll in the neutral roll context: a coin flip per die. */
 const NEUTRAL_DEF_MIN_ROLL = 4;
@@ -349,8 +337,8 @@ export const makeRollContext = (
 
 /** A passive trait with flat damage that must never count as activated damage. */
 export const PASSIVE_TRAIT: CharacterTrait = {
-  id: 'passive',
-  label: 'Passive',
-  tooltip: '',
+  id: "passive",
+  label: "Passive",
+  tooltip: "",
   flatDamage: 3,
 };

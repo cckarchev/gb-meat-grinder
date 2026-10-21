@@ -1,9 +1,9 @@
-import type { ComponentProps } from 'react';
-import styles from '@/components/ui/ToggleButton.module.css';
-import { dataFlag } from '@/styles/dataFlag';
-import { joinClassNames } from '@/styles/joinClassNames';
+import type { ComponentProps } from "react";
+import styles from "@/components/ui/ToggleButton.module.css";
+import { dataFlag } from "@/styles/dataFlag";
+import { joinClassNames } from "@/styles/joinClassNames";
 
-type ToggleButtonProps = ComponentProps<'button'> & {
+type ToggleButtonProps = ComponentProps<"button"> & {
   /** Renders the filled (selected) state. */
   active?: boolean;
 };
@@ -16,12 +16,10 @@ export const ToggleButton = ({
   active = false,
   className,
   ...props
-}: ToggleButtonProps) => {
-  return (
-    <button
-      className={joinClassNames(styles.toggleButton, className)}
-      data-active={dataFlag(active)}
-      {...props}
-    />
-  );
-};
+}: ToggleButtonProps) => (
+  <button
+    className={joinClassNames(styles.toggleButton, className)}
+    data-active={dataFlag(active)}
+    {...props}
+  />
+);

@@ -1,7 +1,7 @@
 @layer primitives {
   /* Muted by default; guild groups pass the guild color. */
   .groupLabel {
-    composes: monoCapsLabel from '../../styles/mixins.module.css';
+    composes: monoCapsLabel from "../../styles/mixins.module.css";
     font-size: var(--font-size-xs);
     color: var(--group-label-color, var(--muted));
   }

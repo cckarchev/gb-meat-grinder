@@ -7,20 +7,20 @@ import {
   activatedTraits,
   activeBuffs,
   attackerTraits,
-} from '@/core/attackers/buffsAndTraits';
+} from "@/core/attackers/buffsAndTraits";
 import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
-} from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/playbookIndex';
+} from "@/core/playbook/playbook.types";
+import { getPlaybookResult } from "@/core/playbook/playbookIndex";
 import {
   DEF_MAX,
   KNOCKED_DOWN_DEF_PENALTY,
   SNARED_DEF_PENALTY,
   TOUGH_HIDE_DAMAGE_PENALTY,
-} from '@/core/shared/constants';
-import { sumOf } from '@/core/shared/sumOf';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/shared/constants";
+import { sumOf } from "@/core/shared/sumOf";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
   toughHide: false,
@@ -91,11 +91,8 @@ const playDamageBonusSum = (
 const buffsIgnoreToughHide = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
-): boolean => {
-  return activeBuffs(attacker, mods).some(
-    (buff) => buff.ignoresToughHide === true,
-  );
-};
+): boolean =>
+  activeBuffs(attacker, mods).some((buff) => buff.ignoresToughHide === true);
 
 /**
  * Enemy DEF after pre-attack conditions. Knocked Down and Snared each give the
@@ -158,10 +155,9 @@ export const effectiveDamageForChoice = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
-): number => {
-  return effectivePlaybookDamage(
+): number =>
+  effectivePlaybookDamage(
     attacker,
     getPlaybookResult(attacker, id).damage,
     mods,
   );
-};

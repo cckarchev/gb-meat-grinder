@@ -1,21 +1,21 @@
 /** Wrap slot budgets: how many playbook results a roll resolves and what each slot can reach. */
 
-import { probAttackSucceeds } from '@/core/damage/probability';
+import { probAttackSucceeds } from "@/core/damage/probability";
 import type {
   CharacterPlayPickSlot,
   PlaybookColumn,
   WrapPick,
-} from '@/core/playbook/playbook.types';
+} from "@/core/playbook/playbook.types";
 import {
   maxPlaybookNet,
   netSuccessesForChoice,
-} from '@/core/playbook/playbookIndex';
+} from "@/core/playbook/playbookIndex";
 import {
   FIRST_WRAP_PICK_INDEX,
   MIN_PLAYBOOK_NET,
   MIN_WRAP_SLOTS,
-} from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /** How many playbook results this attack can resolve (ceil(maxNet / card cap)). */
 export const wrapSlotCount = (
@@ -56,9 +56,7 @@ export const wrapExtendedNetNeeded = (
   attacker: AttackerData,
   slotIndex: number,
   columnNet: number,
-): number => {
-  return slotIndex * maxPlaybookNet(attacker) + columnNet;
-};
+): number => slotIndex * maxPlaybookNet(attacker) + columnNet;
 
 /**
  * Net successes the pool must reach so every non-null wrap pick resolves,
@@ -93,31 +91,24 @@ export const wrapNetThresholdAllHits = (
 };
 
 /** One row per attack, each holding a single empty slot. */
-const rowsWithOneEmptySlot = (size: number): null[][] => {
-  return Array.from({ length: size }, () => [null]);
-};
+const rowsWithOneEmptySlot = (size: number): null[][] =>
+  Array.from({ length: size }, () => [null]);
 
 export const defaultCharacterPlayPicks = (
   size: number,
-): CharacterPlayPickSlot[][] => {
-  return rowsWithOneEmptySlot(size);
-};
+): CharacterPlayPickSlot[][] => rowsWithOneEmptySlot(size);
 
-export const defaultWrapPicks = (size: number): WrapPick[][] => {
-  return rowsWithOneEmptySlot(size);
-};
+export const defaultWrapPicks = (size: number): WrapPick[][] =>
+  rowsWithOneEmptySlot(size);
 
 /** Whether any slot of a swing's wrap row holds a pick. */
 export const rowHasWrapPick = (
   picks: readonly WrapPick[] | undefined,
-): boolean => {
-  return (picks ?? []).some((id) => id != null);
-};
+): boolean => (picks ?? []).some((id) => id != null);
 
 /** Whether a swing's wrap row has slots past the primary pick. */
-export const rowHasWrapContinuation = (picks: readonly WrapPick[]): boolean => {
-  return picks.length > FIRST_WRAP_PICK_INDEX;
-};
+export const rowHasWrapContinuation = (picks: readonly WrapPick[]): boolean =>
+  picks.length > FIRST_WRAP_PICK_INDEX;
 
 /** The dice a swing rolls against the target, as far as hit chances go. */
 export type SwingRoll = {

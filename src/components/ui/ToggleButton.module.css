@@ -1,7 +1,7 @@
 @layer primitives {
   /* Active = accent fill (CCK primary); inactive = teal-outline ghost. */
   .toggleButton {
-    composes: displayHeading focusRing from '../../styles/mixins.module.css';
+    composes: displayHeading focusRing from "../../styles/mixins.module.css";
     font-size: var(--font-size-md);
     letter-spacing: var(--tracking-button);
     padding: var(--space-sm) var(--space-2xl);

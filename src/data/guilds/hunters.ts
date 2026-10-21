@@ -1,8 +1,8 @@
-import type { Guild } from '@/data/guilds/guild.types';
+import type { Guild } from "@/data/guilds/guild.types";
 
 export const hunters: Guild = {
-  id: 'hunters',
-  name: 'Hunters',
-  color: '#39653b',
+  id: "hunters",
+  name: "Hunters",
+  color: "#39653b",
   buffs: [],
 };

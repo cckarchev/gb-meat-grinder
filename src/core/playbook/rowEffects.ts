@@ -1,18 +1,18 @@
 /** Effects each pick carries into later swings: TAC, DEF and the ARM condition. */
 
-import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
-import { characterPlayPickEffects } from '@/core/characterPlays/characterPlayEffects';
-import { effectivePlayForPick } from '@/core/characterPlays/characterPlayLookup';
-import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
-import type { AttackPlan, PickPosition } from '@/core/plan/attackPlan.types';
-import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
-import type { PickEffects } from '@/core/playbook/playbook.types';
+import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
+import { characterPlayPickEffects } from "@/core/characterPlays/characterPlayEffects";
+import { effectivePlayForPick } from "@/core/characterPlays/characterPlayLookup";
+import { characterPlayUsageBeforePick } from "@/core/characterPlays/characterPlayUsage";
+import type { AttackPlan, PickPosition } from "@/core/plan/attackPlan.types";
+import { knockDownTakenBeforePick } from "@/core/playbook/knockDown";
+import type { PickEffects } from "@/core/playbook/playbook.types";
 import {
   choiceUsesCharacterPlay,
   getPlaybookResult,
-} from '@/core/playbook/playbookIndex';
-import { KNOCKED_DOWN_EFFECT } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/playbook/playbookIndex";
+import { KNOCKED_DOWN_EFFECT } from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 const NO_EFFECTS: PickEffects = {
   tacBonusForLater: 0,
@@ -88,7 +88,7 @@ export const pickEffectName = (
   const id = plan.wrapPicks[attackIndex][pickIndex];
 
   if (id == null) {
-    return '';
+    return "";
   }
 
   if (choiceUsesCharacterPlay(attacker, id)) {

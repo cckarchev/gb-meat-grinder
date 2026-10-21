@@ -6,7 +6,7 @@
 
   /* Inline text trigger, styled as plain text with a dotted underline hint. */
   .trigger {
-    composes: focusRing tooltipHint from '../../styles/mixins.module.css';
+    composes: focusRing tooltipHint from "../../styles/mixins.module.css";
     font: inherit;
     color: inherit;
     padding: 0;

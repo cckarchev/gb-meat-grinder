@@ -3,32 +3,32 @@
 import type {
   ActivationScenario,
   DerivedSimulation,
-} from '@/core/activation/simulation.types';
+} from "@/core/activation/simulation.types";
 import {
   activeBaseAttackCount,
   effectiveChargeIndex,
-} from '@/core/attacks/attackStructure';
-import { effectiveEnemyDef } from '@/core/damage/damage';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "@/core/attacks/attackStructure";
+import { effectiveEnemyDef } from "@/core/damage/damage";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 export type ScenarioStatsInput = Pick<
   ActivationScenario,
-  | 'influence'
-  | 'charging'
-  | 'chargeAttackIndex'
-  | 'enemyDef'
-  | 'enemyKnockedDown'
-  | 'enemySnared'
-  | 'gangingUp'
-  | 'crowdingOut'
+  | "influence"
+  | "charging"
+  | "chargeAttackIndex"
+  | "enemyDef"
+  | "enemyKnockedDown"
+  | "enemySnared"
+  | "gangingUp"
+  | "crowdingOut"
 >;
 
 type ScenarioEffectiveStats = Pick<
   DerivedSimulation,
-  | 'activeBaseCount'
-  | 'effectiveChargeAttackIndex'
-  | 'effectiveEnemyDef'
-  | 'initialTacModifier'
+  | "activeBaseCount"
+  | "effectiveChargeAttackIndex"
+  | "effectiveEnemyDef"
+  | "initialTacModifier"
 >;
 
 export const scenarioEffectiveStats = (

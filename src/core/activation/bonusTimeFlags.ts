@@ -1,17 +1,16 @@
 /** Drops Bonus Time spends the momentum pool can no longer pay for. */
 
-import { momentumPoolBeforeBonusTime } from '@/core/activation/momentum';
-import type { MomentumParams } from '@/core/activation/momentum.types';
-import { activationAttackIndices } from '@/core/attacks/attackRows';
-import { BONUS_TIME_MOMENTUM_COST } from '@/core/shared/constants';
+import { momentumPoolBeforeBonusTime } from "@/core/activation/momentum";
+import type { MomentumParams } from "@/core/activation/momentum.types";
+import { activationAttackIndices } from "@/core/attacks/attackRows";
+import { BONUS_TIME_MOMENTUM_COST } from "@/core/shared/constants";
 
 /** Passes beyond one per swing, as a safety margin for the settle loop. */
 const EXTRA_SETTLE_PASSES = 2;
 
 /** Whether a momentum pool can pay for one Bonus Time spend. */
-export const canAffordBonusTime = (pool: number): boolean => {
-  return pool >= BONUS_TIME_MOMENTUM_COST;
-};
+export const canAffordBonusTime = (pool: number): boolean =>
+  pool >= BONUS_TIME_MOMENTUM_COST;
 
 /** Clears Bonus Time flags that can no longer be paid (pool below `BONUS_TIME_MOMENTUM_COST` before that swing). */
 export const sanitizeBonusTimeFlags = (params: MomentumParams): boolean[] => {

@@ -1,9 +1,9 @@
 /** Momentum pool through the activation: earned by heat picks, spent on Bonus Time. */
 
-import { momentumEarnedBySwing } from '@/core/activation/momentousLines';
-import type { MomentumParams } from '@/core/activation/momentum.types';
-import { activationAttackIndices } from '@/core/attacks/attackRows';
-import { BONUS_TIME_MOMENTUM_COST } from '@/core/shared/constants';
+import { momentumEarnedBySwing } from "@/core/activation/momentousLines";
+import type { MomentumParams } from "@/core/activation/momentum.types";
+import { activationAttackIndices } from "@/core/attacks/attackRows";
+import { BONUS_TIME_MOMENTUM_COST } from "@/core/shared/constants";
 
 /**
  * Starting momentum plus heat picks minus Bonus Time spends, over the swings in
@@ -54,9 +54,7 @@ const momentumAcrossSwings = (
 export const momentumPoolBeforeBonusTime = (
   attackIndex: number,
   params: MomentumParams,
-): number => {
-  return momentumAcrossSwings(attackIndex, params, false);
-};
+): number => momentumAcrossSwings(attackIndex, params, false);
 
 /**
  * Total momentum after this attack in activation order: starting momentum,
@@ -66,6 +64,4 @@ export const momentumPoolBeforeBonusTime = (
 export const momentumAfterAttackInclusive = (
   attackIndex: number,
   params: MomentumParams,
-): number => {
-  return momentumAcrossSwings(attackIndex, params, true);
-};
+): number => momentumAcrossSwings(attackIndex, params, true);

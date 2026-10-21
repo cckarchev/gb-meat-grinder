@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
-import { useMeatGrinderSimulation } from '@/gbMeatGrinder/useMeatGrinderSimulation';
+import { useMemo } from "react";
+import type { ActivationSummaryInput } from "@/core/activation/summary/activationSummary.types";
+import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
 
 /**
  * Engine input shared by the swing projections and the activation summary,

@@ -4,10 +4,10 @@
  * availability is scoped to the model's guild.
  */
 
-import type { CharacterTrait } from '@/data/characterTraits';
+import type { CharacterTrait } from "@/data/characterTraits";
 
 /** Which side a guild effect lands on, and so which panel shows it. */
-export type GuildBuffTarget = 'attacker' | 'enemy';
+export type GuildBuffTarget = "attacker" | "enemy";
 
 /** A buff a teammate can grant (e.g. Tooled Up, They Ain't Tough!). */
 export type GuildBuff = {
