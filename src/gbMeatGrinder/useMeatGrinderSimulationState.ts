@@ -9,7 +9,6 @@ import { attackerOf } from '@/gbMeatGrinder/reducer/stateSelectors';
 import {
   appUrl,
   clearLaunchParams,
-  launchEmbedBase,
   launchSharedState,
 } from '@/gbMeatGrinder/share/launchUrl';
 import { buildShareUrl } from '@/gbMeatGrinder/share/shareUrl';
@@ -43,11 +42,7 @@ export const useMeatGrinderSimulationState = (): MeatGrinderSimulation => {
     const { attackerId, attackPlan, bonusTimeByAttack, ...uiEditableState } =
       state;
 
-    const shareUrl = buildShareUrl(
-      shareParamsOf(state),
-      appUrl(),
-      launchEmbedBase,
-    );
+    const shareUrl = buildShareUrl(shareParamsOf(state), appUrl());
 
     return {
       ...uiEditableState,
