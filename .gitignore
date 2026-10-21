@@ -26,5 +26,8 @@ docs
 *.sln
 *.sw?
 
+# Wrangler
+.wrangler
+
 # Test coverage
 coverage

@@ -12,7 +12,8 @@
     "check": "biome check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "react": "^19.3.0",
@@ -27,6 +28,7 @@
     "@vitest/coverage-v8": "5.0.3",
     "typescript": "~7.0.2",
     "vite": "^8.3.2",
-    "vitest": "5.0.3"
+    "vitest": "5.0.3",
+    "wrangler": "4.151.2"
   }
 }

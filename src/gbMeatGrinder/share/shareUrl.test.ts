@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { buildShareUrl, validEmbedBase } from '@/gbMeatGrinder/share/shareUrl';
 
 const CCK_PAGE = 'https://www.cckarchev.ar/juegos/guild-ball/meat-grinder';
-const APP_URL = 'https://gbmeatgrinder.netlify.app/';
+const APP_URL = 'https://gb-meat-grinder.cckarchev.ar/';
 
 describe('embed base', () => {
   it('accepts the cckarchev site over https', () => {
@@ -34,7 +34,7 @@ describe('share url', () => {
 
   it('links to the app itself when not embedded', () => {
     expect(buildShareUrl(params, APP_URL, null)).toBe(
-      'https://gbmeatgrinder.netlify.app/?model=thresher&s=abc',
+      'https://gb-meat-grinder.cckarchev.ar/?model=thresher&s=abc',
     );
   });
 

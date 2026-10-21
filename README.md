@@ -33,6 +33,7 @@ npm run test:coverage
 npm run check     # Biome lint + format check
 npm run lint
 npm run format
+npm run deploy    # build + deploy to Cloudflare (see Deploy)
 ```
 
 `src/core/engine.golden.test.ts` snapshots the whole engine against the real
@@ -71,6 +72,15 @@ Types live next to their domain as `*.types.ts`.
 Adding a beater means writing a file in `src/data/attackers/` and registering it
 in `src/data/attackers/registry.ts`. Guild buffs live in their own file under
 `src/data/guilds/`; buffs several guilds share live in `src/data/guildBuffs.ts`.
+
+## Deploy
+
+The site runs on Cloudflare Workers as static assets only, with no Worker script.
+`wrangler.jsonc` serves `dist/` and attaches the custom domain
+`gb-meat-grinder.cckarchev.ar`.
+
+`npm run deploy` builds and uploads it with the project's own Wrangler. Log in once
+with `npx wrangler login` on an account that holds the `cckarchev.ar` zone.
 
 ## Disclaimer
 
