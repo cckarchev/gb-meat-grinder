@@ -41,13 +41,16 @@ describe('planDamageOutcome', () => {
       [],
     );
 
-    expect(outcome.killProbability).toBeCloseTo(0.75);
-    expect(outcome.expectedDamage).toBeCloseTo(1.75);
-    expect(outcome.expectedHpRemaining).toBeCloseTo(0.25);
+    const hitsOne = swing.prob;
+    const missesOne = 1 - hitsOne;
+
+    expect(outcome.killProbability).toBeCloseTo(hitsOne);
+    expect(outcome.expectedDamage).toBeCloseTo(flatDamage + hitsOne);
+    expect(outcome.expectedHpRemaining).toBeCloseTo(missesOne);
 
     expect([...outcome.damageDistribution]).toEqual([
-      [1, 0.25],
-      [2, 0.75],
+      [flatDamage, missesOne],
+      [flatDamage + 1, hitsOne],
     ]);
   });
 
@@ -82,9 +85,9 @@ describe('planDamageOutcome', () => {
     );
 
     expect(outcome.killProbability).toBe(1);
-    expect(outcome.expectedDamage).toBe(4);
+    expect(outcome.expectedDamage).toBe(targetHp);
     expect(outcome.expectedHpRemaining).toBe(0);
-    expect([...outcome.damageDistribution]).toEqual([[4, 1]]);
+    expect([...outcome.damageDistribution]).toEqual([[targetHp, 1]]);
   });
 
   it('counts an Once Per Turn damaging play once across the activation', () => {
@@ -94,6 +97,8 @@ describe('planDamageOutcome', () => {
     const plan = { wrapPicks, characterPlayPicks };
 
     const rollParams = makeRollParams({ attacker, enemyDef: 2 });
+    const survivingHp = 100;
+    const playDamage = 3;
 
     const timeline = activationTimeline(plan, rollParams);
     const { attacks } = computeAttackSequence(plan, rollParams);
@@ -104,12 +109,12 @@ describe('planDamageOutcome', () => {
       wrapPicks,
       NO_MODS,
       0,
-      100,
+      survivingHp,
       timeline,
     );
 
     // With 20 dice both swings almost surely reach `gb`: 1 + 3, then 1.
-    expect(outcome.expectedDamage).toBeCloseTo(5, 2);
+    expect(outcome.expectedDamage).toBeCloseTo(1 + playDamage + 1, 2);
   });
 
   it('scales a current-HP play by the damage each roll actually dealt before it', () => {
@@ -158,6 +163,6 @@ describe('planDamageOutcome', () => {
     );
 
     // Miss: 0 + 1 + half of 10 = 6. Hit: 1 + 1 + half of 9 = 6.
-    expect([...outcome.damageDistribution]).toEqual([[6, 1]]);
+    expect([...outcome.damageDistribution]).toEqual([[1 + targetHp / 2, 1]]);
   });
 });

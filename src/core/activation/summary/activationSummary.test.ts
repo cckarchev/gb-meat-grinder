@@ -117,11 +117,15 @@ describe('swingIsSkipped', () => {
   });
 });
 
+/** The default input's two `two` picks. */
+const ALL_HIT_DAMAGE = 4;
+const COIN_FLIP = 0.5;
+
 describe('summarizeActivation', () => {
   it('totals damage and momentum when every pick hits', () => {
     const summary = summarizeActivation(input());
 
-    expect(summary.totalDamageIfAllHit).toBe(4);
+    expect(summary.totalDamageIfAllHit).toBe(ALL_HIT_DAMAGE);
     expect(summary.netMomentumIfAllHit).toBe(2);
     expect(summary.netMomentumTooltip).toBe('+2 from momentous results.');
     expect(summary.damageDealtTooltip).toBe('4 from card pips = 4.');
@@ -188,7 +192,11 @@ describe('summarizeActivation', () => {
       input({ attacker, wrapPicks, timeline, rowDamageIfHit }),
     );
 
-    expect(summary.totalDamageIfAllHit).toBe(7);
+    const sweepingChargeDamage = 3;
+
+    expect(summary.totalDamageIfAllHit).toBe(
+      ALL_HIT_DAMAGE + sweepingChargeDamage,
+    );
 
     expect(summary.damageDealtTooltip).toBe(
       '4 from card pips; +3 Sweeping Charge = 7.',
@@ -210,7 +218,7 @@ describe('summarizeActivation', () => {
       }),
     );
 
-    expect(summary.totalDamageIfAllHit).toBe(6);
+    expect(summary.totalDamageIfAllHit).toBe(ALL_HIT_DAMAGE - 2 + 2 + 2);
 
     expect(summary.damageDealtTooltip).toBe(
       '4 from card pips; -2 Tough Hide; +2 Sharp; +2 Gore = 6.',
@@ -227,10 +235,12 @@ describe('summarizeActivation', () => {
 
   it('fails the plan unless every swing lands its line', () => {
     const summary = summarizeActivation(
-      input({ attacks: [flaky(0, 0.5), flaky(1, 0.5)] }),
+      input({ attacks: [flaky(0, COIN_FLIP), flaky(1, COIN_FLIP)] }),
     );
 
-    expect(summary.planFailureProbability).toBeCloseTo(0.75);
+    expect(summary.planFailureProbability).toBeCloseTo(
+      1 - COIN_FLIP * COIN_FLIP,
+    );
   });
 
   it('still rolls the swings after the killing blow in case an earlier one whiffs', () => {
@@ -253,16 +263,16 @@ describe('summarizeActivation', () => {
         activeBaseCount: 3,
         wrapPicks: [['two'], ['two'], ['two']],
         bonusTimeByAttack: [false, false, false],
-        targetHp: 4,
+        targetHp: ALL_HIT_DAMAGE,
         killingBlowIndex: 1,
       }),
     );
 
     // The plan ends at the second swing, but the third always makes up the gap.
     expect(summary.activeAttacks).toHaveLength(2);
-    expect(summary.planFailureProbability).toBeCloseTo(0.75);
+    expect(summary.planFailureProbability).toBeCloseTo(1 - shaky.prob);
     expect(summary.killProbability).toBeCloseTo(1);
-    expect(summary.expectedDamage).toBeCloseTo(4);
+    expect(summary.expectedDamage).toBeCloseTo(ALL_HIT_DAMAGE);
     expect(summary.expectedHpRemaining).toBeCloseTo(0);
   });
 
@@ -274,21 +284,21 @@ describe('summarizeActivation', () => {
         bonusTimeByAttack: [false, false, false],
         attacker: makeAttacker({ inf: 3 }),
         activeBaseCount: 3,
-        targetHp: 4,
+        targetHp: ALL_HIT_DAMAGE,
         killingBlowIndex: 1,
       }),
     );
 
-    expect(summary.totalDamageIfAllHit).toBe(4);
+    expect(summary.totalDamageIfAllHit).toBe(ALL_HIT_DAMAGE);
     expect(summary.damageDealtTooltip).toBe('4 from card pips = 4.');
   });
 
   it('reports kill odds and the likely damage band', () => {
-    const lethal = summarizeActivation(input({ targetHp: 4 }));
+    const lethal = summarizeActivation(input({ targetHp: ALL_HIT_DAMAGE }));
     const short = summarizeActivation(input({ targetHp: 5 }));
 
     expect(lethal.killProbability).toBe(1);
-    expect(lethal.expectedDamage).toBe(4);
+    expect(lethal.expectedDamage).toBe(ALL_HIT_DAMAGE);
     expect(lethal.damageRange).toEqual({ low: 4, high: 4 });
     expect(short.killProbability).toBe(0);
     expect(short.expectedHpRemaining).toBe(1);

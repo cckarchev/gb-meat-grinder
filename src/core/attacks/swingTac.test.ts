@@ -6,14 +6,20 @@ import { makeAttacker, makeRollParams } from '@/core/testing/fixtures';
 
 describe('sumSwingTac', () => {
   it('sums base TAC, charge, bonuses and penalties', () => {
-    const attacker = makeAttacker({ tac: 6 });
+    const baseTac = 6;
+    const attacker = makeAttacker({ tac: baseTac });
     const carriedBonus = 2;
     const cover = 1;
     const bonusTime = 1;
     const crowdedOut = -1;
 
     const expected =
-      6 + CHARGE_TAC_BONUS + carriedBonus - cover + bonusTime + crowdedOut;
+      baseTac +
+      CHARGE_TAC_BONUS +
+      carriedBonus -
+      cover +
+      bonusTime +
+      crowdedOut;
 
     const chargeSwing = {
       attacker,
@@ -38,7 +44,7 @@ describe('sumSwingTac', () => {
     };
 
     expect(sumSwingTac(chargeSwing)).toBe(expected);
-    expect(sumSwingTac(plainSwing)).toBe(6);
+    expect(sumSwingTac(plainSwing)).toBe(baseTac);
   });
 });
 

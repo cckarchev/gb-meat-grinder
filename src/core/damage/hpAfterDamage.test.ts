@@ -1,16 +1,22 @@
 import { describe, expect, it } from 'vitest';
 import { hpAfterDamage } from '@/core/damage/hpAfterDamage';
 
+const HP = 10;
+
 describe('hpAfterDamage', () => {
   it('subtracts the damage from the HP', () => {
-    expect(hpAfterDamage(10, 3)).toBe(7);
+    const damage = 3;
+
+    expect(hpAfterDamage(HP, damage)).toBe(HP - damage);
   });
 
   it('reaches zero on exact lethal damage', () => {
-    expect(hpAfterDamage(10, 10)).toBe(0);
+    expect(hpAfterDamage(HP, HP)).toBe(0);
   });
 
   it('never goes below zero on overkill', () => {
-    expect(hpAfterDamage(10, 14)).toBe(0);
+    const overkill = 14;
+
+    expect(hpAfterDamage(HP, overkill)).toBe(0);
   });
 });

@@ -8,7 +8,9 @@ import {
 
 describe('formatSigned', () => {
   it('prefixes a positive value with a plus sign', () => {
-    expect(formatSigned(3)).toBe('+3');
+    const positive = 3;
+
+    expect(formatSigned(positive)).toBe('+3');
   });
 
   it('keeps the minus sign of a negative value', () => {
@@ -26,16 +28,22 @@ describe('formatSigned', () => {
 
 describe('formatPercent', () => {
   it('formats with one decimal by default', () => {
-    expect(formatPercent(0.5)).toBe('50.0%');
+    const half = 0.5;
+
+    expect(formatPercent(half)).toBe('50.0%');
     expect(formatPercent(0)).toBe('0.0%');
   });
 
   it('honors the digits argument', () => {
-    expect(formatPercent(0.1234, 2)).toBe('12.34%');
+    const ratio = 0.1234;
+
+    expect(formatPercent(ratio, 2)).toBe('12.34%');
   });
 
   it('collapses tiny positive values and non-finite input', () => {
-    expect(formatPercent(0.00005)).toBe('<0.01%');
+    const tiny = 0.00005;
+
+    expect(formatPercent(tiny)).toBe('<0.01%');
     expect(formatPercent(Number.NaN)).toBe('-');
   });
 });
@@ -53,6 +61,6 @@ describe('formatRange', () => {
 describe('attackOrdinal', () => {
   it('numbers attacks from 1 for display', () => {
     expect(attackOrdinal(0)).toBe(1);
-    expect(attackOrdinal(2)).toBe(3);
+    expect(attackOrdinal(2)).toBe(2 + 1);
   });
 });

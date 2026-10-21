@@ -46,14 +46,14 @@ describe('buffs and damage', () => {
     const butcher = makeAttacker({ guild: TEAMMATE_GUILD });
     const carve = modsWith({ buffs: { carve: true } });
 
-    expect(effectivePlaybookDamage(butcher, 2, carve)).toBe(3);
+    expect(effectivePlaybookDamage(butcher, 2, carve)).toBe(2 + 1);
     expect(effectivePlayDamage(butcher, 2, carve)).toBe(2);
   });
 
   it('applies an any-damage bonus to play damage too', () => {
     const sharp = modsWith({ buffs: { sharp: true } });
 
-    expect(effectivePlayDamage(attacker, 2, sharp)).toBe(3);
+    expect(effectivePlayDamage(attacker, 2, sharp)).toBe(2 + 1);
     expect(effectivePlayDamage(attacker, 2, TOUGH_HIDE)).toBe(1);
   });
 
@@ -67,9 +67,13 @@ describe('buffs and damage', () => {
   });
 
   it('lowers DEF for Knocked Down and Snared without a floor', () => {
-    expect(effectiveEnemyDef(4, true, true)).toBe(2);
+    const def = 4;
+    const defOverCap = 7;
+    const defCap = 6;
+
+    expect(effectiveEnemyDef(def, true, true)).toBe(def - 2);
     expect(effectiveEnemyDef(2, true, true)).toBe(0);
-    expect(effectiveEnemyDef(7, false, false)).toBe(6);
+    expect(effectiveEnemyDef(defOverCap, false, false)).toBe(defCap);
   });
 
   it('adds the flat damage of activated traits only', () => {
@@ -78,8 +82,10 @@ describe('buffs and damage', () => {
     });
 
     expect(activeTraitFlatDamage(attacker, {})).toBe(0);
+    const reaperDamage = 3;
+
     expect(activeTraitFlatDamage(attacker, { dontFearTheReaper: true })).toBe(
-      3,
+      reaperDamage,
     );
     expect(activeTraitFlatDamage(attacker, { passive: true })).toBe(0);
   });

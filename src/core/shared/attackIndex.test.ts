@@ -5,7 +5,9 @@ import { NO_ATTACK_INDEX } from '@/core/shared/constants';
 describe('isAttackIndex', () => {
   it('accepts the first row and later rows', () => {
     expect(isAttackIndex(0)).toBe(true);
-    expect(isAttackIndex(3)).toBe(true);
+    const laterRow = 3;
+
+    expect(isAttackIndex(laterRow)).toBe(true);
   });
 
   it('rejects the no-attack sentinel', () => {

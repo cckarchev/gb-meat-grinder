@@ -73,17 +73,5 @@
     "formatter": {
       "quoteStyle": "single"
     }
-  },
-  "overrides": [
-    {
-      "includes": ["**/*.test.ts", "**/testing/**"],
-      "linter": {
-        "rules": {
-          "style": {
-            "noMagicNumbers": "off"
-          }
-        }
-      }
-    }
-  ]
+  }
 }

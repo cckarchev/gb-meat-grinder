@@ -93,9 +93,11 @@ describe('characterPlayPickIndexes', () => {
   const attacker = makeAttacker();
 
   it('lists the slots whose pick grants a character play', () => {
+    const lastSlot = 3;
+
     expect(
       characterPlayPickIndexes(attacker, ['gb', null, 'one', 'gb']),
-    ).toEqual([0, 3]);
+    ).toEqual([0, lastSlot]);
   });
 
   it('is empty when no pick grants a play', () => {

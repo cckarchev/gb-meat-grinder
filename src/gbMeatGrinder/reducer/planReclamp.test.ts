@@ -23,10 +23,17 @@ describe('re-clamping the plan', () => {
   });
 
   it('downgrades picks when Crowding Out costs dice, clamped to its range', () => {
-    const crowded = reduce(withM4(), { type: 'crowdingOut', value: 3 });
-    const negative = reduce(withM4(), { type: 'crowdingOut', value: -3 });
+    const crowdingOut = 3;
+    const crowded = reduce(withM4(), {
+      type: 'crowdingOut',
+      value: crowdingOut,
+    });
+    const negative = reduce(withM4(), {
+      type: 'crowdingOut',
+      value: -crowdingOut,
+    });
 
-    expect(crowded.crowdingOut).toBe(3);
+    expect(crowded.crowdingOut).toBe(crowdingOut);
     // TAC 4 vs ARM 1 reaches 3 net: the first net-3 line, with its play.
     expect(crowded.attackPlan.wrapPicks[0]).toEqual(['three_gb']);
     expect(crowded.attackPlan.characterPlayPicks[0]).toEqual(['theyAintTough']);

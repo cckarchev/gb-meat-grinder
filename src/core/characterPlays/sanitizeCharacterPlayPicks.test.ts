@@ -6,10 +6,15 @@ describe('sanitizeCharacterPlayPicks', () => {
   const attacker = makeAttacker();
 
   it('sanitizes illegal and orphaned play picks', () => {
-    const result = sanitizeCharacterPlayPicks(orderFor(attacker, 3), {
-      wrapPicks: [['gb'], ['gb'], ['one']],
-      characterPlayPicks: [['playTac'], ['playTac'], ['playDef']],
-    });
+    const baseAttackCount = 3;
+
+    const result = sanitizeCharacterPlayPicks(
+      orderFor(attacker, baseAttackCount),
+      {
+        wrapPicks: [['gb'], ['gb'], ['one']],
+        characterPlayPicks: [['playTac'], ['playTac'], ['playDef']],
+      },
+    );
 
     expect(result).toEqual({
       characterPlayPicks: [['playTac'], ['playDef'], [null]],

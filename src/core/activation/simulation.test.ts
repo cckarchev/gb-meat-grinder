@@ -24,6 +24,8 @@ const pickDamage = (attackIndex: number): MeatGrinderAction => {
 
 describe('deriveSimulation', () => {
   it('runs the attack sequence on the effective enemy stats', () => {
+    const defKnockedDownAndSnared = 3;
+
     const state = boarState(
       { type: 'charging', value: false },
       { type: 'enemyDef', value: 5 },
@@ -47,7 +49,7 @@ describe('deriveSimulation', () => {
       enemyHasCover: state.enemyHasCover,
       enemyDefensiveStance: state.enemyDefensiveStance,
       damageMods: state.damageMods,
-      enemyDef: 3,
+      enemyDef: defKnockedDownAndSnared,
       bonusTimeByAttack: state.bonusTimeByAttack,
       initialTacModifier: 0,
       activeBaseCount,
@@ -55,7 +57,7 @@ describe('deriveSimulation', () => {
       enemyKnockedDown: false,
     });
 
-    expect(derived.effectiveEnemyDef).toBe(3);
+    expect(derived.effectiveEnemyDef).toBe(defKnockedDownAndSnared);
     expect(derived.activeBaseCount).toBe(activeBaseCount);
     expect(derived.attacks).toEqual(expected.attacks);
   });

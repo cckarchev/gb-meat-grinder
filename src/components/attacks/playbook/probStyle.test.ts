@@ -16,8 +16,11 @@ describe('probHeatBackground', () => {
 
 describe('probHeatTextColor', () => {
   it('switches to dark text above 0.52', () => {
-    expect(probHeatTextColor(0.52)).toBe('#f8fafc');
-    expect(probHeatTextColor(0.53)).toBe('#0a0a0a');
+    const atThreshold = 0.52;
+    const justAbove = 0.53;
+
+    expect(probHeatTextColor(atThreshold)).toBe('#f8fafc');
+    expect(probHeatTextColor(justAbove)).toBe('#0a0a0a');
   });
 });
 

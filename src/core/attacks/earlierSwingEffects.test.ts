@@ -32,6 +32,10 @@ describe('rows outside the activation', () => {
   const attacker = makeAttacker();
 
   it('get the full cover penalty', () => {
-    expect(coverTacPenaltyForAttack(attacker, COVER, [['push']], 5, 1)).toBe(1);
+    const rowPastTheEnd = 5;
+
+    expect(
+      coverTacPenaltyForAttack(attacker, COVER, [['push']], rowPastTheEnd, 1),
+    ).toBe(1);
   });
 });

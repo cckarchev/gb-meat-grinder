@@ -44,7 +44,9 @@ describe('scenarioEffectiveStats', () => {
       input({ enemyKnockedDown: true, enemySnared: true }),
     );
 
-    expect(stats.effectiveEnemyDef).toBe(3);
+    const defKnockedDownAndSnared = 3;
+
+    expect(stats.effectiveEnemyDef).toBe(defKnockedDownAndSnared);
   });
 
   it('nets Ganging Up against Crowding Out', () => {

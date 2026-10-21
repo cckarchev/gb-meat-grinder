@@ -27,6 +27,9 @@ describe('momentum', () => {
   });
 
   it('includes the swing itself after it resolves', () => {
-    expect(momentumAfterAttackInclusive(2, params)).toBe(3);
+    // Row 2's `four` pick adds 1 heat on top of the 2 in the pool.
+    const momentumAfterRowTwo = 3;
+
+    expect(momentumAfterAttackInclusive(2, params)).toBe(momentumAfterRowTwo);
   });
 });

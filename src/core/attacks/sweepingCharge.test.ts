@@ -15,6 +15,7 @@ import {
 import { searingStrike, sweepingCharge } from '@/data/characterTraits';
 
 const CHARGE_ROW = 0;
+const SWEEPING_CHARGE_DAMAGE = 3;
 const SWINGS = 3;
 
 /** A charge plus two bought attacks: 2 influence for the charge, 2 for attacks. */
@@ -41,7 +42,7 @@ describe('Sweeping Charge in the plan', () => {
   it('adds 3 to a charge that picks a damage result', () => {
     expect(
       timelineFor(planOf([['one'], ['one'], ['one']]))[0].chargeDamage,
-    ).toBe(3);
+    ).toBe(SWEEPING_CHARGE_DAMAGE);
   });
 
   it('does not trigger on a charge that picks no damage result', () => {
@@ -59,7 +60,7 @@ describe('Sweeping Charge in the plan', () => {
       modsWith({ toughHide: true }),
     );
 
-    expect(timeline[0].chargeDamage).toBe(3);
+    expect(timeline[0].chargeDamage).toBe(SWEEPING_CHARGE_DAMAGE);
     expect(timeline.map((state) => state.effectsBefore.armorReduction)).toEqual(
       [0, 1, 1],
     );
@@ -73,15 +74,22 @@ describe('Sweeping Charge in the plan', () => {
 });
 
 describe('Sweeping Charge in the odds', () => {
-  const extras = { playDamageBySlot: [], chargeTraitDamage: 3 };
+  const extras = {
+    playDamageBySlot: [],
+    chargeTraitDamage: SWEEPING_CHARGE_DAMAGE,
+  };
 
   it('adds 3 when the roll reaches the picked damage line', () => {
-    expect(pickedDamageForNet(sweeper, NO_MODS, ['two'], 2, extras)).toBe(5);
+    expect(pickedDamageForNet(sweeper, NO_MODS, ['two'], 2, extras)).toBe(
+      2 + SWEEPING_CHARGE_DAMAGE,
+    );
   });
 
   it('adds 3 when a short roll falls back to a lower damage line', () => {
     // `four` costs 4; with 1 net the slot falls back to `one`.
-    expect(pickedDamageForNet(sweeper, NO_MODS, ['four'], 1, extras)).toBe(4);
+    expect(pickedDamageForNet(sweeper, NO_MODS, ['four'], 1, extras)).toBe(
+      1 + SWEEPING_CHARGE_DAMAGE,
+    );
   });
 
   it('adds 3 when a short roll on a damage-less pick falls back to a damage line', () => {
@@ -90,7 +98,9 @@ describe('Sweeping Charge in the odds', () => {
     const projected = timelineFor(planOf([['push'], ['one'], ['one']]));
 
     expect(projected[CHARGE_ROW].chargeDamage).toBe(0);
-    expect(pickedDamageForNet(sweeper, NO_MODS, ['push'], 1, extras)).toBe(4);
+    expect(pickedDamageForNet(sweeper, NO_MODS, ['push'], 1, extras)).toBe(
+      1 + SWEEPING_CHARGE_DAMAGE,
+    );
   });
 
   it('adds nothing when the roll reaches a line without damage', () => {

@@ -23,6 +23,9 @@ import { burningPassion, searingStrike } from '@/data/characterTraits';
 
 const SWINGS = 3;
 
+/** A `two` pick lifted by Burning Passion's +1. */
+const BURNING_TWO = 3;
+
 const timelineFor = (
   attacker: AttackerData,
   plan: AttackPlan,
@@ -116,13 +119,15 @@ describe('Burning Passion', () => {
 
   it('adds +1 to every swing when the target starts Burning', () => {
     expect(damageFor(passionate, modsWith({ targetBurning: true }))).toEqual([
-      3, 3, 3,
+      BURNING_TWO,
+      BURNING_TWO,
+      BURNING_TWO,
     ]);
   });
 
   it('starts on the swing after Searing Strike lights the target', () => {
     expect(damageFor(passionate, modsWith({ buffs: { steel: true } }))).toEqual(
-      [2, 3, 3],
+      [2, BURNING_TWO, BURNING_TWO],
     );
   });
 
@@ -132,7 +137,7 @@ describe('Burning Passion', () => {
         passionate,
         modsWith({ targetBurning: true, buffs: { sharp: true } }),
       ),
-    ).toEqual([4, 4, 4]);
+    ).toEqual([BURNING_TWO + 1, BURNING_TWO + 1, BURNING_TWO + 1]);
   });
 
   it('never lifts play damage', () => {
@@ -160,9 +165,11 @@ describe('Burning Passion', () => {
     });
 
     // `gb` card 1 + 1 Burning Passion, play 3 untouched.
+    const playDamage = 3;
+
     expect(
       rowDamageIfAllHit(orderFor(withPlay, 1, mods), plan.wrapPicks, timeline),
-    ).toEqual([5]);
+    ).toEqual([1 + 1 + playDamage]);
   });
 });
 
@@ -226,7 +233,7 @@ describe('Burning Passion in the breakdown', () => {
   it('itemizes its lift as its own line', () => {
     const breakdown = breakdownFor(modsWith({ targetBurning: true }));
 
-    expect(breakdown.totalEffective).toBe(9);
+    expect(breakdown.totalEffective).toBe(SWINGS * BURNING_TWO);
     expect(breakdown.buffBonuses.at(-1)).toEqual({
       id: 'burningPassion',
       label: 'Burning Passion',

@@ -17,7 +17,9 @@ describe('pickedDamageForNet', () => {
 
   it('deals the picked line once the roll reaches it', () => {
     expect(damageAt(['two'], 2)).toBe(2);
-    expect(damageAt(['two'], 3)).toBe(2);
+    const extraNet = 3;
+
+    expect(damageAt(['two'], extraNet)).toBe(2);
   });
 
   it('falls back to the best lower line on a short roll', () => {
@@ -26,8 +28,13 @@ describe('pickedDamageForNet', () => {
   });
 
   it('resolves wrap slots past the card width', () => {
-    expect(damageAt(['four', 'two'], 5)).toBe(5);
-    expect(damageAt(['four', 'two'], 6)).toBe(6);
+    // `four` deals 4, then each net past it lands the wrap slot's line.
+    const fourDamage = 4;
+    const reachesWrapOne = 5;
+    const reachesWrapTwo = 6;
+
+    expect(damageAt(['four', 'two'], reachesWrapOne)).toBe(fourDamage + 1);
+    expect(damageAt(['four', 'two'], reachesWrapTwo)).toBe(fourDamage + 2);
   });
 });
 
@@ -35,10 +42,14 @@ describe('play damage in the odds', () => {
   const attacker = makeAttacker({ characterPlays: [PLAY_DAMAGE] });
 
   it('adds a slot play damage only when the roll reaches that slot line', () => {
-    const extras = { playDamageBySlot: [3], chargeTraitDamage: 0 };
+    const playDamage = 3;
+    const gbNet = 3;
+    const extras = { playDamageBySlot: [playDamage], chargeTraitDamage: 0 };
 
     // `gb` costs 3 net: below it the slot falls back to the best lower line.
-    expect(pickedDamageForNet(attacker, NO_MODS, ['gb'], 3, extras)).toBe(4);
+    expect(pickedDamageForNet(attacker, NO_MODS, ['gb'], gbNet, extras)).toBe(
+      1 + playDamage,
+    );
     expect(pickedDamageForNet(attacker, NO_MODS, ['gb'], 2, extras)).toBe(2);
   });
 });

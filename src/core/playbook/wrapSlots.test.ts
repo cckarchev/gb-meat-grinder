@@ -12,6 +12,12 @@ import {
 } from '@/core/playbook/wrapSlots';
 import { makeAttacker } from '@/core/testing/fixtures';
 
+/** The fixture playbook's widest column. */
+const CARD_WIDTH = 4;
+
+/** Two full card widths and one net past them. */
+const TWO_WIDTHS_AND_ONE = 2 * CARD_WIDTH + 1;
+
 describe('default plan rows', () => {
   it('builds one empty slot per row by default', () => {
     expect(defaultWrapPicks(2)).toEqual([[null], [null]]);
@@ -23,21 +29,23 @@ describe('wrap slots', () => {
 
   it('needs one slot per card width of net successes', () => {
     expect(wrapSlotCount(attacker, 0)).toBe(1);
-    expect(wrapSlotCount(attacker, 4)).toBe(1);
-    expect(wrapSlotCount(attacker, 5)).toBe(2);
-    expect(wrapSlotCount(attacker, 9)).toBe(3);
+    expect(wrapSlotCount(attacker, CARD_WIDTH)).toBe(1);
+    expect(wrapSlotCount(attacker, CARD_WIDTH + 1)).toBe(2);
+    expect(wrapSlotCount(attacker, TWO_WIDTHS_AND_ONE)).toBe(2 + 1);
   });
 
   it('budgets each slot from what is left after full steps', () => {
-    expect(wrapSlotBudget(attacker, 9, 0)).toBe(4);
-    expect(wrapSlotBudget(attacker, 9, 1)).toBe(4);
-    expect(wrapSlotBudget(attacker, 9, 2)).toBe(1);
-    expect(wrapSlotBudget(attacker, 4, 1)).toBe(0);
+    expect(wrapSlotBudget(attacker, TWO_WIDTHS_AND_ONE, 0)).toBe(CARD_WIDTH);
+    expect(wrapSlotBudget(attacker, TWO_WIDTHS_AND_ONE, 1)).toBe(CARD_WIDTH);
+    expect(wrapSlotBudget(attacker, TWO_WIDTHS_AND_ONE, 2)).toBe(1);
+    expect(wrapSlotBudget(attacker, CARD_WIDTH, 1)).toBe(0);
   });
 
   it('extends net needed past the card width on later slots', () => {
-    expect(wrapExtendedNetNeeded(attacker, 1, 2)).toBe(6);
-    expect(wrapNetThresholdAllHits(attacker, ['four', 'one'])).toBe(5);
+    expect(wrapExtendedNetNeeded(attacker, 1, 2)).toBe(CARD_WIDTH + 2);
+    expect(wrapNetThresholdAllHits(attacker, ['four', 'one'])).toBe(
+      CARD_WIDTH + 1,
+    );
     expect(wrapNetThresholdAllHits(attacker, ['two', null])).toBe(2);
     expect(wrapNetThresholdAllHits(attacker, [])).toBe(0);
   });
@@ -79,12 +87,12 @@ describe('wrapSlotColumns', () => {
     };
 
     expect(nets(2, 0)).toEqual([1, 2]);
-    expect(nets(9, 2)).toEqual([1]);
+    expect(nets(TWO_WIDTHS_AND_ONE, 2)).toEqual([1]);
   });
 
   it('makes the columns the gained net hits cover certain', () => {
     const instructed = { ...roll, netHitBonus: 2 };
-    const chances = wrapSlotColumns(attacker, instructed, 4, 0).map(
+    const chances = wrapSlotColumns(attacker, instructed, CARD_WIDTH, 0).map(
       ({ hitChance }) => hitChance,
     );
 
@@ -93,7 +101,7 @@ describe('wrapSlotColumns', () => {
   });
 
   it('prices each column at the net the slot actually needs', () => {
-    const [first] = wrapSlotColumns(attacker, roll, 9, 1);
+    const [first] = wrapSlotColumns(attacker, roll, TWO_WIDTHS_AND_ONE, 1);
     const netNeeded = wrapExtendedNetNeeded(attacker, 1, 1);
 
     expect(first.hitChance).toBe(

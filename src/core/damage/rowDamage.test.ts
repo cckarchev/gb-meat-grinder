@@ -18,6 +18,9 @@ import {
   TEAMMATE_GUILD,
 } from '@/core/testing/fixtures';
 
+/** The fixture `PLAY_DAMAGE`'s damage. */
+const PLAY_DAMAGE_AMOUNT = 3;
+
 describe('damageModifierBreakdown', () => {
   it('splits card damage into Tough Hide and per-buff contributions', () => {
     const attacker = makeAttacker();
@@ -72,7 +75,7 @@ describe('play damage in the all-hit projection', () => {
     // `gb` is 1 card damage; the play adds 3 on the first swing only.
     expect(
       rowDamageIfAllHit(orderFor(attacker, 2), wrapPicks, timeline),
-    ).toEqual([4, 1]);
+    ).toEqual([1 + PLAY_DAMAGE_AMOUNT, 1]);
   });
 });
 
@@ -102,7 +105,7 @@ describe('play damage in the breakdown', () => {
     );
 
     // Card 1 + 1 (Sharp), play 3 + 1 (Sharp).
-    expect(breakdown.totalEffective).toBe(6);
+    expect(breakdown.totalEffective).toBe(1 + 1 + PLAY_DAMAGE_AMOUNT + 1);
     expect(
       breakdown.buffBonuses.find((buff) => buff.id === 'sharp')?.bonus,
     ).toBe(2);
@@ -140,7 +143,7 @@ describe('play damage in the breakdown', () => {
     );
 
     // Card 1 + 1 (Carve), play 3 unmodified.
-    expect(breakdown.totalEffective).toBe(5);
+    expect(breakdown.totalEffective).toBe(1 + 1 + PLAY_DAMAGE_AMOUNT);
     expect(
       breakdown.buffBonuses.find((buff) => buff.id === 'carve')?.bonus,
     ).toBe(1);
@@ -174,7 +177,7 @@ describe('current-HP play damage in the projection and breakdown', () => {
         wrapPicks,
         timeline,
       ),
-    ).toEqual([6, 0]);
+    ).toEqual([1 - 1 + 1 + targetHp / 2, 0]);
   });
 
   it('leaves it out of the Tough Hide and buff lines', () => {
@@ -184,7 +187,7 @@ describe('current-HP play damage in the projection and breakdown', () => {
       timeline,
     );
 
-    expect(breakdown.totalEffective).toBe(6);
+    expect(breakdown.totalEffective).toBe(1 - 1 + 1 + targetHp / 2);
     expect(breakdown.toughHideReduction).toBe(1);
     expect(
       breakdown.buffBonuses.find((buff) => buff.id === 'sharp')?.bonus,
@@ -219,7 +222,7 @@ describe('Assist damage in the projection and breakdown', () => {
     // The fixture's `gb` deals 1: the play does not boost its own swing.
     expect(
       rowDamageIfAllHit(orderFor(attacker, 2, mods), wrapPicks, timeline),
-    ).toEqual([1, 3]);
+    ).toEqual([1, 2 + 1]);
   });
 
   it('itemizes it on its own Assist line', () => {
@@ -231,8 +234,8 @@ describe('Assist damage in the projection and breakdown', () => {
 
     const lifted = breakdown.buffBonuses.filter((line) => line.bonus > 0);
 
-    expect(breakdown.rawCardDamage).toBe(3);
-    expect(breakdown.totalEffective).toBe(4);
+    expect(breakdown.rawCardDamage).toBe(1 + 2);
+    expect(breakdown.totalEffective).toBe(1 + 2 + 1);
     expect(lifted).toEqual([{ id: 'assist', label: 'Assist', bonus: 1 }]);
   });
 });

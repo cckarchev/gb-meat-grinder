@@ -130,7 +130,9 @@ describe('activationTimeline carried effects', () => {
 
     const timeline = activationTimeline(plan, params({ activeBaseCount: 1 }));
 
-    expect(swingStateAt(timeline, 5).effectsBefore).toEqual(NONE);
+    const rowPastThePlan = 5;
+
+    expect(swingStateAt(timeline, rowPastThePlan).effectsBefore).toEqual(NONE);
   });
 });
 
@@ -268,6 +270,7 @@ describe('Assist', () => {
 
 describe('damaging character plays', () => {
   const attacker = makeAttacker({ characterPlays: [PLAY_DAMAGE] });
+  const playDamage = 3;
 
   const twoGbs: AttackPlan = {
     wrapPicks: [['gb'], ['gb']],
@@ -277,7 +280,7 @@ describe('damaging character plays', () => {
   it('puts the play damage on the slot that triggers it', () => {
     const timeline = activationTimeline(twoGbs, params({ attacker }));
 
-    expect(timeline[0].playDamageBySlot).toEqual([3]);
+    expect(timeline[0].playDamageBySlot).toEqual([playDamage]);
   });
 
   it('deals an Once Per Turn play only the first time', () => {
@@ -298,7 +301,7 @@ describe('damaging character plays', () => {
     );
 
     expect(toughHide[0].playDamageBySlot).toEqual([2]);
-    expect(sharp[0].playDamageBySlot).toEqual([4]);
+    expect(sharp[0].playDamageBySlot).toEqual([playDamage + 1]);
   });
 
   it('skips a bonus limited to playbook damage results', () => {
@@ -315,12 +318,17 @@ describe('damaging character plays', () => {
       }),
     );
 
-    expect(carve[0].playDamageBySlot).toEqual([3]);
+    expect(carve[0].playDamageBySlot).toEqual([playDamage]);
   });
 });
 
 describe('character plays that deal damage from the target current HP', () => {
   const attacker = makeAttacker({ characterPlays: [PLAY_HALF_HEALTH] });
+  const fourDamage = 4;
+
+  const halfOf = (hp: number): number => {
+    return Math.floor(hp / 2);
+  };
 
   const fourThenHalf: AttackPlan = {
     wrapPicks: [['four'], ['gb']],
@@ -335,7 +343,9 @@ describe('character plays that deal damage from the target current HP', () => {
     );
 
     // 15 - 4 = 11 HP left, half rounded down is 5.
-    expect(timeline[1].playDamageBySlot).toEqual([5]);
+    expect(timeline[1].playDamageBySlot).toEqual([
+      halfOf(targetHp - fourDamage),
+    ]);
   });
 
   it('uses the HP before its own swing, not after the card damage', () => {
@@ -350,7 +360,7 @@ describe('character plays that deal damage from the target current HP', () => {
       params({ attacker, targetHp, activeBaseCount: 1 }),
     );
 
-    expect(timeline[0].playDamageBySlot).toEqual([5]);
+    expect(timeline[0].playDamageBySlot).toEqual([halfOf(targetHp)]);
   });
 
   it('is unmodified by Tough Hide and damage buffs', () => {
@@ -371,8 +381,12 @@ describe('character plays that deal damage from the target current HP', () => {
     );
 
     // The 4 becomes 3 under Tough Hide (12 left) and 5 with Sharp (10 left).
-    expect(toughHide[1].playDamageBySlot).toEqual([6]);
-    expect(sharp[1].playDamageBySlot).toEqual([5]);
+    expect(toughHide[1].playDamageBySlot).toEqual([
+      halfOf(targetHp - (fourDamage - 1)),
+    ]);
+    expect(sharp[1].playDamageBySlot).toEqual([
+      halfOf(targetHp - (fourDamage + 1)),
+    ]);
   });
 
   it('deals nothing once the earlier swings have taken out the target', () => {
@@ -396,7 +410,7 @@ describe('character plays that deal damage from the target current HP', () => {
     const timeline = activationTimeline(fourThenHalf, params({ attacker }));
     const hpLeft = 9;
 
-    expect(playDamageForHealth(timeline[1], hpLeft)).toEqual([4]);
+    expect(playDamageForHealth(timeline[1], hpLeft)).toEqual([halfOf(hpLeft)]);
   });
 
   it('marks only the slot whose play scales with the HP left', () => {

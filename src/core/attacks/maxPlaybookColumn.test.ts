@@ -23,7 +23,9 @@ describe('maxPlaybookColumnForRow', () => {
 
   it('reads the clamp params to find the column a row reaches', () => {
     // TAC vs ARM 0 with no other modifiers: the row reaches column TAC.
-    expect(maxPlaybookColumnForRow(emptyPlan, 0, params(4))).toBe(4);
+    const tac = 4;
+
+    expect(maxPlaybookColumnForRow(emptyPlan, 0, params(tac))).toBe(tac);
     expect(maxPlaybookColumnForRow(emptyPlan, 0, params(2))).toBe(2);
   });
 });
@@ -43,7 +45,9 @@ describe('maxPlaybookColumnForRow with Instruction', () => {
       characterPlayPicks: [[null], [null]],
     };
 
-    expect(maxPlaybookColumnForRow(plan, 0, params)).toBe(4);
+    const instructedColumn = 4;
+
+    expect(maxPlaybookColumnForRow(plan, 0, params)).toBe(instructedColumn);
     expect(maxPlaybookColumnForRow(plan, 1, params)).toBe(2);
   });
 });

@@ -142,6 +142,10 @@ const round = (value: number): number => {
 };
 
 const KNOCKDOWN_PRIORITY = 4;
+const CHARACTER_PLAY_PRIORITY = 3;
+
+/** Puts any utility ahead of raw damage in a line's score. */
+const UTILITY_SCALE = 100;
 
 const utilityScore = (result: PlaybookResult, strategy: Strategy): number => {
   if (strategy === 'damage') {
@@ -153,7 +157,7 @@ const utilityScore = (result: PlaybookResult, strategy: Strategy): number => {
   }
 
   if (result.picksCharacterPlay) {
-    return 3;
+    return CHARACTER_PLAY_PRIORITY;
   }
 
   if (result.appliesKnockDown) {
@@ -186,7 +190,7 @@ const pickLine = (
       const damage = effectiveDamageForChoice(attacker, result.id, mods);
       const utilityWeight = utilityScore(result, strategy);
       const damageWeight = 1 / (1 + utilityWeight * 10);
-      const score = utilityWeight * 100 + damage * damageWeight;
+      const score = utilityWeight * UTILITY_SCALE + damage * damageWeight;
 
       if (score > bestScore) {
         best = result.id;

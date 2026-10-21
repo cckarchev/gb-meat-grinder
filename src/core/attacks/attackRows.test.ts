@@ -51,7 +51,11 @@ describe('activation order', () => {
 
     expect(attackRowIsActive(oneBase, wrapPicks, 1)).toBe(false);
     expect(attackRowIsActive(twoBases, wrapPicks, 2)).toBe(true);
-    expect(attackRowIsActive(twoBases, wrapPicks, 3)).toBe(false);
+    const berserkerRowOfInactiveBase = 3;
+
+    expect(
+      attackRowIsActive(twoBases, wrapPicks, berserkerRowOfInactiveBase),
+    ).toBe(false);
 
     expect(attackRowIsActive(noBerserker, wrapPicks, 2)).toBe(false);
   });
@@ -59,7 +63,9 @@ describe('activation order', () => {
   it('maps Berserker rows to their source base', () => {
     expect(attackRowIsBerserker(berserker, 2)).toBe(true);
     expect(attackRowIsBerserker(berserker, 1)).toBe(false);
-    expect(berserkerSourceBaseIndex(berserker, 3)).toBe(1);
+    const secondBerserkerRow = 3;
+
+    expect(berserkerSourceBaseIndex(berserker, secondBerserkerRow)).toBe(1);
   });
 
   it('knows whether base picks deal damage', () => {
@@ -100,18 +106,24 @@ describe('rows outside the activation', () => {
   const activeBaseCount = 1;
 
   it('fall back to neutral values', () => {
+    const startingMomentum = 3;
+
     const momentumParams = {
       attacker,
       wrapPicks,
       damageMods: NO_MODS,
-      startingMomentum: 3,
+      startingMomentum,
       bonusTimeByAttack: [false, false],
       activeBaseCount,
     };
 
-    expect(momentumPoolBeforeBonusTime(inactiveRow, momentumParams)).toBe(3);
+    expect(momentumPoolBeforeBonusTime(inactiveRow, momentumParams)).toBe(
+      startingMomentum,
+    );
 
-    expect(momentumAfterAttackInclusive(inactiveRow, momentumParams)).toBe(3);
+    expect(momentumAfterAttackInclusive(inactiveRow, momentumParams)).toBe(
+      startingMomentum,
+    );
 
     const timeline = activationTimeline(
       { wrapPicks, characterPlayPicks: plays },
@@ -183,6 +195,8 @@ describe('picksBeforeInActivation', () => {
 
   it('is empty for the first pick and for a swing outside the activation', () => {
     expect(picksBefore(0, 0)).toEqual([]);
-    expect(picksBefore(5, 0)).toEqual([]);
+    const rowOutsideActivation = 5;
+
+    expect(picksBefore(rowOutsideActivation, 0)).toEqual([]);
   });
 });

@@ -9,7 +9,9 @@ const amountOf = (bonus: Bonus): number | undefined => {
 
 describe('sumOf', () => {
   it('adds the value of every item', () => {
-    expect(sumOf([{ amount: 2 }, { amount: 3 }], amountOf)).toBe(5);
+    const total = 5;
+
+    expect(sumOf([{ amount: 2 }, { amount: 3 }], amountOf)).toBe(total);
   });
 
   it('counts a missing value as 0', () => {

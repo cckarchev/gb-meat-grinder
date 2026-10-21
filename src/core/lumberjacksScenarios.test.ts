@@ -7,6 +7,7 @@ import { bucker } from '@/data/attackers/bucker';
 import { crossCut } from '@/data/attackers/crossCut';
 
 const TARGET_HP = 18;
+const FIRST_SWING_DAMAGE = 6;
 const NO_CHARACTER_PLAY = null;
 
 /** Cross Cut's two base attacks: a `6`, then the double GB into The Bigger They Are... */
@@ -56,14 +57,25 @@ describe('Cross Cut: The Bigger They Are...', () => {
     const derived = derive(false);
 
     // 18 - 6 = 12 HP left, half is 6.
-    expect(derived.rowDamageIfHit.slice(0, 2)).toEqual([6, 6]);
+    const hpLeft = TARGET_HP - FIRST_SWING_DAMAGE;
+
+    expect(derived.rowDamageIfHit.slice(0, 2)).toEqual([
+      FIRST_SWING_DAMAGE,
+      hpLeft / 2,
+    ]);
   });
 
   it('is condition damage that Tough Hide does not reduce', () => {
     const derived = derive(true);
 
     // The 6 drops to 5 (13 HP left), and half of 13 rounds down to 6.
-    expect(derived.rowDamageIfHit.slice(0, 2)).toEqual([5, 6]);
+    const toughHideSwing = FIRST_SWING_DAMAGE - 1;
+    const hpLeft = TARGET_HP - toughHideSwing;
+
+    expect(derived.rowDamageIfHit.slice(0, 2)).toEqual([
+      toughHideSwing,
+      Math.floor(hpLeft / 2),
+    ]);
   });
 });
 
@@ -167,14 +179,20 @@ describe('Bucker: Axe A Question', () => {
   it('gives the next attack +1 TAC and +1 DMG while Mallet or Oak engages', () => {
     const derived = derive(true);
 
-    expect(derived.attacks.map((attack) => attack.tac)).toEqual([5, 6]);
-    expect(derived.rowDamageIfHit.slice(0, 2)).toEqual([0, 3]);
+    expect(derived.attacks.map((attack) => attack.tac)).toEqual([
+      bucker.tac,
+      bucker.tac + 1,
+    ]);
+    expect(derived.rowDamageIfHit.slice(0, 2)).toEqual([0, 2 + 1]);
   });
 
   it('gives nothing when neither engages the target', () => {
     const derived = derive(false);
 
-    expect(derived.attacks.map((attack) => attack.tac)).toEqual([5, 5]);
+    expect(derived.attacks.map((attack) => attack.tac)).toEqual([
+      bucker.tac,
+      bucker.tac,
+    ]);
     expect(derived.rowDamageIfHit.slice(0, 2)).toEqual([0, 2]);
   });
 });

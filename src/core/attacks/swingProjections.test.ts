@@ -14,6 +14,10 @@ import {
   orderFor,
 } from '@/core/testing/fixtures';
 
+const TARGET_HP = 10;
+const SWING_DAMAGE = 2;
+const TRAIT_DAMAGE = 3;
+
 const swing = (attackIndex: number): AttackRollContext => {
   return makeRollContext({
     attackIndex,
@@ -40,7 +44,7 @@ const input = (
     flatDamage: 0,
     startingMomentum: 0,
     activeBaseCount: 2,
-    targetHp: 10,
+    targetHp: TARGET_HP,
     enemyKnockedDown: false,
     ...overrides,
   };
@@ -75,20 +79,29 @@ describe('projectSwings', () => {
   it('tracks HP left and momentum after each swing', () => {
     const projection = projectSwings(input());
 
-    expect(projection.remainingHp).toEqual([8, 6]);
+    expect(projection.remainingHp).toEqual([
+      TARGET_HP - SWING_DAMAGE,
+      TARGET_HP - 2 * SWING_DAMAGE,
+    ]);
     expect(projection.momentum).toEqual([1, 2]);
     expect(projection.bonusTimePool).toEqual([0, 1]);
   });
 
   it('applies activated-trait damage before the first swing', () => {
-    const projection = projectSwings(input({ flatDamage: 3 }));
+    const projection = projectSwings(input({ flatDamage: TRAIT_DAMAGE }));
+    const hpAfterTrait = TARGET_HP - TRAIT_DAMAGE;
 
-    expect(projection.remainingHp).toEqual([5, 3]);
+    expect(projection.remainingHp).toEqual([
+      hpAfterTrait - SWING_DAMAGE,
+      hpAfterTrait - 2 * SWING_DAMAGE,
+    ]);
   });
 
   it('starts the swings from HP left after activated-trait damage', () => {
-    expect(projectSwings(input()).startingHp).toBe(10);
-    expect(projectSwings(input({ flatDamage: 3 })).startingHp).toBe(7);
+    expect(projectSwings(input()).startingHp).toBe(TARGET_HP);
+    expect(projectSwings(input({ flatDamage: TRAIT_DAMAGE })).startingHp).toBe(
+      TARGET_HP - TRAIT_DAMAGE,
+    );
     expect(projectSwings(input({ flatDamage: 12 })).startingHp).toBe(0);
   });
 

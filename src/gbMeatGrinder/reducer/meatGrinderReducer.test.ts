@@ -96,22 +96,24 @@ describe('influence and charge', () => {
   });
 
   it('keeps the charge row within the active base attacks', () => {
+    const lastBaseRow = 3;
+
     const charging = reduce(
       stateForAttacker(thresher),
       { type: 'charging', value: true },
-      { type: 'chargeAttackIndex', value: 3 },
+      { type: 'chargeAttackIndex', value: lastBaseRow },
     );
 
     const lessInfluence = reduce(charging, { type: 'influence', value: 2 });
 
     // 5 INF: charge (2) + 3 bought = 4 bases. 2 INF: just the charge.
-    expect(charging.chargeAttackIndex).toBe(3);
+    expect(charging.chargeAttackIndex).toBe(lastBaseRow);
     expect(lessInfluence.chargeAttackIndex).toBe(0);
 
     expect(
       reduce(charging, { type: 'chargeAttackIndex', value: 9 })
         .chargeAttackIndex,
-    ).toBe(3);
+    ).toBe(lastBaseRow);
 
     expect(
       reduce(charging, { type: 'chargeAttackIndex', value: -2 })
@@ -221,14 +223,16 @@ describe('damage modifiers', () => {
   });
 
   it('keeps a higher ganging up when a named model engages', () => {
+    const gangingUp = 3;
+
     const three = reduce(stateForAttacker(thresher), {
       type: 'gangingUp',
-      value: 3,
+      value: gangingUp,
     });
 
     const engaged = reduce(three, { type: 'assistEngaged', value: true });
 
-    expect(engaged.gangingUp).toBe(3);
+    expect(engaged.gangingUp).toBe(gangingUp);
   });
 });
 

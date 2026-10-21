@@ -16,12 +16,23 @@ const STANCE = true;
 
 const NO_BONUS_TIME = [false, false];
 
+const TAC = 6;
+const DEF = 4;
+
+/** 6 dice at p = 1/2: 64 equally likely outcomes, 42 with 3+ hits, 57 with 2+. */
+const SIX_DICE_OUTCOMES = 64;
+const THREE_PLUS_HIT_OUTCOMES = 42;
+const TWO_PLUS_HIT_OUTCOMES = 57;
+
+const P_THREE_OF_SIX = THREE_PLUS_HIT_OUTCOMES / SIX_DICE_OUTCOMES;
+const P_TWO_OF_SIX = TWO_PLUS_HIT_OUTCOMES / SIX_DICE_OUTCOMES;
+
 const params: ActivationRollParams = makeRollParams({
-  attacker: makeAttacker({ tac: 6 }),
+  attacker: makeAttacker({ tac: TAC }),
   armor: 1,
   enemyHasCover: !COVER,
   enemyDefensiveStance: !STANCE,
-  enemyDef: 4,
+  enemyDef: DEF,
   bonusTimeByAttack: NO_BONUS_TIME,
 });
 
@@ -46,7 +57,7 @@ describe('computeAttackSequence', () => {
         pHit: 0.5,
         netSuccessesNeeded: 2,
         netHitBonus: 0,
-        prob: 42 / 64,
+        prob: P_THREE_OF_SIX,
       },
       {
         attackIndex: 1,
@@ -58,7 +69,7 @@ describe('computeAttackSequence', () => {
         pHit: 0.5,
         netSuccessesNeeded: 1,
         netHitBonus: 0,
-        prob: 57 / 64,
+        prob: P_TWO_OF_SIX,
       },
     ]);
   });
@@ -71,7 +82,7 @@ describe('computeAttackSequence', () => {
 
     const { attacks } = computeAttackSequence(plan, params);
 
-    expect(attacks.map((attack) => attack.tac)).toEqual([6, 8]);
+    expect(attacks.map((attack) => attack.tac)).toEqual([TAC, TAC + 2]);
   });
 
   it('gives the first swing the net hits Instruction grants', () => {
@@ -82,7 +93,7 @@ describe('computeAttackSequence', () => {
 
     const coached = makeRollParams({
       ...params,
-      attacker: makeAttacker({ tac: 6, guild: TEAMMATE_GUILD }),
+      attacker: makeAttacker({ tac: TAC, guild: TEAMMATE_GUILD }),
       damageMods: modsWith({ buffs: { coach: true } }),
     });
 
@@ -90,7 +101,7 @@ describe('computeAttackSequence', () => {
 
     expect(attacks.map((attack) => attack.netHitBonus)).toEqual([2, 0]);
     expect(attacks[0].prob).toBe(1);
-    expect(attacks[1].prob).toBeCloseTo(42 / 64);
+    expect(attacks[1].prob).toBeCloseTo(P_THREE_OF_SIX);
   });
 });
 
@@ -116,8 +127,11 @@ describe('computeAttackSequence DEF and ARM after each swing', () => {
 
     const { attacks } = computeAttackSequence(plan, params);
 
-    expect(attacks.map((attack) => attack.defMinRoll)).toEqual([4, 3]);
-    expect(attacks.map((attack) => attack.defMinRollAfter)).toEqual([3, 3]);
+    expect(attacks.map((attack) => attack.defMinRoll)).toEqual([DEF, DEF - 1]);
+    expect(attacks.map((attack) => attack.defMinRollAfter)).toEqual([
+      DEF - 1,
+      DEF - 1,
+    ]);
   });
 
   it('shows an ARM play lowering ARM on the swing that picks it', () => {
@@ -151,7 +165,10 @@ describe('computeAttackSequence DEF and ARM after each swing', () => {
 
     const { attacks } = computeAttackSequence(plan, chargingIntoStance);
 
-    expect(attacks.map((attack) => attack.defMinRoll)).toEqual([5, 4]);
-    expect(attacks.map((attack) => attack.defMinRollAfter)).toEqual([5, 4]);
+    expect(attacks.map((attack) => attack.defMinRoll)).toEqual([DEF + 1, DEF]);
+    expect(attacks.map((attack) => attack.defMinRollAfter)).toEqual([
+      DEF + 1,
+      DEF,
+    ]);
   });
 });

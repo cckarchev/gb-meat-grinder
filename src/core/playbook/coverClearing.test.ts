@@ -17,6 +17,13 @@ describe('cover clearing', () => {
   it('keeps a fixed base then Berserker clock for cover', () => {
     const berserker = makeAttacker({ inf: 2, berserker: true });
 
-    expect(coverSwingClockIndices(berserker, 2)).toEqual([0, 2, 1, 3]);
+    const lastBerserkerRow = 3;
+
+    expect(coverSwingClockIndices(berserker, 2)).toEqual([
+      0,
+      2,
+      1,
+      lastBerserkerRow,
+    ]);
   });
 });

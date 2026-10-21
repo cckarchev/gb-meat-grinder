@@ -1,17 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import { clamp, clampToRange } from '@/core/shared/clamp';
 
+const MAX = 5;
+const INSIDE = 3;
+const ABOVE = 9;
+
 describe('clamp', () => {
   it('keeps a value already inside the range', () => {
-    expect(clamp(3, 0, 5)).toBe(3);
+    expect(clamp(INSIDE, 0, MAX)).toBe(INSIDE);
   });
 
   it('raises a value below the range to the minimum', () => {
-    expect(clamp(-2, 0, 5)).toBe(0);
+    expect(clamp(-2, 0, MAX)).toBe(0);
   });
 
   it('lowers a value above the range to the maximum', () => {
-    expect(clamp(9, 0, 5)).toBe(5);
+    expect(clamp(ABOVE, 0, MAX)).toBe(MAX);
   });
 
   it('favors the minimum when the range is inverted', () => {
@@ -20,14 +24,14 @@ describe('clamp', () => {
 });
 
 describe('clampToRange', () => {
-  const range = { min: 0, max: 5 };
+  const range = { min: 0, max: MAX };
 
   it('keeps a value already inside the range', () => {
-    expect(clampToRange(3, range)).toBe(3);
+    expect(clampToRange(INSIDE, range)).toBe(INSIDE);
   });
 
   it('limits a value to the range bounds', () => {
     expect(clampToRange(-2, range)).toBe(0);
-    expect(clampToRange(9, range)).toBe(5);
+    expect(clampToRange(ABOVE, range)).toBe(MAX);
   });
 });

@@ -8,6 +8,9 @@ import {
 } from '@/core/playbook/playbookIndex';
 import { makeAttacker } from '@/core/testing/fixtures';
 
+/** The fixture playbook's widest column. */
+const MAX_NET = 4;
+
 describe('playbookIndex', () => {
   it('indexes every result by id and records the widest column', () => {
     const index = playbookIndex(makeAttacker());
@@ -16,14 +19,14 @@ describe('playbookIndex', () => {
       ['dodge', 'four', 'gb', 'kd', 'one', 'push', 'two'].sort(),
     );
 
-    expect(index.maxNet).toBe(4);
+    expect(index.maxNet).toBe(MAX_NET);
   });
 
   it('caches per attacker object', () => {
     const attacker = makeAttacker();
 
     expect(playbookIndex(attacker)).toBe(playbookIndex(attacker));
-    expect(maxPlaybookNet(attacker)).toBe(4);
+    expect(maxPlaybookNet(attacker)).toBe(MAX_NET);
   });
 });
 
@@ -38,7 +41,9 @@ describe('lookups', () => {
 
   it('resolves results and columns by id', () => {
     expect(getPlaybookResult(attacker, 'two').damage).toBe(2);
-    expect(netSuccessesForChoice(attacker, 'kd')).toBe(3);
+    const kdColumn = 3;
+
+    expect(netSuccessesForChoice(attacker, 'kd')).toBe(kdColumn);
   });
 
   it('throws on unknown playbook ids', () => {
