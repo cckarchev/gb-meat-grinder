@@ -1,4 +1,6 @@
-/** What a character play does to later swings, as numbers and as tooltip text. */
+/**
+ * What a character play does to later swings, as numbers and as tooltip text.
+ */
 
 import { getCharacterPlay } from "@/core/characterPlays/characterPlayLookup";
 import type {
@@ -40,7 +42,10 @@ export const characterPlayPickEffects = (
   };
 };
 
-/** True when this play changes the attack math (so a no-op like Snack Break is false). */
+/**
+ * True when this play changes the attack math (so a no-op like Snack Break is
+ * false).
+ */
 export const characterPlayHasEffect = (play: CharacterPlay): boolean =>
   Boolean(
     play.tacBonusForLater ||
@@ -51,7 +56,9 @@ export const characterPlayHasEffect = (play: CharacterPlay): boolean =>
       play.grantsAssist?.length,
   );
 
-/** Human-readable effect + cadence, used for the selector tooltip / aria-label. */
+/**
+ * Human-readable effect + cadence, used for the selector tooltip / aria-label.
+ */
 export const characterPlayEffectSummary = (play: CharacterPlay): string => {
   const effects: string[] = [];
 

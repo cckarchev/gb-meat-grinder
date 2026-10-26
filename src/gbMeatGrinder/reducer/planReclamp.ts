@@ -1,4 +1,7 @@
-/** State transitions that keep the attack plan legal after a state change or plan edit. */
+/**
+ * State transitions that keep the attack plan legal after a state change or
+ * plan edit.
+ */
 
 import { clampChargeAttackIndex } from "@/core/attacks/attackStructure";
 import type { AttackPlan } from "@/core/plan/attackPlan.types";
@@ -44,7 +47,10 @@ export const withReclampedCharge = (
   return withReclampedPlan(state, { ...patch, chargeAttackIndex });
 };
 
-/** Adopt an edited plan (re-clamped), or keep the state when the edit was a no-op. */
+/**
+ * Adopt an edited plan (re-clamped), or keep the state when the edit was a
+ * no-op.
+ */
 export const applyPlanEdit = (
   state: MeatGrinderState,
   edited: AttackPlan | null,

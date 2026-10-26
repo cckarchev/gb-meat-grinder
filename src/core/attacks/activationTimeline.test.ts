@@ -324,7 +324,7 @@ describe("damaging character plays", () => {
   });
 });
 
-const attacker = makeAttacker({ characterPlays: [PLAY_HALF_HEALTH] });
+const halfHealthAttacker = makeAttacker({ characterPlays: [PLAY_HALF_HEALTH] });
 const fourDamage = 4;
 
 const halfOf = (hp: number): number => Math.floor(hp / 2);
@@ -339,7 +339,7 @@ describe("character plays that deal damage from the target current HP", () => {
     const targetHp = 15;
     const timeline = activationTimeline(
       fourThenHalf,
-      params({ attacker, targetHp }),
+      params({ attacker: halfHealthAttacker, targetHp }),
     );
 
     // 15 - 4 = 11 HP left, half rounded down is 5.
@@ -357,7 +357,7 @@ describe("character plays that deal damage from the target current HP", () => {
 
     const timeline = activationTimeline(
       halfFirst,
-      params({ attacker, targetHp, activeBaseCount: 1 }),
+      params({ attacker: halfHealthAttacker, targetHp, activeBaseCount: 1 }),
     );
 
     expect(timeline[0].playDamageBySlot).toEqual([halfOf(targetHp)]);
@@ -368,13 +368,17 @@ describe("character plays that deal damage from the target current HP", () => {
 
     const toughHide = activationTimeline(
       fourThenHalf,
-      params({ attacker, targetHp, damageMods: modsWith({ toughHide: true }) }),
+      params({
+        attacker: halfHealthAttacker,
+        targetHp,
+        damageMods: modsWith({ toughHide: true }),
+      }),
     );
 
     const sharp = activationTimeline(
       fourThenHalf,
       params({
-        attacker,
+        attacker: halfHealthAttacker,
         targetHp,
         damageMods: modsWith({ buffs: { sharp: true } }),
       }),
@@ -395,28 +399,37 @@ describe("current-HP play damage per slot", () => {
     const targetHp = 3;
     const timeline = activationTimeline(
       fourThenHalf,
-      params({ attacker, targetHp }),
+      params({ attacker: halfHealthAttacker, targetHp }),
     );
 
     expect(timeline[1].playDamageBySlot).toEqual([0]);
   });
 
   it("records the divisor on the slot so the odds can recompute it", () => {
-    const timeline = activationTimeline(fourThenHalf, params({ attacker }));
+    const timeline = activationTimeline(
+      fourThenHalf,
+      params({ attacker: halfHealthAttacker }),
+    );
 
     expect(timeline[0].healthPlayDivisorBySlot).toEqual([0]);
     expect(timeline[1].healthPlayDivisorBySlot).toEqual([2]);
   });
 
   it("recomputes the play damage for any HP left", () => {
-    const timeline = activationTimeline(fourThenHalf, params({ attacker }));
+    const timeline = activationTimeline(
+      fourThenHalf,
+      params({ attacker: halfHealthAttacker }),
+    );
     const hpLeft = 9;
 
     expect(playDamageForHealth(timeline[1], hpLeft)).toEqual([halfOf(hpLeft)]);
   });
 
   it("marks only the slot whose play scales with the HP left", () => {
-    const timeline = activationTimeline(fourThenHalf, params({ attacker }));
+    const timeline = activationTimeline(
+      fourThenHalf,
+      params({ attacker: halfHealthAttacker }),
+    );
 
     expect(slotScalesWithHealth(timeline[0], 0)).toBe(false);
     expect(slotScalesWithHealth(timeline[1], 0)).toBe(true);

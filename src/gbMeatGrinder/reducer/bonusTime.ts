@@ -1,6 +1,7 @@
 /**
- * Bonus Time spends: toggling one and dropping spends the momentum can no longer
- * pay. The spend adds a TAC die, so every flag change re-clamps the plan.
+ * Bonus Time spends: toggling one and dropping spends the momentum can no
+ * longer pay. The spend adds a TAC die, so every flag change re-clamps the
+ * plan.
  */
 
 import {

@@ -17,7 +17,9 @@ export const SHARE_WIRE_VERSION = 1;
 /** A wrap pick or character play id, or an empty slot. */
 export type Slot = string | null;
 
-/** Short keys keep the link short; every field but `v` is optional on decode. */
+/**
+ * Short keys keep the link short; every field but `v` is optional on decode.
+ */
 type ShareWire = {
   v: number;
   /** Enemy DEF, ARM, HP. */
@@ -51,7 +53,9 @@ type ShareWire = {
   p: Slot[][];
 };
 
-/** A partial wire: the compact one written to a link, or whatever a link holds. */
+/**
+ * A partial wire: the compact one written to a link, or whatever a link holds.
+ */
 export type WireFields = Partial<Record<keyof ShareWire, unknown>>;
 
 const activeIds = (flags: Record<string, boolean>): string[] =>
@@ -112,7 +116,10 @@ type WireValue = ShareWire[keyof ShareWire];
 const sameWireValue = (a: unknown, b: unknown): boolean =>
   JSON.stringify(a) === JSON.stringify(b);
 
-/** The part of `value` a decoder starting from `defaultValue` needs, or `undefined`. */
+/**
+ * The part of `value` a decoder starting from `defaultValue` needs, or
+ * `undefined`.
+ */
 const wireDelta = (value: WireValue, defaultValue: WireValue): unknown => {
   if (Array.isArray(value) && Array.isArray(defaultValue)) {
     // Trailing entries that match the defaults index by index are left out.
@@ -145,7 +152,10 @@ const compactWire = (wire: ShareWire, defaults: ShareWire): WireFields => {
   return compact;
 };
 
-/** The model in plain text, plus the encoded choices when any differ from its defaults. */
+/**
+ * The model in plain text, plus the encoded choices when any differ from its
+ * defaults.
+ */
 export const shareParamsOf = (state: MeatGrinderState): URLSearchParams => {
   const defaults = stateForAttacker(attackerOf(state));
   const compact = compactWire(wireOf(state), wireOf(defaults));

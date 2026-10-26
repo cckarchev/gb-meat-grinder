@@ -1,4 +1,7 @@
-/** What earlier swings in the activation leave behind for a later one: cover cleared. */
+/**
+ * What earlier swings in the activation leave behind for a later one: cover
+ * cleared.
+ */
 
 import {
   coverSwingClockIndices,
@@ -9,9 +12,9 @@ import { COVER_TAC_PENALTY } from "@/core/shared/constants";
 import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /**
- * Cover: `COVER_TAC_PENALTY` fewer dice on this attack while the enemy is in terrain.
- * Push (>) or double push (>>) on any **earlier** attack in activation order
- * (base → berserker → …) clears that terrain benefit on later swings.
+ * Cover: `COVER_TAC_PENALTY` fewer dice on this attack while the enemy is in
+ * terrain. Push (>) or double push (>>) on any **earlier** attack in activation
+ * order (base → berserker → …) clears that terrain benefit on later swings.
  */
 export const coverTacPenaltyForAttack = (
   attacker: AttackerData,
@@ -24,8 +27,9 @@ export const coverTacPenaltyForAttack = (
     return 0;
   }
 
-  /* Use fixed base → berserker clock so > / >> are never skipped when a berserker
-   * row is omitted from `activationAttackIndices` (damage-gated). */
+  /* Use fixed base → berserker clock so > / >> are never skipped when a
+     berserker * row is omitted from `activationAttackIndices`
+     (damage-gated). */
   const clock = coverSwingClockIndices(attacker, activeBaseCount);
   const clockPosition = clock.indexOf(attackIndex);
 

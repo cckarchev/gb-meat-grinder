@@ -2,12 +2,14 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "gb-meat-grinder",
   "compatibility_date": "2026-10-19",
-  // Static assets only, no Worker script: unknown paths fall back to index.html.
+  // Static assets only, no Worker script: unknown paths fall back to
+  // index.html.
   "assets": {
     "directory": "./dist/",
     "not_found_handling": "single-page-application"
   },
-  // Branch and pull request builds deploy as Previews of this Worker; they need no settings of their own.
+  // Branch and pull request builds deploy as Previews of this Worker; they need
+  // no settings of their own.
   "previews": {},
   "routes": [
     {

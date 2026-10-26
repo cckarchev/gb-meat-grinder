@@ -1,4 +1,6 @@
-/** Tooltip for a buff the model cannot receive because it is the source of it. */
+/**
+ * Tooltip for a buff the model cannot receive because it is the source of it.
+ */
 export const tooltipExcludedBuff = (
   buffTooltip: string,
   modelName: string,

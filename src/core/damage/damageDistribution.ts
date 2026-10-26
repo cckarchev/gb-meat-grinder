@@ -1,4 +1,7 @@
-/** Discrete damage distributions: one swing's, the sum of several, and their quantiles. */
+/**
+ * Discrete damage distributions: one swing's, the sum of several, and their
+ * quantiles.
+ */
 
 import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
 import type {

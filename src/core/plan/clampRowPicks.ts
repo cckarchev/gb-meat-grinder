@@ -38,7 +38,9 @@ const firstReachableChoiceId = (
   return column?.results[0].id ?? cheapestChoiceId(attacker);
 };
 
-/** Trim or pad the row to exactly `slotCount` slots, plays aligned with picks. */
+/**
+ * Trim or pad the row to exactly `slotCount` slots, plays aligned with picks.
+ */
 const fitRowToSlotCount = (
   row: AttackPlanRow,
   slotCount: number,
@@ -59,9 +61,9 @@ const fitRowToSlotCount = (
 };
 
 /**
- * Keep every pick within its slot budget: an over-budget first pick drops to the
- * best reachable line, an empty first pick empties the wrap, and over-budget
- * later picks are cleared. Mutates `row`.
+ * Keep every pick within its slot budget: an over-budget first pick drops to
+ * the best reachable line, an empty first pick empties the wrap, and
+ * over-budget later picks are cleared. Mutates `row`.
  */
 const fitPicksToBudget = (
   attacker: AttackerData,
@@ -94,7 +96,9 @@ const fitPicksToBudget = (
   }
 };
 
-/** Each play slot holds a play exactly when its pick uses one. Mutates `row`. */
+/**
+ * Each play slot holds a play exactly when its pick uses one. Mutates `row`.
+ */
 const syncCharacterPlays = (
   attacker: AttackerData,
   row: AttackPlanRow,

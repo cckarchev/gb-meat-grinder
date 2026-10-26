@@ -12,7 +12,10 @@ export const EMPTY_VALUE_LABEL = "-";
 export const formatSigned = (value: number): string =>
   value > 0 ? `+${value}` : `${value}`;
 
-/** A probability as a percentage; tiny values show a floor, non-finite ones a dash. */
+/**
+ * A probability as a percentage; tiny values show a floor, non-finite ones a
+ * dash.
+ */
 export const formatPercent = (probability: number, digits = 1): string => {
   if (!Number.isFinite(probability)) {
     return EMPTY_VALUE_LABEL;

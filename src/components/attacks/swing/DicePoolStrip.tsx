@@ -15,7 +15,9 @@ const BONUS_TIME_TOOLTIP = `Bonus Time: +${BONUS_TIME_TAC_BONUS} Dice Pool this 
 export type DicePoolStripProps = {
   attackIndex: number;
   tac: number;
-  /** Show the charge radio for this swing (charging, and not a berserker row). */
+  /**
+   * Show the charge radio for this swing (charging, and not a berserker row).
+   */
   canCharge: boolean;
   isCharge: boolean;
   onCharge: () => void;

@@ -1,4 +1,6 @@
-/** Playbook effects that only apply once per activation: Knock Down and Tackle. */
+/**
+ * Playbook effects that only apply once per activation: Knock Down and Tackle.
+ */
 
 import { picksBeforeInActivation } from "@/core/attacks/attackRows";
 import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";

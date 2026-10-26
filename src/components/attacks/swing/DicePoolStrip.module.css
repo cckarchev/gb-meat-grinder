@@ -19,7 +19,8 @@
   flex: 1 1 auto;
 }
 
-/* Dice pool readout + wrap toggle (wrap lives here so the playbook row can use full width). */
+/* Dice pool readout + wrap toggle (wrap lives here so the playbook row can use
+   full width). */
 .readoutGroup {
   display: flex;
   align-items: center;
@@ -50,7 +51,8 @@
   color: var(--text);
 }
 
-/* Inline pill toggle (charge radio / bonus-time checkbox) inside the dice-pool strip. */
+/* Inline pill toggle (charge radio / bonus-time checkbox) inside the dice-pool
+   strip. */
 .poolToggle {
   display: inline-flex;
   align-items: center;

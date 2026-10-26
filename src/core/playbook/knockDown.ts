@@ -1,4 +1,7 @@
-/** Knock Down only applies once per activation, and never on a target already down. */
+/**
+ * Knock Down only applies once per activation, and never on a target already
+ * down.
+ */
 
 import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
 import type { PickPosition } from "@/core/plan/attackPlan.types";
@@ -10,8 +13,8 @@ import type { PlaybookResult, WrapPick } from "@/core/playbook/playbook.types";
 
 /**
  * True if Knock Down is unavailable for this pick: either the target is already
- * Knocked Down before the activation, or KD was taken on a strictly earlier wrap
- * pick (activation order). Only one KD can ever apply.
+ * Knocked Down before the activation, or KD was taken on a strictly earlier
+ * wrap pick (activation order). Only one KD can ever apply.
  */
 export const knockDownTakenBeforePick = (
   order: ActivationOrderParams,

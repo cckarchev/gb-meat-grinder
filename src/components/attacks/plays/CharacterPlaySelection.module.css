@@ -1,4 +1,5 @@
-/* Groups the character-play picks and separates them from the playbook grid above. */
+/* Groups the character-play picks and separates them from the playbook grid
+   above. */
 .section {
   margin-top: var(--space-md);
   padding-top: var(--space-md);

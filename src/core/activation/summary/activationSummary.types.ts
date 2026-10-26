@@ -9,7 +9,10 @@ export type ActivationSummaryInput = SwingProjectionInput & {
 };
 
 export type ActivationSummary = {
-  /** Swings that actually happen: after any ignored lead through the killing blow. */
+  /**
+   * Swings that actually happen: after any ignored lead through the killing
+   * blow.
+   */
   activeAttacks: AttackRollContext[];
   totalDamageIfAllHit: number;
   netMomentumIfAllHit: number;

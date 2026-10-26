@@ -23,7 +23,10 @@ export const momentousPicksIfAllHit = (
   return momentum;
 };
 
-/** Momentum at the end of the last active swing, plus the killing blow, minus the start. */
+/**
+ * Momentum at the end of the last active swing, plus the killing blow, minus
+ * the start.
+ */
 export const netMomentumIfAllHit = (
   input: ActivationSummaryInput,
   activeAttacks: readonly AttackRollContext[],

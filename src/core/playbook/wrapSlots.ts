@@ -1,4 +1,7 @@
-/** Wrap slot budgets: how many playbook results a roll resolves and what each slot can reach. */
+/**
+ * Wrap slot budgets: how many playbook results a roll resolves and what each
+ * slot can reach.
+ */
 
 import { probAttackSucceeds } from "@/core/damage/probability";
 import type {
@@ -17,7 +20,9 @@ import {
 } from "@/core/shared/constants";
 import type { AttackerData } from "@/data/attackers/attacker.types";
 
-/** How many playbook results this attack can resolve (ceil(maxNet / card cap)). */
+/**
+ * How many playbook results this attack can resolve (ceil(maxNet / card cap)).
+ */
 export const wrapSlotCount = (
   attacker: AttackerData,
   maxNet: number,

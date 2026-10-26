@@ -26,8 +26,8 @@ export const chargeInfluenceCost = (
 
 /**
  * Base (non-Berserker) attacks this activation: the charge (if any), one bought
- * per remaining influence, plus a free Feral attack. Berserkers are derived from
- * these, not counted here.
+ * per remaining influence, plus a free Feral attack. Berserkers are derived
+ * from these, not counted here.
  */
 export const activeBaseAttackCount = (
   attacker: AttackerData,
@@ -45,7 +45,10 @@ export const activeBaseAttackCount = (
   return chargeAttacks + bought + feralAttacks;
 };
 
-/** Keep the chosen charge row on one of the active base attacks (row 0 at least). */
+/**
+ * Keep the chosen charge row on one of the active base attacks (row 0 at
+ * least).
+ */
 export const clampChargeAttackIndex = (
   index: number,
   activeBaseCount: number,
@@ -61,7 +64,10 @@ export const effectiveChargeIndex = (
   chargeAttackIndex: number,
 ): number => (charging ? chargeAttackIndex : NO_ATTACK_INDEX);
 
-/** Whether this row is the charge: the chosen charge row, while still an active base. */
+/**
+ * Whether this row is the charge: the chosen charge row, while still an active
+ * base.
+ */
 export const isChargeSwing = (
   attackIndex: number,
   chargeAttackIndex: number,
@@ -73,9 +79,9 @@ export const isChargeSwing = (
 };
 
 /**
- * Most base attacks the model can ever field (all influence on attacks, plus the
- * free charge/Feral). Fixes the array layout so rows keep stable indices as the
- * allocated influence changes.
+ * Most base attacks the model can ever field (all influence on attacks, plus
+ * the free charge/Feral). Fixes the array layout so rows keep stable indices as
+ * the allocated influence changes.
  */
 export const maxBaseAttackCount = (attacker: AttackerData): number => {
   const furiousAttacks = attacker.furious ? CHARGE_ATTACK_COUNT : 0;
@@ -84,11 +90,16 @@ export const maxBaseAttackCount = (attacker: AttackerData): number => {
   return attacker.inf + furiousAttacks + feralAttacks;
 };
 
-/** Berserker rows live at `maxBaseAttackCount + baseIndex`, so this is the offset. */
+/**
+ * Berserker rows live at `maxBaseAttackCount + baseIndex`, so this is the
+ * offset.
+ */
 export const berserkerRowOffset = (attacker: AttackerData): number =>
   maxBaseAttackCount(attacker);
 
-/** Total rows the attack-plan arrays reserve (bases + one Berserker slot each). */
+/**
+ * Total rows the attack-plan arrays reserve (bases + one Berserker slot each).
+ */
 export const attackArraySize = (attacker: AttackerData): number => {
   const base = maxBaseAttackCount(attacker);
 

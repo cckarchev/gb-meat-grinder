@@ -40,8 +40,8 @@ export const effectiveDefMinRoll = (
 };
 
 /**
- * Enemy DEF cannot be reduced below `DEF_MIN` on the dice (1s always miss). Each
- * point of DEF reduction past that floor, whether from playbook plays
+ * Enemy DEF cannot be reduced below `DEF_MIN` on the dice (1s always miss).
+ * Each point of DEF reduction past that floor, whether from playbook plays
  * (`defReduction`) or from pre-attack conditions already baked into `baseDef`
  * (Knocked Down, Snared), instead becomes +1 attack die. `baseDef` may be below
  * `DEF_MIN` here; the surplus below the floor is the bonus.
@@ -51,7 +51,9 @@ export const tacBonusFromDefReductionCap = (
   defReduction: number,
 ): number => Math.max(0, DEF_MIN - (baseDef - defReduction));
 
-/** Enemy ARM for a swing: the base minus what earlier swings left on the target. */
+/**
+ * Enemy ARM for a swing: the base minus what earlier swings left on the target.
+ */
 export const armorForAttackRow = (
   baseArmor: number,
   state: SwingState,

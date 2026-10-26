@@ -1,4 +1,6 @@
-/** Joins CSS class names into one `className`, skipping missing or empty ones. */
+/**
+ * Joins CSS class names into one `className`, skipping missing or empty ones.
+ */
 export const joinClassNames = (
   ...classNames: Array<string | undefined>
 ): string => {

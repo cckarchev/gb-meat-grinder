@@ -1,4 +1,7 @@
-/** One pass over the activation: what each swing inherits from the swings before it. */
+/**
+ * One pass over the activation: what each swing inherits from the swings before
+ * it.
+ */
 
 import { activeBuffs, attackerTraits } from "@/core/attackers/buffsAndTraits";
 import type {
@@ -68,7 +71,9 @@ export const swingStateDamageMods = (
 ): PlaybookDamageMods =>
   withSwingDamageBonus(damageMods, state.playbookDamageBonus);
 
-/** {@link swingStateDamageMods} for the swing at `attackIndex` in `timeline`. */
+/**
+ * {@link swingStateDamageMods} for the swing at `attackIndex` in `timeline`.
+ */
 export const swingDamageMods = (
   damageMods: PlaybookDamageMods,
   timeline: ActivationTimeline,
@@ -164,7 +169,10 @@ const sumEffects = (
   return { tacBonus, defReduction, armorReduction, damageBonus };
 };
 
-/** +DMG Burning Passion-like traits add to playbook damage against a Burning target. */
+/**
+ * +DMG Burning Passion-like traits add to playbook damage against a Burning
+ * target.
+ */
 const damageBonusVsBurning = (params: TimelineParams): number => {
   const traits = attackerTraits(params.attacker, params.damageMods);
 
@@ -203,7 +211,10 @@ const swingChargeDamageFor = (
   };
 };
 
-/** Damage a swing deals when every pick on it lands: card results, plays and charge. */
+/**
+ * Damage a swing deals when every pick on it lands: card results, plays and
+ * charge.
+ */
 export const swingDamageIfAllHit = (
   attacker: AttackerData,
   damageMods: PlaybookDamageMods,

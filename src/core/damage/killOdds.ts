@@ -62,7 +62,9 @@ const cappedAt = (
   return capped;
 };
 
-/** One swing's damage distribution when the target has `hpLeft` HP before it. */
+/**
+ * One swing's damage distribution when the target has `hpLeft` HP before it.
+ */
 const swingDistributionAt = (
   attacker: AttackerData,
   attack: AttackRollContext,

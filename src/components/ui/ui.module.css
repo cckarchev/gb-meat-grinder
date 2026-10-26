@@ -42,7 +42,8 @@
     composes: tabularMono from "../../styles/mixins.module.css";
   }
 
-  /* Lives beside `.panel` because a CSS module can only select its own classes. */
+  /* Lives beside `.panel` because a CSS module can only select its own
+     classes. */
   .setupPanelsRow {
     display: flex;
     flex-wrap: wrap;

@@ -1,4 +1,7 @@
-/** Before/after pairs for a per-swing stat, so the UI can show what each swing changed. */
+/**
+ * Before/after pairs for a per-swing stat, so the UI can show what each swing
+ * changed.
+ */
 
 export type StatTransition = {
   /** Value before this swing. */

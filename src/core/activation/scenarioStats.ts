@@ -1,4 +1,7 @@
-/** The scenario's effective combat stats, shared by the simulation and the plan clamp. */
+/**
+ * The scenario's effective combat stats, shared by the simulation and the plan
+ * clamp.
+ */
 
 import type {
   ActivationScenario,

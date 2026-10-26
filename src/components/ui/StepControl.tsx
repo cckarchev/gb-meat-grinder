@@ -10,7 +10,9 @@ type StepControlProps = {
   min: number;
   max: number;
   onChange: (next: number) => void;
-  /** What the buttons change, for their labels: `armor` reads "Decrease armor". */
+  /**
+   * What the buttons change, for their labels: `armor` reads "Decrease armor".
+   */
   ariaSubject: string;
   /** Shown inside the value box, e.g. `4+`. Defaults to the plain value. */
   valueLabel?: string;

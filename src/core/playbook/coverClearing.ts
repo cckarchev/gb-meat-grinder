@@ -5,7 +5,9 @@ import type { WrapPick } from "@/core/playbook/playbook.types";
 import { getPlaybookResult } from "@/core/playbook/playbookIndex";
 import type { AttackerData } from "@/data/attackers/attacker.types";
 
-/** True if this pick removes the enemy's cover (a push / double push result). */
+/**
+ * True if this pick removes the enemy's cover (a push / double push result).
+ */
 export const wrapPickClearsCover = (
   attacker: AttackerData,
   id: WrapPick,
@@ -19,7 +21,8 @@ export const wrapPickClearsCover = (
 
 /**
  * Fixed GB swing order for cover: each base then its berserker, regardless of
- * whether the berserker row is “active” for damage (so > / >> are never skipped).
+ * whether the berserker row is “active” for damage (so > / >> are never
+ * skipped).
  */
 export const coverSwingClockIndices = (
   attacker: AttackerData,

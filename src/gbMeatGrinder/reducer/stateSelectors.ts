@@ -1,4 +1,7 @@
-/** Engine inputs derived from the app state: the model, its active bases, the clamp bounds. */
+/**
+ * Engine inputs derived from the app state: the model, its active bases, the
+ * clamp bounds.
+ */
 
 import { scenarioEffectiveStats } from "@/core/activation/scenarioStats";
 import { activeBaseAttackCount } from "@/core/attacks/attackStructure";

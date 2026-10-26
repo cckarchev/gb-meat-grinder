@@ -1,4 +1,7 @@
-/** User edits to the plan: picking a line, clearing a continuation, choosing a play. */
+/**
+ * User edits to the plan: picking a line, clearing a continuation, choosing a
+ * play.
+ */
 
 import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
 import { playSlotForPick } from "@/core/characterPlays/characterPlayLookup";

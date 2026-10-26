@@ -9,7 +9,10 @@ import { shieldGlare, shieldThrow } from "@/data/characterPlays";
 import { burningPassion } from "@/data/characterTraits";
 import { blacksmiths } from "@/data/guilds/blacksmiths";
 
-/** Cast playbook, from the card: `<`/`1`, `2,CP;M`, `T`/`><`, `4;M`, `CP,><`, `6;M`. */
+/**
+ * Cast playbook, from the card: `<`/`1`, `2,CP;M`, `T`/`><`, `4;M`, `CP,><`,
+ * `6;M`.
+ */
 const PLAYBOOK: readonly PlaybookColumn[] = [
   {
     netSuccesses: 1,

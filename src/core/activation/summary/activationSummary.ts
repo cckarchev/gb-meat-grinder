@@ -42,7 +42,10 @@ export const activeSwings = (
   return attacks.slice(start, end);
 };
 
-/** Whether the swing at `displayIndex` is ignored by Resilience or comes after the killing blow. */
+/**
+ * Whether the swing at `displayIndex` is ignored by Resilience or comes after
+ * the killing blow.
+ */
 export const swingIsSkipped = (
   displayIndex: number,
   ignoredDisplayIndex: number,

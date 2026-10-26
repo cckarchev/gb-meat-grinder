@@ -1,4 +1,6 @@
-/** Effects each pick carries into later swings: TAC, DEF and the ARM condition. */
+/**
+ * Effects each pick carries into later swings: TAC, DEF and the ARM condition.
+ */
 
 import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
 import { characterPlayPickEffects } from "@/core/characterPlays/characterPlayEffects";
@@ -76,8 +78,8 @@ export const pickEffectsForLaterSwings = (
 
 /**
  * The name a pick's carried effect goes by, for the "same name does not stack"
- * rule: the play's id when the pick triggers one, the shared Knock Down name for
- * a KD, otherwise the playbook result's id.
+ * rule: the play's id when the pick triggers one, the shared Knock Down name
+ * for a KD, otherwise the playbook result's id.
  */
 export const pickEffectName = (
   attacker: AttackerData,

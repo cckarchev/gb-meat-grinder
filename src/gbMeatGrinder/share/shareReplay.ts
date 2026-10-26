@@ -56,7 +56,9 @@ const readSlot = (value: unknown): Slot =>
 const readGrid = (value: unknown): Slot[][] =>
   readArray(value).map((row) => readArray(row).map(readSlot));
 
-/** The wire's fields, or `null` when the blob is unreadable or another version. */
+/**
+ * The wire's fields, or `null` when the blob is unreadable or another version.
+ */
 const parseWire = (encoded: string): WireFields | null => {
   const json = fromBase64Url(encoded);
 

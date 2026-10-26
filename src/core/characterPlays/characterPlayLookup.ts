@@ -1,4 +1,7 @@
-/** Which character plays an attacker's GB results can trigger, and the default one. */
+/**
+ * Which character plays an attacker's GB results can trigger, and the default
+ * one.
+ */
 
 import type { PickPosition } from "@/core/plan/attackPlan.types";
 import type {
@@ -10,7 +13,10 @@ import type {
 import { choiceUsesCharacterPlay } from "@/core/playbook/playbookIndex";
 import type { AttackerData } from "@/data/attackers/attacker.types";
 
-/** Character plays this attacker's GB / 1GB results can trigger (from the catalog). */
+/**
+ * Character plays this attacker's GB / 1GB results can trigger (from the
+ * catalog).
+ */
 export const characterPlaysForAttacker = (
   attacker: AttackerData,
 ): readonly CharacterPlay[] => attacker.characterPlays ?? [];
@@ -31,7 +37,9 @@ export const defaultCharacterPlayId = (
   attacker: AttackerData,
 ): CharacterPlayPickSlot => characterPlaysForAttacker(attacker)[0]?.id ?? null;
 
-/** The play a pick resolves to: the one in its slot, or the default when empty. */
+/**
+ * The play a pick resolves to: the one in its slot, or the default when empty.
+ */
 export const effectivePlayForPick = (
   attacker: AttackerData,
   characterPlayPicks: CharacterPlayPickSlot[][],
@@ -44,8 +52,8 @@ export const effectivePlayForPick = (
 };
 
 /**
- * The play slot a pick should hold: empty unless the pick uses a play, otherwise
- * the `current` play or, when there is none, the default one.
+ * The play slot a pick should hold: empty unless the pick uses a play,
+ * otherwise the `current` play or, when there is none, the default one.
  */
 export const playSlotForPick = (
   attacker: AttackerData,
@@ -59,7 +67,10 @@ export const playSlotForPick = (
   return current ?? defaultCharacterPlayId(attacker);
 };
 
-/** Play slot a freshly placed pick starts with: the default play, if it uses one. */
+/**
+ * Play slot a freshly placed pick starts with: the default play, if it uses
+ * one.
+ */
 export const initialCharacterPlayFor = (
   attacker: AttackerData,
   id: PlaybookChoiceId,

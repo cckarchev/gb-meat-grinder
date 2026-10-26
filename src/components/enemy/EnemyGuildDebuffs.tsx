@@ -15,7 +15,8 @@ const DEBUFF_COLUMNS = 2;
 /**
  * The attacker's guild debuffs already on the target (e.g. They Ain't Tough!),
  * titled in the guild color because they come from the attacker's guild. A
- * teammate named by the attacker's Assist engaging the target is listed here too.
+ * teammate named by the attacker's Assist engaging the target is listed here
+ * too.
  */
 export const EnemyGuildDebuffs = () => {
   const { attacker, damageMods, dispatch } = useMeatGrinderSimulation();

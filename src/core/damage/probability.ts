@@ -24,7 +24,10 @@ const binomialCoeff = (n: number, k: number): number => {
 export const binomialPmf = (n: number, p: number, k: number): number =>
   binomialCoeff(n, k) * p ** k * (1 - p) ** (n - k);
 
-/** Per-die hit chance: DEF is minimum successful roll (Guild Ball style 2+ … 6+). */
+/**
+ * Per-die hit chance: DEF is minimum successful roll (Guild Ball style 2+ …
+ * 6+).
+ */
 export const hitProbabilityPerDie = (defMinRoll: number): number => {
   const hittingFaces = DIE_FACES + 1 - defMinRoll;
 
@@ -66,7 +69,10 @@ export const probAttackSucceeds = (
   return tail;
 };
 
-/** Max net successes in one roll: all dice hit, subtract ARM, add any gained net hits. */
+/**
+ * Max net successes in one roll: all dice hit, subtract ARM, add any gained net
+ * hits.
+ */
 export const maxNetSuccessesForRoll = (
   tac: number,
   armor: number,

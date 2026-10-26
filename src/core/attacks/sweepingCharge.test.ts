@@ -18,7 +18,9 @@ const CHARGE_ROW = 0;
 const SWEEPING_CHARGE_DAMAGE = 3;
 const SWINGS = 3;
 
-/** A charge plus two bought attacks: 2 influence for the charge, 2 for attacks. */
+/**
+ * A charge plus two bought attacks: 2 influence for the charge, 2 for attacks.
+ */
 const INFLUENCE = 4;
 
 const sweeper = makeAttacker({

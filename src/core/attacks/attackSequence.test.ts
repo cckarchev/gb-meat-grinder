@@ -19,7 +19,9 @@ const NO_BONUS_TIME = [false, false];
 const TAC = 6;
 const DEF = 4;
 
-/** 6 dice at p = 1/2: 64 equally likely outcomes, 42 with 3+ hits, 57 with 2+. */
+/**
+ * 6 dice at p = 1/2: 64 equally likely outcomes, 42 with 3+ hits, 57 with 2+.
+ */
 const SIX_DICE_OUTCOMES = 64;
 const THREE_PLUS_HIT_OUTCOMES = 42;
 const TWO_PLUS_HIT_OUTCOMES = 57;

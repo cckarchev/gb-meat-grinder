@@ -17,7 +17,9 @@ import { dataFlag } from "@/styles/dataFlag";
 
 const CORNER_BRACKET_SIZE = 16;
 
-/** Kinds that stand out from a plain swing; their colors live in the CSS module. */
+/**
+ * Kinds that stand out from a plain swing; their colors live in the CSS module.
+ */
 const ACCENTED_KINDS: ReadonlySet<AttackKind> = new Set([
   "charge",
   "berserker",
@@ -26,7 +28,10 @@ const ACCENTED_KINDS: ReadonlySet<AttackKind> = new Set([
 /** Set by the CSS module on accented attack blocks, which wrap the brackets. */
 const KIND_ACCENT_COLOR = "var(--kind-accent)";
 
-/** Per-swing values only `AttacksPanel` knows; shared plan state comes from context. */
+/**
+ * Per-swing values only `AttacksPanel` knows; shared plan state comes from
+ * context.
+ */
 type AttackSwingRowProps = {
   attack: AttackRollContext;
   displayIndex: number;

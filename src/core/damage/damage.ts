@@ -43,7 +43,10 @@ export const activeTraitFlatDamage = (
   return sumOf(activated, (trait) => trait.flatDamage);
 };
 
-/** Unmodified DMG the attacker's traits add to a charge that picks a damage result. */
+/**
+ * Unmodified DMG the attacker's traits add to a charge that picks a damage
+ * result.
+ */
 export const chargeTraitDamage = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
@@ -87,7 +90,10 @@ const playDamageBonusSum = (
   return sumOf(buffs, (buff) => buff.damageBonus);
 };
 
-/** True if a selected buff turns playbook damage into Tough-Hide-ignoring Condition Damage. */
+/**
+ * True if a selected buff turns playbook damage into Tough-Hide-ignoring
+ * Condition Damage.
+ */
 const buffsIgnoreToughHide = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,

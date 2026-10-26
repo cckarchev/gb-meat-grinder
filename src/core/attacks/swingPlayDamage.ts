@@ -1,4 +1,7 @@
-/** Damage a swing's character plays deal, including plays scaled by the target's current HP. */
+/**
+ * Damage a swing's character plays deal, including plays scaled by the target's
+ * current HP.
+ */
 
 import type {
   SwingState,
@@ -9,16 +12,19 @@ import {
   getCharacterPlay,
 } from "@/core/characterPlays/characterPlayLookup";
 import { effectivePlayDamage } from "@/core/damage/damage";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
-import type { CharacterPlay } from "@/core/playbook/playbook.types";
+import type { AttackPlan, PickPosition } from "@/core/plan/attackPlan.types";
+import type { CharacterPlay, WrapPick } from "@/core/playbook/playbook.types";
 import { choiceUsesCharacterPlay } from "@/core/playbook/playbookIndex";
 import { sumOf } from "@/core/shared/sumOf";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 
 /** Total play damage a swing deals when every pick on it lands. */
 export const swingPlayDamage = (state: SwingState): number =>
   sumOf(state.playDamageBySlot, (damage) => damage);
 
-/** Condition damage of a play that deals the target's current HP over `divisor`. */
+/**
+ * Condition damage of a play that deals the target's current HP over `divisor`.
+ */
 const currentHealthDamage = (hpLeft: number, divisor: number): number => {
   const remaining = Math.max(0, hpLeft);
 
@@ -43,11 +49,16 @@ export const playDamageForHealth = (
     return currentHealthDamage(hpLeft, divisor);
   });
 
-/** Whether any of a swing's plays deals damage scaled by the target's current HP. */
+/**
+ * Whether any of a swing's plays deals damage scaled by the target's current
+ * HP.
+ */
 export const swingHasHealthPlay = (state: SwingState): boolean =>
   state.healthPlayDivisorBySlot.some((divisor) => divisor > 0);
 
-/** Whether the play in this slot deals damage scaled by the target's current HP. */
+/**
+ * Whether the play in this slot deals damage scaled by the target's current HP.
+ */
 export const slotScalesWithHealth = (
   state: SwingState,
   slot: number,
@@ -62,20 +73,22 @@ type SwingPlayDamage = Pick<
   "damagingPlayBySlot" | "playDamageBySlot" | "healthPlayDivisorBySlot"
 >;
 
-type WrapPick = AttackPlan["wrapPicks"][number][number];
-
 /** The play a pick triggers, when it is one that deals damage. */
 const damagingPlayForPick = (
-  attacker: TimelineParams["attacker"],
+  attacker: AttackerData,
   plan: AttackPlan,
-  slot: { attackIndex: number; pickIndex: number },
+  position: PickPosition,
   id: WrapPick,
 ): CharacterPlay | null => {
   if (id == null || !choiceUsesCharacterPlay(attacker, id)) {
     return null;
   }
 
-  const playId = effectivePlayForPick(attacker, plan.characterPlayPicks, slot);
+  const playId = effectivePlayForPick(
+    attacker,
+    plan.characterPlayPicks,
+    position,
+  );
   const play = getCharacterPlay(attacker, playId);
 
   if (play == null) {

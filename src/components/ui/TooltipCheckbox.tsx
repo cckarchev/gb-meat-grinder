@@ -10,7 +10,10 @@ type TooltipCheckboxProps = {
   onChange: (checked: boolean) => void;
   tooltip: string;
   disabled?: boolean;
-  /** Extra class for the row, to fit it into another layout (e.g. an inline strip). */
+  /**
+   * Extra class for the row, to fit it into another layout (e.g. an inline
+   * strip).
+   */
   className?: string;
   children: ReactNode;
 };

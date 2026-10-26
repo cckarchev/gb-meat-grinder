@@ -14,7 +14,10 @@ type WrapContinuationToggleProps = {
   onClick: () => void;
 };
 
-/** Opens / closes extra wrap slots (shown beside the pool readout in the dice pool strip). */
+/**
+ * Opens / closes extra wrap slots (shown beside the pool readout in the dice
+ * pool strip).
+ */
 export const WrapContinuationToggle = ({
   attackIndex,
   wrapOpen,

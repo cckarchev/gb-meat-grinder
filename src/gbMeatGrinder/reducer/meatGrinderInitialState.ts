@@ -6,7 +6,9 @@ import type { AttackerData } from "@/data/attackers/attacker.types";
 import { randomAttacker } from "@/data/attackers/registry";
 import type { MeatGrinderState } from "@/gbMeatGrinder/reducer/reducer.types";
 
-/** Fresh attacker-side state for a model, preserving enemy stats from `prev`. */
+/**
+ * Fresh attacker-side state for a model, preserving enemy stats from `prev`.
+ */
 export const stateForAttacker = (
   attacker: AttackerData,
   prev?: MeatGrinderState,

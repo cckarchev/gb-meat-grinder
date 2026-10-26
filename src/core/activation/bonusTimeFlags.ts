@@ -12,7 +12,10 @@ const EXTRA_SETTLE_PASSES = 2;
 export const canAffordBonusTime = (pool: number): boolean =>
   pool >= BONUS_TIME_MOMENTUM_COST;
 
-/** Clears Bonus Time flags that can no longer be paid (pool below `BONUS_TIME_MOMENTUM_COST` before that swing). */
+/**
+ * Clears Bonus Time flags that can no longer be paid (pool below
+ * `BONUS_TIME_MOMENTUM_COST` before that swing).
+ */
 export const sanitizeBonusTimeFlags = (params: MomentumParams): boolean[] => {
   const order = activationAttackIndices(params, params.wrapPicks);
 

@@ -1,12 +1,13 @@
 /**
  * Resilience: a target trait that wholly ignores the activation's first attack.
  *
- * Rather than thread "is this swing ignored?" through every carry-over function,
- * we model it by handing the engine an *effective* copy of the plan where the
- * ignored swing's row is blanked. Every downstream calculation already reads its
- * inputs from these rows (damage, momentum, TAC/DEF/ARM carry-over, cover
- * clearing, the single Knock Down, Berserker triggers, character plays), so a
- * blank row makes the swing contribute nothing and carry nothing forward.
+ * Rather than thread "is this swing ignored?" through every carry-over
+ * function, we model it by handing the engine an *effective* copy of the plan
+ * where the ignored swing's row is blanked. Every downstream calculation
+ * already reads its inputs from these rows (damage, momentum, TAC/DEF/ARM
+ * carry-over, cover clearing, the single Knock Down, Berserker triggers,
+ * character plays), so a blank row makes the swing contribute nothing and carry
+ * nothing forward.
  */
 
 import { activationAttackIndices } from "@/core/attacks/attackRows";
@@ -37,7 +38,10 @@ export const resilienceIgnoredAttackIndex = (
   return attackIndices.length > 0 ? attackIndices[0] : NO_ATTACK_INDEX;
 };
 
-/** Rows with the ignored swing's row blanked (the same rows when none is ignored). */
+/**
+ * Rows with the ignored swing's row blanked (the same rows when none is
+ * ignored).
+ */
 const withIgnoredRowBlanked = <T>(
   rows: (T | null)[][],
   ignoredIndex: number,
@@ -57,7 +61,10 @@ export const effectiveWrapPicksForResilience = (
   ignoredIndex: number,
 ): WrapPick[][] => withIgnoredRowBlanked(wrapPicks, ignoredIndex);
 
-/** Character-play picks with the ignored swing's row blanked (unchanged when none). */
+/**
+ * Character-play picks with the ignored swing's row blanked (unchanged when
+ * none).
+ */
 export const effectiveCharacterPlayPicksForResilience = (
   characterPlayPicks: CharacterPlayPickSlot[][],
   ignoredIndex: number,

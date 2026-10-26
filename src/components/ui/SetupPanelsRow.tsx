@@ -5,7 +5,10 @@ type SetupPanelsRowProps = {
   children: ReactNode;
 };
 
-/** Side-by-side row for the attacker and enemy panels, wrapping on narrow screens. */
+/**
+ * Side-by-side row for the attacker and enemy panels, wrapping on narrow
+ * screens.
+ */
 export const SetupPanelsRow = ({ children }: SetupPanelsRowProps) => (
   <div className={styles.setupPanelsRow}>{children}</div>
 );

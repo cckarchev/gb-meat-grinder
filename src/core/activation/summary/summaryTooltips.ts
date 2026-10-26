@@ -35,7 +35,9 @@ export const netMomentumTooltip = (
   return `${tooltip}.`;
 };
 
-/** Itemizes the damage of `activeAttacks`, the swings through the killing blow. */
+/**
+ * Itemizes the damage of `activeAttacks`, the swings through the killing blow.
+ */
 export const damageDealtTooltip = (
   input: ActivationSummaryInput,
   activeAttacks: readonly AttackRollContext[],

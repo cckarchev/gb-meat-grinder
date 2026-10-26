@@ -1,6 +1,7 @@
 .wrapSlotBlock {
   overflow-x: auto;
-  /* Keep vertical overflow clipped (no phantom scrollbar with overflow-x: auto). */
+  /* Keep vertical overflow clipped (no phantom scrollbar with overflow-x:
+     auto). */
   overflow-y: hidden;
 }
 

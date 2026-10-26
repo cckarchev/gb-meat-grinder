@@ -38,7 +38,10 @@ export const snackBreak: CharacterPlay = {
   oncePerTurn: true,
 };
 
-/** Cast's Shield Glare: -1 TAC and -1 DEF; only the -1 DEF matters to her attack. */
+/**
+ * Cast's Shield Glare: -1 TAC and -1 DEF; only the -1 DEF matters to her
+ * attack.
+ */
 export const shieldGlare: CharacterPlay = {
   id: "shieldGlare",
   label: "Shield Glare",
@@ -74,7 +77,10 @@ export const theBiggerTheyAre: CharacterPlay = {
   oncePerTurn: true,
 };
 
-/** Bucker's Hoisting and Hauling: moves a log pile marker, no effect on the attack math. */
+/**
+ * Bucker's Hoisting and Hauling: moves a log pile marker, no effect on the
+ * attack math.
+ */
 export const hoistingAndHauling: CharacterPlay = {
   id: "hoistingAndHauling",
   label: "Hoisting and Hauling",

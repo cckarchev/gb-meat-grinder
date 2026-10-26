@@ -14,7 +14,9 @@ import {
 } from "@/core/plan/clampOncePerActivation";
 import { gridEqual } from "@/core/shared/gridEqual";
 
-/** Safety cap for the clamp fixpoint loop; real plans settle in a few passes. */
+/**
+ * Safety cap for the clamp fixpoint loop; real plans settle in a few passes.
+ */
 const MAX_CLAMP_PASSES = 30;
 
 const clonePlan = (plan: AttackPlan): AttackPlan => ({
@@ -22,7 +24,9 @@ const clonePlan = (plan: AttackPlan): AttackPlan => ({
   characterPlayPicks: plan.characterPlayPicks.map((row) => [...row]),
 });
 
-/** Re-check play picks that depend on earlier GB / 1GB choices. Mutates `draft`. */
+/**
+ * Re-check play picks that depend on earlier GB / 1GB choices. Mutates `draft`.
+ */
 const sanitizeCharacterPlays = (
   draft: AttackPlan,
   params: AttackPlanClampParams,
@@ -38,7 +42,9 @@ const sanitizeCharacterPlays = (
   return true;
 };
 
-/** One full pass: every row, then the KD and Tackle rules, then the play picks. */
+/**
+ * One full pass: every row, then the KD and Tackle rules, then the play picks.
+ */
 const clampPass = (
   draft: AttackPlan,
   params: AttackPlanClampParams,
@@ -69,9 +75,9 @@ const clampPass = (
 /**
  * Keeps each attack's wrap within TAC - ARM: drop tail picks until valid, then
  * sanitize character-play picks after GB / 1GB. Inactive rows (base rows beyond
- * the allocated influence, or damage-less berserkers) are emptied. Repeats until
- * a pass changes nothing, since fixing one row can shift what later rows reach.
- * Returns `plan` itself when it was already legal.
+ * the allocated influence, or damage-less berserkers) are emptied. Repeats
+ * until a pass changes nothing, since fixing one row can shift what later rows
+ * reach. Returns `plan` itself when it was already legal.
  */
 export const clampAttackPlan = (
   plan: AttackPlan,

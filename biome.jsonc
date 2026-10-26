@@ -11,7 +11,8 @@
           "level": "error",
           "options": {
             "hooks": [
-              // The context passes on useReducer's dispatch, whose identity never changes.
+              // The context passes on useReducer's dispatch, whose identity
+              // never changes.
               {
                 "name": "useMeatGrinderSimulation",
                 "stableResult": ["dispatch"]

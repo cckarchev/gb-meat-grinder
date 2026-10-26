@@ -23,7 +23,10 @@ export type PickPosition = {
   pickIndex: number;
 };
 
-/** A playbook line chosen (or cleared, with `null`) for one wrap slot of one attack. */
+/**
+ * A playbook line chosen (or cleared, with `null`) for one wrap slot of one
+ * attack.
+ */
 export type WrapChoiceEdit = PickPosition & {
   id: PlaybookChoiceId | null;
 };

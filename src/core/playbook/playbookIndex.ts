@@ -13,7 +13,10 @@ import type { AttackerData } from "@/data/attackers/attacker.types";
 
 type PlaybookIndex = {
   byId: Map<PlaybookChoiceId, PlaybookResult>;
-  /** Largest column cost on the card; wrap reserves this much net per “full” step. */
+  /**
+   * Largest column cost on the card; wrap reserves this much net per “full”
+   * step.
+   */
   maxNet: number;
 };
 
@@ -53,7 +56,9 @@ export const playbookIndex = (attacker: AttackerData): PlaybookIndex => {
 export const maxPlaybookNet = (attacker: AttackerData): number =>
   playbookIndex(attacker).maxNet;
 
-/** First line of the first playbook column: the fallback when nothing else fits. */
+/**
+ * First line of the first playbook column: the fallback when nothing else fits.
+ */
 export const cheapestChoiceId = (attacker: AttackerData): PlaybookChoiceId =>
   attacker.playbook[0].results[0].id;
 

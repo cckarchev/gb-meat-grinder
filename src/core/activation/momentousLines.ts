@@ -12,7 +12,10 @@ import { getPlaybookResult } from "@/core/playbook/playbookIndex";
 import { MOMENTOUS_PICK_MOMENTUM } from "@/core/shared/constants";
 import type { AttackerData } from "@/data/attackers/attacker.types";
 
-/** True if a selected buff makes every playbook damage result momentous (Maximum Effort). */
+/**
+ * True if a selected buff makes every playbook damage result momentous (Maximum
+ * Effort).
+ */
 const buffsMakeDamageMomentous = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,

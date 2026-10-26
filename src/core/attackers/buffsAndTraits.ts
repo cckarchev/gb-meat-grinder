@@ -1,11 +1,15 @@
-/** Which guild buffs and character traits apply to a model, given the toggles. */
+/**
+ * Which guild buffs and character traits apply to a model, given the toggles.
+ */
 
 import type { PlaybookDamageMods } from "@/core/playbook/playbook.types";
 import type { AttackerData } from "@/data/attackers/attacker.types";
 import type { CharacterTrait } from "@/data/characterTraits";
 import type { GuildBuff, GuildBuffTarget } from "@/data/guilds/guild.types";
 
-/** Whether the model cannot receive this guild buff (it is the source of it). */
+/**
+ * Whether the model cannot receive this guild buff (it is the source of it).
+ */
 export const guildBuffIsExcluded = (
   attacker: AttackerData,
   buffId: string,
@@ -17,7 +21,10 @@ export const guildBuffIsExcluded = (
 
 const DEFAULT_GUILD_BUFF_TARGET: GuildBuffTarget = "attacker";
 
-/** The guild's effects on one side, excluded ones included (the UI disables those). */
+/**
+ * The guild's effects on one side, excluded ones included (the UI disables
+ * those).
+ */
 export const guildBuffsFor = (
   attacker: AttackerData,
   target: GuildBuffTarget,
@@ -58,7 +65,10 @@ export const activatedTraits = (
 
 const TRAIT_LABEL_SEPARATOR = " + ";
 
-/** Several traits named on one breakdown line (e.g. `Searing Strike + Sweeping Charge`). */
+/**
+ * Several traits named on one breakdown line (e.g. `Searing Strike + Sweeping
+ * Charge`).
+ */
 export const joinTraitLabels = (traits: readonly CharacterTrait[]): string =>
   traits.map((trait) => trait.label).join(TRAIT_LABEL_SEPARATOR);
 

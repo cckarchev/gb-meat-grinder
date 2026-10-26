@@ -3,7 +3,10 @@
 import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
 import { characterPlayAvailabilityForPick } from "@/core/characterPlays/characterPlayUsage";
 import type { AttackPlan } from "@/core/plan/attackPlan.types";
-import type { CharacterPlayPickSlot } from "@/core/playbook/playbook.types";
+import type {
+  CharacterPlayPickSlot,
+  WrapPick,
+} from "@/core/playbook/playbook.types";
 import { choiceUsesCharacterPlay } from "@/core/playbook/playbookIndex";
 
 /**
@@ -12,7 +15,7 @@ import { choiceUsesCharacterPlay } from "@/core/playbook/playbookIndex";
  */
 const repairSlot = (
   order: ActivationOrderParams,
-  wrapPicks: AttackPlan["wrapPicks"],
+  wrapPicks: WrapPick[][],
   next: CharacterPlayPickSlot[][],
   attackIndex: number,
   slot: number,

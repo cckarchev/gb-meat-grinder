@@ -7,7 +7,9 @@ import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulati
 import { dataFlag } from "@/styles/dataFlag";
 import { guildColorStyle } from "@/styles/guildColorStyle";
 
-/** Why a line cannot be picked: its once-per-activation effect is already used. */
+/**
+ * Why a line cannot be picked: its once-per-activation effect is already used.
+ */
 export type PlaybookLineLock = "knockDown" | "tackle";
 
 const LOCKED_TITLES: Record<PlaybookLineLock, string> = {

@@ -26,6 +26,7 @@ import {
   effectiveDamageForChoice,
   effectiveEnemyDef,
 } from "@/core/damage/damage";
+import type { ActivationDamageOutcome } from "@/core/damage/damage.types";
 import { damageQuantile } from "@/core/damage/damageDistribution";
 import { planDamageOutcome } from "@/core/damage/killOdds";
 import { damageModifierBreakdown } from "@/core/damage/rowDamage";
@@ -377,10 +378,8 @@ const scenarioActivation = (
   };
 };
 
-type DamageOutcome = ReturnType<typeof planDamageOutcome>;
-
 /** The odds of a plan, rounded so the snapshot is stable. */
-const outcomeSnapshot = (outcome: DamageOutcome) => {
+const outcomeSnapshot = (outcome: ActivationDamageOutcome) => {
   const sortedDistribution = [...outcome.damageDistribution].sort(
     ([a], [b]) => a - b,
   );

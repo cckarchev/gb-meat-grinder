@@ -1,4 +1,7 @@
-/** Once Per Turn bookkeeping: which plays earlier picks used up and which remain. */
+/**
+ * Once Per Turn bookkeeping: which plays earlier picks used up and which
+ * remain.
+ */
 
 import { picksBeforeInActivation } from "@/core/attacks/attackRows";
 import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
@@ -42,7 +45,8 @@ export const characterPlayUsageBeforePick = (
     );
 
     // Plays that are not Once Per Turn may be picked again, so they never count
-    // as used up. Their effect still applies once (same name, see the timeline).
+    // as used up. Their effect still applies once (same name, see the
+    // timeline).
     const oncePerTurn = getCharacterPlay(attacker, play)?.oncePerTurn === true;
 
     if (play != null && oncePerTurn) {
@@ -60,7 +64,10 @@ const unusedCharacterPlays = (
 ): CharacterPlay[] =>
   characterPlaysForAttacker(attacker).filter((play) => !used.has(play.id));
 
-/** Character plays still choosable on this pick (those not used by earlier picks). */
+/**
+ * Character plays still choosable on this pick (those not used by earlier
+ * picks).
+ */
 export const characterPlayAvailabilityForPick = (
   order: ActivationOrderParams,
   plan: AttackPlan,

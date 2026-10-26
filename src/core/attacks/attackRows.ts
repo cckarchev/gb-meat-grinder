@@ -11,7 +11,9 @@ import type {
 } from "@/core/playbook/playbook.types";
 import type { AttackerData } from "@/data/attackers/attacker.types";
 
-/** Rows below the berserker offset are base attacks; at/above it are berserkers. */
+/**
+ * Rows below the berserker offset are base attacks; at/above it are berserkers.
+ */
 export const attackRowIsBerserker = (
   attacker: AttackerData,
   attackIndex: number,
@@ -22,7 +24,10 @@ export const berserkerSourceBaseIndex = (
   attackIndex: number,
 ): number => attackIndex - berserkerRowOffset(attacker);
 
-/** True if this base attack includes any non-null wrap line with modified playbook damage > 0. */
+/**
+ * True if this base attack includes any non-null wrap line with modified
+ * playbook damage > 0.
+ */
 export const basePicksDealDamage = (
   attacker: AttackerData,
   picks: WrapPick[],
@@ -68,8 +73,9 @@ export const attackRowIsActive = (
 };
 
 /**
- * Swing order: each active base, then its berserker (if any) before the next base.
- * Berserkers cannot be banked; they always resolve immediately after the base that earned them.
+ * Swing order: each active base, then its berserker (if any) before the next
+ * base. Berserkers cannot be banked; they always resolve immediately after the
+ * base that earned them.
  */
 export const activationAttackIndices = (
   order: ActivationOrderParams,
@@ -103,9 +109,9 @@ type PlacedPick = PickPosition & {
 
 /**
  * Every non-empty pick strictly before `(attackIndex, pickIndex)` in activation
- * order: all picks of earlier swings, then this swing's picks before `pickIndex`.
- * Pass `pickIndex` 0 for just the earlier swings. Empty when the swing is not
- * part of the activation.
+ * order: all picks of earlier swings, then this swing's picks before
+ * `pickIndex`. Pass `pickIndex` 0 for just the earlier swings. Empty when the
+ * swing is not part of the activation.
  */
 export const picksBeforeInActivation = (
   order: ActivationOrderParams,

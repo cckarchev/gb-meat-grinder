@@ -93,7 +93,9 @@ export const TEST_GUILD: Guild = {
   ],
 };
 
-/** A guild with condition-driven buffs: Tempered Steel-like and Searing Strike. */
+/**
+ * A guild with condition-driven buffs: Tempered Steel-like and Searing Strike.
+ */
 export const CONDITION_GUILD: Guild = {
   id: "conditioners",
   name: "Conditioners",
@@ -199,7 +201,9 @@ export const PLAY_DAMAGE: CharacterPlay = {
   oncePerTurn: true,
 };
 
-/** Condition damage of half the target's current HP, like The Bigger They Are... */
+/**
+ * Condition damage of half the target's current HP, like The Bigger They Are...
+ */
 export const PLAY_HALF_HEALTH: CharacterPlay = {
   id: "playHalfHealth",
   label: "Play Half Health",
@@ -249,7 +253,10 @@ export const modsWith = (
   overrides: Partial<PlaybookDamageMods>,
 ): PlaybookDamageMods => ({ ...NO_MODS, ...overrides });
 
-/** What decides the swing order for `attacker`, with no damage mods unless given. */
+/**
+ * What decides the swing order for `attacker`, with no damage mods unless
+ * given.
+ */
 export const orderFor = (
   attacker: AttackerData,
   activeBaseCount: number,
@@ -262,7 +269,9 @@ export const NO_SWING_EXTRAS: SwingDamageExtras = {
   chargeTraitDamage: 0,
 };
 
-/** A plan from its wrap picks; without `plays`, no slot picks a character play. */
+/**
+ * A plan from its wrap picks; without `plays`, no slot picks a character play.
+ */
 export const planOf = (
   rows: WrapPick[][],
   plays?: CharacterPlayPickSlot[][],
@@ -286,7 +295,8 @@ const NEUTRAL_BASE_COUNT = 2;
 
 /**
  * Roll params with nothing in play: no charge, cover, stance, mods, Bonus Time
- * or TAC modifier, ARM 0 and the default DEF. Tests override what they exercise.
+ * or TAC modifier, ARM 0 and the default DEF. Tests override what they
+ * exercise.
  */
 export const makeRollParams = (
   overrides: Partial<ActivationRollParams> = {},
@@ -335,7 +345,9 @@ export const makeRollContext = (
   };
 };
 
-/** A passive trait with flat damage that must never count as activated damage. */
+/**
+ * A passive trait with flat damage that must never count as activated damage.
+ */
 export const PASSIVE_TRAIT: CharacterTrait = {
   id: "passive",
   label: "Passive",

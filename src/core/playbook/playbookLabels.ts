@@ -50,7 +50,9 @@ export const playbookLineDisplaySegments = (
   return label.match(/\d+|[<>]+|[A-Za-z]+/g) ?? [label];
 };
 
-/** Selected playbook lines on one attack row, for summaries (e.g. `> → 2 → GB`). */
+/**
+ * Selected playbook lines on one attack row, for summaries (e.g. `> → 2 → GB`).
+ */
 export const formatWrapRowSelectionLabel = (
   attacker: AttackerData,
   picks: readonly WrapPick[],

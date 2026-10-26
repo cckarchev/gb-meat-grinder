@@ -10,7 +10,10 @@ const TARGET_HP = 18;
 const FIRST_SWING_DAMAGE = 6;
 const NO_CHARACTER_PLAY = null;
 
-/** Cross Cut's two base attacks: a `6`, then the double GB into The Bigger They Are... */
+/**
+ * Cross Cut's two base attacks: a `6`, then the double GB into The Bigger They
+ * Are...
+ */
 const sixThenBiggerTheyAre = () => {
   const rows = attackArraySize(crossCut);
 

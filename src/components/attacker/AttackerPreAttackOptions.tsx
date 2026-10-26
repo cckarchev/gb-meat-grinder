@@ -17,7 +17,9 @@ import {
 } from "@/core/attackers/buffsAndTraits";
 import { useMeatGrinderSimulation } from "@/gbMeatGrinder/useMeatGrinderSimulation";
 
-/** Charging, then guild buffs and activated traits under guild-colored titles. */
+/**
+ * Charging, then guild buffs and activated traits under guild-colored titles.
+ */
 export const AttackerPreAttackOptions = () => {
   const { attacker, charging, activeTraits, dispatch } =
     useMeatGrinderSimulation();

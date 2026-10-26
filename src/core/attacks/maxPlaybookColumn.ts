@@ -1,4 +1,7 @@
-/** Highest playbook column a swing can reach, from its TAC, the enemy ARM and any gained net hits. */
+/**
+ * Highest playbook column a swing can reach, from its TAC, the enemy ARM and
+ * any gained net hits.
+ */
 
 import {
   activationTimeline,

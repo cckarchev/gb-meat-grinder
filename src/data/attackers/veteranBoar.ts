@@ -9,8 +9,9 @@ import { singledOut, stagger } from "@/data/characterPlays";
 import { butchers } from "@/data/guilds/butchers";
 
 /**
- * Veteran Boar playbook: columns in card order. Each column needs `netSuccesses`
- * after ARM; `results` has 1–2 lines (a `|` on the card = two entries here).
+ * Veteran Boar playbook: columns in card order. Each column needs
+ * `netSuccesses` after ARM; `results` has 1–2 lines (a `|` on the card = two
+ * entries here).
  */
 const PLAYBOOK: readonly PlaybookColumn[] = [
   {

@@ -1,7 +1,7 @@
 /**
  * Shared catalog of character traits. Like character plays, many models across
- * guilds share the same trait (e.g. Searing Strike, Sweeping Charge), so each is
- * defined once here and models list the ones their card has. A trait's id is
+ * guilds share the same trait (e.g. Searing Strike, Sweeping Charge), so each
+ * is defined once here and models list the ones their card has. A trait's id is
  * also its effect's name for the "same name does not stack" rule.
  */
 
@@ -13,13 +13,25 @@ export type CharacterTrait = {
   active?: boolean;
   /** Unmodified DMG dealt when an active trait is activated. */
   flatDamage?: number;
-  /** -ARM on the enemy during every attack from this model (Anatomical Precision). */
+  /**
+   * -ARM on the enemy during every attack from this model (Anatomical
+   * Precision).
+   */
   armorReduction?: number;
-  /** What a target damaged by this model suffers for the later swings (Searing Strike). */
+  /**
+   * What a target damaged by this model suffers for the later swings (Searing
+   * Strike).
+   */
   onDamage?: { armorReduction?: number; burning?: boolean };
-  /** +DMG to playbook damage results while the target is Burning (Burning Passion). */
+  /**
+   * +DMG to playbook damage results while the target is Burning (Burning
+   * Passion).
+   */
   playbookDamageVsBurning?: number;
-  /** Unmodified DMG added to the charge attack when it picks a playbook damage result (Sweeping Charge). */
+  /**
+   * Unmodified DMG added to the charge attack when it picks a playbook damage
+   * result (Sweeping Charge).
+   */
   chargeDamage?: number;
 };
 
@@ -61,7 +73,10 @@ export const sweepingCharge: CharacterTrait = {
   chargeDamage: 3,
 };
 
-/** Bucker's Anatomical Precision: the target suffers -1 ARM during each of his attacks. */
+/**
+ * Bucker's Anatomical Precision: the target suffers -1 ARM during each of his
+ * attacks.
+ */
 export const anatomicalPrecision: CharacterTrait = {
   id: "anatomicalPrecision",
   label: "Anatomical Precision",

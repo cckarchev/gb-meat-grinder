@@ -3,7 +3,9 @@ import type { CSSProperties } from "react";
 /** Stroke width of each bracket, in px. */
 const BRACKET_THICKNESS = 2;
 
-/** Offset from the parent's edges, in px: -1 sits the bracket over a 1px border. */
+/**
+ * Offset from the parent's edges, in px: -1 sits the bracket over a 1px border.
+ */
 const BRACKET_INSET = -1;
 
 type Corner = {

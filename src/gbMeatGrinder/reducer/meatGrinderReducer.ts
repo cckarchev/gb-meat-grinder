@@ -1,4 +1,7 @@
-/** App state transitions: each action patches the state and keeps the plan legal. */
+/**
+ * App state transitions: each action patches the state and keeps the plan
+ * legal.
+ */
 
 import { crowdingOutRange } from "@/core/activation/crowdingOut";
 import { gangingUpRange } from "@/core/activation/gangingUp";
@@ -52,6 +55,18 @@ const withDamageMods = (
   return withReclampedPlan(state, { damageMods, gangingUp, crowdingOut });
 };
 
+/** The actions whose type is one of `T`. */
+type ActionOfType<T extends MeatGrinderAction["type"]> = Extract<
+  MeatGrinderAction,
+  { type: T }
+>;
+
+/** A type guard for the actions whose type is listed in `types`. */
+const isActionOfType =
+  <T extends MeatGrinderAction["type"]>(types: readonly T[]) =>
+  (action: MeatGrinderAction): action is ActionOfType<T> =>
+    (types as readonly string[]).includes(action.type);
+
 /** Actions that describe the target. */
 const ENEMY_ACTION_TYPES = [
   "enemyDef",
@@ -64,13 +79,9 @@ const ENEMY_ACTION_TYPES = [
   "enemyResilience",
 ] as const;
 
-type EnemyAction = Extract<
-  MeatGrinderAction,
-  { type: (typeof ENEMY_ACTION_TYPES)[number] }
->;
+type EnemyAction = ActionOfType<(typeof ENEMY_ACTION_TYPES)[number]>;
 
-const isEnemyAction = (action: MeatGrinderAction): action is EnemyAction =>
-  (ENEMY_ACTION_TYPES as readonly string[]).includes(action.type);
+const isEnemyAction = isActionOfType(ENEMY_ACTION_TYPES);
 
 const enemyTransition = (
   state: MeatGrinderState,
@@ -121,15 +132,9 @@ const DAMAGE_MOD_ACTION_TYPES = [
   "guildBuff",
 ] as const;
 
-type DamageModAction = Extract<
-  MeatGrinderAction,
-  { type: (typeof DAMAGE_MOD_ACTION_TYPES)[number] }
->;
+type DamageModAction = ActionOfType<(typeof DAMAGE_MOD_ACTION_TYPES)[number]>;
 
-const isDamageModAction = (
-  action: MeatGrinderAction,
-): action is DamageModAction =>
-  (DAMAGE_MOD_ACTION_TYPES as readonly string[]).includes(action.type);
+const isDamageModAction = isActionOfType(DAMAGE_MOD_ACTION_TYPES);
 
 const damageModTransition = (
   state: MeatGrinderState,
@@ -185,13 +190,9 @@ const PLAN_ACTION_TYPES = [
   "characterPlayPick",
 ] as const;
 
-type PlanAction = Extract<
-  MeatGrinderAction,
-  { type: (typeof PLAN_ACTION_TYPES)[number] }
->;
+type PlanAction = ActionOfType<(typeof PLAN_ACTION_TYPES)[number]>;
 
-const isPlanAction = (action: MeatGrinderAction): action is PlanAction =>
-  (PLAN_ACTION_TYPES as readonly string[]).includes(action.type);
+const isPlanAction = isActionOfType(PLAN_ACTION_TYPES);
 
 const planTransition = (
   state: MeatGrinderState,
