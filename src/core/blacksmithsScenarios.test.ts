@@ -196,7 +196,7 @@ describe("Cast plays", () => {
 });
 
 describe("Veteran Cinder Impale", () => {
-  const IMPALE_DAMAGE = 3;
+  const impaleBaseDamage = 3;
   const impaleOnce = planOf([["gb"]], [["impale"]]);
   const single = { activeBaseCount: 1 };
 
@@ -204,21 +204,21 @@ describe("Veteran Cinder Impale", () => {
     allHitDamage(veteranCinder, impaleOnce, { ...single, mods })[0];
 
   it("is modified like playbook damage", () => {
-    expect(impaleDamage(NO_MODS)).toBe(IMPALE_DAMAGE);
+    expect(impaleDamage(NO_MODS)).toBe(impaleBaseDamage);
     expect(impaleDamage(modsWith({ toughHide: true }))).toBe(2);
     expect(impaleDamage(modsWith({ buffs: { tooledUp: true } }))).toBe(
-      IMPALE_DAMAGE + 1,
+      impaleBaseDamage + 1,
     );
     expect(
       impaleDamage(modsWith({ toughHide: true, buffs: { tooledUp: true } })),
-    ).toBe(IMPALE_DAMAGE);
+    ).toBe(impaleBaseDamage);
   });
 
   it("deals damage once per turn", () => {
     const twice = planOf([["gb"], ["gb"]], [["impale"], ["impale"]]);
 
     expect(allHitDamage(veteranCinder, twice, { activeBaseCount: 2 })).toEqual([
-      IMPALE_DAMAGE,
+      impaleBaseDamage,
       0,
     ]);
   });

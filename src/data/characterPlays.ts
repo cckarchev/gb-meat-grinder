@@ -92,6 +92,7 @@ export const hoistingAndHauling: CharacterPlay = {
  * engages the target, his later attacks get +1 TAC and +1 DMG to playbook
  * damage results.
  */
+// biome-ignore lint/style/useNamingConvention: the one-letter word "A" has no strict camelCase spelling, and the id is part of share links.
 export const axeAQuestion: CharacterPlay = {
   id: "axeAQuestion",
   label: "Axe A Question",

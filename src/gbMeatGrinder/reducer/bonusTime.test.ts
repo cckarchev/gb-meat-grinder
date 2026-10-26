@@ -80,38 +80,38 @@ describe("Bonus Time", () => {
 describe("Bonus Time on a line only its die reaches", () => {
   // TAC 7 vs ARM 4 tops out at net 3, a column with no momentous line; the
   // Bonus Time die reaches the momentous `m3_dodge` (net 4).
-  const ARMOR_CAPPING_NET_3 = 4;
-  const BONUS_TIME_LINE = "m3_dodge";
+  const armorCappingNet3 = 4;
+  const bonusTimeLine = "m3_dodge";
 
   const reachedWithBonusTime = (): MeatGrinderState =>
     reduce(
       stateForAttacker(thresher),
-      { type: "armor", value: ARMOR_CAPPING_NET_3 },
+      { type: "armor", value: armorCappingNet3 },
       { type: "startingMomentum", value: 1 },
       spend(0),
-      pick(0, BONUS_TIME_LINE),
+      pick(0, bonusTimeLine),
     );
 
   it("is out of reach without the spend", () => {
     const state = reduce(
       stateForAttacker(thresher),
-      { type: "armor", value: ARMOR_CAPPING_NET_3 },
-      pick(0, BONUS_TIME_LINE),
+      { type: "armor", value: armorCappingNet3 },
+      pick(0, bonusTimeLine),
     );
 
-    expect(state.attackPlan.wrapPicks[0]).not.toContain(BONUS_TIME_LINE);
+    expect(state.attackPlan.wrapPicks[0]).not.toContain(bonusTimeLine);
   });
 
   it("is reachable while the spend is on", () => {
     expect(reachedWithBonusTime().attackPlan.wrapPicks[0]).toEqual([
-      BONUS_TIME_LINE,
+      bonusTimeLine,
     ]);
   });
 
   it("drops when the spend is turned off", () => {
     const off = reduce(reachedWithBonusTime(), unspend(0));
 
-    expect(off.attackPlan.wrapPicks[0]).not.toContain(BONUS_TIME_LINE);
+    expect(off.attackPlan.wrapPicks[0]).not.toContain(bonusTimeLine);
   });
 
   it("drops when the spend can no longer be paid", () => {
@@ -121,7 +121,7 @@ describe("Bonus Time on a line only its die reaches", () => {
     });
 
     expect(broke.bonusTimeByAttack[0]).toBe(false);
-    expect(broke.attackPlan.wrapPicks[0]).not.toContain(BONUS_TIME_LINE);
+    expect(broke.attackPlan.wrapPicks[0]).not.toContain(bonusTimeLine);
   });
 
   it("also clears the later spend its momentum paid for", () => {

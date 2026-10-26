@@ -50,14 +50,14 @@ describe("sumSwingTac", () => {
 
 describe("swingTacAndDef", () => {
   const attacker = makeAttacker({ tac: 6 });
-  const FLOOR_DEF = 2;
+  const floorDef = 2;
 
   const plan = {
     wrapPicks: [["kd"], ["one"]],
     characterPlayPicks: [[null], [null]],
   };
 
-  const params = makeRollParams({ attacker, enemyDef: FLOOR_DEF });
+  const params = makeRollParams({ attacker, enemyDef: floorDef });
 
   const swing = (attackIndex: number) => {
     const timeline = activationTimeline(plan, params);

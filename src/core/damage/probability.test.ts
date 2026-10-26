@@ -72,12 +72,12 @@ describe("maxNetSuccessesForRoll", () => {
 });
 
 describe("net hits gained on top of the roll (Instruction)", () => {
-  const BONUS = 2;
+  const bonusHits = 2;
 
   it("makes any need up to the bonus certain, even with no hits", () => {
-    expect(probAttackSucceeds(THREE_DICE, COIN_FLIP, HIGH_STAT, 2, BONUS)).toBe(
-      1,
-    );
+    expect(
+      probAttackSucceeds(THREE_DICE, COIN_FLIP, HIGH_STAT, 2, bonusHits),
+    ).toBe(1);
   });
 
   it("lowers the raw hits needed by the bonus", () => {
@@ -85,14 +85,14 @@ describe("net hits gained on top of the roll (Instruction)", () => {
     const netNeeded = 3;
 
     expect(
-      probAttackSucceeds(THREE_DICE, COIN_FLIP, 1, netNeeded, BONUS),
+      probAttackSucceeds(THREE_DICE, COIN_FLIP, 1, netNeeded, bonusHits),
     ).toBeCloseTo((THREE_DICE + 1) / THREE_DICE_OUTCOMES);
   });
 
   it("adds the bonus after flooring the roll at 0 net", () => {
-    expect(maxNetSuccessesForRoll(HIGH_STAT, 2, BONUS)).toBe(
-      HIGH_STAT - 2 + BONUS,
+    expect(maxNetSuccessesForRoll(HIGH_STAT, 2, bonusHits)).toBe(
+      HIGH_STAT - 2 + bonusHits,
     );
-    expect(maxNetSuccessesForRoll(2, HIGH_STAT, BONUS)).toBe(BONUS);
+    expect(maxNetSuccessesForRoll(2, HIGH_STAT, bonusHits)).toBe(bonusHits);
   });
 });

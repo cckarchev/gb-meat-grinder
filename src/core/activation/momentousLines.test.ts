@@ -52,16 +52,16 @@ describe("a buff that makes damage results momentous", () => {
     ],
   });
 
-  const EFFORT = modsWith({ buffs: { effort: true } });
+  const effortMods = modsWith({ buffs: { effort: true } });
 
   it("makes a non-momentous damage result earn momentum", () => {
     expect(momentousLineStyle(attacker, "plain1", NO_MODS)).toBe("none");
-    expect(momentousLineStyle(attacker, "plain1", EFFORT)).toBe("heat");
-    expect(momentumEarnedBySwing(attacker, ["plain1"], EFFORT)).toBe(1);
+    expect(momentousLineStyle(attacker, "plain1", effortMods)).toBe("heat");
+    expect(momentumEarnedBySwing(attacker, ["plain1"], effortMods)).toBe(1);
   });
 
   it("leaves results without printed damage alone", () => {
-    expect(momentousLineStyle(attacker, "plainPush", EFFORT)).toBe("none");
+    expect(momentousLineStyle(attacker, "plainPush", effortMods)).toBe("none");
   });
 
   it("still earns nothing when the damage is zeroed", () => {

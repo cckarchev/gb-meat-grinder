@@ -104,18 +104,18 @@ describe("effectiveChargeIndex", () => {
 });
 
 describe("isChargeSwing", () => {
-  const ACTIVE_BASES = 2;
+  const activeBases = 2;
 
   it("is true only on the charge row", () => {
-    expect(isChargeSwing(1, 1, ACTIVE_BASES)).toBe(true);
-    expect(isChargeSwing(0, 1, ACTIVE_BASES)).toBe(false);
+    expect(isChargeSwing(1, 1, activeBases)).toBe(true);
+    expect(isChargeSwing(0, 1, activeBases)).toBe(false);
   });
 
   it("is false when not charging", () => {
-    expect(isChargeSwing(0, NO_ATTACK_INDEX, ACTIVE_BASES)).toBe(false);
+    expect(isChargeSwing(0, NO_ATTACK_INDEX, activeBases)).toBe(false);
   });
 
   it("is false when the charge row is no longer an active base", () => {
-    expect(isChargeSwing(2, 2, ACTIVE_BASES)).toBe(false);
+    expect(isChargeSwing(2, 2, activeBases)).toBe(false);
   });
 });

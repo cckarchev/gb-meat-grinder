@@ -6,9 +6,9 @@ import { type KeyboardEvent, useEffect, useId, useRef, useState } from "react";
  * on the `position: relative` element holding trigger and bubble, and
  * `triggerProps` on the focusable trigger.
  */
-export const useTooltipOpen = <TWrapper extends HTMLElement>() => {
+export const useTooltipOpen = <Wrapper extends HTMLElement>() => {
   const [open, setOpen] = useState(false);
-  const wrapperRef = useRef<TWrapper>(null);
+  const wrapperRef = useRef<Wrapper>(null);
   const tooltipId = useId();
 
   useEffect(() => {
