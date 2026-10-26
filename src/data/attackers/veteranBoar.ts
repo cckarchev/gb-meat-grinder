@@ -1,12 +1,12 @@
 import type { PlaybookColumn } from "@/core/playbook/playbook.types";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+import { singledOut, stagger } from "../characterPlays";
+import { butchers } from "../guilds/butchers";
+import type { AttackerData } from "./attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from "@/data/attackers/statRanges";
-import { singledOut, stagger } from "@/data/characterPlays";
-import { butchers } from "@/data/guilds/butchers";
+} from "./statRanges";
 
 /**
  * Veteran Boar playbook: columns in card order. Each column needs

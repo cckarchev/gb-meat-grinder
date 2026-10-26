@@ -1,22 +1,19 @@
 import { describe, expect, it } from "vitest";
-import { deriveSimulation } from "@/core/activation/simulation";
-import { attackArraySize } from "@/core/attacks/attackStructure";
-import {
-  knockDownIsOnlyEffect,
-  knockDownTakenBeforePick,
-} from "@/core/playbook/knockDown";
-import type { WrapPick } from "@/core/playbook/playbook.types";
-import { getPlaybookResult } from "@/core/playbook/playbookIndex";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+import { crossCut } from "@/data/attackers/crossCut";
+import { thresher } from "@/data/attackers/thresher";
+import { deriveSimulation } from "../activation/simulation";
+import { attackArraySize } from "../attacks/attackStructure";
+import { NO_ATTACK_INDEX } from "../shared/constants";
 import {
   makeAttacker,
   NEUTRAL_TARGET_HP,
   NO_MODS,
   orderFor,
   planOf,
-} from "@/core/testing/fixtures";
-import { crossCut } from "@/data/attackers/crossCut";
-import { thresher } from "@/data/attackers/thresher";
+} from "../testing/fixtures";
+import { knockDownIsOnlyEffect, knockDownTakenBeforePick } from "./knockDown";
+import type { WrapPick } from "./playbook.types";
+import { getPlaybookResult } from "./playbookIndex";
 
 describe("knockDownTakenBeforePick", () => {
   const attacker = makeAttacker();

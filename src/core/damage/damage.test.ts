@@ -1,19 +1,19 @@
 import { describe, expect, it } from "vitest";
-import {
-  activeTraitFlatDamage,
-  effectiveEnemyDef,
-  effectivePlaybookDamage,
-  effectivePlayDamage,
-  playbookDamageBonusSum,
-} from "@/core/damage/damage";
+import { dontFearTheReaper } from "@/data/characterTraits";
 import {
   makeAttacker,
   modsWith,
   NO_MODS,
   PASSIVE_TRAIT,
   TEAMMATE_GUILD,
-} from "@/core/testing/fixtures";
-import { dontFearTheReaper } from "@/data/characterTraits";
+} from "../testing/fixtures";
+import {
+  activeTraitFlatDamage,
+  effectiveEnemyDef,
+  effectivePlaybookDamage,
+  effectivePlayDamage,
+  playbookDamageBonusSum,
+} from "./damage";
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
 

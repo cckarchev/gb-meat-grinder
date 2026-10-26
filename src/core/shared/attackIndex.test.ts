@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { isAttackIndex } from "@/core/shared/attackIndex";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+import { isAttackIndex } from "./attackIndex";
+import { NO_ATTACK_INDEX } from "./constants";
 
 describe("isAttackIndex", () => {
   it("accepts the first row and later rows", () => {

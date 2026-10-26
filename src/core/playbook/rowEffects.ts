@@ -2,19 +2,16 @@
  * Effects each pick carries into later swings: TAC, DEF and the ARM condition.
  */
 
-import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
-import { characterPlayPickEffects } from "@/core/characterPlays/characterPlayEffects";
-import { effectivePlayForPick } from "@/core/characterPlays/characterPlayLookup";
-import { characterPlayUsageBeforePick } from "@/core/characterPlays/characterPlayUsage";
-import type { AttackPlan, PickPosition } from "@/core/plan/attackPlan.types";
-import { knockDownTakenBeforePick } from "@/core/playbook/knockDown";
-import type { PickEffects } from "@/core/playbook/playbook.types";
-import {
-  choiceUsesCharacterPlay,
-  getPlaybookResult,
-} from "@/core/playbook/playbookIndex";
-import { KNOCKED_DOWN_EFFECT } from "@/core/shared/constants";
 import type { AttackerData } from "@/data/attackers/attacker.types";
+import type { ActivationOrderParams } from "../attacks/attackSequence.types";
+import { characterPlayPickEffects } from "../character-plays/characterPlayEffects";
+import { effectivePlayForPick } from "../character-plays/characterPlayLookup";
+import { characterPlayUsageBeforePick } from "../character-plays/characterPlayUsage";
+import type { AttackPlan, PickPosition } from "../plan/attackPlan.types";
+import { KNOCKED_DOWN_EFFECT } from "../shared/constants";
+import { knockDownTakenBeforePick } from "./knockDown";
+import type { PickEffects } from "./playbook.types";
+import { choiceUsesCharacterPlay, getPlaybookResult } from "./playbookIndex";
 
 const NO_EFFECTS: PickEffects = {
   tacBonusForLater: 0,

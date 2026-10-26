@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
+import { makeAttacker } from "../testing/fixtures";
 import {
   cheapestChoiceId,
   getPlaybookResult,
   maxPlaybookNet,
   netSuccessesForChoice,
   playbookIndex,
-} from "@/core/playbook/playbookIndex";
-import { makeAttacker } from "@/core/testing/fixtures";
+} from "./playbookIndex";
 
 /** The fixture playbook's widest column. */
 const MAX_NET = 4;

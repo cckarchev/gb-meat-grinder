@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
+import { makeAttacker, modsWith, NO_MODS } from "../testing/fixtures";
 import {
   formatWrapRowSelectionLabel,
   playbookLineDisplayLabel,
   playbookLineDisplaySegments,
-} from "@/core/playbook/playbookLabels";
-import { makeAttacker, modsWith, NO_MODS } from "@/core/testing/fixtures";
+} from "./playbookLabels";
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
 

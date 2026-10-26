@@ -2,10 +2,10 @@
  * Which guild buffs and character traits apply to a model, given the toggles.
  */
 
-import type { PlaybookDamageMods } from "@/core/playbook/playbook.types";
 import type { AttackerData } from "@/data/attackers/attacker.types";
 import type { CharacterTrait } from "@/data/characterTraits";
 import type { GuildBuff, GuildBuffTarget } from "@/data/guilds/guild.types";
+import type { PlaybookDamageMods } from "../playbook/playbook.types";
 
 /**
  * Whether the model cannot receive this guild buff (it is the source of it).

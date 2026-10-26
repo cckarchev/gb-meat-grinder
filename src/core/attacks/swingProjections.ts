@@ -1,19 +1,16 @@
 /** Per-swing HP and momentum under the "every pick hits" projection. */
 
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
-} from "@/core/activation/momentum";
-import type { ActivationTimeline } from "@/core/attacks/activationTimeline.types";
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
-import { hpAfterDamage } from "@/core/damage/hpAfterDamage";
-import type {
-  PlaybookDamageMods,
-  WrapPick,
-} from "@/core/playbook/playbook.types";
-import { isAttackIndex } from "@/core/shared/attackIndex";
-import { KILLING_BLOW_MOMENTUM } from "@/core/shared/constants";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../activation/momentum";
+import { hpAfterDamage } from "../damage/hpAfterDamage";
+import type { PlaybookDamageMods, WrapPick } from "../playbook/playbook.types";
+import { isAttackIndex } from "../shared/attackIndex";
+import { KILLING_BLOW_MOMENTUM } from "../shared/constants";
+import type { ActivationTimeline } from "./activationTimeline.types";
+import type { AttackRollContext } from "./attackSequence.types";
 
 export type SwingProjectionInput = {
   attacker: AttackerData;

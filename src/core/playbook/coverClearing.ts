@@ -1,9 +1,9 @@
 /** Cover: which picks clear it and the fixed swing order used to check them. */
 
-import { berserkerRowOffset } from "@/core/attacks/attackStructure";
-import type { WrapPick } from "@/core/playbook/playbook.types";
-import { getPlaybookResult } from "@/core/playbook/playbookIndex";
 import type { AttackerData } from "@/data/attackers/attacker.types";
+import { berserkerRowOffset } from "../attacks/attackStructure";
+import type { WrapPick } from "./playbook.types";
+import { getPlaybookResult } from "./playbookIndex";
 
 /**
  * True if this pick removes the enemy's cover (a push / double push result).

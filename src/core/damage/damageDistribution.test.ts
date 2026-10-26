@@ -1,10 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
-import {
-  damageQuantile,
-  swingDamageDistribution,
-} from "@/core/damage/damageDistribution";
-import { makeRollContext } from "@/core/testing/fixtures";
+import type { AttackRollContext } from "../attacks/attackSequence.types";
+import { makeRollContext } from "../testing/fixtures";
+import { damageQuantile, swingDamageDistribution } from "./damageDistribution";
 
 const QUARTER = 0.25;
 const HALF = 0.5;

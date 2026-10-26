@@ -10,14 +10,14 @@
  * nothing forward.
  */
 
-import { activationAttackIndices } from "@/core/attacks/attackRows";
-import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
+import { activationAttackIndices } from "../attacks/attackRows";
+import type { ActivationOrderParams } from "../attacks/attackSequence.types";
 import type {
   CharacterPlayPickSlot,
   WrapPick,
-} from "@/core/playbook/playbook.types";
-import { isAttackIndex } from "@/core/shared/attackIndex";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+} from "../playbook/playbook.types";
+import { isAttackIndex } from "../shared/attackIndex";
+import { NO_ATTACK_INDEX } from "../shared/constants";
 
 /**
  * Attack-array index of the swing a Resilient target ignores: the first swing

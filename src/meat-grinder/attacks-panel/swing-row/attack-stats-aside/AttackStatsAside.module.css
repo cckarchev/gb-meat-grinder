@@ -1,0 +1,86 @@
+/*
+ * Four columns shared by every stat row: caption, value before the swing,
+ * arrow, value after. The before/after/arrow tracks have a fixed minimum
+ * width, so the rail is just as wide whether or not a swing changed anything.
+ */
+.rail {
+  --transition-value-min-width: 1.6em;
+  --transition-arrow-width: 1em;
+
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(var(--transition-value-min-width), auto)
+    var(--transition-arrow-width)
+    minmax(var(--transition-value-min-width), auto);
+  align-items: baseline;
+  column-gap: var(--space-3xs);
+  row-gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-3xs) 0 0;
+  font-size: var(--font-size-base);
+}
+
+/* Rows only group their cells; the rail grid places them. */
+.statRow {
+  display: contents;
+}
+
+/* Sized in `em` so it scales with the rail's narrow-viewport font size. */
+.caption {
+  composes: monoCapsLabel from "../../../../styles/mixins.module.css";
+  grid-column: 1;
+  justify-self: end;
+  margin-right: var(--space-xs);
+  font-size: 0.64em;
+}
+
+/* The value before this swing, quieter than the value after it. */
+.previous {
+  grid-column: 2;
+  justify-self: end;
+  font-size: 0.92em;
+  font-weight: var(--font-weight-regular);
+  color: var(--muted);
+}
+
+.arrow {
+  grid-column: 3;
+  justify-self: center;
+  font-size: 0.92em;
+  color: var(--muted);
+}
+
+.value {
+  grid-column: 4;
+  justify-self: end;
+  font-size: 0.92em;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+}
+
+/*
+ * A value this swing changed: a chip filled with the guild color (set on the
+ * rail by the component), inked like a momentous playbook line so it reads
+ * on every guild, dark ones included.
+ */
+.value[data-changed] {
+  padding: 0 var(--space-3xs);
+  background: var(--guild-color);
+  color: var(--playbook-line-momentous-fg);
+  box-shadow: inset 0 0 0 var(--rule-width)
+    color-mix(in srgb, var(--guild-color) 60%, #000);
+}
+
+@media (max-width: 720px) {
+  .rail {
+    row-gap: var(--space-2xs);
+    padding: var(--space-xs) var(--space-4xs) 0 0;
+    font-size: var(--font-size-sm);
+  }
+
+  .caption {
+    margin-right: var(--space-2xs);
+    letter-spacing: var(--tracking-caps);
+  }
+}

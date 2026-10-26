@@ -1,35 +1,32 @@
 /** Kill chance, expected damage and HP left for a whole activation. */
 
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   swingStateAt,
   swingStateDamageMods,
-} from "@/core/attacks/activationTimeline";
+} from "../attacks/activationTimeline";
 import type {
   ActivationTimeline,
   SwingState,
-} from "@/core/attacks/activationTimeline.types";
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
+} from "../attacks/activationTimeline.types";
+import type { AttackRollContext } from "../attacks/attackSequence.types";
 import {
   playDamageForHealth,
   swingHasHealthPlay,
-} from "@/core/attacks/swingPlayDamage";
+} from "../attacks/swingPlayDamage";
+import type { PlaybookDamageMods, WrapPick } from "../playbook/playbook.types";
 import type {
   ActivationDamageOutcome,
   DamageDistribution,
   DamageForNet,
-} from "@/core/damage/damage.types";
+} from "./damage.types";
 import {
   addProbability,
   convolve,
   swingDamageDistribution,
-} from "@/core/damage/damageDistribution";
-import { hpAfterDamage } from "@/core/damage/hpAfterDamage";
-import { pickedDamageForNet } from "@/core/damage/pickedDamage";
-import type {
-  PlaybookDamageMods,
-  WrapPick,
-} from "@/core/playbook/playbook.types";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "./damageDistribution";
+import { hpAfterDamage } from "./hpAfterDamage";
+import { pickedDamageForNet } from "./pickedDamage";
 
 /** Shift every damage value by the guaranteed `flatDamage`. */
 const withFlatDamage = (

@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { activationTimeline } from "@/core/attacks/activationTimeline";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { burningPassion, searingStrike } from "@/data/characterTraits";
 import {
   damageModifierBreakdown,
   rowDamageIfAllHit,
-} from "@/core/damage/rowDamage";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
-import type { PlaybookDamageMods } from "@/core/playbook/playbook.types";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+} from "../damage/rowDamage";
+import type { AttackPlan } from "../plan/attackPlan.types";
+import type { PlaybookDamageMods } from "../playbook/playbook.types";
+import { NO_ATTACK_INDEX } from "../shared/constants";
 import {
   CONDITION_GUILD,
   makeAttacker,
@@ -17,9 +18,8 @@ import {
   orderFor,
   PLAY_DAMAGE,
   threeOf,
-} from "@/core/testing/fixtures";
-import type { AttackerData } from "@/data/attackers/attacker.types";
-import { burningPassion, searingStrike } from "@/data/characterTraits";
+} from "../testing/fixtures";
+import { activationTimeline } from "./activationTimeline";
 
 const SWINGS = 3;
 

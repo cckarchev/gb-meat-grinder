@@ -1,16 +1,16 @@
 /** Which playbook lines earn momentum once Tough Hide and buffs are applied. */
 
-import { activeBuffs } from "@/core/attackers/buffsAndTraits";
-import { effectiveDamageForChoice } from "@/core/damage/damage";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { activeBuffs } from "../attackers/buffsAndTraits";
+import { effectiveDamageForChoice } from "../damage/damage";
 import type {
   MomentousLineStyle,
   PlaybookChoiceId,
   PlaybookDamageMods,
   WrapPick,
-} from "@/core/playbook/playbook.types";
-import { getPlaybookResult } from "@/core/playbook/playbookIndex";
-import { MOMENTOUS_PICK_MOMENTUM } from "@/core/shared/constants";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../playbook/playbook.types";
+import { getPlaybookResult } from "../playbook/playbookIndex";
+import { MOMENTOUS_PICK_MOMENTUM } from "../shared/constants";
 
 /**
  * True if a selected buff makes every playbook damage result momentous (Maximum

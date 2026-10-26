@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { deriveSimulation } from "@/core/activation/simulation";
-import { computeAttackSequence } from "@/core/attacks/attackSequence";
-import { activeBaseAttackCount } from "@/core/attacks/attackStructure";
-import { rowDamageIfAllHit } from "@/core/damage/rowDamage";
-import { HP_MIN, NO_ATTACK_INDEX } from "@/core/shared/constants";
-import { orderFor } from "@/core/testing/fixtures";
 import { thresher } from "@/data/attackers/thresher";
 import { veteranBoar } from "@/data/attackers/veteranBoar";
-import { stateForAttacker } from "@/gbMeatGrinder/reducer/meatGrinderInitialState";
+import { stateForAttacker } from "@/meat-grinder/reducer/meatGrinderInitialState";
 import type {
   MeatGrinderAction,
   MeatGrinderState,
-} from "@/gbMeatGrinder/reducer/reducer.types";
-import { pick, reduce } from "@/gbMeatGrinder/reducer/reducerTestHelpers";
+} from "@/meat-grinder/reducer/reducer.types";
+import { pick, reduce } from "@/meat-grinder/reducer/reducerTestHelpers";
+import { computeAttackSequence } from "../attacks/attackSequence";
+import { activeBaseAttackCount } from "../attacks/attackStructure";
+import { rowDamageIfAllHit } from "../damage/rowDamage";
+import { HP_MIN, NO_ATTACK_INDEX } from "../shared/constants";
+import { orderFor } from "../testing/fixtures";
+import { deriveSimulation } from "./simulation";
 
 const boarState = (...actions: MeatGrinderAction[]): MeatGrinderState =>
   reduce(stateForAttacker(veteranBoar), ...actions);

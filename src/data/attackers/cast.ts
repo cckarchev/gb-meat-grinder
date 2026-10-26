@@ -1,13 +1,13 @@
 import type { PlaybookColumn } from "@/core/playbook/playbook.types";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+import { shieldGlare, shieldThrow } from "../characterPlays";
+import { burningPassion } from "../characterTraits";
+import { blacksmiths } from "../guilds/blacksmiths";
+import type { AttackerData } from "./attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from "@/data/attackers/statRanges";
-import { shieldGlare, shieldThrow } from "@/data/characterPlays";
-import { burningPassion } from "@/data/characterTraits";
-import { blacksmiths } from "@/data/guilds/blacksmiths";
+} from "./statRanges";
 
 /**
  * Cast playbook, from the card: `<`/`1`, `2,CP;M`, `T`/`><`, `4;M`, `CP,><`,

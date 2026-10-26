@@ -4,7 +4,7 @@
  * availability is scoped to the model's guild.
  */
 
-import type { CharacterTrait } from "@/data/characterTraits";
+import type { CharacterTrait } from "../characterTraits";
 
 /** Which side a guild effect lands on, and so which panel shows it. */
 export type GuildBuffTarget = "attacker" | "enemy";

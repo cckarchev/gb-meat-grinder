@@ -1,15 +1,10 @@
 import { describe, expect, it } from "vitest";
-import {
-  activeSwings,
-  summarizeActivation,
-  swingIsSkipped,
-} from "@/core/activation/summary/activationSummary";
-import type { ActivationSummaryInput } from "@/core/activation/summary/activationSummary.types";
-import { activationTimeline } from "@/core/attacks/activationTimeline";
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
-import { activeTraitFlatDamage } from "@/core/damage/damage";
-import { rowDamageIfAllHit } from "@/core/damage/rowDamage";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+import { sweepingCharge } from "@/data/characterTraits";
+import { activationTimeline } from "../../attacks/activationTimeline";
+import type { AttackRollContext } from "../../attacks/attackSequence.types";
+import { activeTraitFlatDamage } from "../../damage/damage";
+import { rowDamageIfAllHit } from "../../damage/rowDamage";
+import { NO_ATTACK_INDEX } from "../../shared/constants";
 import {
   makeAttacker,
   makeRollContext,
@@ -17,8 +12,13 @@ import {
   NEUTRAL_TARGET_HP,
   NO_MODS,
   orderFor,
-} from "@/core/testing/fixtures";
-import { sweepingCharge } from "@/data/characterTraits";
+} from "../../testing/fixtures";
+import {
+  activeSwings,
+  summarizeActivation,
+  swingIsSkipped,
+} from "./activationSummary";
+import type { ActivationSummaryInput } from "./activationSummary.types";
 
 /** A swing that always rolls exactly `tac` net successes. */
 const certainSwing = (attackIndex: number, tac: number): AttackRollContext =>

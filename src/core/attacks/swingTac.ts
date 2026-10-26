@@ -3,22 +3,19 @@
  * carried over.
  */
 
-import { swingStateAt } from "@/core/attacks/activationTimeline";
-import type { ActivationTimeline } from "@/core/attacks/activationTimeline.types";
-import type { ActivationRollParams } from "@/core/attacks/attackSequence.types";
-import { isChargeSwing } from "@/core/attacks/attackStructure";
-import { coverTacPenaltyForAttack } from "@/core/attacks/earlierSwingEffects";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import type { AttackPlan } from "../plan/attackPlan.types";
+import { BONUS_TIME_TAC_BONUS, CHARGE_TAC_BONUS } from "../shared/constants";
+import { swingStateAt } from "./activationTimeline";
+import type { ActivationTimeline } from "./activationTimeline.types";
+import type { ActivationRollParams } from "./attackSequence.types";
+import { isChargeSwing } from "./attackStructure";
+import { coverTacPenaltyForAttack } from "./earlierSwingEffects";
 import {
   effectiveDefMinRoll,
   enemyDefForSwing,
   tacBonusFromDefReductionCap,
-} from "@/core/attacks/swingDefense";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
-import {
-  BONUS_TIME_TAC_BONUS,
-  CHARGE_TAC_BONUS,
-} from "@/core/shared/constants";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "./swingDefense";
 
 /**
  * The swing and every already computed TAC modifier that `sumSwingTac` adds up.

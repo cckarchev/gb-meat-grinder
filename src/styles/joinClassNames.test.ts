@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { joinClassNames } from "@/styles/joinClassNames";
+import { joinClassNames } from "./joinClassNames";
 
 describe("joinClassNames", () => {
   it("joins every class name with a space", () => {

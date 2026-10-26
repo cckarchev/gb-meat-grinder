@@ -1,10 +1,7 @@
 import { describe, expect, it } from "vitest";
-import {
-  canAffordBonusTime,
-  sanitizeBonusTimeFlags,
-} from "@/core/activation/bonusTimeFlags";
-import { BONUS_TIME_MOMENTUM_COST } from "@/core/shared/constants";
-import { makeAttacker, NO_MODS } from "@/core/testing/fixtures";
+import { BONUS_TIME_MOMENTUM_COST } from "../shared/constants";
+import { makeAttacker, NO_MODS } from "../testing/fixtures";
+import { canAffordBonusTime, sanitizeBonusTimeFlags } from "./bonusTimeFlags";
 
 describe("canAffordBonusTime", () => {
   it("needs a pool that covers the cost", () => {

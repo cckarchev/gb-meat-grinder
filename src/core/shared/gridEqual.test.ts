@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { gridEqual, rowEqual } from "@/core/shared/gridEqual";
+import { gridEqual, rowEqual } from "./gridEqual";
 
 describe("rowEqual", () => {
   it("matches rows with the same values in order", () => {

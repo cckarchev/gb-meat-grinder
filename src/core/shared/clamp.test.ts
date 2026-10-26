@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clamp, clampToRange } from "@/core/shared/clamp";
+import { clamp, clampToRange } from "./clamp";
 
 const MAX = 5;
 const INSIDE = 3;

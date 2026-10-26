@@ -3,7 +3,7 @@ import {
   effectiveDefMinRoll,
   enemyDefForSwing,
   tacBonusFromDefReductionCap,
-} from "@/core/attacks/swingDefense";
+} from "./swingDefense";
 
 const STANCE = true;
 const DEF = 4;

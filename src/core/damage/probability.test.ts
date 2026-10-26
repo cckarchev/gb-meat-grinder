@@ -4,7 +4,7 @@ import {
   hitProbabilityPerDie,
   maxNetSuccessesForRoll,
   probAttackSucceeds,
-} from "@/core/damage/probability";
+} from "./probability";
 
 const COIN_FLIP = 0.5;
 const NO_BONUS = 0;

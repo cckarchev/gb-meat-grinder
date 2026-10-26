@@ -1,18 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { activationTimeline } from "@/core/attacks/activationTimeline";
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
-import {
-  projectSwings,
-  type SwingProjectionInput,
-} from "@/core/attacks/swingProjections";
-import { rowDamageIfAllHit } from "@/core/damage/rowDamage";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+import { rowDamageIfAllHit } from "../damage/rowDamage";
+import { NO_ATTACK_INDEX } from "../shared/constants";
 import {
   makeAttacker,
   makeRollContext,
   NO_MODS,
   orderFor,
-} from "@/core/testing/fixtures";
+} from "../testing/fixtures";
+import { activationTimeline } from "./activationTimeline";
+import type { AttackRollContext } from "./attackSequence.types";
+import { projectSwings, type SwingProjectionInput } from "./swingProjections";
 
 const TARGET_HP = 10;
 const SWING_DAMAGE = 2;

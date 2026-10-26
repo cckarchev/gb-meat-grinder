@@ -4,12 +4,12 @@
  * id strings.
  */
 
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import type {
   PlaybookChoiceId,
   PlaybookResult,
   WrapPick,
-} from "@/core/playbook/playbook.types";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "./playbook.types";
 
 type PlaybookIndex = {
   byId: Map<PlaybookChoiceId, PlaybookResult>;

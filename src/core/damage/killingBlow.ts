@@ -1,5 +1,5 @@
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+import type { AttackRollContext } from "../attacks/attackSequence.types";
+import { NO_ATTACK_INDEX } from "../shared/constants";
 
 /**
  * Display index into `attacks` of the swing that first brings the target to 0

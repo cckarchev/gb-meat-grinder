@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { getPlaybookResult } from "@/core/playbook/playbookIndex";
-import { tackleTakenBeforePick } from "@/core/playbook/tackle";
-import { makeAttacker, orderFor } from "@/core/testing/fixtures";
 import { bucker } from "@/data/attackers/bucker";
 import { cast } from "@/data/attackers/cast";
 import { thresher } from "@/data/attackers/thresher";
 import { veteranBoar } from "@/data/attackers/veteranBoar";
 import { veteranCinder } from "@/data/attackers/veteranCinder";
+import { makeAttacker, orderFor } from "../testing/fixtures";
+import { getPlaybookResult } from "./playbookIndex";
+import { tackleTakenBeforePick } from "./tackle";
 
 const fixture = makeAttacker();
 

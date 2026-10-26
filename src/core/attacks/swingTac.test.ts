@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { activationTimeline } from "@/core/attacks/activationTimeline";
-import { sumSwingTac, swingTacAndDef } from "@/core/attacks/swingTac";
-import { CHARGE_TAC_BONUS } from "@/core/shared/constants";
-import { makeAttacker, makeRollParams } from "@/core/testing/fixtures";
+import { CHARGE_TAC_BONUS } from "../shared/constants";
+import { makeAttacker, makeRollParams } from "../testing/fixtures";
+import { activationTimeline } from "./activationTimeline";
+import { sumSwingTac, swingTacAndDef } from "./swingTac";
 
 describe("sumSwingTac", () => {
   it("sums base TAC, charge, bonuses and penalties", () => {

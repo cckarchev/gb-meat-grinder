@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dataFlag } from "@/styles/dataFlag";
+import { dataFlag } from "./dataFlag";
 
 describe("dataFlag", () => {
   it("renders an empty attribute value when the flag is on", () => {

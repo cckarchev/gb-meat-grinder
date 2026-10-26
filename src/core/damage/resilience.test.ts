@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
+import { makeAttacker, orderFor } from "../testing/fixtures";
 import {
   effectiveBonusTimeForResilience,
   effectiveCharacterPlayPicksForResilience,
   effectiveWrapPicksForResilience,
   resilienceIgnoredAttackIndex,
-} from "@/core/damage/resilience";
-import { makeAttacker, orderFor } from "@/core/testing/fixtures";
+} from "./resilience";
 
 const RESILIENT = true;
 const NOT_RESILIENT = false;

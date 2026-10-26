@@ -1,11 +1,11 @@
-import type { ActivationTimeline } from "@/core/attacks/activationTimeline.types";
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
+import type { ActivationTimeline } from "../attacks/activationTimeline.types";
+import type { AttackRollContext } from "../attacks/attackSequence.types";
+import type { AttackPlan } from "../plan/attackPlan.types";
 import type {
   CharacterPlayPickSlot,
   PlaybookDamageMods,
   WrapPick,
-} from "@/core/playbook/playbook.types";
+} from "../playbook/playbook.types";
 
 /**
  * The editable inputs of one activation: the target, the resources, and the

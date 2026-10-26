@@ -3,20 +3,17 @@
  * current HP.
  */
 
-import type {
-  SwingState,
-  TimelineParams,
-} from "@/core/attacks/activationTimeline.types";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   effectivePlayForPick,
   getCharacterPlay,
-} from "@/core/characterPlays/characterPlayLookup";
-import { effectivePlayDamage } from "@/core/damage/damage";
-import type { AttackPlan, PickPosition } from "@/core/plan/attackPlan.types";
-import type { CharacterPlay, WrapPick } from "@/core/playbook/playbook.types";
-import { choiceUsesCharacterPlay } from "@/core/playbook/playbookIndex";
-import { sumOf } from "@/core/shared/sumOf";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../character-plays/characterPlayLookup";
+import { effectivePlayDamage } from "../damage/damage";
+import type { AttackPlan, PickPosition } from "../plan/attackPlan.types";
+import type { CharacterPlay, WrapPick } from "../playbook/playbook.types";
+import { choiceUsesCharacterPlay } from "../playbook/playbookIndex";
+import { sumOf } from "../shared/sumOf";
+import type { SwingState, TimelineParams } from "./activationTimeline.types";
 
 /** Total play damage a swing deals when every pick on it lands. */
 export const swingPlayDamage = (state: SwingState): number =>

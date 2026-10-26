@@ -1,9 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { deriveSimulation } from "@/core/activation/simulation";
-import { activationTimeline } from "@/core/attacks/activationTimeline";
-import { attackArraySize } from "@/core/attacks/attackStructure";
-import { pickedDamageForNet } from "@/core/damage/pickedDamage";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
+import { searingStrike, sweepingCharge } from "@/data/characterTraits";
+import { deriveSimulation } from "../activation/simulation";
+import { pickedDamageForNet } from "../damage/pickedDamage";
+import type { AttackPlan } from "../plan/attackPlan.types";
 import {
   CONDITION_GUILD,
   makeAttacker,
@@ -11,8 +10,9 @@ import {
   modsWith,
   NO_MODS,
   planOf,
-} from "@/core/testing/fixtures";
-import { searingStrike, sweepingCharge } from "@/data/characterTraits";
+} from "../testing/fixtures";
+import { activationTimeline } from "./activationTimeline";
+import { attackArraySize } from "./attackStructure";
 
 const CHARGE_ROW = 0;
 const SWEEPING_CHARGE_DAMAGE = 3;

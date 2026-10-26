@@ -1,12 +1,12 @@
 import type { PlaybookColumn } from "@/core/playbook/playbook.types";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+import { theBiggerTheyAre } from "../characterPlays";
+import { lumberjacks } from "../guilds/lumberjacks";
+import type { AttackerData } from "./attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from "@/data/attackers/statRanges";
-import { theBiggerTheyAre } from "@/data/characterPlays";
-import { lumberjacks } from "@/data/guilds/lumberjacks";
+} from "./statRanges";
 
 /**
  * Cross Cut playbook, from the card: `>;M`/`1;M`, `2;M`, `KD;M`/`3;M`,

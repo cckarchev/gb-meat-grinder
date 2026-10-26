@@ -1,13 +1,13 @@
 import type { PlaybookColumn } from "@/core/playbook/playbook.types";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+import { impale } from "../characterPlays";
+import { searingStrike, sweepingCharge } from "../characterTraits";
+import { blacksmiths } from "../guilds/blacksmiths";
+import type { AttackerData } from "./attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from "@/data/attackers/statRanges";
-import { impale } from "@/data/characterPlays";
-import { searingStrike, sweepingCharge } from "@/data/characterTraits";
-import { blacksmiths } from "@/data/guilds/blacksmiths";
+} from "./statRanges";
 
 /**
  * Veteran Cinder playbook, from the card: `1;M`, `T`/`<`, `CP;M`/`2;M`, `<<`,

@@ -1,14 +1,14 @@
 /** Display labels for playbook lines and wrap rows. */
 
-import { effectiveDamageForChoice } from "@/core/damage/damage";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { effectiveDamageForChoice } from "../damage/damage";
+import { EMPTY_VALUE_LABEL } from "../shared/format";
 import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
   WrapPick,
-} from "@/core/playbook/playbook.types";
-import { getPlaybookResult } from "@/core/playbook/playbookIndex";
-import { EMPTY_VALUE_LABEL } from "@/core/shared/format";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "./playbook.types";
+import { getPlaybookResult } from "./playbookIndex";
 
 /**
  * Playbook button text: plain numeric pips (label matches damage) show the

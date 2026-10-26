@@ -1,12 +1,12 @@
-import { clamp } from "@/core/shared/clamp";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { clamp } from "../shared/clamp";
 import {
   BERSERKER_ROWS_PER_BASE,
   CHARGE_ATTACK_COUNT,
   CHARGE_INFLUENCE_COST,
   FERAL_ATTACK_COUNT,
   NO_ATTACK_INDEX,
-} from "@/core/shared/constants";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../shared/constants";
 
 /**
  * Influence the charge consumes: free for Furious models, otherwise

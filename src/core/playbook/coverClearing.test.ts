@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
-import {
-  coverSwingClockIndices,
-  wrapPickClearsCover,
-} from "@/core/playbook/coverClearing";
-import { makeAttacker } from "@/core/testing/fixtures";
+import { makeAttacker } from "../testing/fixtures";
+import { coverSwingClockIndices, wrapPickClearsCover } from "./coverClearing";
 
 describe("cover clearing", () => {
   it("knows which picks clear cover", () => {

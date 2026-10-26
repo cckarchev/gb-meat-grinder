@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
+import { NO_ATTACK_INDEX } from "../shared/constants";
+import { makeAttacker } from "../testing/fixtures";
 import {
   type ScenarioStatsInput,
   scenarioEffectiveStats,
-} from "@/core/activation/scenarioStats";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
-import { makeAttacker } from "@/core/testing/fixtures";
+} from "./scenarioStats";
 
 const attacker = makeAttacker();
 

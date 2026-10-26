@@ -1,4 +1,4 @@
-import type { GuildBuff } from "@/data/guilds/guild.types";
+import type { GuildBuff } from "./guilds/guild.types";
 
 /**
  * Guild buffs several guilds share. Like character plays, they are defined once

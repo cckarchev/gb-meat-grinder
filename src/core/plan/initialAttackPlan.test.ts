@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
-import { createInitialAttackPlan } from "@/core/plan/initialAttackPlan";
-import { makeAttacker } from "@/core/testing/fixtures";
+import { makeAttacker } from "../testing/fixtures";
+import type { AttackPlan } from "./attackPlan.types";
+import { createInitialAttackPlan } from "./initialAttackPlan";
 
 const attacker = makeAttacker();
 

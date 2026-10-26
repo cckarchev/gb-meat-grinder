@@ -3,37 +3,31 @@
  * it.
  */
 
-import { activeBuffs, attackerTraits } from "@/core/attackers/buffsAndTraits";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import type { CharacterTrait } from "@/data/characterTraits";
+import { activeBuffs, attackerTraits } from "../attackers/buffsAndTraits";
+import {
+  chargeTraitDamage,
+  effectiveDamageForChoice,
+  withSwingDamageBonus,
+} from "../damage/damage";
+import type { AttackPlan } from "../plan/attackPlan.types";
+import type { PlaybookDamageMods, WrapPick } from "../playbook/playbook.types";
+import { getPlaybookResult } from "../playbook/playbookIndex";
+import {
+  pickEffectName,
+  pickEffectsForLaterSwings,
+} from "../playbook/rowEffects";
+import { sumOf } from "../shared/sumOf";
 import type {
   ActivationTimeline,
   CarriedEffects,
   SwingState,
   TimelineParams,
-} from "@/core/attacks/activationTimeline.types";
-import { activationAttackIndices } from "@/core/attacks/attackRows";
-import { isChargeSwing } from "@/core/attacks/attackStructure";
-import {
-  swingPlayDamage,
-  swingPlayDamageFor,
-} from "@/core/attacks/swingPlayDamage";
-import {
-  chargeTraitDamage,
-  effectiveDamageForChoice,
-  withSwingDamageBonus,
-} from "@/core/damage/damage";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
-import type {
-  PlaybookDamageMods,
-  WrapPick,
-} from "@/core/playbook/playbook.types";
-import { getPlaybookResult } from "@/core/playbook/playbookIndex";
-import {
-  pickEffectName,
-  pickEffectsForLaterSwings,
-} from "@/core/playbook/rowEffects";
-import { sumOf } from "@/core/shared/sumOf";
-import type { AttackerData } from "@/data/attackers/attacker.types";
-import type { CharacterTrait } from "@/data/characterTraits";
+} from "./activationTimeline.types";
+import { activationAttackIndices } from "./attackRows";
+import { isChargeSwing } from "./attackStructure";
+import { swingPlayDamage, swingPlayDamageFor } from "./swingPlayDamage";
 
 const NO_CARRIED_EFFECTS: CarriedEffects = {
   tacBonus: 0,

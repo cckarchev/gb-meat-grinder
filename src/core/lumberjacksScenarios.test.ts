@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { deriveSimulation } from "@/core/activation/simulation";
-import { attackArraySize } from "@/core/attacks/attackStructure";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
-import { NO_MODS } from "@/core/testing/fixtures";
 import { bucker } from "@/data/attackers/bucker";
 import { crossCut } from "@/data/attackers/crossCut";
+import { deriveSimulation } from "./activation/simulation";
+import { attackArraySize } from "./attacks/attackStructure";
+import { NO_ATTACK_INDEX } from "./shared/constants";
+import { NO_MODS } from "./testing/fixtures";
 
 const TARGET_HP = 18;
 const FIRST_SWING_DAMAGE = 6;

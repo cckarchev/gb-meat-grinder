@@ -4,28 +4,22 @@
  * those still apply.
  */
 
-import { activationAttackIndices } from "@/core/attacks/attackRows";
-import { maxPlaybookColumnForRow } from "@/core/attacks/maxPlaybookColumn";
-import { initialCharacterPlayFor } from "@/core/characterPlays/characterPlayLookup";
-import type {
-  AttackPlan,
-  AttackPlanClampParams,
-} from "@/core/plan/attackPlan.types";
-import { knockDownIsOnlyEffect } from "@/core/playbook/knockDown";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { activationAttackIndices } from "../attacks/attackRows";
+import { maxPlaybookColumnForRow } from "../attacks/maxPlaybookColumn";
+import { initialCharacterPlayFor } from "../character-plays/characterPlayLookup";
+import { knockDownIsOnlyEffect } from "../playbook/knockDown";
 import {
   appliesKnockDown,
   isOncePerActivation,
   type PlaybookResultMatcher,
   stealsBall,
-} from "@/core/playbook/oncePerActivation";
-import type { PlaybookChoiceId } from "@/core/playbook/playbook.types";
-import {
-  cheapestChoiceId,
-  getPlaybookResult,
-} from "@/core/playbook/playbookIndex";
-import { wrapSlotBudget } from "@/core/playbook/wrapSlots";
-import { MIN_PLAYBOOK_NET } from "@/core/shared/constants";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../playbook/oncePerActivation";
+import type { PlaybookChoiceId } from "../playbook/playbook.types";
+import { cheapestChoiceId, getPlaybookResult } from "../playbook/playbookIndex";
+import { wrapSlotBudget } from "../playbook/wrapSlots";
+import { MIN_PLAYBOOK_NET } from "../shared/constants";
+import type { AttackPlan, AttackPlanClampParams } from "./attackPlan.types";
 
 /** One effect that only the first matching pick of the activation applies. */
 type OncePerActivationRule = {

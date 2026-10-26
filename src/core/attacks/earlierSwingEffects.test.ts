@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { coverTacPenaltyForAttack } from "@/core/attacks/earlierSwingEffects";
-import { makeAttacker } from "@/core/testing/fixtures";
+import { makeAttacker } from "../testing/fixtures";
+import { coverTacPenaltyForAttack } from "./earlierSwingEffects";
 
 const COVER = true;
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { statTransitions } from "@/core/attacks/statTransitions";
+import { statTransitions } from "./statTransitions";
 
 const STARTING_VALUE = 14;
 const FIRST_SWING = 11;

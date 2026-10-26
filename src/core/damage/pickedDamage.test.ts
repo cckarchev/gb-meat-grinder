@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { pickedDamageForNet } from "@/core/damage/pickedDamage";
-import type { WrapPick } from "@/core/playbook/playbook.types";
+import type { WrapPick } from "../playbook/playbook.types";
 import {
   makeAttacker,
   NO_MODS,
   NO_SWING_EXTRAS,
   PLAY_DAMAGE,
-} from "@/core/testing/fixtures";
+} from "../testing/fixtures";
+import { pickedDamageForNet } from "./pickedDamage";
 
 describe("pickedDamageForNet", () => {
   const attacker = makeAttacker();

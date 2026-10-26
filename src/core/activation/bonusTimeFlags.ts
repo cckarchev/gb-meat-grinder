@@ -1,9 +1,9 @@
 /** Drops Bonus Time spends the momentum pool can no longer pay for. */
 
-import { momentumPoolBeforeBonusTime } from "@/core/activation/momentum";
-import type { MomentumParams } from "@/core/activation/momentum.types";
-import { activationAttackIndices } from "@/core/attacks/attackRows";
-import { BONUS_TIME_MOMENTUM_COST } from "@/core/shared/constants";
+import { activationAttackIndices } from "../attacks/attackRows";
+import { BONUS_TIME_MOMENTUM_COST } from "../shared/constants";
+import { momentumPoolBeforeBonusTime } from "./momentum";
+import type { MomentumParams } from "./momentum.types";
 
 /** Passes beyond one per swing, as a safety margin for the settle loop. */
 const EXTRA_SETTLE_PASSES = 2;

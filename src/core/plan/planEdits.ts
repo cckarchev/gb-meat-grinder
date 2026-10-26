@@ -3,19 +3,19 @@
  * play.
  */
 
-import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
-import { playSlotForPick } from "@/core/characterPlays/characterPlayLookup";
-import { sanitizeCharacterPlayPicks } from "@/core/characterPlays/sanitizeCharacterPlayPicks";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import type { ActivationOrderParams } from "../attacks/attackSequence.types";
+import { playSlotForPick } from "../character-plays/characterPlayLookup";
+import { sanitizeCharacterPlayPicks } from "../character-plays/sanitizeCharacterPlayPicks";
+import type { CharacterPlayPickSlot } from "../playbook/playbook.types";
+import { choiceUsesCharacterPlay } from "../playbook/playbookIndex";
+import { rowHasWrapContinuation } from "../playbook/wrapSlots";
+import { PRIMARY_PICK_INDEX } from "../shared/constants";
 import type {
   AttackPlan,
   CharacterPlayPickEdit,
   WrapChoiceEdit,
-} from "@/core/plan/attackPlan.types";
-import type { CharacterPlayPickSlot } from "@/core/playbook/playbook.types";
-import { choiceUsesCharacterPlay } from "@/core/playbook/playbookIndex";
-import { rowHasWrapContinuation } from "@/core/playbook/wrapSlots";
-import { PRIMARY_PICK_INDEX } from "@/core/shared/constants";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "./attackPlan.types";
 
 /** Copy every row, replacing the one at `index` with `replace(row)`. */
 const withRowReplaced = <T>(

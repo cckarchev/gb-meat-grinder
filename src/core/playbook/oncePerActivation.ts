@@ -2,11 +2,11 @@
  * Playbook effects that only apply once per activation: Knock Down and Tackle.
  */
 
-import { picksBeforeInActivation } from "@/core/attacks/attackRows";
-import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
-import type { PickPosition } from "@/core/plan/attackPlan.types";
-import type { PlaybookResult, WrapPick } from "@/core/playbook/playbook.types";
-import { getPlaybookResult } from "@/core/playbook/playbookIndex";
+import { picksBeforeInActivation } from "../attacks/attackRows";
+import type { ActivationOrderParams } from "../attacks/attackSequence.types";
+import type { PickPosition } from "../plan/attackPlan.types";
+import type { PlaybookResult, WrapPick } from "./playbook.types";
+import { getPlaybookResult } from "./playbookIndex";
 
 export type PlaybookResultMatcher = (result: PlaybookResult) => boolean;
 

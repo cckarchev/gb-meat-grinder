@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
-import { killingBlowDisplayIndex } from "@/core/damage/killingBlow";
-import { makeRollContext } from "@/core/testing/fixtures";
+import type { AttackRollContext } from "../attacks/attackSequence.types";
+import { makeRollContext } from "../testing/fixtures";
+import { killingBlowDisplayIndex } from "./killingBlow";
 
 const swing = (attackIndex: number): AttackRollContext =>
   makeRollContext({

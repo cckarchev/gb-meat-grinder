@@ -2,24 +2,24 @@
  * Fits one attack row's wrap picks to the highest playbook column it reaches.
  */
 
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   initialCharacterPlayFor,
   playSlotForPick,
-} from "@/core/characterPlays/characterPlayLookup";
-import type { AttackPlanRow } from "@/core/plan/attackPlan.types";
-import type { PlaybookChoiceId } from "@/core/playbook/playbook.types";
+} from "../character-plays/characterPlayLookup";
+import type { PlaybookChoiceId } from "../playbook/playbook.types";
 import {
   cheapestChoiceId,
   maxPlaybookNet,
   netSuccessesForChoice,
-} from "@/core/playbook/playbookIndex";
-import { wrapSlotBudget, wrapSlotCount } from "@/core/playbook/wrapSlots";
+} from "../playbook/playbookIndex";
+import { wrapSlotBudget, wrapSlotCount } from "../playbook/wrapSlots";
 import {
   FIRST_WRAP_PICK_INDEX,
   MIN_PLAYBOOK_NET,
   PRIMARY_PICK_INDEX,
-} from "@/core/shared/constants";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../shared/constants";
+import type { AttackPlanRow } from "./attackPlan.types";
 
 /** First line of the widest column within `maxNet`. */
 const firstReachableChoiceId = (

@@ -2,17 +2,14 @@
  * Keeps a wrap / character-play plan legal as the inputs that bound it change.
  */
 
-import { sanitizeCharacterPlayPicks } from "@/core/characterPlays/sanitizeCharacterPlayPicks";
-import type {
-  AttackPlan,
-  AttackPlanClampParams,
-} from "@/core/plan/attackPlan.types";
-import { clampAttackRow } from "@/core/plan/clampAttackRow";
+import { sanitizeCharacterPlayPicks } from "../character-plays/sanitizeCharacterPlayPicks";
+import { gridEqual } from "../shared/gridEqual";
+import type { AttackPlan, AttackPlanClampParams } from "./attackPlan.types";
+import { clampAttackRow } from "./clampAttackRow";
 import {
   stripDuplicateKnockDown,
   stripDuplicateTackle,
-} from "@/core/plan/clampOncePerActivation";
-import { gridEqual } from "@/core/shared/gridEqual";
+} from "./clampOncePerActivation";
 
 /**
  * Safety cap for the clamp fixpoint loop; real plans settle in a few passes.

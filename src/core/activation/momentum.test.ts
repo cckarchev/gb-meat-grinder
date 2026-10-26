@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { makeAttacker, NO_MODS } from "../testing/fixtures";
 import {
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
-} from "@/core/activation/momentum";
-import { makeAttacker, NO_MODS } from "@/core/testing/fixtures";
+} from "./momentum";
 
 describe("momentum", () => {
   const attacker = makeAttacker({ inf: 3 });

@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { gangingUpRange } from "@/core/activation/gangingUp";
+import { GANGING_UP_RANGE } from "@/data/attackers/statRanges";
 import {
   makeAttacker,
   modsWith,
   NO_MODS,
   TEAMMATE_GUILD,
-} from "@/core/testing/fixtures";
-import { GANGING_UP_RANGE } from "@/data/attackers/statRanges";
+} from "../testing/fixtures";
+import { gangingUpRange } from "./gangingUp";
 
 describe("gangingUpRange", () => {
   const attacker = makeAttacker();

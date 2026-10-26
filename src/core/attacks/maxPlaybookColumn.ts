@@ -3,15 +3,12 @@
  * any gained net hits.
  */
 
-import {
-  activationTimeline,
-  swingStateAt,
-} from "@/core/attacks/activationTimeline";
-import type { ActivationRollParams } from "@/core/attacks/attackSequence.types";
-import { armorForAttackRow } from "@/core/attacks/swingDefense";
-import { swingTacAndDef } from "@/core/attacks/swingTac";
-import { maxNetSuccessesForRoll } from "@/core/damage/probability";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
+import { maxNetSuccessesForRoll } from "../damage/probability";
+import type { AttackPlan } from "../plan/attackPlan.types";
+import { activationTimeline, swingStateAt } from "./activationTimeline";
+import type { ActivationRollParams } from "./attackSequence.types";
+import { armorForAttackRow } from "./swingDefense";
+import { swingTacAndDef } from "./swingTac";
 
 /**
  * Highest net successes reachable in one roll on this row (TAC - ARM cap).

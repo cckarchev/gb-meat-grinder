@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { dontFearTheReaper } from "@/data/characterTraits";
+import { makeAttacker, PASSIVE_TRAIT, TEST_GUILD } from "../testing/fixtures";
 import {
   activatableTraits,
   activatedTraits,
@@ -6,13 +8,7 @@ import {
   guildBuffIsExcluded,
   guildBuffsFor,
   joinTraitLabels,
-} from "@/core/attackers/buffsAndTraits";
-import {
-  makeAttacker,
-  PASSIVE_TRAIT,
-  TEST_GUILD,
-} from "@/core/testing/fixtures";
-import { dontFearTheReaper } from "@/data/characterTraits";
+} from "./buffsAndTraits";
 
 describe("guild buff exclusion", () => {
   const attacker = makeAttacker();

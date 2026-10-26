@@ -1,13 +1,13 @@
 import type { PlaybookColumn } from "@/core/playbook/playbook.types";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+import { axeAQuestion, hoistingAndHauling } from "../characterPlays";
+import { anatomicalPrecision } from "../characterTraits";
+import { lumberjacks } from "../guilds/lumberjacks";
+import type { AttackerData } from "./attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from "@/data/attackers/statRanges";
-import { axeAQuestion, hoistingAndHauling } from "@/data/characterPlays";
-import { anatomicalPrecision } from "@/data/characterTraits";
-import { lumberjacks } from "@/data/guilds/lumberjacks";
+} from "./statRanges";
 
 /**
  * Bucker playbook, from the card: `GB;M`/`1;M`, `>;M`/`2;M`, `T;M`/`KD;M`,

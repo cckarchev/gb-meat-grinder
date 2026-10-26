@@ -1,6 +1,6 @@
-import { attackRowIsBerserker } from "@/core/attacks/attackRows";
-import type { AttackKind } from "@/core/attacks/attackSequence.types";
 import type { AttackerData } from "@/data/attackers/attacker.types";
+import { attackRowIsBerserker } from "./attackRows";
+import type { AttackKind } from "./attackSequence.types";
 
 const ATTACK_KIND_LABEL: Record<AttackKind, string> = {
   berserker: "Berserker attack",

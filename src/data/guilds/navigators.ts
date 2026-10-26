@@ -1,4 +1,4 @@
-import type { Guild } from "@/data/guilds/guild.types";
+import type { Guild } from "./guild.types";
 
 export const navigators: Guild = {
   id: "navigators",

@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest";
 import {
-  momentousLineStyle,
-  momentumEarnedBySwing,
-  pickGeneratesMomentum,
-} from "@/core/activation/momentousLines";
-import {
   makeAttacker,
   modsWith,
   NO_MODS,
   TEAMMATE_GUILD,
-} from "@/core/testing/fixtures";
+} from "../testing/fixtures";
+import {
+  momentousLineStyle,
+  momentumEarnedBySwing,
+  pickGeneratesMomentum,
+} from "./momentousLines";
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
 

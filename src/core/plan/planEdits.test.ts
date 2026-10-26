@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
+import type { PlaybookChoiceId } from "../playbook/playbook.types";
+import { makeAttacker, NO_MODS } from "../testing/fixtures";
+import type { AttackPlan } from "./attackPlan.types";
 import {
   nextPlanAfterCharacterPlayPick,
   nextPlanAfterClearWrapContinuation,
   nextPlanAfterWrapChoice,
-} from "@/core/plan/planEdits";
-import type { PlaybookChoiceId } from "@/core/playbook/playbook.types";
-import { makeAttacker, NO_MODS } from "@/core/testing/fixtures";
+} from "./planEdits";
 
 const attacker = makeAttacker();
 

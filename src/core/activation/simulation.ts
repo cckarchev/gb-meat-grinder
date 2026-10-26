@@ -1,21 +1,18 @@
-import { scenarioEffectiveStats } from "@/core/activation/scenarioStats";
-import type {
-  ActivationScenario,
-  DerivedSimulation,
-} from "@/core/activation/simulation.types";
-import { computeAttackSequence } from "@/core/attacks/attackSequence";
-import { activeTraitFlatDamage } from "@/core/damage/damage";
-import { killingBlowDisplayIndex } from "@/core/damage/killingBlow";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { computeAttackSequence } from "../attacks/attackSequence";
+import { activeTraitFlatDamage } from "../damage/damage";
+import { killingBlowDisplayIndex } from "../damage/killingBlow";
 import {
   effectiveBonusTimeForResilience,
   effectiveCharacterPlayPicksForResilience,
   effectiveWrapPicksForResilience,
   resilienceIgnoredAttackIndex,
-} from "@/core/damage/resilience";
-import { rowDamageIfAllHit } from "@/core/damage/rowDamage";
-import { isAttackIndex } from "@/core/shared/attackIndex";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../damage/resilience";
+import { rowDamageIfAllHit } from "../damage/rowDamage";
+import { isAttackIndex } from "../shared/attackIndex";
+import { NO_ATTACK_INDEX } from "../shared/constants";
+import { scenarioEffectiveStats } from "./scenarioStats";
+import type { ActivationScenario, DerivedSimulation } from "./simulation.types";
 
 type ResiliencePlan = Pick<
   DerivedSimulation,

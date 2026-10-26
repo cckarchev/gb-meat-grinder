@@ -2,8 +2,20 @@ import { describe, expect, it } from "vitest";
 import {
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
-} from "@/core/activation/momentum";
-import { activationTimeline } from "@/core/attacks/activationTimeline";
+} from "../activation/momentum";
+import { characterPlayUsageBeforePick } from "../character-plays/characterPlayUsage";
+import { rowDamageIfAllHit } from "../damage/rowDamage";
+import { knockDownTakenBeforePick } from "../playbook/knockDown";
+import { pickEffectsForLaterSwings } from "../playbook/rowEffects";
+import { NO_ATTACK_INDEX } from "../shared/constants";
+import {
+  makeAttacker,
+  modsWith,
+  NEUTRAL_TARGET_HP,
+  NO_MODS,
+  orderFor,
+} from "../testing/fixtures";
+import { activationTimeline } from "./activationTimeline";
 import {
   activationAttackIndices,
   attackRowIsActive,
@@ -11,19 +23,7 @@ import {
   basePicksDealDamage,
   berserkerSourceBaseIndex,
   picksBeforeInActivation,
-} from "@/core/attacks/attackRows";
-import { characterPlayUsageBeforePick } from "@/core/characterPlays/characterPlayUsage";
-import { rowDamageIfAllHit } from "@/core/damage/rowDamage";
-import { knockDownTakenBeforePick } from "@/core/playbook/knockDown";
-import { pickEffectsForLaterSwings } from "@/core/playbook/rowEffects";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
-import {
-  makeAttacker,
-  modsWith,
-  NEUTRAL_TARGET_HP,
-  NO_MODS,
-  orderFor,
-} from "@/core/testing/fixtures";
+} from "./attackRows";
 
 const TOUGH_HIDE = modsWith({ toughHide: true });
 

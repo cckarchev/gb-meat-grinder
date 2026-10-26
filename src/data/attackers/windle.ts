@@ -1,12 +1,12 @@
 import type { PlaybookColumn } from "@/core/playbook/playbook.types";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+import { snackBreak } from "../characterPlays";
+import { farmers } from "../guilds/farmers";
+import type { AttackerData } from "./attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from "@/data/attackers/statRanges";
-import { snackBreak } from "@/data/characterPlays";
-import { farmers } from "@/data/guilds/farmers";
+} from "./statRanges";
 
 /**
  * Windle playbook. All damage results are momentous. The momentous-2 on column

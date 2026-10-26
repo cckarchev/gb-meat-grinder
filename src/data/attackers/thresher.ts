@@ -1,13 +1,13 @@
 import type { PlaybookColumn } from "@/core/playbook/playbook.types";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+import { theyAintTough } from "../characterPlays";
+import { dontFearTheReaper } from "../characterTraits";
+import { farmers } from "../guilds/farmers";
+import type { AttackerData } from "./attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from "@/data/attackers/statRanges";
-import { theyAintTough } from "@/data/characterPlays";
-import { dontFearTheReaper } from "@/data/characterTraits";
-import { farmers } from "@/data/guilds/farmers";
+} from "./statRanges";
 
 /**
  * Thresher playbook. `<` (dodge) does nothing for attacking but is mapped as a

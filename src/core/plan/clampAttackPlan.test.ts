@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { clampAttackPlan } from "@/core/plan/clampAttackPlan";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import type {
   CharacterPlayPickSlot,
   PlaybookResult,
   WrapPick,
-} from "@/core/playbook/playbook.types";
-import { getPlaybookResult } from "@/core/playbook/playbookIndex";
+} from "../playbook/playbook.types";
+import { getPlaybookResult } from "../playbook/playbookIndex";
 import {
   makeAttacker,
   makeRollParams,
   planOf,
   TEST_PLAYBOOK,
-} from "@/core/testing/fixtures";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../testing/fixtures";
+import { clampAttackPlan } from "./clampAttackPlan";
 
 const ENEMY_KNOCKED_DOWN = true;
 

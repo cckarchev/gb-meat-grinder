@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { sumOf } from "@/core/shared/sumOf";
+import { sumOf } from "./sumOf";
 
 type Bonus = { amount?: number };
 

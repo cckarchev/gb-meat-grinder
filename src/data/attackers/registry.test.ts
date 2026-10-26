@@ -5,7 +5,7 @@ import {
   DEFAULT_ATTACKER,
   findAttackerById,
   randomAttacker,
-} from "@/data/attackers/registry";
+} from "./registry";
 
 describe("attackerById", () => {
   it("finds every registered model", () => {

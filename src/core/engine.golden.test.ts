@@ -7,50 +7,44 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { sanitizeBonusTimeFlags } from "@/core/activation/bonusTimeFlags";
-import { momentumAfterAttackInclusive } from "@/core/activation/momentum";
-import { deriveSimulation } from "@/core/activation/simulation";
-import type { ActivationScenario } from "@/core/activation/simulation.types";
-import {
-  activatableTraits,
-  availableBuffs,
-} from "@/core/attackers/buffsAndTraits";
-import { activationAttackIndices } from "@/core/attacks/attackRows";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { ATTACKERS } from "@/data/attackers/registry";
+import { sanitizeBonusTimeFlags } from "./activation/bonusTimeFlags";
+import { momentumAfterAttackInclusive } from "./activation/momentum";
+import { deriveSimulation } from "./activation/simulation";
+import type { ActivationScenario } from "./activation/simulation.types";
+import { activatableTraits, availableBuffs } from "./attackers/buffsAndTraits";
+import { activationAttackIndices } from "./attacks/attackRows";
 import {
   activeBaseAttackCount,
   attackArraySize,
-} from "@/core/attacks/attackStructure";
-import { maxPlaybookColumnForRow } from "@/core/attacks/maxPlaybookColumn";
-import { characterPlayAvailabilityForPick } from "@/core/characterPlays/characterPlayUsage";
-import {
-  effectiveDamageForChoice,
-  effectiveEnemyDef,
-} from "@/core/damage/damage";
-import type { ActivationDamageOutcome } from "@/core/damage/damage.types";
-import { damageQuantile } from "@/core/damage/damageDistribution";
-import { planDamageOutcome } from "@/core/damage/killOdds";
-import { damageModifierBreakdown } from "@/core/damage/rowDamage";
+} from "./attacks/attackStructure";
+import { maxPlaybookColumnForRow } from "./attacks/maxPlaybookColumn";
+import { characterPlayAvailabilityForPick } from "./character-plays/characterPlayUsage";
+import { effectiveDamageForChoice, effectiveEnemyDef } from "./damage/damage";
+import type { ActivationDamageOutcome } from "./damage/damage.types";
+import { damageQuantile } from "./damage/damageDistribution";
+import { planDamageOutcome } from "./damage/killOdds";
+import { damageModifierBreakdown } from "./damage/rowDamage";
 import type {
   AttackPlan,
   AttackPlanClampParams,
-} from "@/core/plan/attackPlan.types";
-import { clampAttackPlan } from "@/core/plan/clampAttackPlan";
+} from "./plan/attackPlan.types";
+import { clampAttackPlan } from "./plan/clampAttackPlan";
 import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
   PlaybookResult,
-} from "@/core/playbook/playbook.types";
-import { choiceUsesCharacterPlay } from "@/core/playbook/playbookIndex";
-import { formatWrapRowSelectionLabel } from "@/core/playbook/playbookLabels";
+} from "./playbook/playbook.types";
+import { choiceUsesCharacterPlay } from "./playbook/playbookIndex";
+import { formatWrapRowSelectionLabel } from "./playbook/playbookLabels";
 import {
   defaultCharacterPlayPicks,
   defaultWrapPicks,
   wrapSlotBudget,
-} from "@/core/playbook/wrapSlots";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
-import { orderFor } from "@/core/testing/fixtures";
-import type { AttackerData } from "@/data/attackers/attacker.types";
-import { ATTACKERS } from "@/data/attackers/registry";
+} from "./playbook/wrapSlots";
+import { NO_ATTACK_INDEX } from "./shared/constants";
+import { orderFor } from "./testing/fixtures";
 
 const ROUNDING_DIGITS = 6;
 const PLAN_SETTLE_PASSES = 6;

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { probAttackSucceeds } from "@/core/damage/probability";
+import { probAttackSucceeds } from "../damage/probability";
+import { makeAttacker } from "../testing/fixtures";
 import {
   defaultWrapPicks,
   rowHasWrapContinuation,
@@ -9,8 +10,7 @@ import {
   wrapSlotBudget,
   wrapSlotColumns,
   wrapSlotCount,
-} from "@/core/playbook/wrapSlots";
-import { makeAttacker } from "@/core/testing/fixtures";
+} from "./wrapSlots";
 
 /** The fixture playbook's widest column. */
 const CARD_WIDTH = 4;

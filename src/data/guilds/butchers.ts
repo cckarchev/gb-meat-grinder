@@ -1,5 +1,5 @@
-import { lovedCreature, theyAintTough, tooledUp } from "@/data/guildBuffs";
-import type { Guild } from "@/data/guilds/guild.types";
+import { lovedCreature, theyAintTough, tooledUp } from "../guildBuffs";
+import type { Guild } from "./guild.types";
 
 export const butchers: Guild = {
   id: "butchers",

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fromBase64Url, toBase64Url } from "@/core/shared/base64Url";
+import { fromBase64Url, toBase64Url } from "./base64Url";
 
 describe("base64url", () => {
   it("round-trips text", () => {

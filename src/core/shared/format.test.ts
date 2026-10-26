@@ -4,7 +4,7 @@ import {
   formatPercent,
   formatRange,
   formatSigned,
-} from "@/core/shared/format";
+} from "./format";
 
 describe("formatSigned", () => {
   it("prefixes a positive value with a plus sign", () => {

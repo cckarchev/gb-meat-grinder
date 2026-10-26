@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { crowdingOutRange } from "@/core/activation/crowdingOut";
+import { CROWDING_OUT_RANGE } from "@/data/attackers/statRanges";
 import {
   makeAttacker,
   modsWith,
   NO_MODS,
   TEAMMATE_GUILD,
-} from "@/core/testing/fixtures";
-import { CROWDING_OUT_RANGE } from "@/data/attackers/statRanges";
+} from "../testing/fixtures";
+import { crowdingOutRange } from "./crowdingOut";
 
 describe("crowdingOutRange", () => {
   const attacker = makeAttacker({ guild: TEAMMATE_GUILD });

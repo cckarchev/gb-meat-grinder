@@ -1,14 +1,14 @@
 /** Enemy DEF and ARM for a swing after stance, conditions and earlier plays. */
 
-import type { SwingState } from "@/core/attacks/activationTimeline.types";
-import { isChargeSwing } from "@/core/attacks/attackStructure";
-import { clamp } from "@/core/shared/clamp";
+import { clamp } from "../shared/clamp";
 import {
   ARM_MIN,
   DEF_MAX,
   DEF_MIN,
   DEFENSIVE_STANCE_DEF_BONUS,
-} from "@/core/shared/constants";
+} from "../shared/constants";
+import type { SwingState } from "./activationTimeline.types";
+import { isChargeSwing } from "./attackStructure";
 
 /**
  * Effective enemy DEF stat for this row: the charge into Defensive Stance gains

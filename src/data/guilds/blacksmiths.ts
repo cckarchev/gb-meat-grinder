@@ -1,6 +1,6 @@
-import { searingStrike as searingStrikeTrait } from "@/data/characterTraits";
-import { singledOut, stagger, tooledUp, weakPoint } from "@/data/guildBuffs";
-import type { Guild } from "@/data/guilds/guild.types";
+import { searingStrike as searingStrikeTrait } from "../characterTraits";
+import { singledOut, stagger, tooledUp, weakPoint } from "../guildBuffs";
+import type { Guild } from "./guild.types";
 
 export const blacksmiths: Guild = {
   id: "blacksmiths",

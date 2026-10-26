@@ -1,5 +1,5 @@
-import type { ActivationRollParams } from "@/core/attacks/attackSequence.types";
-import type { CharacterPlay } from "@/core/playbook/playbook.types";
+import type { CharacterPlay } from "../playbook/playbook.types";
+import type { ActivationRollParams } from "./attackSequence.types";
 
 /**
  * Effects earlier swings leave on the target or the attacker for a later swing.

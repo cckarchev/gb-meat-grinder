@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hpAfterDamage } from "@/core/damage/hpAfterDamage";
+import { hpAfterDamage } from "./hpAfterDamage";
 
 const HP = 10;
 

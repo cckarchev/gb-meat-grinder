@@ -1,11 +1,11 @@
-import type { AttackerData } from "@/data/attackers/attacker.types";
-import { bucker } from "@/data/attackers/bucker";
-import { cast } from "@/data/attackers/cast";
-import { crossCut } from "@/data/attackers/crossCut";
-import { thresher } from "@/data/attackers/thresher";
-import { veteranBoar } from "@/data/attackers/veteranBoar";
-import { veteranCinder } from "@/data/attackers/veteranCinder";
-import { windle } from "@/data/attackers/windle";
+import type { AttackerData } from "./attacker.types";
+import { bucker } from "./bucker";
+import { cast } from "./cast";
+import { crossCut } from "./crossCut";
+import { thresher } from "./thresher";
+import { veteranBoar } from "./veteranBoar";
+import { veteranCinder } from "./veteranCinder";
+import { windle } from "./windle";
 
 /** Every model the calculator can simulate, in display order. */
 export const ATTACKERS: readonly AttackerData[] = [

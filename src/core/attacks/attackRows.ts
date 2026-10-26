@@ -1,15 +1,15 @@
 /** Which attack rows exist this activation and the order they are made in. */
 
-import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
-import { berserkerRowOffset } from "@/core/attacks/attackStructure";
-import { effectiveDamageForChoice } from "@/core/damage/damage";
-import type { PickPosition } from "@/core/plan/attackPlan.types";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { effectiveDamageForChoice } from "../damage/damage";
+import type { PickPosition } from "../plan/attackPlan.types";
 import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
   WrapPick,
-} from "@/core/playbook/playbook.types";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../playbook/playbook.types";
+import type { ActivationOrderParams } from "./attackSequence.types";
+import { berserkerRowOffset } from "./attackStructure";
 
 /**
  * Rows below the berserker offset are base attacks; at/above it are berserkers.

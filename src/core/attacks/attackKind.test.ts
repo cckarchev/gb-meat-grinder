@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { attackKind, attackKindLabel } from "@/core/attacks/attackKind";
-import { makeAttacker } from "@/core/testing/fixtures";
+import { makeAttacker } from "../testing/fixtures";
+import { attackKind, attackKindLabel } from "./attackKind";
 
 const CHARGE_ROW = 0;
 const BASE_ROW = 1;

@@ -3,22 +3,19 @@
  * slot can reach.
  */
 
-import { probAttackSucceeds } from "@/core/damage/probability";
-import type {
-  CharacterPlayPickSlot,
-  PlaybookColumn,
-  WrapPick,
-} from "@/core/playbook/playbook.types";
-import {
-  maxPlaybookNet,
-  netSuccessesForChoice,
-} from "@/core/playbook/playbookIndex";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { probAttackSucceeds } from "../damage/probability";
 import {
   FIRST_WRAP_PICK_INDEX,
   MIN_PLAYBOOK_NET,
   MIN_WRAP_SLOTS,
-} from "@/core/shared/constants";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../shared/constants";
+import type {
+  CharacterPlayPickSlot,
+  PlaybookColumn,
+  WrapPick,
+} from "./playbook.types";
+import { maxPlaybookNet, netSuccessesForChoice } from "./playbookIndex";
 
 /**
  * How many playbook results this attack can resolve (ceil(maxNet / card cap)).

@@ -1,5 +1,5 @@
-import { theyAintTough, weakPoint } from "@/data/guildBuffs";
-import type { Guild } from "@/data/guilds/guild.types";
+import { theyAintTough, weakPoint } from "../guildBuffs";
+import type { Guild } from "./guild.types";
 
 export const farmers: Guild = {
   id: "farmers",

@@ -1,7 +1,7 @@
 /** Per-swing attack roll context produced by `computeAttackSequence`. */
 
-import type { PlaybookDamageMods } from "@/core/playbook/playbook.types";
 import type { AttackerData } from "@/data/attackers/attacker.types";
+import type { PlaybookDamageMods } from "../playbook/playbook.types";
 
 /** Activation-wide inputs every swing's TAC, DEF and ARM are computed from. */
 export type ActivationRollParams = {

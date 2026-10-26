@@ -1,35 +1,35 @@
 /** Per-row damage totals under the "every pick hits" projection. */
 
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   attackerTraits,
   availableBuffs,
   joinTraitLabels,
-} from "@/core/attackers/buffsAndTraits";
+} from "../attackers/buffsAndTraits";
 import {
   swingDamageIfAllHit,
   swingStateAt,
   swingStateDamageMods,
-} from "@/core/attacks/activationTimeline";
+} from "../attacks/activationTimeline";
 import type {
   ActivationTimeline,
   SwingState,
-} from "@/core/attacks/activationTimeline.types";
-import { attackRowIsActive } from "@/core/attacks/attackRows";
-import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
-import { slotScalesWithHealth } from "@/core/attacks/swingPlayDamage";
-import {
-  effectivePlaybookDamage,
-  effectivePlayDamage,
-  withSwingDamageBonus,
-} from "@/core/damage/damage";
+} from "../attacks/activationTimeline.types";
+import { attackRowIsActive } from "../attacks/attackRows";
+import type { ActivationOrderParams } from "../attacks/attackSequence.types";
+import { slotScalesWithHealth } from "../attacks/swingPlayDamage";
 import type {
   DamageBuffBonus,
   DamageModifierBreakdown,
   PlaybookDamageMods,
   WrapPick,
-} from "@/core/playbook/playbook.types";
-import { getPlaybookResult } from "@/core/playbook/playbookIndex";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../playbook/playbook.types";
+import { getPlaybookResult } from "../playbook/playbookIndex";
+import {
+  effectivePlaybookDamage,
+  effectivePlayDamage,
+  withSwingDamageBonus,
+} from "./damage";
 
 const TRAIT_ID_SEPARATOR = "+";
 

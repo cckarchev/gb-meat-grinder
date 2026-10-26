@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { activationTimeline } from "@/core/attacks/activationTimeline";
-import { computeAttackSequence } from "@/core/attacks/attackSequence";
-import type { ActivationRollParams } from "@/core/attacks/attackSequence.types";
 import {
   makeAttacker,
   makeRollParams,
   modsWith,
   PLAY_ARM,
   TEAMMATE_GUILD,
-} from "@/core/testing/fixtures";
+} from "../testing/fixtures";
+import { activationTimeline } from "./activationTimeline";
+import { computeAttackSequence } from "./attackSequence";
+import type { ActivationRollParams } from "./attackSequence.types";
 
 const COVER = true;
 

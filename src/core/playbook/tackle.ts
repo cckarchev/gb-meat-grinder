@@ -1,12 +1,9 @@
 /** Tackle takes the ball, so only one Tackle can apply per activation. */
 
-import type { ActivationOrderParams } from "@/core/attacks/attackSequence.types";
-import type { PickPosition } from "@/core/plan/attackPlan.types";
-import {
-  matchingPickBefore,
-  stealsBall,
-} from "@/core/playbook/oncePerActivation";
-import type { WrapPick } from "@/core/playbook/playbook.types";
+import type { ActivationOrderParams } from "../attacks/attackSequence.types";
+import type { PickPosition } from "../plan/attackPlan.types";
+import { matchingPickBefore, stealsBall } from "./oncePerActivation";
+import type { WrapPick } from "./playbook.types";
 
 /**
  * True if Tackle is unavailable for this pick: a strictly earlier wrap pick

@@ -1,13 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { pickGeneratesMomentum } from "@/core/activation/momentousLines";
-import { activationTimeline } from "@/core/attacks/activationTimeline";
-import { computeAttackSequence } from "@/core/attacks/attackSequence";
-import type { ActivationRollParams } from "@/core/attacks/attackSequence.types";
-import { rowDamageIfAllHit } from "@/core/damage/rowDamage";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
-import { wrapPickClearsCover } from "@/core/playbook/coverClearing";
-import type { PlaybookDamageMods } from "@/core/playbook/playbook.types";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { cast } from "@/data/attackers/cast";
+import { veteranCinder } from "@/data/attackers/veteranCinder";
+import { pickGeneratesMomentum } from "./activation/momentousLines";
+import { activationTimeline } from "./attacks/activationTimeline";
+import { computeAttackSequence } from "./attacks/attackSequence";
+import type { ActivationRollParams } from "./attacks/attackSequence.types";
+import { rowDamageIfAllHit } from "./damage/rowDamage";
+import type { AttackPlan } from "./plan/attackPlan.types";
+import { wrapPickClearsCover } from "./playbook/coverClearing";
+import type { PlaybookDamageMods } from "./playbook/playbook.types";
+import { NO_ATTACK_INDEX } from "./shared/constants";
 import {
   makeRollParams,
   modsWith,
@@ -15,10 +18,7 @@ import {
   orderFor,
   planOf,
   threeOf,
-} from "@/core/testing/fixtures";
-import type { AttackerData } from "@/data/attackers/attacker.types";
-import { cast } from "@/data/attackers/cast";
-import { veteranCinder } from "@/data/attackers/veteranCinder";
+} from "./testing/fixtures";
 
 /** Scenarios from PR #2, run against the real Blacksmiths data. */
 

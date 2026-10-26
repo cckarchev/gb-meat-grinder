@@ -1,18 +1,18 @@
 /** Breakdown text for the momentum and damage totals in the attacks summary. */
 
-import type { ActivationSummaryInput } from "@/core/activation/summary/activationSummary.types";
 import {
   activatedTraits,
   attackerTraits,
   joinTraitLabels,
-} from "@/core/attackers/buffsAndTraits";
-import { swingStateAt } from "@/core/attacks/activationTimeline";
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
+} from "../../attackers/buffsAndTraits";
+import { swingStateAt } from "../../attacks/activationTimeline";
+import type { AttackRollContext } from "../../attacks/attackSequence.types";
 import {
   characterPlayDamageSources,
   damageModifierBreakdown,
-} from "@/core/damage/rowDamage";
-import { sumOf } from "@/core/shared/sumOf";
+} from "../../damage/rowDamage";
+import { sumOf } from "../../shared/sumOf";
+import type { ActivationSummaryInput } from "./activationSummary.types";
 
 const NO_DAMAGE_TOOLTIP =
   "No selected playbook lines deal card damage to HP (after Tough Hide).";

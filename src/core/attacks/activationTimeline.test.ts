@@ -1,17 +1,7 @@
 import { describe, expect, it } from "vitest";
-import {
-  activationTimeline,
-  swingDamageMods,
-  swingStateAt,
-} from "@/core/attacks/activationTimeline";
-import type { TimelineParams } from "@/core/attacks/activationTimeline.types";
-import {
-  playDamageForHealth,
-  slotScalesWithHealth,
-} from "@/core/attacks/swingPlayDamage";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
-import type { CharacterPlay } from "@/core/playbook/playbook.types";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+import type { AttackPlan } from "../plan/attackPlan.types";
+import type { CharacterPlay } from "../playbook/playbook.types";
+import { NO_ATTACK_INDEX } from "../shared/constants";
 import {
   makeAttacker,
   modsWith,
@@ -26,7 +16,14 @@ import {
   PLAY_TAC,
   TEAMMATE_GUILD,
   TRAIT_ARM,
-} from "@/core/testing/fixtures";
+} from "../testing/fixtures";
+import {
+  activationTimeline,
+  swingDamageMods,
+  swingStateAt,
+} from "./activationTimeline";
+import type { TimelineParams } from "./activationTimeline.types";
+import { playDamageForHealth, slotScalesWithHealth } from "./swingPlayDamage";
 
 const params = (overrides: Partial<TimelineParams> = {}): TimelineParams => ({
   attacker: makeAttacker({

@@ -3,16 +3,13 @@
  * clamp.
  */
 
-import type {
-  ActivationScenario,
-  DerivedSimulation,
-} from "@/core/activation/simulation.types";
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   activeBaseAttackCount,
   effectiveChargeIndex,
-} from "@/core/attacks/attackStructure";
-import { effectiveEnemyDef } from "@/core/damage/damage";
-import type { AttackerData } from "@/data/attackers/attacker.types";
+} from "../attacks/attackStructure";
+import { effectiveEnemyDef } from "../damage/damage";
+import type { ActivationScenario, DerivedSimulation } from "./simulation.types";
 
 export type ScenarioStatsInput = Pick<
   ActivationScenario,

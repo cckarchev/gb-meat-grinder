@@ -5,8 +5,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { ATTACKERS } from "@/data/attackers/registry";
-import type { Guild } from "@/data/guilds/guild.types";
+import type { Guild } from "../guilds/guild.types";
+import { ATTACKERS } from "./registry";
 
 const guildModules = import.meta.glob<Record<string, Guild>>(
   ["@/data/guilds/*.ts", "!@/data/guilds/*.types.ts"],

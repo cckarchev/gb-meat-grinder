@@ -3,10 +3,10 @@
  * Time.
  */
 
-import { momentumEarnedBySwing } from "@/core/activation/momentousLines";
-import type { MomentumParams } from "@/core/activation/momentum.types";
-import { activationAttackIndices } from "@/core/attacks/attackRows";
-import { BONUS_TIME_MOMENTUM_COST } from "@/core/shared/constants";
+import { activationAttackIndices } from "../attacks/attackRows";
+import { BONUS_TIME_MOMENTUM_COST } from "../shared/constants";
+import { momentumEarnedBySwing } from "./momentousLines";
+import type { MomentumParams } from "./momentum.types";
 
 /**
  * Starting momentum plus heat picks minus Bonus Time spends, over the swings in

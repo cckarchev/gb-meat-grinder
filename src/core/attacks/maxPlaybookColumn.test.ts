@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { maxPlaybookColumnForRow } from "@/core/attacks/maxPlaybookColumn";
-import type { AttackPlanClampParams } from "@/core/plan/attackPlan.types";
+import type { AttackPlanClampParams } from "../plan/attackPlan.types";
 import {
   makeAttacker,
   makeRollParams,
   modsWith,
   TEAMMATE_GUILD,
-} from "@/core/testing/fixtures";
+} from "../testing/fixtures";
+import { maxPlaybookColumnForRow } from "./maxPlaybookColumn";
 
 describe("maxPlaybookColumnForRow", () => {
   const params = (tac: number): AttackPlanClampParams => ({

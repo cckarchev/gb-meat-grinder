@@ -2,15 +2,15 @@
  * One clamp pass over a single attack row of a plan.
  */
 
-import { attackRowIsActive } from "@/core/attacks/attackRows";
-import { maxPlaybookColumnForRow } from "@/core/attacks/maxPlaybookColumn";
+import { attackRowIsActive } from "../attacks/attackRows";
+import { maxPlaybookColumnForRow } from "../attacks/maxPlaybookColumn";
+import { rowEqual } from "../shared/gridEqual";
 import type {
   AttackPlan,
   AttackPlanClampParams,
   AttackPlanRow,
-} from "@/core/plan/attackPlan.types";
-import { clampRowPicks } from "@/core/plan/clampRowPicks";
-import { rowEqual } from "@/core/shared/gridEqual";
+} from "./attackPlan.types";
+import { clampRowPicks } from "./clampRowPicks";
 
 /** Pad or trim the row's play slots to one per pick. Mutates `draft`. */
 const alignPlaySlots = (draft: AttackPlan, attackIndex: number): boolean => {

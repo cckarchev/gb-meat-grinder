@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { guildColorStyle } from "@/styles/guildColorStyle";
+import { guildColorStyle } from "./guildColorStyle";
 
 describe("guildColorStyle", () => {
   it("sets the guild color custom property the CSS modules read", () => {

@@ -1,11 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { activationTimeline } from "@/core/attacks/activationTimeline";
-import {
-  characterPlayDamageSources,
-  damageModifierBreakdown,
-  rowDamageIfAllHit,
-} from "@/core/damage/rowDamage";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
+import { activationTimeline } from "../attacks/activationTimeline";
+import { NO_ATTACK_INDEX } from "../shared/constants";
 import {
   makeAttacker,
   modsWith,
@@ -16,7 +11,12 @@ import {
   PLAY_DAMAGE,
   PLAY_HALF_HEALTH,
   TEAMMATE_GUILD,
-} from "@/core/testing/fixtures";
+} from "../testing/fixtures";
+import {
+  characterPlayDamageSources,
+  damageModifierBreakdown,
+  rowDamageIfAllHit,
+} from "./rowDamage";
 
 /** The fixture `PLAY_DAMAGE`'s damage. */
 const PLAY_DAMAGE_AMOUNT = 3;

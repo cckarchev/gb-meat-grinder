@@ -1,5 +1,5 @@
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
-import type { SwingProjectionInput } from "@/core/attacks/swingProjections";
+import type { AttackRollContext } from "../../attacks/attackSequence.types";
+import type { SwingProjectionInput } from "../../attacks/swingProjections";
 
 /** The swing projection's input, plus what only the summary reads. */
 export type ActivationSummaryInput = SwingProjectionInput & {

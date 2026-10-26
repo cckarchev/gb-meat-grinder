@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { pickEffectsForLaterSwings } from "@/core/playbook/rowEffects";
-import { makeAttacker, orderFor } from "@/core/testing/fixtures";
+import { makeAttacker, orderFor } from "../testing/fixtures";
+import { pickEffectsForLaterSwings } from "./rowEffects";
 
 const NO_EFFECTS = {
   tacBonusForLater: 0,

@@ -1,25 +1,16 @@
 /** Activation-wide totals and odds shown in the attacks summary. */
 
+import type { AttackRollContext } from "../../attacks/attackSequence.types";
+import { damageQuantile } from "../../damage/damageDistribution";
+import { planDamageOutcome } from "../../damage/killOdds";
+import { isAttackIndex } from "../../shared/attackIndex";
+import { KILLING_BLOW_MOMENTUM, NO_ATTACK_INDEX } from "../../shared/constants";
 import type {
   ActivationSummary,
   ActivationSummaryInput,
-} from "@/core/activation/summary/activationSummary.types";
-import {
-  momentousPicksIfAllHit,
-  netMomentumIfAllHit,
-} from "@/core/activation/summary/summaryMomentum";
-import {
-  damageDealtTooltip,
-  netMomentumTooltip,
-} from "@/core/activation/summary/summaryTooltips";
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
-import { damageQuantile } from "@/core/damage/damageDistribution";
-import { planDamageOutcome } from "@/core/damage/killOdds";
-import { isAttackIndex } from "@/core/shared/attackIndex";
-import {
-  KILLING_BLOW_MOMENTUM,
-  NO_ATTACK_INDEX,
-} from "@/core/shared/constants";
+} from "./activationSummary.types";
+import { momentousPicksIfAllHit, netMomentumIfAllHit } from "./summaryMomentum";
+import { damageDealtTooltip, netMomentumTooltip } from "./summaryTooltips";
 
 /** The damage range shown is the 10th to 90th percentile of outcomes. */
 export const DAMAGE_RANGE_LOW_QUANTILE = 0.1;

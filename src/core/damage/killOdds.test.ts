@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { activationTimeline } from "@/core/attacks/activationTimeline";
-import { computeAttackSequence } from "@/core/attacks/attackSequence";
-import type { AttackRollContext } from "@/core/attacks/attackSequence.types";
-import { planDamageOutcome } from "@/core/damage/killOdds";
+import { activationTimeline } from "../attacks/activationTimeline";
+import { computeAttackSequence } from "../attacks/attackSequence";
+import type { AttackRollContext } from "../attacks/attackSequence.types";
 import {
   makeAttacker,
   makeRollContext,
@@ -10,7 +9,8 @@ import {
   NO_MODS,
   PLAY_DAMAGE,
   PLAY_HALF_HEALTH,
-} from "@/core/testing/fixtures";
+} from "../testing/fixtures";
+import { planDamageOutcome } from "./killOdds";
 
 describe("planDamageOutcome", () => {
   it("convolves swings and folds in flat damage", () => {

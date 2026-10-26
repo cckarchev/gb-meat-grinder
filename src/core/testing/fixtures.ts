@@ -1,20 +1,3 @@
-import type {
-  ActivationOrderParams,
-  ActivationRollParams,
-  AttackRollContext,
-} from "@/core/attacks/attackSequence.types";
-import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from "@/core/damage/damage";
-import type { SwingDamageExtras } from "@/core/damage/pickedDamage";
-import type { AttackPlan } from "@/core/plan/attackPlan.types";
-import type {
-  CharacterPlay,
-  CharacterPlayPickSlot,
-  PlaybookColumn,
-  PlaybookDamageMods,
-  PlaybookResult,
-  WrapPick,
-} from "@/core/playbook/playbook.types";
-import { DEF_DEFAULT, NO_ATTACK_INDEX } from "@/core/shared/constants";
 import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   CROWDING_OUT_RANGE,
@@ -24,6 +7,23 @@ import {
 import type { CharacterTrait } from "@/data/characterTraits";
 import { searingStrike } from "@/data/characterTraits";
 import type { Guild } from "@/data/guilds/guild.types";
+import type {
+  ActivationOrderParams,
+  ActivationRollParams,
+  AttackRollContext,
+} from "../attacks/attackSequence.types";
+import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from "../damage/damage";
+import type { SwingDamageExtras } from "../damage/pickedDamage";
+import type { AttackPlan } from "../plan/attackPlan.types";
+import type {
+  CharacterPlay,
+  CharacterPlayPickSlot,
+  PlaybookColumn,
+  PlaybookDamageMods,
+  PlaybookResult,
+  WrapPick,
+} from "../playbook/playbook.types";
+import { DEF_DEFAULT, NO_ATTACK_INDEX } from "../shared/constants";
 
 /**
  * Synthetic model for core tests. Its playbook is small and every result has a

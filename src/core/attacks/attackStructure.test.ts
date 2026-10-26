@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { NO_ATTACK_INDEX } from "../shared/constants";
+import { makeAttacker } from "../testing/fixtures";
 import {
   activeBaseAttackCount,
   attackArraySize,
@@ -8,9 +10,7 @@ import {
   effectiveChargeIndex,
   isChargeSwing,
   maxBaseAttackCount,
-} from "@/core/attacks/attackStructure";
-import { NO_ATTACK_INDEX } from "@/core/shared/constants";
-import { makeAttacker } from "@/core/testing/fixtures";
+} from "./attackStructure";
 
 const CHARGING = true;
 const NOT_CHARGING = false;
