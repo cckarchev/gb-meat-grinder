@@ -1,4 +1,4 @@
-import type { StatRange } from '@/data/attackers/attacker.types';
+import type { StatRange } from "@/data/attackers/attacker.types";
 
 /** Limit `value` to `[min, max]`; the minimum wins if the range is inverted. */
 export const clamp = (value: number, min: number, max: number): number => {
@@ -8,6 +8,5 @@ export const clamp = (value: number, min: number, max: number): number => {
 };
 
 /** Limit `value` to the bounds of `range`. */
-export const clampToRange = (value: number, range: StatRange): number => {
-  return clamp(value, range.min, range.max);
-};
+export const clampToRange = (value: number, range: StatRange): number =>
+  clamp(value, range.min, range.max);

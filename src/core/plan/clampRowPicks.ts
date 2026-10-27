@@ -2,24 +2,24 @@
  * Fits one attack row's wrap picks to the highest playbook column it reaches.
  */
 
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   initialCharacterPlayFor,
   playSlotForPick,
-} from '@/core/characterPlays/characterPlayLookup';
-import type { AttackPlanRow } from '@/core/plan/attackPlan.types';
-import type { PlaybookChoiceId } from '@/core/playbook/playbook.types';
+} from "../character-plays/characterPlayLookup";
+import type { PlaybookChoiceId } from "../playbook/playbook.types";
 import {
   cheapestChoiceId,
   maxPlaybookNet,
   netSuccessesForChoice,
-} from '@/core/playbook/playbookIndex';
-import { wrapSlotBudget, wrapSlotCount } from '@/core/playbook/wrapSlots';
+} from "../playbook/playbookIndex";
+import { wrapSlotBudget, wrapSlotCount } from "../playbook/wrapSlots";
 import {
   FIRST_WRAP_PICK_INDEX,
   MIN_PLAYBOOK_NET,
   PRIMARY_PICK_INDEX,
-} from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "../shared/constants";
+import type { AttackPlanRow } from "./attackPlan.types";
 
 /** First line of the widest column within `maxNet`. */
 const firstReachableChoiceId = (
@@ -31,14 +31,16 @@ const firstReachableChoiceId = (
   }
 
   const targetNet = Math.min(maxNet, maxPlaybookNet(attacker));
-  const column = attacker.playbook.find((candidate) => {
-    return candidate.netSuccesses === targetNet;
-  });
+  const column = attacker.playbook.find(
+    (candidate) => candidate.netSuccesses === targetNet,
+  );
 
   return column?.results[0].id ?? cheapestChoiceId(attacker);
 };
 
-/** Trim or pad the row to exactly `slotCount` slots, plays aligned with picks. */
+/**
+ * Trim or pad the row to exactly `slotCount` slots, plays aligned with picks.
+ */
 const fitRowToSlotCount = (
   row: AttackPlanRow,
   slotCount: number,
@@ -59,9 +61,9 @@ const fitRowToSlotCount = (
 };
 
 /**
- * Keep every pick within its slot budget: an over-budget first pick drops to the
- * best reachable line, an empty first pick empties the wrap, and over-budget
- * later picks are cleared. Mutates `row`.
+ * Keep every pick within its slot budget: an over-budget first pick drops to
+ * the best reachable line, an empty first pick empties the wrap, and
+ * over-budget later picks are cleared. Mutates `row`.
  */
 const fitPicksToBudget = (
   attacker: AttackerData,
@@ -94,7 +96,9 @@ const fitPicksToBudget = (
   }
 };
 
-/** Each play slot holds a play exactly when its pick uses one. Mutates `row`. */
+/**
+ * Each play slot holds a play exactly when its pick uses one. Mutates `row`.
+ */
 const syncCharacterPlays = (
   attacker: AttackerData,
   row: AttackPlanRow,

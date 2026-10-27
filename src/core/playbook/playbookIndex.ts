@@ -4,16 +4,19 @@
  * id strings.
  */
 
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import type {
   PlaybookChoiceId,
   PlaybookResult,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "./playbook.types";
 
 type PlaybookIndex = {
   byId: Map<PlaybookChoiceId, PlaybookResult>;
-  /** Largest column cost on the card; wrap reserves this much net per “full” step. */
+  /**
+   * Largest column cost on the card; wrap reserves this much net per “full”
+   * step.
+   */
   maxNet: number;
 };
 
@@ -50,14 +53,14 @@ export const playbookIndex = (attacker: AttackerData): PlaybookIndex => {
   return index;
 };
 
-export const maxPlaybookNet = (attacker: AttackerData): number => {
-  return playbookIndex(attacker).maxNet;
-};
+export const maxPlaybookNet = (attacker: AttackerData): number =>
+  playbookIndex(attacker).maxNet;
 
-/** First line of the first playbook column: the fallback when nothing else fits. */
-export const cheapestChoiceId = (attacker: AttackerData): PlaybookChoiceId => {
-  return attacker.playbook[0].results[0].id;
-};
+/**
+ * First line of the first playbook column: the fallback when nothing else fits.
+ */
+export const cheapestChoiceId = (attacker: AttackerData): PlaybookChoiceId =>
+  attacker.playbook[0].results[0].id;
 
 export const getPlaybookResult = (
   attacker: AttackerData,
@@ -87,9 +90,9 @@ export const netSuccessesForChoice = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
 ): number => {
-  const column = attacker.playbook.find((candidate) => {
-    return candidate.results.some((result) => result.id === id);
-  });
+  const column = attacker.playbook.find((candidate) =>
+    candidate.results.some((result) => result.id === id),
+  );
 
   if (!column) {
     throw new Error(`No column for id ${id}`);

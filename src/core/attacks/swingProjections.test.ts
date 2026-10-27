@@ -1,25 +1,22 @@
-import { describe, expect, it } from 'vitest';
-import { activationTimeline } from '@/core/attacks/activationTimeline';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import {
-  projectSwings,
-  type SwingProjectionInput,
-} from '@/core/attacks/swingProjections';
-import { rowDamageIfAllHit } from '@/core/damage/rowDamage';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
+import { describe, expect, it } from "vitest";
+import { rowDamageIfAllHit } from "../damage/rowDamage";
+import { NO_ATTACK_INDEX } from "../shared/constants";
 import {
   makeAttacker,
   makeRollContext,
   NO_MODS,
   orderFor,
-} from '@/core/testing/fixtures';
+} from "../testing/fixtures";
+import { activationTimeline } from "./activationTimeline";
+import type { AttackRollContext } from "./attackSequence.types";
+import { projectSwings, type SwingProjectionInput } from "./swingProjections";
 
 const TARGET_HP = 10;
 const SWING_DAMAGE = 2;
 const TRAIT_DAMAGE = 3;
 
-const swing = (attackIndex: number): AttackRollContext => {
-  return makeRollContext({
+const swing = (attackIndex: number): AttackRollContext =>
+  makeRollContext({
     attackIndex,
     tac: 2,
     armor: 0,
@@ -29,7 +26,6 @@ const swing = (attackIndex: number): AttackRollContext => {
     netHitBonus: 0,
     prob: 1,
   });
-};
 
 const input = (
   overrides: Partial<SwingProjectionInput> = {},
@@ -38,7 +34,7 @@ const input = (
     attacker: makeAttacker(),
     attacks: [swing(0), swing(1)],
     killingBlowIndex: -1,
-    wrapPicks: [['two'], ['two']],
+    wrapPicks: [["two"], ["two"]],
     bonusTimeByAttack: [false, false],
     damageMods: NO_MODS,
     flatDamage: 0,
@@ -50,9 +46,9 @@ const input = (
   };
 
   // Derived the way `deriveSimulation` does, unless a test pins it.
-  const characterPlayPicks = scenario.wrapPicks.map((row) => {
-    return row.map(() => null);
-  });
+  const characterPlayPicks = scenario.wrapPicks.map((row) =>
+    row.map(() => null),
+  );
 
   const timeline = activationTimeline(
     { wrapPicks: scenario.wrapPicks, characterPlayPicks },
@@ -75,8 +71,8 @@ const input = (
   return { timeline, rowDamageIfHit, ...scenario };
 };
 
-describe('projectSwings', () => {
-  it('tracks HP left and momentum after each swing', () => {
+describe("projectSwings", () => {
+  it("tracks HP left and momentum after each swing", () => {
     const projection = projectSwings(input());
 
     expect(projection.remainingHp).toEqual([
@@ -87,7 +83,7 @@ describe('projectSwings', () => {
     expect(projection.bonusTimePool).toEqual([0, 1]);
   });
 
-  it('applies activated-trait damage before the first swing', () => {
+  it("applies activated-trait damage before the first swing", () => {
     const projection = projectSwings(input({ flatDamage: TRAIT_DAMAGE }));
     const hpAfterTrait = TARGET_HP - TRAIT_DAMAGE;
 
@@ -97,7 +93,7 @@ describe('projectSwings', () => {
     ]);
   });
 
-  it('starts the swings from HP left after activated-trait damage', () => {
+  it("starts the swings from HP left after activated-trait damage", () => {
     expect(projectSwings(input()).startingHp).toBe(TARGET_HP);
     expect(projectSwings(input({ flatDamage: TRAIT_DAMAGE })).startingHp).toBe(
       TARGET_HP - TRAIT_DAMAGE,
@@ -105,11 +101,11 @@ describe('projectSwings', () => {
     expect(projectSwings(input({ flatDamage: 12 })).startingHp).toBe(0);
   });
 
-  it('never drops HP below zero', () => {
+  it("never drops HP below zero", () => {
     expect(projectSwings(input({ targetHp: 3 })).remainingHp).toEqual([1, 0]);
   });
 
-  it('adds the killing blow and freezes momentum after it', () => {
+  it("adds the killing blow and freezes momentum after it", () => {
     const projection = projectSwings(
       input({ targetHp: 2, killingBlowIndex: 0 }),
     );

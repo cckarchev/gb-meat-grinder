@@ -1,13 +1,13 @@
-import type { PlaybookColumn } from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { PlaybookColumn } from "@/core/playbook/playbook.types";
+import { theyAintTough } from "../characterPlays";
+import { dontFearTheReaper } from "../characterTraits";
+import { farmers } from "../guilds/farmers";
+import type { AttackerData } from "./attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from '@/data/attackers/statRanges';
-import { theyAintTough } from '@/data/characterPlays';
-import { dontFearTheReaper } from '@/data/characterTraits';
-import { farmers } from '@/data/guilds/farmers';
+} from "./statRanges";
 
 /**
  * Thresher playbook. `<` (dodge) does nothing for attacking but is mapped as a
@@ -19,13 +19,13 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 1,
     results: [
       {
-        id: 'dodge',
-        label: '<',
+        id: "dodge",
+        label: "<",
         damage: 0,
       },
       {
-        id: 'm2',
-        label: '2',
+        id: "m2",
+        label: "2",
         damage: 2,
         momentum: true,
       },
@@ -35,8 +35,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 2,
     results: [
       {
-        id: 'tackle',
-        label: 'T',
+        id: "tackle",
+        label: "T",
         damage: 0,
         stealsBall: true,
       },
@@ -46,14 +46,14 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 3,
     results: [
       {
-        id: 'three_gb',
-        label: '3GB',
+        id: "three_gb",
+        label: "3GB",
         damage: 3,
         picksCharacterPlay: true,
       },
       {
-        id: 'kd_dodge',
-        label: 'KD',
+        id: "kd_dodge",
+        label: "KD",
         defReductionForLater: 1,
         damage: 0,
         appliesKnockDown: true,
@@ -65,8 +65,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 4,
     results: [
       {
-        id: 'm3_dodge',
-        label: '3',
+        id: "m3_dodge",
+        label: "3",
         damage: 3,
         momentum: true,
         dodge: true,
@@ -77,8 +77,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 5,
     results: [
       {
-        id: 'm3_kd',
-        label: '3KD',
+        id: "m3_kd",
+        label: "3KD",
         defReductionForLater: 1,
         damage: 3,
         momentum: true,
@@ -90,8 +90,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 6,
     results: [
       {
-        id: 'm4',
-        label: '4',
+        id: "m4",
+        label: "4",
         damage: 4,
         momentum: true,
       },
@@ -100,8 +100,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
 ];
 
 export const thresher: AttackerData = {
-  id: 'thresher',
-  name: 'Thresher',
+  id: "thresher",
+  name: "Thresher",
   tac: 7,
   inf: 5,
   furious: false,
@@ -113,7 +113,7 @@ export const thresher: AttackerData = {
   // He is the guild's source of They Ain't Tough!, and Our Tools Are Sharp and
   // Lend a Hand come from Festival, the other Farmers captain, who cannot share
   // a team with him. So none of them can be pre-applied to him.
-  excludedGuildBuffs: ['theyAintTough', 'ourToolsAreSharp', 'lendAHand'],
+  excludedGuildBuffs: ["theyAintTough", "ourToolsAreSharp", "lendAHand"],
   characterTraits: [dontFearTheReaper],
   startingMomentum: STARTING_MOMENTUM_RANGE,
   gangingUp: GANGING_UP_RANGE,

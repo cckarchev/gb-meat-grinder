@@ -1,8 +1,7 @@
-import { describe, expect, it } from 'vitest';
-import { activationTimeline } from '@/core/attacks/activationTimeline';
-import { computeAttackSequence } from '@/core/attacks/attackSequence';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import { planDamageOutcome } from '@/core/damage/killOdds';
+import { describe, expect, it } from "vitest";
+import { activationTimeline } from "../attacks/activationTimeline";
+import { computeAttackSequence } from "../attacks/attackSequence";
+import type { AttackRollContext } from "../attacks/attackSequence.types";
 import {
   makeAttacker,
   makeRollContext,
@@ -10,10 +9,11 @@ import {
   NO_MODS,
   PLAY_DAMAGE,
   PLAY_HALF_HEALTH,
-} from '@/core/testing/fixtures';
+} from "../testing/fixtures";
+import { planDamageOutcome } from "./killOdds";
 
-describe('planDamageOutcome', () => {
-  it('convolves swings and folds in flat damage', () => {
+describe("planDamageOutcome", () => {
+  it("convolves swings and folds in flat damage", () => {
     const attacker = makeAttacker();
 
     const swing: AttackRollContext = makeRollContext({
@@ -34,7 +34,7 @@ describe('planDamageOutcome', () => {
     const outcome = planDamageOutcome(
       attacker,
       [swing],
-      [['one']],
+      [["one"]],
       NO_MODS,
       flatDamage,
       targetHp,
@@ -53,12 +53,14 @@ describe('planDamageOutcome', () => {
       [flatDamage + 1, hitsOne],
     ]);
   });
+});
 
-  it('counts only the damage the target can still take', () => {
+describe("planDamageOutcome against a target with little HP left", () => {
+  it("counts only the damage the target can still take", () => {
     const attacker = makeAttacker();
 
-    const sureTwo = (attackIndex: number): AttackRollContext => {
-      return makeRollContext({
+    const sureTwo = (attackIndex: number): AttackRollContext =>
+      makeRollContext({
         attackIndex,
         tac: 2,
         armor: 0,
@@ -68,7 +70,6 @@ describe('planDamageOutcome', () => {
         netHitBonus: 0,
         prob: 1,
       });
-    };
 
     const flatDamage = 1;
     const targetHp = 4;
@@ -77,7 +78,7 @@ describe('planDamageOutcome', () => {
     const outcome = planDamageOutcome(
       attacker,
       [sureTwo(0), sureTwo(1)],
-      [['two'], ['two']],
+      [["two"], ["two"]],
       NO_MODS,
       flatDamage,
       targetHp,
@@ -89,11 +90,13 @@ describe('planDamageOutcome', () => {
     expect(outcome.expectedHpRemaining).toBe(0);
     expect([...outcome.damageDistribution]).toEqual([[targetHp, 1]]);
   });
+});
 
-  it('counts an Once Per Turn damaging play once across the activation', () => {
+describe("planDamageOutcome with Once Per Turn plays", () => {
+  it("counts an Once Per Turn damaging play once across the activation", () => {
     const attacker = makeAttacker({ characterPlays: [PLAY_DAMAGE], tac: 20 });
-    const wrapPicks = [['gb'], ['gb']];
-    const characterPlayPicks = [['playDamage'], ['playDamage']];
+    const wrapPicks = [["gb"], ["gb"]];
+    const characterPlayPicks = [["playDamage"], ["playDamage"]];
     const plan = { wrapPicks, characterPlayPicks };
 
     const rollParams = makeRollParams({ attacker, enemyDef: 2 });
@@ -116,11 +119,13 @@ describe('planDamageOutcome', () => {
     // With 20 dice both swings almost surely reach `gb`: 1 + 3, then 1.
     expect(outcome.expectedDamage).toBeCloseTo(1 + playDamage + 1, 2);
   });
+});
 
-  it('scales a current-HP play by the damage each roll actually dealt before it', () => {
+describe("planDamageOutcome with current-HP plays", () => {
+  it("scales a current-HP play by the damage each roll actually dealt before it", () => {
     const attacker = makeAttacker({ characterPlays: [PLAY_HALF_HEALTH] });
-    const wrapPicks = [['one'], ['gb']];
-    const characterPlayPicks = [[null], ['playHalfHealth']];
+    const wrapPicks = [["one"], ["gb"]];
+    const characterPlayPicks = [[null], ["playHalfHealth"]];
     const plan = { wrapPicks, characterPlayPicks };
     const targetHp = 10;
 

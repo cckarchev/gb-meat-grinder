@@ -1,29 +1,32 @@
-import type { PlaybookColumn } from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { PlaybookColumn } from "@/core/playbook/playbook.types";
+import { shieldGlare, shieldThrow } from "../characterPlays";
+import { burningPassion } from "../characterTraits";
+import { blacksmiths } from "../guilds/blacksmiths";
+import type { AttackerData } from "./attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from '@/data/attackers/statRanges';
-import { shieldGlare, shieldThrow } from '@/data/characterPlays';
-import { burningPassion } from '@/data/characterTraits';
-import { blacksmiths } from '@/data/guilds/blacksmiths';
+} from "./statRanges";
 
-/** Cast playbook, from the card: `<`/`1`, `2,CP;M`, `T`/`><`, `4;M`, `CP,><`, `6;M`. */
+/**
+ * Cast playbook, from the card: `<`/`1`, `2,CP;M`, `T`/`><`, `4;M`, `CP,><`,
+ * `6;M`.
+ */
 const PLAYBOOK: readonly PlaybookColumn[] = [
   {
     netSuccesses: 1,
     results: [
-      { id: 'dodge', label: '<', damage: 0 },
-      { id: 'dmg1', label: '1', damage: 1 },
+      { id: "dodge", label: "<", damage: 0 },
+      { id: "dmg1", label: "1", damage: 1 },
     ],
   },
   {
     netSuccesses: 2,
     results: [
       {
-        id: 'two_gb',
-        label: '2GB',
+        id: "two_gb",
+        label: "2GB",
         damage: 2,
         momentum: true,
         picksCharacterPlay: true,
@@ -33,20 +36,20 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
   {
     netSuccesses: 3,
     results: [
-      { id: 'tackle', label: 'T', damage: 0, stealsBall: true },
-      { id: 'push_dodge', label: '><', damage: 0, clearsCover: true },
+      { id: "tackle", label: "T", damage: 0, stealsBall: true },
+      { id: "push_dodge", label: "><", damage: 0, clearsCover: true },
     ],
   },
   {
     netSuccesses: 4,
-    results: [{ id: 'dmg4', label: '4', damage: 4, momentum: true }],
+    results: [{ id: "dmg4", label: "4", damage: 4, momentum: true }],
   },
   {
     netSuccesses: 5,
     results: [
       {
-        id: 'gb_push_dodge',
-        label: 'GB><',
+        id: "gb_push_dodge",
+        label: "GB><",
         damage: 0,
         picksCharacterPlay: true,
         clearsCover: true,
@@ -55,13 +58,13 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
   },
   {
     netSuccesses: 6,
-    results: [{ id: 'dmg6', label: '6', damage: 6, momentum: true }],
+    results: [{ id: "dmg6", label: "6", damage: 6, momentum: true }],
   },
 ];
 
 export const cast: AttackerData = {
-  id: 'cast',
-  name: 'Cast',
+  id: "cast",
+  name: "Cast",
   tac: 5,
   inf: 4,
   furious: false,
@@ -71,7 +74,7 @@ export const cast: AttackerData = {
   guild: blacksmiths,
   characterPlays: [shieldGlare, shieldThrow],
   characterTraits: [burningPassion],
-  excludedGuildBuffs: ['shieldGlare'],
+  excludedGuildBuffs: ["shieldGlare"],
   startingMomentum: STARTING_MOMENTUM_RANGE,
   gangingUp: GANGING_UP_RANGE,
   crowdingOut: CROWDING_OUT_RANGE,

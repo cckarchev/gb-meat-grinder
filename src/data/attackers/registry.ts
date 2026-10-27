@@ -1,11 +1,11 @@
-import type { AttackerData } from '@/data/attackers/attacker.types';
-import { bucker } from '@/data/attackers/bucker';
-import { cast } from '@/data/attackers/cast';
-import { crossCut } from '@/data/attackers/crossCut';
-import { thresher } from '@/data/attackers/thresher';
-import { veteranBoar } from '@/data/attackers/veteranBoar';
-import { veteranCinder } from '@/data/attackers/veteranCinder';
-import { windle } from '@/data/attackers/windle';
+import type { AttackerData } from "./attacker.types";
+import { bucker } from "./bucker";
+import { cast } from "./cast";
+import { crossCut } from "./crossCut";
+import { thresher } from "./thresher";
+import { veteranBoar } from "./veteranBoar";
+import { veteranCinder } from "./veteranCinder";
+import { windle } from "./windle";
 
 /** Every model the calculator can simulate, in display order. */
 export const ATTACKERS: readonly AttackerData[] = [
@@ -22,17 +22,12 @@ export const ATTACKERS: readonly AttackerData[] = [
 export const DEFAULT_ATTACKER: AttackerData = veteranBoar;
 
 /** The registered model with this id, if any. */
-export const findAttackerById = (
-  id: string | null,
-): AttackerData | undefined => {
-  return ATTACKERS.find((attacker) => attacker.id === id);
-};
+export const findAttackerById = (id: string | null): AttackerData | undefined =>
+  ATTACKERS.find((attacker) => attacker.id === id);
 
-export const attackerById = (id: string): AttackerData => {
-  return findAttackerById(id) ?? DEFAULT_ATTACKER;
-};
+export const attackerById = (id: string): AttackerData =>
+  findAttackerById(id) ?? DEFAULT_ATTACKER;
 
 /** A random model, used to pick which one is selected on first load. */
-export const randomAttacker = (): AttackerData => {
-  return ATTACKERS[Math.floor(Math.random() * ATTACKERS.length)];
-};
+export const randomAttacker = (): AttackerData =>
+  ATTACKERS[Math.floor(Math.random() * ATTACKERS.length)];

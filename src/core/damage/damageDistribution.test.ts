@@ -1,15 +1,12 @@
-import { describe, expect, it } from 'vitest';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import {
-  damageQuantile,
-  swingDamageDistribution,
-} from '@/core/damage/damageDistribution';
-import { makeRollContext } from '@/core/testing/fixtures';
+import { describe, expect, it } from "vitest";
+import type { AttackRollContext } from "../attacks/attackSequence.types";
+import { makeRollContext } from "../testing/fixtures";
+import { damageQuantile, swingDamageDistribution } from "./damageDistribution";
 
 const QUARTER = 0.25;
 const HALF = 0.5;
 
-describe('damageQuantile', () => {
+describe("damageQuantile", () => {
   const bigHit = 5;
 
   const distribution = new Map([
@@ -18,7 +15,7 @@ describe('damageQuantile', () => {
     [bigHit, QUARTER],
   ]);
 
-  it('returns the smallest damage whose cumulative probability reaches q', () => {
+  it("returns the smallest damage whose cumulative probability reaches q", () => {
     const insideFirstQuarter = 0.1;
     const pastThreeQuarters = 0.76;
 
@@ -28,7 +25,7 @@ describe('damageQuantile', () => {
     expect(damageQuantile(distribution, 1)).toBe(bigHit);
   });
 
-  it('returns the largest damage when q exceeds the total mass', () => {
+  it("returns the largest damage when q exceeds the total mass", () => {
     const largest = 3;
     const lowMass = 0.4;
     const pastTotalMass = 0.95;
@@ -41,13 +38,13 @@ describe('damageQuantile', () => {
     expect(damageQuantile(partial, pastTotalMass)).toBe(largest);
   });
 
-  it('is 0 for an empty distribution', () => {
+  it("is 0 for an empty distribution", () => {
     expect(damageQuantile(new Map(), HALF)).toBe(0);
   });
 });
 
-describe('swingDamageDistribution with gained net hits', () => {
-  it('shifts every roll up by the bonus, so a soaked roll still reaches it', () => {
+describe("swingDamageDistribution with gained net hits", () => {
+  it("shifts every roll up by the bonus, so a soaked roll still reaches it", () => {
     const attack: AttackRollContext = makeRollContext({
       attackIndex: 0,
       tac: 1,

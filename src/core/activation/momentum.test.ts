@@ -1,13 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from "vitest";
+import { makeAttacker, NO_MODS } from "../testing/fixtures";
 import {
   momentumAfterAttackInclusive,
   momentumPoolBeforeBonusTime,
-} from '@/core/activation/momentum';
-import { makeAttacker, NO_MODS } from '@/core/testing/fixtures';
+} from "./momentum";
 
-describe('momentum', () => {
+describe("momentum", () => {
   const attacker = makeAttacker({ inf: 3 });
-  const wrapPicks = [['one', 'two'], ['dodge'], ['four']];
+  const wrapPicks = [["one", "two"], ["dodge"], ["four"]];
   const bonusTime = [true, false, false];
   const startingMomentum = 1;
   const activeBaseCount = 3;
@@ -21,12 +21,12 @@ describe('momentum', () => {
     activeBaseCount,
   };
 
-  it('counts heat picks and Bonus Time spends before a swing', () => {
+  it("counts heat picks and Bonus Time spends before a swing", () => {
     // 1 start + 2 heat on row 0 - 1 Bonus Time on row 0 + 0 on row 1.
     expect(momentumPoolBeforeBonusTime(2, params)).toBe(2);
   });
 
-  it('includes the swing itself after it resolves', () => {
+  it("includes the swing itself after it resolves", () => {
     // Row 2's `four` pick adds 1 heat on top of the 2 in the pool.
     const momentumAfterRowTwo = 3;
 

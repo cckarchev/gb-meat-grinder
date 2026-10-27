@@ -1,8 +1,8 @@
-import type { Guild } from '@/data/guilds/guild.types';
+import type { Guild } from "./guild.types";
 
 export const lamplighters: Guild = {
-  id: 'lamplighters',
-  name: 'Lamplighters',
-  color: '#00994a',
+  id: "lamplighters",
+  name: "Lamplighters",
+  color: "#00994a",
   buffs: [],
 };

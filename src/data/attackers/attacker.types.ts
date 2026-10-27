@@ -1,9 +1,9 @@
 import type {
   CharacterPlay,
   PlaybookColumn,
-} from '@/core/playbook/playbook.types';
-import type { CharacterTrait } from '@/data/characterTraits';
-import type { Guild } from '@/data/guilds/guild.types';
+} from "@/core/playbook/playbook.types";
+import type { CharacterTrait } from "../characterTraits";
+import type { Guild } from "../guilds/guild.types";
 
 /** Inclusive bounds for a per-activation input the model allows. */
 export type StatRange = { min: number; max: number };

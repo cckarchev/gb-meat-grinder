@@ -1,4 +1,7 @@
-/** Before/after pairs for a per-swing stat, so the UI can show what each swing changed. */
+/**
+ * Before/after pairs for a per-swing stat, so the UI can show what each swing
+ * changed.
+ */
 
 export type StatTransition = {
   /** Value before this swing. */
@@ -13,11 +16,10 @@ export type StatTransition = {
 export const statTransitions = (
   values: readonly number[],
   startingValue: number,
-): StatTransition[] => {
-  return values.map((to, index) => {
+): StatTransition[] =>
+  values.map((to, index) => {
     const isFirstSwing = index === 0;
     const from = isFirstSwing ? startingValue : values[index - 1];
 
     return { from, to };
   });
-};

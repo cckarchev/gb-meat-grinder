@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
-import { pickEffectsForLaterSwings } from '@/core/playbook/rowEffects';
-import { makeAttacker, orderFor } from '@/core/testing/fixtures';
+import { describe, expect, it } from "vitest";
+import { makeAttacker, orderFor } from "../testing/fixtures";
+import { pickEffectsForLaterSwings } from "./rowEffects";
 
 const NO_EFFECTS = {
   tacBonusForLater: 0,
@@ -12,13 +12,13 @@ const NO_EFFECTS = {
 const FIRST_SWING = { attackIndex: 0, pickIndex: 0 };
 const SECOND_SWING = { attackIndex: 1, pickIndex: 0 };
 
-describe('plain playbook lines', () => {
-  it('treat omitted later-swing bonuses as none', () => {
+describe("plain playbook lines", () => {
+  it("treat omitted later-swing bonuses as none", () => {
     const attacker = makeAttacker({
       playbook: [
         {
           netSuccesses: 1,
-          results: [{ id: 'bare', label: '1', damage: 1 }],
+          results: [{ id: "bare", label: "1", damage: 1 }],
         },
       ],
     });
@@ -26,7 +26,7 @@ describe('plain playbook lines', () => {
     expect(
       pickEffectsForLaterSwings(
         orderFor(attacker, 1),
-        { wrapPicks: [['bare']], characterPlayPicks: [[null]] },
+        { wrapPicks: [["bare"]], characterPlayPicks: [[null]] },
         FIRST_SWING,
         false,
       ),
@@ -34,14 +34,14 @@ describe('plain playbook lines', () => {
   });
 });
 
-describe('Knock Down', () => {
+describe("Knock Down", () => {
   const order = orderFor(makeAttacker(), 2);
   const plan = {
-    wrapPicks: [['kd'], ['kd']],
+    wrapPicks: [["kd"], ["kd"]],
     characterPlayPicks: [[null], [null]],
   };
 
-  it('gives later swings -1 DEF only from the first KD', () => {
+  it("gives later swings -1 DEF only from the first KD", () => {
     expect(pickEffectsForLaterSwings(order, plan, FIRST_SWING, false)).toEqual({
       ...NO_EFFECTS,
       defReductionForLater: 1,
@@ -52,7 +52,7 @@ describe('Knock Down', () => {
     );
   });
 
-  it('gives nothing when the target starts Knocked Down', () => {
+  it("gives nothing when the target starts Knocked Down", () => {
     const enemyKnockedDown = true;
 
     expect(
@@ -61,15 +61,15 @@ describe('Knock Down', () => {
   });
 });
 
-describe('character plays in row effects', () => {
+describe("character plays in row effects", () => {
   const order = orderFor(makeAttacker(), 2);
-  const gbTwice = [['gb'], ['gb']];
+  const gbTwice = [["gb"], ["gb"]];
 
-  it('applies a play once and ignores a repeated Once Per Turn pick', () => {
+  it("applies a play once and ignores a repeated Once Per Turn pick", () => {
     expect(
       pickEffectsForLaterSwings(
         order,
-        { wrapPicks: gbTwice, characterPlayPicks: [['playTac'], ['playTac']] },
+        { wrapPicks: gbTwice, characterPlayPicks: [["playTac"], ["playTac"]] },
         SECOND_SWING,
         false,
       ),
@@ -78,14 +78,14 @@ describe('character plays in row effects', () => {
     expect(
       pickEffectsForLaterSwings(
         order,
-        { wrapPicks: gbTwice, characterPlayPicks: [['playTac'], ['playDef']] },
+        { wrapPicks: gbTwice, characterPlayPicks: [["playTac"], ["playDef"]] },
         SECOND_SWING,
         false,
       ),
     ).toEqual({ ...NO_EFFECTS, defReductionForLater: 1 });
   });
 
-  it('falls back to the default play on an empty slot', () => {
+  it("falls back to the default play on an empty slot", () => {
     expect(
       pickEffectsForLaterSwings(
         order,

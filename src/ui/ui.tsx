@@ -1,0 +1,37 @@
+import type { ComponentProps, ReactNode } from "react";
+import { joinClassNames } from "@/styles/joinClassNames";
+import styles from "./ui.module.css";
+
+export const Panel = ({ className, ...props }: ComponentProps<"section">) => (
+  <section className={joinClassNames(styles.panel, className)} {...props} />
+);
+
+export const PanelFooterSection = ({
+  className,
+  ...props
+}: ComponentProps<"div">) => (
+  <div
+    className={joinClassNames(styles.panelFooterSection, className)}
+    {...props}
+  />
+);
+
+export const PanelTitle = ({ className, ...props }: ComponentProps<"h2">) => (
+  <h2 className={joinClassNames(styles.panelTitle, className)} {...props} />
+);
+
+type RowProps = {
+  children: ReactNode;
+};
+
+export const Row = ({ children }: RowProps) => (
+  <div className={styles.row}>{children}</div>
+);
+
+export const Select = ({ className, ...props }: ComponentProps<"select">) => (
+  <select className={joinClassNames(styles.select, className)} {...props} />
+);
+
+export const Mono = ({ className, ...props }: ComponentProps<"span">) => (
+  <span className={joinClassNames(styles.mono, className)} {...props} />
+);

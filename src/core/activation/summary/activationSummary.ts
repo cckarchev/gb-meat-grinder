@@ -1,25 +1,16 @@
 /** Activation-wide totals and odds shown in the attacks summary. */
 
+import type { AttackRollContext } from "../../attacks/attackSequence.types";
+import { damageQuantile } from "../../damage/damageDistribution";
+import { planDamageOutcome } from "../../damage/killOdds";
+import { isAttackIndex } from "../../shared/attackIndex";
+import { KILLING_BLOW_MOMENTUM, NO_ATTACK_INDEX } from "../../shared/constants";
 import type {
   ActivationSummary,
   ActivationSummaryInput,
-} from '@/core/activation/summary/activationSummary.types';
-import {
-  momentousPicksIfAllHit,
-  netMomentumIfAllHit,
-} from '@/core/activation/summary/summaryMomentum';
-import {
-  damageDealtTooltip,
-  netMomentumTooltip,
-} from '@/core/activation/summary/summaryTooltips';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import { damageQuantile } from '@/core/damage/damageDistribution';
-import { planDamageOutcome } from '@/core/damage/killOdds';
-import { isAttackIndex } from '@/core/shared/attackIndex';
-import {
-  KILLING_BLOW_MOMENTUM,
-  NO_ATTACK_INDEX,
-} from '@/core/shared/constants';
+} from "./activationSummary.types";
+import { momentousPicksIfAllHit, netMomentumIfAllHit } from "./summaryMomentum";
+import { damageDealtTooltip, netMomentumTooltip } from "./summaryTooltips";
 
 /** The damage range shown is the 10th to 90th percentile of outcomes. */
 export const DAMAGE_RANGE_LOW_QUANTILE = 0.1;
@@ -42,7 +33,10 @@ export const activeSwings = (
   return attacks.slice(start, end);
 };
 
-/** Whether the swing at `displayIndex` is ignored by Resilience or comes after the killing blow. */
+/**
+ * Whether the swing at `displayIndex` is ignored by Resilience or comes after
+ * the killing blow.
+ */
 export const swingIsSkipped = (
   displayIndex: number,
   ignoredDisplayIndex: number,
@@ -53,6 +47,46 @@ export const swingIsSkipped = (
     isAttackIndex(killingBlowIndex) && displayIndex > killingBlowIndex;
 
   return ignored || afterKill;
+};
+
+type RolledOutcome = Pick<
+  ActivationSummary,
+  "killProbability" | "expectedDamage" | "expectedHpRemaining" | "damageRange"
+>;
+
+/**
+ * The odds of the activation. Swings after the killing blow are still rolled
+ * whenever an earlier one whiffs, so the odds cover every swing Resilience
+ * does not ignore.
+ */
+const rolledOutcome = (input: ActivationSummaryInput): RolledOutcome => {
+  const rolledAttacks = activeSwings(
+    input.attacks,
+    input.ignoredDisplayIndex,
+    NO_ATTACK_INDEX,
+  );
+
+  const outcome = planDamageOutcome(
+    input.attacker,
+    rolledAttacks,
+    input.wrapPicks,
+    input.damageMods,
+    input.flatDamage,
+    input.targetHp,
+    input.timeline,
+  );
+
+  const distribution = outcome.damageDistribution;
+
+  return {
+    killProbability: outcome.killProbability,
+    expectedDamage: outcome.expectedDamage,
+    expectedHpRemaining: outcome.expectedHpRemaining,
+    damageRange: {
+      low: damageQuantile(distribution, DAMAGE_RANGE_LOW_QUANTILE),
+      high: damageQuantile(distribution, DAMAGE_RANGE_HIGH_QUANTILE),
+    },
+  };
 };
 
 export const summarizeActivation = (
@@ -84,25 +118,6 @@ export const summarizeActivation = (
     1,
   );
 
-  // Swings after the killing blow are still rolled whenever an earlier one
-  // whiffs, so the odds cover every swing Resilience does not ignore.
-  const rolledAttacks = activeSwings(
-    input.attacks,
-    input.ignoredDisplayIndex,
-    NO_ATTACK_INDEX,
-  );
-
-  const outcome = planDamageOutcome(
-    input.attacker,
-    rolledAttacks,
-    input.wrapPicks,
-    input.damageMods,
-    flatDamage,
-    input.targetHp,
-    input.timeline,
-  );
-
-  const distribution = outcome.damageDistribution;
   const momentousPicks = momentousPicksIfAllHit(input, activeAttacks);
 
   return {
@@ -120,12 +135,6 @@ export const summarizeActivation = (
     ),
     damageDealtTooltip: damageDealtTooltip(input, activeAttacks),
     planFailureProbability: 1 - planSuccessProbability,
-    killProbability: outcome.killProbability,
-    expectedDamage: outcome.expectedDamage,
-    expectedHpRemaining: outcome.expectedHpRemaining,
-    damageRange: {
-      low: damageQuantile(distribution, DAMAGE_RANGE_LOW_QUANTILE),
-      high: damageQuantile(distribution, DAMAGE_RANGE_HIGH_QUANTILE),
-    },
+    ...rolledOutcome(input),
   };
 };

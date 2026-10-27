@@ -21,7 +21,10 @@ export type CharacterPlay = {
   tacBonusForLater?: number;
   /** −enemy DEF on later attacks (e.g. Stagger). */
   defReductionForLater?: number;
-  /** −enemy ARM on later attacks (e.g. They Ain't Tough!). A named condition: it applies once. */
+  /**
+   * −enemy ARM on later attacks (e.g. They Ain't Tough!). A named condition: it
+   * applies once.
+   */
   armorReduction?: number;
   /**
    * DMG the play causes when triggered (e.g. Impale = 3). Modified like a
@@ -43,9 +46,9 @@ export type CharacterPlay = {
    */
   grantsAssist?: readonly string[];
   /**
-   * Once Per Turn, copied from the card: picking it on one swing removes it from
-   * later swings. It only limits availability; effects of the same name never
-   * stack either way (see MODELING.md, "Stacking").
+   * Once Per Turn, copied from the card: picking it on one swing removes it
+   * from later swings. It only limits availability; effects of the same name
+   * never stack either way (see MODELING.md, "Stacking").
    */
   oncePerTurn: boolean;
 };
@@ -82,7 +85,10 @@ export type PlaybookResult = {
   clearsCover?: boolean;
   /** KD: applies Knocked Down; only the first one in the activation counts. */
   appliesKnockDown?: boolean;
-  /** T: Tackle takes the ball; only one per activation, since the ball is gone after. */
+  /**
+   * T: Tackle takes the ball; only one per activation, since the ball is gone
+   * after.
+   */
   stealsBall?: boolean;
   /**
    * Card shows a dodge (`<`) on this result. Cosmetic only: dodges do nothing
@@ -99,11 +105,17 @@ export type PlaybookColumn = {
 };
 
 export type PlaybookDamageMods = {
-  /** Enemy Tough Hide: −1 to each **selected** playbook line that has card damage. */
+  /**
+   * Enemy Tough Hide: −1 to each **selected** playbook line that has card
+   * damage.
+   */
   toughHide: boolean;
   /** The target starts the activation with the Burning condition. */
   targetBurning: boolean;
-  /** A model named by the attacker's Assist (e.g. Mallet or Oak) engages the target. */
+  /**
+   * A model named by the attacker's Assist (e.g. Mallet or Oak) engages the
+   * target.
+   */
   assistEngaged: boolean;
   /**
    * Attacker damage buffs by id, toggled on/off. These are external (teammate /
@@ -118,8 +130,11 @@ export type PlaybookDamageMods = {
   swingDamageBonus?: number;
 };
 
-/** Playbook line button look for momentous damage pips (after Tough Hide / buffs). */
-export type MomentousLineStyle = 'heat' | 'zeroed' | 'none';
+/**
+ * Playbook line button look for momentous damage pips (after Tough Hide /
+ * buffs).
+ */
+export type MomentousLineStyle = "heat" | "zeroed" | "none";
 
 /** Per-pick character play slot; `null` when that pick is not GB / 1GB. */
 export type CharacterPlayPickSlot = CharacterPlayPick | null;
@@ -131,7 +146,10 @@ export type DamageBuffBonus = {
   bonus: number;
 };
 
-/** How much selected damage pips contribute, split by Tough Hide vs attacker buffs. */
+/**
+ * How much selected damage pips contribute, split by Tough Hide vs attacker
+ * buffs.
+ */
 export type DamageModifierBreakdown = {
   rawCardDamage: number;
   toughHideReduction: number;

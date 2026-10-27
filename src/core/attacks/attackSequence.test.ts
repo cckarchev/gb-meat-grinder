@@ -1,14 +1,14 @@
-import { describe, expect, it } from 'vitest';
-import { activationTimeline } from '@/core/attacks/activationTimeline';
-import { computeAttackSequence } from '@/core/attacks/attackSequence';
-import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
+import { describe, expect, it } from "vitest";
 import {
   makeAttacker,
   makeRollParams,
   modsWith,
   PLAY_ARM,
   TEAMMATE_GUILD,
-} from '@/core/testing/fixtures';
+} from "../testing/fixtures";
+import { activationTimeline } from "./activationTimeline";
+import { computeAttackSequence } from "./attackSequence";
+import type { ActivationRollParams } from "./attackSequence.types";
 
 const COVER = true;
 
@@ -19,7 +19,9 @@ const NO_BONUS_TIME = [false, false];
 const TAC = 6;
 const DEF = 4;
 
-/** 6 dice at p = 1/2: 64 equally likely outcomes, 42 with 3+ hits, 57 with 2+. */
+/**
+ * 6 dice at p = 1/2: 64 equally likely outcomes, 42 with 3+ hits, 57 with 2+.
+ */
 const SIX_DICE_OUTCOMES = 64;
 const THREE_PLUS_HIT_OUTCOMES = 42;
 const TWO_PLUS_HIT_OUTCOMES = 57;
@@ -36,10 +38,10 @@ const params: ActivationRollParams = makeRollParams({
   bonusTimeByAttack: NO_BONUS_TIME,
 });
 
-describe('computeAttackSequence', () => {
-  it('builds per-swing roll contexts with binomial success odds', () => {
+describe("computeAttackSequence", () => {
+  it("builds per-swing roll contexts with binomial success odds", () => {
     const plan = {
-      wrapPicks: [['two'], ['one']],
+      wrapPicks: [["two"], ["one"]],
       characterPlayPicks: [[null], [null]],
     };
 
@@ -74,10 +76,10 @@ describe('computeAttackSequence', () => {
     ]);
   });
 
-  it('carries character play effects to later swings', () => {
+  it("carries character play effects to later swings", () => {
     const plan = {
-      wrapPicks: [['gb'], ['one']],
-      characterPlayPicks: [['playTac'], [null]],
+      wrapPicks: [["gb"], ["one"]],
+      characterPlayPicks: [["playTac"], [null]],
     };
 
     const { attacks } = computeAttackSequence(plan, params);
@@ -85,9 +87,9 @@ describe('computeAttackSequence', () => {
     expect(attacks.map((attack) => attack.tac)).toEqual([TAC, TAC + 2]);
   });
 
-  it('gives the first swing the net hits Instruction grants', () => {
+  it("gives the first swing the net hits Instruction grants", () => {
     const plan = {
-      wrapPicks: [['two'], ['two']],
+      wrapPicks: [["two"], ["two"]],
       characterPlayPicks: [[null], [null]],
     };
 
@@ -105,11 +107,11 @@ describe('computeAttackSequence', () => {
   });
 });
 
-describe('the activation timeline of the sequence', () => {
-  it('is returned with the swings, so callers do not rebuild it', () => {
+describe("the activation timeline of the sequence", () => {
+  it("is returned with the swings, so callers do not rebuild it", () => {
     const plan = {
-      wrapPicks: [['gb'], ['one']],
-      characterPlayPicks: [['playTac'], [null]],
+      wrapPicks: [["gb"], ["one"]],
+      characterPlayPicks: [["playTac"], [null]],
     };
 
     const { timeline } = computeAttackSequence(plan, params);
@@ -118,10 +120,10 @@ describe('the activation timeline of the sequence', () => {
   });
 });
 
-describe('computeAttackSequence DEF and ARM after each swing', () => {
-  it('shows a KD lowering DEF on the swing that picks it', () => {
+describe("computeAttackSequence DEF and ARM after each swing", () => {
+  it("shows a KD lowering DEF on the swing that picks it", () => {
     const plan = {
-      wrapPicks: [['kd'], ['one']],
+      wrapPicks: [["kd"], ["one"]],
       characterPlayPicks: [[null], [null]],
     };
 
@@ -134,15 +136,15 @@ describe('computeAttackSequence DEF and ARM after each swing', () => {
     ]);
   });
 
-  it('shows an ARM play lowering ARM on the swing that picks it', () => {
+  it("shows an ARM play lowering ARM on the swing that picks it", () => {
     const armorPlayer = makeRollParams({
       ...params,
       attacker: makeAttacker({ tac: 6, inf: 3, characterPlays: [PLAY_ARM] }),
     });
 
     const plan = {
-      wrapPicks: [['gb'], ['one']],
-      characterPlayPicks: [['playArm'], [null]],
+      wrapPicks: [["gb"], ["one"]],
+      characterPlayPicks: [["playArm"], [null]],
     };
 
     const { attacks } = computeAttackSequence(plan, armorPlayer);
@@ -151,7 +153,7 @@ describe('computeAttackSequence DEF and ARM after each swing', () => {
     expect(attacks.map((attack) => attack.armorAfter)).toEqual([0, 0]);
   });
 
-  it('keeps the charge-only stance DEF on the charge swing after it lands', () => {
+  it("keeps the charge-only stance DEF on the charge swing after it lands", () => {
     const chargingIntoStance = makeRollParams({
       ...params,
       chargeAttackIndex: 0,
@@ -159,7 +161,7 @@ describe('computeAttackSequence DEF and ARM after each swing', () => {
     });
 
     const plan = {
-      wrapPicks: [['one'], ['one']],
+      wrapPicks: [["one"], ["one"]],
       characterPlayPicks: [[null], [null]],
     };
 

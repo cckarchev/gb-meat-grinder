@@ -1,16 +1,19 @@
-import { describe, expect, it } from 'vitest';
-import { deriveSimulation } from '@/core/activation/simulation';
-import { attackArraySize } from '@/core/attacks/attackStructure';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import { NO_MODS } from '@/core/testing/fixtures';
-import { bucker } from '@/data/attackers/bucker';
-import { crossCut } from '@/data/attackers/crossCut';
+import { describe, expect, it } from "vitest";
+import { bucker } from "@/data/attackers/bucker";
+import { crossCut } from "@/data/attackers/crossCut";
+import { deriveSimulation } from "./activation/simulation";
+import { attackArraySize } from "./attacks/attackStructure";
+import { NO_ATTACK_INDEX } from "./shared/constants";
+import { NO_MODS } from "./testing/fixtures";
 
 const TARGET_HP = 18;
 const FIRST_SWING_DAMAGE = 6;
 const NO_CHARACTER_PLAY = null;
 
-/** Cross Cut's two base attacks: a `6`, then the double GB into The Bigger They Are... */
+/**
+ * Cross Cut's two base attacks: a `6`, then the double GB into The Bigger They
+ * Are...
+ */
 const sixThenBiggerTheyAre = () => {
   const rows = attackArraySize(crossCut);
 
@@ -20,19 +23,19 @@ const sixThenBiggerTheyAre = () => {
     (): (string | null)[] => [],
   );
 
-  wrapPicks[0] = ['dmg6'];
+  wrapPicks[0] = ["dmg6"];
   characterPlayPicks[0] = [NO_CHARACTER_PLAY];
-  wrapPicks[1] = ['cup'];
-  characterPlayPicks[1] = ['theBiggerTheyAre'];
+  wrapPicks[1] = ["cup"];
+  characterPlayPicks[1] = ["theBiggerTheyAre"];
 
   return { wrapPicks, characterPlayPicks };
 };
 
-describe('Cross Cut: The Bigger They Are...', () => {
+describe("Cross Cut: The Bigger They Are...", () => {
   const attackPlan = sixThenBiggerTheyAre();
 
-  const derive = (toughHide: boolean) => {
-    return deriveSimulation(crossCut, {
+  const derive = (toughHide: boolean) =>
+    deriveSimulation(crossCut, {
       enemyDef: 4,
       armor: 1,
       hp: TARGET_HP,
@@ -51,9 +54,8 @@ describe('Cross Cut: The Bigger They Are...', () => {
       activeTraits: {},
       attackPlan,
     });
-  };
 
-  it('halves the HP the first swing leaves', () => {
+  it("halves the HP the first swing leaves", () => {
     const derived = derive(false);
 
     // 18 - 6 = 12 HP left, half is 6.
@@ -65,7 +67,7 @@ describe('Cross Cut: The Bigger They Are...', () => {
     ]);
   });
 
-  it('is condition damage that Tough Hide does not reduce', () => {
+  it("is condition damage that Tough Hide does not reduce", () => {
     const derived = derive(true);
 
     // The 6 drops to 5 (13 HP left), and half of 13 rounds down to 6.
@@ -79,7 +81,7 @@ describe('Cross Cut: The Bigger They Are...', () => {
   });
 });
 
-describe('Bucker: Anatomical Precision', () => {
+describe("Bucker: Anatomical Precision", () => {
   const twoSwingsOfTwo = () => {
     const rows = attackArraySize(bucker);
 
@@ -89,9 +91,9 @@ describe('Bucker: Anatomical Precision', () => {
       (): (string | null)[] => [],
     );
 
-    wrapPicks[0] = ['m2'];
+    wrapPicks[0] = ["m2"];
     characterPlayPicks[0] = [NO_CHARACTER_PLAY];
-    wrapPicks[1] = ['m2'];
+    wrapPicks[1] = ["m2"];
     characterPlayPicks[1] = [NO_CHARACTER_PLAY];
 
     return { wrapPicks, characterPlayPicks };
@@ -121,20 +123,20 @@ describe('Bucker: Anatomical Precision', () => {
     });
   };
 
-  it('lowers the target ARM by 1 on every swing', () => {
+  it("lowers the target ARM by 1 on every swing", () => {
     const derived = deriveAgainst(2);
 
     expect(derived.attacks.map((attack) => attack.armor)).toEqual([1, 1]);
   });
 
-  it('cannot take ARM below 0', () => {
+  it("cannot take ARM below 0", () => {
     const derived = deriveAgainst(0);
 
     expect(derived.attacks.map((attack) => attack.armor)).toEqual([0, 0]);
   });
 });
 
-describe('Bucker: Axe A Question', () => {
+describe("Bucker: Axe A Question", () => {
   const assistThenTwo = () => {
     const rows = attackArraySize(bucker);
 
@@ -144,9 +146,9 @@ describe('Bucker: Axe A Question', () => {
       (): (string | null)[] => [],
     );
 
-    wrapPicks[0] = ['gb'];
-    characterPlayPicks[0] = ['axeAQuestion'];
-    wrapPicks[1] = ['m2'];
+    wrapPicks[0] = ["gb"];
+    characterPlayPicks[0] = ["axeAQuestion"];
+    wrapPicks[1] = ["m2"];
     characterPlayPicks[1] = [NO_CHARACTER_PLAY];
 
     return { wrapPicks, characterPlayPicks };
@@ -176,7 +178,7 @@ describe('Bucker: Axe A Question', () => {
     });
   };
 
-  it('gives the next attack +1 TAC and +1 DMG while Mallet or Oak engages', () => {
+  it("gives the next attack +1 TAC and +1 DMG while Mallet or Oak engages", () => {
     const derived = derive(true);
 
     expect(derived.attacks.map((attack) => attack.tac)).toEqual([
@@ -186,7 +188,7 @@ describe('Bucker: Axe A Question', () => {
     expect(derived.rowDamageIfHit.slice(0, 2)).toEqual([0, 2 + 1]);
   });
 
-  it('gives nothing when neither engages the target', () => {
+  it("gives nothing when neither engages the target", () => {
     const derived = derive(false);
 
     expect(derived.attacks.map((attack) => attack.tac)).toEqual([

@@ -1,12 +1,12 @@
-import type { PlaybookColumn } from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { PlaybookColumn } from "@/core/playbook/playbook.types";
+import { theBiggerTheyAre } from "../characterPlays";
+import { lumberjacks } from "../guilds/lumberjacks";
+import type { AttackerData } from "./attacker.types";
 import {
   CROWDING_OUT_RANGE,
   GANGING_UP_RANGE,
   STARTING_MOMENTUM_RANGE,
-} from '@/data/attackers/statRanges';
-import { theBiggerTheyAre } from '@/data/characterPlays';
-import { lumberjacks } from '@/data/guilds/lumberjacks';
+} from "./statRanges";
 
 /**
  * Cross Cut playbook, from the card: `>;M`/`1;M`, `2;M`, `KD;M`/`3;M`,
@@ -19,15 +19,15 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 1,
     results: [
       {
-        id: 'push',
-        label: '>',
+        id: "push",
+        label: ">",
         damage: 0,
         momentum: true,
         clearsCover: true,
       },
       {
-        id: 'm1',
-        label: '1',
+        id: "m1",
+        label: "1",
         damage: 1,
         momentum: true,
       },
@@ -37,8 +37,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 2,
     results: [
       {
-        id: 'm2',
-        label: '2',
+        id: "m2",
+        label: "2",
         damage: 2,
         momentum: true,
       },
@@ -48,16 +48,16 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 3,
     results: [
       {
-        id: 'kd',
-        label: 'KD',
+        id: "kd",
+        label: "KD",
         defReductionForLater: 1,
         damage: 0,
         momentum: true,
         appliesKnockDown: true,
       },
       {
-        id: 'm3',
-        label: '3',
+        id: "m3",
+        label: "3",
         damage: 3,
         momentum: true,
       },
@@ -67,14 +67,14 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 4,
     results: [
       {
-        id: 'push_push',
-        label: '>>',
+        id: "push_push",
+        label: ">>",
         damage: 0,
         clearsCover: true,
       },
       {
-        id: 'four_kd',
-        label: '4KD',
+        id: "four_kd",
+        label: "4KD",
         defReductionForLater: 1,
         damage: 4,
         appliesKnockDown: true,
@@ -85,14 +85,14 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 5,
     results: [
       {
-        id: 'cup',
-        label: 'CUP',
+        id: "cup",
+        label: "CUP",
         damage: 0,
         picksCharacterPlay: true,
       },
       {
-        id: 'dmg5',
-        label: '5',
+        id: "dmg5",
+        label: "5",
         damage: 5,
       },
     ],
@@ -101,8 +101,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
     netSuccesses: 6,
     results: [
       {
-        id: 'dmg6',
-        label: '6',
+        id: "dmg6",
+        label: "6",
         damage: 6,
       },
     ],
@@ -110,8 +110,8 @@ const PLAYBOOK: readonly PlaybookColumn[] = [
 ];
 
 export const crossCut: AttackerData = {
-  id: 'crossCut',
-  name: 'Cross Cut',
+  id: "crossCut",
+  name: "Cross Cut",
   tac: 8,
   inf: 4,
   furious: false,

@@ -1,9 +1,9 @@
 /** Momentum the activation nets when every active swing hits. */
 
-import { momentumEarnedBySwing } from '@/core/activation/momentousLines';
-import { momentumAfterAttackInclusive } from '@/core/activation/momentum';
-import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+import type { AttackRollContext } from "../../attacks/attackSequence.types";
+import { momentumEarnedBySwing } from "../momentousLines";
+import { momentumAfterAttackInclusive } from "../momentum";
+import type { ActivationSummaryInput } from "./activationSummary.types";
 
 /** Momentous picks across the active swings, one momentum each. */
 export const momentousPicksIfAllHit = (
@@ -23,7 +23,10 @@ export const momentousPicksIfAllHit = (
   return momentum;
 };
 
-/** Momentum at the end of the last active swing, plus the killing blow, minus the start. */
+/**
+ * Momentum at the end of the last active swing, plus the killing blow, minus
+ * the start.
+ */
 export const netMomentumIfAllHit = (
   input: ActivationSummaryInput,
   activeAttacks: readonly AttackRollContext[],

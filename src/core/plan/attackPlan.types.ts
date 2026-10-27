@@ -1,10 +1,10 @@
-import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
+import type { ActivationRollParams } from "../attacks/attackSequence.types";
 import type {
   CharacterPlayPick,
   CharacterPlayPickSlot,
   PlaybookChoiceId,
   WrapPick,
-} from '@/core/playbook/playbook.types';
+} from "../playbook/playbook.types";
 
 export type AttackPlan = {
   wrapPicks: WrapPick[][];
@@ -23,7 +23,10 @@ export type PickPosition = {
   pickIndex: number;
 };
 
-/** A playbook line chosen (or cleared, with `null`) for one wrap slot of one attack. */
+/**
+ * A playbook line chosen (or cleared, with `null`) for one wrap slot of one
+ * attack.
+ */
 export type WrapChoiceEdit = PickPosition & {
   id: PlaybookChoiceId | null;
 };

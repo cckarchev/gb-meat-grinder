@@ -1,29 +1,29 @@
-/** User edits to the plan: picking a line, clearing a continuation, choosing a play. */
+/**
+ * User edits to the plan: picking a line, clearing a continuation, choosing a
+ * play.
+ */
 
-import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
-import { playSlotForPick } from '@/core/characterPlays/characterPlayLookup';
-import { sanitizeCharacterPlayPicks } from '@/core/characterPlays/sanitizeCharacterPlayPicks';
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import type { ActivationOrderParams } from "../attacks/attackSequence.types";
+import { playSlotForPick } from "../character-plays/characterPlayLookup";
+import { sanitizeCharacterPlayPicks } from "../character-plays/sanitizeCharacterPlayPicks";
+import type { CharacterPlayPickSlot } from "../playbook/playbook.types";
+import { choiceUsesCharacterPlay } from "../playbook/playbookIndex";
+import { rowHasWrapContinuation } from "../playbook/wrapSlots";
+import { PRIMARY_PICK_INDEX } from "../shared/constants";
 import type {
   AttackPlan,
   CharacterPlayPickEdit,
   WrapChoiceEdit,
-} from '@/core/plan/attackPlan.types';
-import type { CharacterPlayPickSlot } from '@/core/playbook/playbook.types';
-import { choiceUsesCharacterPlay } from '@/core/playbook/playbookIndex';
-import { rowHasWrapContinuation } from '@/core/playbook/wrapSlots';
-import { PRIMARY_PICK_INDEX } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "./attackPlan.types";
 
 /** Copy every row, replacing the one at `index` with `replace(row)`. */
 const withRowReplaced = <T>(
   rows: readonly (readonly T[])[],
   index: number,
   replace: (row: readonly T[]) => T[],
-): T[][] => {
-  return rows.map((row, rowIndex) => {
-    return rowIndex === index ? replace(row) : [...row];
-  });
-};
+): T[][] =>
+  rows.map((row, rowIndex) => (rowIndex === index ? replace(row) : [...row]));
 
 /** Returns `null` when the choice is a no-op. */
 export const nextPlanAfterWrapChoice = (
@@ -39,9 +39,9 @@ export const nextPlanAfterWrapChoice = (
     return null;
   }
 
-  const nextPicks = withRowReplaced(prev.wrapPicks, attackIndex, (row) => {
-    return row.map((current, slot) => (slot === pickIndex ? id : current));
-  });
+  const nextPicks = withRowReplaced(prev.wrapPicks, attackIndex, (row) =>
+    row.map((current, slot) => (slot === pickIndex ? id : current)),
+  );
 
   const rowLength = nextPicks[attackIndex].length;
 
@@ -84,16 +84,14 @@ export const nextPlanAfterClearWrapContinuation = (
     ? (prev.characterPlayPicks[attackIndex]?.[PRIMARY_PICK_INDEX] ?? null)
     : null;
 
-  const nextPicks = withRowReplaced(prev.wrapPicks, attackIndex, () => {
-    return [firstPick];
-  });
+  const nextPicks = withRowReplaced(prev.wrapPicks, attackIndex, () => [
+    firstPick,
+  ]);
 
   const nextCharacterPlay = withRowReplaced(
     prev.characterPlayPicks,
     attackIndex,
-    () => {
-      return [firstPlay];
-    },
+    () => [firstPlay],
   );
 
   return { wrapPicks: nextPicks, characterPlayPicks: nextCharacterPlay };

@@ -1,26 +1,28 @@
 /** Which playbook lines earn momentum once Tough Hide and buffs are applied. */
 
-import { activeBuffs } from '@/core/attackers/buffsAndTraits';
-import { effectiveDamageForChoice } from '@/core/damage/damage';
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { activeBuffs } from "../attackers/buffsAndTraits";
+import { effectiveDamageForChoice } from "../damage/damage";
 import type {
   MomentousLineStyle,
   PlaybookChoiceId,
   PlaybookDamageMods,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/playbookIndex';
-import { MOMENTOUS_PICK_MOMENTUM } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "../playbook/playbook.types";
+import { getPlaybookResult } from "../playbook/playbookIndex";
+import { MOMENTOUS_PICK_MOMENTUM } from "../shared/constants";
 
-/** True if a selected buff makes every playbook damage result momentous (Maximum Effort). */
+/**
+ * True if a selected buff makes every playbook damage result momentous (Maximum
+ * Effort).
+ */
 const buffsMakeDamageMomentous = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
-): boolean => {
-  return activeBuffs(attacker, mods).some(
+): boolean =>
+  activeBuffs(attacker, mods).some(
     (buff) => buff.damageResultsMomentous === true,
   );
-};
 
 export const momentousLineStyle = (
   attacker: AttackerData,
@@ -34,19 +36,19 @@ export const momentousLineStyle = (
     printedDamage && buffsMakeDamageMomentous(attacker, mods);
 
   if (!printedMomentous && !madeMomentous) {
-    return 'none';
+    return "none";
   }
 
   // A momentous result with no printed damage is pure momentum: nothing can
   // negate it. Only a damage result reduced to 0 loses its momentum.
 
   if (!printedDamage) {
-    return 'heat';
+    return "heat";
   }
 
   const dealsDamage = effectiveDamageForChoice(attacker, id, mods) > 0;
 
-  return dealsDamage ? 'heat' : 'zeroed';
+  return dealsDamage ? "heat" : "zeroed";
 };
 
 /**
@@ -63,7 +65,7 @@ export const pickGeneratesMomentum = (
     return false;
   }
 
-  return momentousLineStyle(attacker, id, mods) === 'heat';
+  return momentousLineStyle(attacker, id, mods) === "heat";
 };
 
 /** Momentum one swing's picks earn on a hit: one per pick that generates it. */
@@ -72,9 +74,9 @@ export const momentumEarnedBySwing = (
   picks: readonly WrapPick[],
   mods: PlaybookDamageMods,
 ): number => {
-  const momentousPicks = picks.filter((id) => {
-    return pickGeneratesMomentum(attacker, id, mods);
-  });
+  const momentousPicks = picks.filter((id) =>
+    pickGeneratesMomentum(attacker, id, mods),
+  );
 
   return momentousPicks.length * MOMENTOUS_PICK_MOMENTUM;
 };

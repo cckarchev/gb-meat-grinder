@@ -1,7 +1,9 @@
-import type { ActivationRollParams } from '@/core/attacks/attackSequence.types';
-import type { CharacterPlay } from '@/core/playbook/playbook.types';
+import type { CharacterPlay } from "../playbook/playbook.types";
+import type { ActivationRollParams } from "./attackSequence.types";
 
-/** Effects earlier swings leave on the target or the attacker for a later swing. */
+/**
+ * Effects earlier swings leave on the target or the attacker for a later swing.
+ */
 export type CarriedEffects = {
   tacBonus: number;
   defReduction: number;
@@ -17,7 +19,10 @@ export type SwingState = {
   effectsAfter: CarriedEffects;
   /** The damaging play live on each pick of this swing (null when none). */
   damagingPlayBySlot: readonly (CharacterPlay | null)[];
-  /** Effective DMG of that play (0 when none), assuming every earlier pick lands. */
+  /**
+   * Effective DMG of that play (0 when none), assuming every earlier pick
+   * lands.
+   */
   playDamageBySlot: readonly number[];
   /**
    * The play's {@link CharacterPlay.currentHealthDivisor} on each slot (0 when
@@ -25,18 +30,27 @@ export type SwingState = {
    * it for each HP the target may have left.
    */
   healthPlayDivisorBySlot: readonly number[];
-  /** The target is Burning before this swing (pre-applied or lit by an earlier one). */
+  /**
+   * The target is Burning before this swing (pre-applied or lit by an earlier
+   * one).
+   */
   targetBurningBefore: boolean;
   /** +DMG on this swing's playbook damage results (Burning Passion, Assist). */
   playbookDamageBonus: number;
-  /** Net hits added to this swing's roll after ARM (Instruction, first swing only). */
+  /**
+   * Net hits added to this swing's roll after ARM (Instruction, first swing
+   * only).
+   */
   netHitBonus: number;
   /**
    * The traits' charge damage (Sweeping Charge) when this is the charge swing,
    * whatever it picks; 0 elsewhere. The odds add it per roll.
    */
   chargeTraitDamage: number;
-  /** All-hit charge damage: `chargeTraitDamage` when a pick has printed damage, else 0. */
+  /**
+   * All-hit charge damage: `chargeTraitDamage` when a pick has printed damage,
+   * else 0.
+   */
   chargeDamage: number;
 };
 
@@ -46,10 +60,10 @@ export type ActivationTimeline = readonly SwingState[];
 /** The activation-wide inputs the timeline reads. */
 export type TimelineParams = Pick<
   ActivationRollParams,
-  | 'attacker'
-  | 'damageMods'
-  | 'activeBaseCount'
-  | 'chargeAttackIndex'
-  | 'targetHp'
-  | 'enemyKnockedDown'
+  | "attacker"
+  | "damageMods"
+  | "activeBaseCount"
+  | "chargeAttackIndex"
+  | "targetHp"
+  | "enemyKnockedDown"
 >;

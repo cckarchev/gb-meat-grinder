@@ -1,9 +1,12 @@
-/** Momentum pool through the activation: earned by heat picks, spent on Bonus Time. */
+/**
+ * Momentum pool through the activation: earned by heat picks, spent on Bonus
+ * Time.
+ */
 
-import { momentumEarnedBySwing } from '@/core/activation/momentousLines';
-import type { MomentumParams } from '@/core/activation/momentum.types';
-import { activationAttackIndices } from '@/core/attacks/attackRows';
-import { BONUS_TIME_MOMENTUM_COST } from '@/core/shared/constants';
+import { activationAttackIndices } from "../attacks/attackRows";
+import { BONUS_TIME_MOMENTUM_COST } from "../shared/constants";
+import { momentumEarnedBySwing } from "./momentousLines";
+import type { MomentumParams } from "./momentum.types";
 
 /**
  * Starting momentum plus heat picks minus Bonus Time spends, over the swings in
@@ -49,23 +52,20 @@ const momentumAcrossSwings = (
 
 /**
  * Momentum available **before** this attack’s roll (after prior attacks’ heat
- * picks and their Bonus Time spends, not including this attack’s wrap or spend).
+ * picks and their Bonus Time spends, not including this attack’s wrap or
+ * spend).
  */
 export const momentumPoolBeforeBonusTime = (
   attackIndex: number,
   params: MomentumParams,
-): number => {
-  return momentumAcrossSwings(attackIndex, params, false);
-};
+): number => momentumAcrossSwings(attackIndex, params, false);
 
 /**
- * Total momentum after this attack in activation order: starting momentum,
- * plus heat picks through this attack, minus Bonus Time spends through this attack.
+ * Total momentum after this attack in activation order: starting momentum, plus
+ * heat picks through this attack, minus Bonus Time spends through this attack.
  * Earned momentum is not capped at `STARTING_MOMENTUM_RANGE.max`.
  */
 export const momentumAfterAttackInclusive = (
   attackIndex: number,
   params: MomentumParams,
-): number => {
-  return momentumAcrossSwings(attackIndex, params, true);
-};
+): number => momentumAcrossSwings(attackIndex, params, true);

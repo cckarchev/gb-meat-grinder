@@ -1,18 +1,17 @@
-/** Effects each pick carries into later swings: TAC, DEF and the ARM condition. */
+/**
+ * Effects each pick carries into later swings: TAC, DEF and the ARM condition.
+ */
 
-import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
-import { characterPlayPickEffects } from '@/core/characterPlays/characterPlayEffects';
-import { effectivePlayForPick } from '@/core/characterPlays/characterPlayLookup';
-import { characterPlayUsageBeforePick } from '@/core/characterPlays/characterPlayUsage';
-import type { AttackPlan, PickPosition } from '@/core/plan/attackPlan.types';
-import { knockDownTakenBeforePick } from '@/core/playbook/knockDown';
-import type { PickEffects } from '@/core/playbook/playbook.types';
-import {
-  choiceUsesCharacterPlay,
-  getPlaybookResult,
-} from '@/core/playbook/playbookIndex';
-import { KNOCKED_DOWN_EFFECT } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import type { ActivationOrderParams } from "../attacks/attackSequence.types";
+import { characterPlayPickEffects } from "../character-plays/characterPlayEffects";
+import { effectivePlayForPick } from "../character-plays/characterPlayLookup";
+import { characterPlayUsageBeforePick } from "../character-plays/characterPlayUsage";
+import type { AttackPlan, PickPosition } from "../plan/attackPlan.types";
+import { KNOCKED_DOWN_EFFECT } from "../shared/constants";
+import { knockDownTakenBeforePick } from "./knockDown";
+import type { PickEffects } from "./playbook.types";
+import { choiceUsesCharacterPlay, getPlaybookResult } from "./playbookIndex";
 
 const NO_EFFECTS: PickEffects = {
   tacBonusForLater: 0,
@@ -76,8 +75,8 @@ export const pickEffectsForLaterSwings = (
 
 /**
  * The name a pick's carried effect goes by, for the "same name does not stack"
- * rule: the play's id when the pick triggers one, the shared Knock Down name for
- * a KD, otherwise the playbook result's id.
+ * rule: the play's id when the pick triggers one, the shared Knock Down name
+ * for a KD, otherwise the playbook result's id.
  */
 export const pickEffectName = (
   attacker: AttackerData,
@@ -88,7 +87,7 @@ export const pickEffectName = (
   const id = plan.wrapPicks[attackIndex][pickIndex];
 
   if (id == null) {
-    return '';
+    return "";
   }
 
   if (choiceUsesCharacterPlay(attacker, id)) {

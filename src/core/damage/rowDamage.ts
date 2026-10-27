@@ -1,41 +1,41 @@
 /** Per-row damage totals under the "every pick hits" projection. */
 
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   attackerTraits,
   availableBuffs,
   joinTraitLabels,
-} from '@/core/attackers/buffsAndTraits';
+} from "../attackers/buffsAndTraits";
 import {
   swingDamageIfAllHit,
   swingStateAt,
   swingStateDamageMods,
-} from '@/core/attacks/activationTimeline';
+} from "../attacks/activationTimeline";
 import type {
   ActivationTimeline,
   SwingState,
-} from '@/core/attacks/activationTimeline.types';
-import { attackRowIsActive } from '@/core/attacks/attackRows';
-import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
-import { slotScalesWithHealth } from '@/core/attacks/swingPlayDamage';
-import {
-  effectivePlaybookDamage,
-  effectivePlayDamage,
-  withSwingDamageBonus,
-} from '@/core/damage/damage';
+} from "../attacks/activationTimeline.types";
+import { attackRowIsActive } from "../attacks/attackRows";
+import type { ActivationOrderParams } from "../attacks/attackSequence.types";
+import { slotScalesWithHealth } from "../attacks/swingPlayDamage";
 import type {
   DamageBuffBonus,
   DamageModifierBreakdown,
   PlaybookDamageMods,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/playbookIndex';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "../playbook/playbook.types";
+import { getPlaybookResult } from "../playbook/playbookIndex";
+import {
+  effectivePlaybookDamage,
+  effectivePlayDamage,
+  withSwingDamageBonus,
+} from "./damage";
 
-const TRAIT_ID_SEPARATOR = '+';
+const TRAIT_ID_SEPARATOR = "+";
 
 /** The breakdown line for the +DMG Assist carries into later swings. */
-const ASSIST_LINE_ID = 'assist';
-const ASSIST_LINE_LABEL = 'Assist';
+const ASSIST_LINE_ID = "assist";
+const ASSIST_LINE_LABEL = "Assist";
 
 /** The breakdown line for Burning Passion-like traits, named after them. */
 const burningPassionLine = (
@@ -43,9 +43,9 @@ const burningPassionLine = (
   damageMods: PlaybookDamageMods,
   bonus: number,
 ): DamageBuffBonus => {
-  const traits = attackerTraits(attacker, damageMods).filter((trait) => {
-    return (trait.playbookDamageVsBurning ?? 0) > 0;
-  });
+  const traits = attackerTraits(attacker, damageMods).filter(
+    (trait) => (trait.playbookDamageVsBurning ?? 0) > 0,
+  );
 
   const id = traits.map((trait) => trait.id).join(TRAIT_ID_SEPARATOR);
   const label = joinTraitLabels(traits);
@@ -211,6 +211,42 @@ const swingPlayAmounts = (
   return { amounts, unmodifiedDamage };
 };
 
+type AmountTally = {
+  effective: number;
+  toughHideReduction: number;
+};
+
+/**
+ * What one printed amount deals and what Tough Hide takes off it. What each
+ * buff adds to it goes straight into `buffBonuses`.
+ */
+const tallyAmount = (
+  attacker: AttackerData,
+  { printed, mods, damageOf }: PrintedAmount,
+  buffBonuses: DamageBuffBonus[],
+): AmountTally => {
+  const effective = damageOf(attacker, printed, mods);
+
+  const withoutToughHide: PlaybookDamageMods = {
+    ...mods,
+    toughHide: false,
+  };
+
+  const toughHideReduction =
+    damageOf(attacker, printed, withoutToughHide) - effective;
+
+  for (const buffBonus of buffBonuses) {
+    const withoutBuff: PlaybookDamageMods = {
+      ...mods,
+      buffs: { ...mods.buffs, [buffBonus.id]: false },
+    };
+
+    buffBonus.bonus += effective - damageOf(attacker, printed, withoutBuff);
+  }
+
+  return { effective, toughHideReduction };
+};
+
 /**
  * Sums card pip damage and the marginal effects of Tough Hide and each of the
  * attacker's damage buffs across all active rows (same scope as
@@ -260,30 +296,11 @@ export const damageModifierBreakdown = (
     assistBonus += cards.assistBonus;
     totalEffective += plays.unmodifiedDamage;
 
-    for (const { printed, mods, damageOf } of [
-      ...cards.amounts,
-      ...plays.amounts,
-    ]) {
-      const effective = damageOf(attacker, printed, mods);
+    for (const amount of [...cards.amounts, ...plays.amounts]) {
+      const tally = tallyAmount(attacker, amount, buffBonuses);
 
-      totalEffective += effective;
-
-      const withoutToughHide: PlaybookDamageMods = {
-        ...mods,
-        toughHide: false,
-      };
-
-      toughHideReduction +=
-        damageOf(attacker, printed, withoutToughHide) - effective;
-
-      for (const buffBonus of buffBonuses) {
-        const withoutBuff: PlaybookDamageMods = {
-          ...mods,
-          buffs: { ...mods.buffs, [buffBonus.id]: false },
-        };
-
-        buffBonus.bonus += effective - damageOf(attacker, printed, withoutBuff);
-      }
+      totalEffective += tally.effective;
+      toughHideReduction += tally.toughHideReduction;
     }
   }
 

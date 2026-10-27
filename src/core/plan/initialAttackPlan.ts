@@ -1,23 +1,23 @@
 /** The empty plan a model starts with, clamped against default enemy stats. */
 
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   activeBaseAttackCount,
   attackArraySize,
-} from '@/core/attacks/attackStructure';
-import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from '@/core/damage/damage';
-import type { AttackPlan } from '@/core/plan/attackPlan.types';
-import { clampAttackPlan } from '@/core/plan/clampAttackPlan';
+} from "../attacks/attackStructure";
+import { DEFAULT_PLAYBOOK_DAMAGE_MODS } from "../damage/damage";
 import {
   defaultCharacterPlayPicks,
   defaultWrapPicks,
-} from '@/core/playbook/wrapSlots';
+} from "../playbook/wrapSlots";
 import {
   ARM_DEFAULT,
   DEF_DEFAULT,
   HP_DEFAULT,
   NO_ATTACK_INDEX,
-} from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "../shared/constants";
+import type { AttackPlan } from "./attackPlan.types";
+import { clampAttackPlan } from "./clampAttackPlan";
 
 export const createInitialAttackPlan = (
   attacker: AttackerData,

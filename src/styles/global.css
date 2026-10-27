@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
 
 /* Cascade order for the CSS modules, lowest first. Composed mixins sit under
    the `ui/` primitives, and component modules stay unlayered so they always
@@ -50,18 +50,21 @@
   --accent-ghost-bg: rgba(212, 98, 62, 0.1);
 
   /** Playbook lines without momentum: light "paper" chip, kept light for
-      tabular legibility against the dark panels (echoes the physical playbook). */
+   * tabular legibility against the dark panels (echoes the physical
+   * playbook). */
   --playbook-line-nm-bg: #d5dce6;
   --playbook-line-nm-fg: #070a0f;
   --playbook-line-nm-border: #a8b3c2;
   /** Momentous lines sit on the guild color, so their ink and selection ring
-      are fixed white in every theme. A zeroed momentous line is a white fill. */
+   * are fixed white in every theme. A zeroed momentous line is a white fill. */
   --playbook-line-momentous-fg: #ffffff;
   --playbook-line-momentous-ring: rgba(255, 255, 255, 0.92);
   --playbook-line-zeroed-bg: #ffffff;
   /** Shared keyboard focus indicator (CCK teal). */
   --focus-ring: var(--teal-bright);
-  /** Outline geometry shared by the focus ring and the selected playbook line. */
+  /**
+   * Outline geometry shared by the focus ring and the selected playbook line.
+   */
   --outline-width: 2px;
   --outline-offset: 2px;
   --focus-outline: var(--outline-width) solid var(--focus-ring);
@@ -81,10 +84,10 @@
   --playbook-column-track: 3.65rem;
 
   /* ── Typography ── */
-  --font-display: 'Oswald', system-ui, 'Segoe UI', sans-serif;
-  --font-body: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-display: "Oswald", system-ui, "Segoe UI", sans-serif;
+  --font-body: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
   --font-mono:
-    'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+    "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
 
   /* Type scale. Relative `em` sizes and fluid `clamp()` sizes stay inline. */
   --font-size-3xs: 0.56rem;

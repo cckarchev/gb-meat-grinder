@@ -1,40 +1,38 @@
-import { scenarioEffectiveStats } from '@/core/activation/scenarioStats';
-import type {
-  ActivationScenario,
-  DerivedSimulation,
-} from '@/core/activation/simulation.types';
-import { computeAttackSequence } from '@/core/attacks/attackSequence';
-import { activeTraitFlatDamage } from '@/core/damage/damage';
-import { killingBlowDisplayIndex } from '@/core/damage/killingBlow';
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { computeAttackSequence } from "../attacks/attackSequence";
+import { activeTraitFlatDamage } from "../damage/damage";
+import { killingBlowDisplayIndex } from "../damage/killingBlow";
 import {
   effectiveBonusTimeForResilience,
   effectiveCharacterPlayPicksForResilience,
   effectiveWrapPicksForResilience,
   resilienceIgnoredAttackIndex,
-} from '@/core/damage/resilience';
-import { rowDamageIfAllHit } from '@/core/damage/rowDamage';
-import { isAttackIndex } from '@/core/shared/attackIndex';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "../damage/resilience";
+import { rowDamageIfAllHit } from "../damage/rowDamage";
+import { isAttackIndex } from "../shared/attackIndex";
+import { NO_ATTACK_INDEX } from "../shared/constants";
+import { scenarioEffectiveStats } from "./scenarioStats";
+import type { ActivationScenario, DerivedSimulation } from "./simulation.types";
 
-/** Run the whole engine pipeline for one activation scenario. */
-export const deriveSimulation = (
+type ResiliencePlan = Pick<
+  DerivedSimulation,
+  | "ignoredAttackIndex"
+  | "effectiveWrapPicks"
+  | "effectiveCharacterPlayPicks"
+  | "effectiveBonusTimeByAttack"
+>;
+
+/**
+ * The swing a Resilient target ignores, plus plan copies with that swing
+ * blanked so every downstream calculation treats it as if it never happened.
+ */
+const resiliencePlan = (
   attacker: AttackerData,
   scenario: ActivationScenario,
-): DerivedSimulation => {
+  activeBaseCount: number,
+): ResiliencePlan => {
   const { wrapPicks, characterPlayPicks } = scenario.attackPlan;
 
-  const stats = scenarioEffectiveStats(attacker, scenario);
-
-  const {
-    activeBaseCount,
-    effectiveChargeAttackIndex,
-    effectiveEnemyDef,
-    initialTacModifier,
-  } = stats;
-
-  // The swing a Resilient target ignores, plus plan copies with that swing
-  // blanked so every downstream calculation treats it as if it never happened.
   const ignoredAttackIndex = resilienceIgnoredAttackIndex(
     { attacker, damageMods: scenario.damageMods, activeBaseCount },
     wrapPicks,
@@ -56,9 +54,33 @@ export const deriveSimulation = (
     ignoredAttackIndex,
   );
 
+  return {
+    ignoredAttackIndex,
+    effectiveWrapPicks,
+    effectiveCharacterPlayPicks,
+    effectiveBonusTimeByAttack,
+  };
+};
+
+/** Run the whole engine pipeline for one activation scenario. */
+export const deriveSimulation = (
+  attacker: AttackerData,
+  scenario: ActivationScenario,
+): DerivedSimulation => {
+  const stats = scenarioEffectiveStats(attacker, scenario);
+
+  const {
+    activeBaseCount,
+    effectiveChargeAttackIndex,
+    effectiveEnemyDef,
+    initialTacModifier,
+  } = stats;
+
+  const resilience = resiliencePlan(attacker, scenario, activeBaseCount);
+
   const effectivePlan = {
-    wrapPicks: effectiveWrapPicks,
-    characterPlayPicks: effectiveCharacterPlayPicks,
+    wrapPicks: resilience.effectiveWrapPicks,
+    characterPlayPicks: resilience.effectiveCharacterPlayPicks,
   };
 
   const { attacks, timeline } = computeAttackSequence(effectivePlan, {
@@ -69,7 +91,7 @@ export const deriveSimulation = (
     enemyDefensiveStance: scenario.enemyDefensiveStance,
     damageMods: scenario.damageMods,
     enemyDef: effectiveEnemyDef,
-    bonusTimeByAttack: effectiveBonusTimeByAttack,
+    bonusTimeByAttack: resilience.effectiveBonusTimeByAttack,
     initialTacModifier,
     activeBaseCount,
     targetHp: scenario.hp,
@@ -78,12 +100,12 @@ export const deriveSimulation = (
 
   // The ignored swing is always first in activation order.
   const hasIgnoredSwing =
-    isAttackIndex(ignoredAttackIndex) && attacks.length > 0;
+    isAttackIndex(resilience.ignoredAttackIndex) && attacks.length > 0;
   const ignoredDisplayIndex = hasIgnoredSwing ? 0 : NO_ATTACK_INDEX;
 
   const rowDamageIfHit = rowDamageIfAllHit(
     { attacker, damageMods: scenario.damageMods, activeBaseCount },
-    effectiveWrapPicks,
+    resilience.effectiveWrapPicks,
     timeline,
   );
 
@@ -98,11 +120,8 @@ export const deriveSimulation = (
 
   return {
     ...stats,
-    ignoredAttackIndex,
+    ...resilience,
     ignoredDisplayIndex,
-    effectiveWrapPicks,
-    effectiveCharacterPlayPicks,
-    effectiveBonusTimeByAttack,
     attacks,
     timeline,
     rowDamageIfHit,

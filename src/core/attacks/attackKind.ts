@@ -1,11 +1,11 @@
-import { attackRowIsBerserker } from '@/core/attacks/attackRows';
-import type { AttackKind } from '@/core/attacks/attackSequence.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { attackRowIsBerserker } from "./attackRows";
+import type { AttackKind } from "./attackSequence.types";
 
 const ATTACK_KIND_LABEL: Record<AttackKind, string> = {
-  berserker: 'Berserker attack',
-  charge: 'Charge attack',
-  base: 'Base attack',
+  berserker: "Berserker attack",
+  charge: "Charge attack",
+  base: "Base attack",
 };
 
 export const attackKind = (
@@ -14,14 +14,14 @@ export const attackKind = (
   chargeAttackIndex: number,
 ): AttackKind => {
   if (attackRowIsBerserker(attacker, attackIndex)) {
-    return 'berserker';
+    return "berserker";
   }
 
   if (attackIndex === chargeAttackIndex) {
-    return 'charge';
+    return "charge";
   }
 
-  return 'base';
+  return "base";
 };
 
 export const attackKindLabel = (

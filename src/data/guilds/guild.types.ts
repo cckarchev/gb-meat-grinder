@@ -4,10 +4,10 @@
  * availability is scoped to the model's guild.
  */
 
-import type { CharacterTrait } from '@/data/characterTraits';
+import type { CharacterTrait } from "../characterTraits";
 
 /** Which side a guild effect lands on, and so which panel shows it. */
-export type GuildBuffTarget = 'attacker' | 'enemy';
+export type GuildBuffTarget = "attacker" | "enemy";
 
 /** A buff a teammate can grant (e.g. Tooled Up, They Ain't Tough!). */
 export type GuildBuff = {
@@ -15,21 +15,33 @@ export type GuildBuff = {
   id: string;
   label: string;
   tooltip: string;
-  /** +damage to playbook damage results and to damaging character plays (Tooled Up). */
+  /**
+   * +damage to playbook damage results and to damaging character plays (Tooled
+   * Up).
+   */
   damageBonus?: number;
-  /** +damage to playbook damage results only, not to play damage (e.g. Butchery). */
+  /**
+   * +damage to playbook damage results only, not to play damage (e.g.
+   * Butchery).
+   */
   playbookDamageBonus?: number;
   /** −ARM on the enemy this activation (reduces net successes needed). */
   armorReduction?: number;
   /** −DEF on the enemy this activation (e.g. Stagger, Cut 'Em Down). */
   defReduction?: number;
-  /** Non-momentous playbook damage results become momentous (Maximum Effort). */
+  /**
+   * Non-momentous playbook damage results become momentous (Maximum Effort).
+   */
   damageResultsMomentous?: boolean;
-  /** Playbook damage becomes Condition Damage, ignoring the enemy's Tough Hide. */
+  /**
+   * Playbook damage becomes Condition Damage, ignoring the enemy's Tough Hide.
+   */
   ignoresToughHide?: boolean;
   /** +TAC on every attack this activation (e.g. Tempered Steel). */
   tacBonus?: number;
-  /** Least ganging up while on: the teammate it needs gives it (Lend a Hand). */
+  /**
+   * Least ganging up while on: the teammate it needs gives it (Lend a Hand).
+   */
   gangingUpMin?: number;
   /** The attacker ignores the crowding out penalty (One at a Time Lads!). */
   ignoresCrowdingOut?: boolean;
@@ -38,12 +50,16 @@ export type GuildBuff = {
    * the roll itself nets none (Instruction).
    */
   firstAttackNetHitBonus?: number;
-  /** Traits the attacker gains while the buff is on (Tempered Steel grants Searing Strike). */
+  /**
+   * Traits the attacker gains while the buff is on (Tempered Steel grants
+   * Searing Strike).
+   */
   grantsTraits?: readonly CharacterTrait[];
   /**
-   * Where the effect lands: `'attacker'` (default) buffs the attacker and shows on
-   * the Attacker panel; `'enemy'` is a condition on the target (e.g. -ARM) and
-   * shows on the Enemy panel. Either way it is scoped to the attacker's guild.
+   * Where the effect lands: `'attacker'` (default) buffs the attacker and shows
+   * on the Attacker panel; `'enemy'` is a condition on the target (e.g. -ARM)
+   * and shows on the Enemy panel. Either way it is scoped to the attacker's
+   * guild.
    */
   target?: GuildBuffTarget;
 };

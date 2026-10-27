@@ -1,14 +1,14 @@
 /** Enemy DEF and ARM for a swing after stance, conditions and earlier plays. */
 
-import type { SwingState } from '@/core/attacks/activationTimeline.types';
-import { isChargeSwing } from '@/core/attacks/attackStructure';
-import { clamp } from '@/core/shared/clamp';
+import { clamp } from "../shared/clamp";
 import {
   ARM_MIN,
   DEF_MAX,
   DEF_MIN,
   DEFENSIVE_STANCE_DEF_BONUS,
-} from '@/core/shared/constants';
+} from "../shared/constants";
+import type { SwingState } from "./activationTimeline.types";
+import { isChargeSwing } from "./attackStructure";
 
 /**
  * Effective enemy DEF stat for this row: the charge into Defensive Stance gains
@@ -40,8 +40,8 @@ export const effectiveDefMinRoll = (
 };
 
 /**
- * Enemy DEF cannot be reduced below `DEF_MIN` on the dice (1s always miss). Each
- * point of DEF reduction past that floor, whether from playbook plays
+ * Enemy DEF cannot be reduced below `DEF_MIN` on the dice (1s always miss).
+ * Each point of DEF reduction past that floor, whether from playbook plays
  * (`defReduction`) or from pre-attack conditions already baked into `baseDef`
  * (Knocked Down, Snared), instead becomes +1 attack die. `baseDef` may be below
  * `DEF_MIN` here; the surplus below the floor is the bonus.
@@ -49,22 +49,18 @@ export const effectiveDefMinRoll = (
 export const tacBonusFromDefReductionCap = (
   baseDef: number,
   defReduction: number,
-): number => {
-  return Math.max(0, DEF_MIN - (baseDef - defReduction));
-};
+): number => Math.max(0, DEF_MIN - (baseDef - defReduction));
 
-/** Enemy ARM for a swing: the base minus what earlier swings left on the target. */
+/**
+ * Enemy ARM for a swing: the base minus what earlier swings left on the target.
+ */
 export const armorForAttackRow = (
   baseArmor: number,
   state: SwingState,
-): number => {
-  return Math.max(ARM_MIN, baseArmor - state.effectsBefore.armorReduction);
-};
+): number => Math.max(ARM_MIN, baseArmor - state.effectsBefore.armorReduction);
 
 /** Enemy ARM once a swing lands, with the reductions it applies. */
 export const armorAfterAttackRow = (
   baseArmor: number,
   state: SwingState,
-): number => {
-  return Math.max(ARM_MIN, baseArmor - state.effectsAfter.armorReduction);
-};
+): number => Math.max(ARM_MIN, baseArmor - state.effectsAfter.armorReduction);

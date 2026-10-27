@@ -1,11 +1,6 @@
-import { describe, expect, it } from 'vitest';
-import { activationTimeline } from '@/core/attacks/activationTimeline';
-import {
-  characterPlayDamageSources,
-  damageModifierBreakdown,
-  rowDamageIfAllHit,
-} from '@/core/damage/rowDamage';
-import { NO_ATTACK_INDEX } from '@/core/shared/constants';
+import { describe, expect, it } from "vitest";
+import { activationTimeline } from "../attacks/activationTimeline";
+import { NO_ATTACK_INDEX } from "../shared/constants";
 import {
   makeAttacker,
   modsWith,
@@ -16,16 +11,21 @@ import {
   PLAY_DAMAGE,
   PLAY_HALF_HEALTH,
   TEAMMATE_GUILD,
-} from '@/core/testing/fixtures';
+} from "../testing/fixtures";
+import {
+  characterPlayDamageSources,
+  damageModifierBreakdown,
+  rowDamageIfAllHit,
+} from "./rowDamage";
 
 /** The fixture `PLAY_DAMAGE`'s damage. */
 const PLAY_DAMAGE_AMOUNT = 3;
 
-describe('damageModifierBreakdown', () => {
-  it('splits card damage into Tough Hide and per-buff contributions', () => {
+describe("damageModifierBreakdown", () => {
+  it("splits card damage into Tough Hide and per-buff contributions", () => {
     const attacker = makeAttacker();
     const mods = modsWith({ toughHide: true, buffs: { sharp: true } });
-    const wrapPicks = [['two', 'gb'], ['one']];
+    const wrapPicks = [["two", "gb"], ["one"]];
 
     const timeline = activationTimeline(
       { wrapPicks, characterPlayPicks: [[null, null], [null]] },
@@ -45,20 +45,20 @@ describe('damageModifierBreakdown', () => {
       rawCardDamage: 4,
       toughHideReduction: 3,
       buffBonuses: [
-        { id: 'sharp', label: 'Sharp', bonus: 3 },
-        { id: 'sunder', label: 'Sunder', bonus: 0 },
-        { id: 'condition', label: 'Condition', bonus: 0 },
+        { id: "sharp", label: "Sharp", bonus: 3 },
+        { id: "sunder", label: "Sunder", bonus: 0 },
+        { id: "condition", label: "Condition", bonus: 0 },
       ],
       totalEffective: 4,
     });
   });
 });
 
-describe('play damage in the all-hit projection', () => {
-  it('adds the triggered play damage to the swing', () => {
+describe("play damage in the all-hit projection", () => {
+  it("adds the triggered play damage to the swing", () => {
     const attacker = makeAttacker({ characterPlays: [PLAY_DAMAGE] });
-    const wrapPicks = [['gb'], ['gb']];
-    const characterPlayPicks = [['playDamage'], ['playDamage']];
+    const wrapPicks = [["gb"], ["gb"]];
+    const characterPlayPicks = [["playDamage"], ["playDamage"]];
 
     const timeline = activationTimeline(
       { wrapPicks, characterPlayPicks },
@@ -79,10 +79,10 @@ describe('play damage in the all-hit projection', () => {
   });
 });
 
-describe('play damage in the breakdown', () => {
+describe("play damage in the breakdown", () => {
   const attacker = makeAttacker({ characterPlays: [PLAY_DAMAGE] });
-  const wrapPicks = [['gb'], []];
-  const characterPlayPicks = [['playDamage'], []];
+  const wrapPicks = [["gb"], []];
+  const characterPlayPicks = [["playDamage"], []];
   const sharp = modsWith({ buffs: { sharp: true } });
 
   const timeline = activationTimeline(
@@ -97,7 +97,7 @@ describe('play damage in the breakdown', () => {
     },
   );
 
-  it('folds a buff lift on the play into that buff line', () => {
+  it("folds a buff lift on the play into that buff line", () => {
     const breakdown = damageModifierBreakdown(
       orderFor(attacker, 1, sharp),
       wrapPicks,
@@ -107,17 +107,17 @@ describe('play damage in the breakdown', () => {
     // Card 1 + 1 (Sharp), play 3 + 1 (Sharp).
     expect(breakdown.totalEffective).toBe(1 + 1 + PLAY_DAMAGE_AMOUNT + 1);
     expect(
-      breakdown.buffBonuses.find((buff) => buff.id === 'sharp')?.bonus,
+      breakdown.buffBonuses.find((buff) => buff.id === "sharp")?.bonus,
     ).toBe(2);
   });
 
-  it('reports plays at their printed amount for the tooltip', () => {
+  it("reports plays at their printed amount for the tooltip", () => {
     expect(characterPlayDamageSources(timeline, [0])).toEqual([
-      { label: 'Play Damage', amount: 3 },
+      { label: "Play Damage", amount: 3 },
     ]);
   });
 
-  it('keeps a playbook-only buff off the play', () => {
+  it("keeps a playbook-only buff off the play", () => {
     const butcher = makeAttacker({
       guild: TEAMMATE_GUILD,
       characterPlays: [PLAY_DAMAGE],
@@ -145,15 +145,15 @@ describe('play damage in the breakdown', () => {
     // Card 1 + 1 (Carve), play 3 unmodified.
     expect(breakdown.totalEffective).toBe(1 + 1 + PLAY_DAMAGE_AMOUNT);
     expect(
-      breakdown.buffBonuses.find((buff) => buff.id === 'carve')?.bonus,
+      breakdown.buffBonuses.find((buff) => buff.id === "carve")?.bonus,
     ).toBe(1);
   });
 });
 
-describe('current-HP play damage in the projection and breakdown', () => {
+describe("current-HP play damage in the projection and breakdown", () => {
   const attacker = makeAttacker({ characterPlays: [PLAY_HALF_HEALTH] });
-  const wrapPicks = [['gb'], []];
-  const characterPlayPicks = [['playHalfHealth'], []];
+  const wrapPicks = [["gb"], []];
+  const characterPlayPicks = [["playHalfHealth"], []];
   const toughAndSharp = modsWith({ toughHide: true, buffs: { sharp: true } });
   const targetHp = 10;
 
@@ -169,7 +169,7 @@ describe('current-HP play damage in the projection and breakdown', () => {
     },
   );
 
-  it('adds half the current HP to the swing', () => {
+  it("adds half the current HP to the swing", () => {
     // Card `gb` 1 (-1 Tough Hide, +1 Sharp), then half of 10 unmodified.
     expect(
       rowDamageIfAllHit(
@@ -180,7 +180,7 @@ describe('current-HP play damage in the projection and breakdown', () => {
     ).toEqual([1 - 1 + 1 + targetHp / 2, 0]);
   });
 
-  it('leaves it out of the Tough Hide and buff lines', () => {
+  it("leaves it out of the Tough Hide and buff lines", () => {
     const breakdown = damageModifierBreakdown(
       orderFor(attacker, 1, toughAndSharp),
       wrapPicks,
@@ -190,24 +190,24 @@ describe('current-HP play damage in the projection and breakdown', () => {
     expect(breakdown.totalEffective).toBe(1 - 1 + 1 + targetHp / 2);
     expect(breakdown.toughHideReduction).toBe(1);
     expect(
-      breakdown.buffBonuses.find((buff) => buff.id === 'sharp')?.bonus,
+      breakdown.buffBonuses.find((buff) => buff.id === "sharp")?.bonus,
     ).toBe(1);
   });
 
-  it('reports it at the damage it deals for the tooltip', () => {
+  it("reports it at the damage it deals for the tooltip", () => {
     expect(characterPlayDamageSources(timeline, [0])).toEqual([
-      { label: 'Play Half Health', amount: 5 },
+      { label: "Play Half Health", amount: 5 },
     ]);
   });
 });
 
-describe('Assist damage in the projection and breakdown', () => {
+describe("Assist damage in the projection and breakdown", () => {
   const attacker = makeAttacker({ characterPlays: [PLAY_ASSIST] });
   const mods = modsWith({ assistEngaged: true });
-  const wrapPicks = [['gb'], ['two']];
+  const wrapPicks = [["gb"], ["two"]];
 
   const timeline = activationTimeline(
-    { wrapPicks, characterPlayPicks: [['playAssist'], [null]] },
+    { wrapPicks, characterPlayPicks: [["playAssist"], [null]] },
     {
       attacker,
       damageMods: mods,
@@ -218,14 +218,14 @@ describe('Assist damage in the projection and breakdown', () => {
     },
   );
 
-  it('adds +1 DMG to the later playbook damage result only', () => {
+  it("adds +1 DMG to the later playbook damage result only", () => {
     // The fixture's `gb` deals 1: the play does not boost its own swing.
     expect(
       rowDamageIfAllHit(orderFor(attacker, 2, mods), wrapPicks, timeline),
     ).toEqual([1, 2 + 1]);
   });
 
-  it('itemizes it on its own Assist line', () => {
+  it("itemizes it on its own Assist line", () => {
     const breakdown = damageModifierBreakdown(
       orderFor(attacker, 2, mods),
       wrapPicks,
@@ -236,6 +236,6 @@ describe('Assist damage in the projection and breakdown', () => {
 
     expect(breakdown.rawCardDamage).toBe(1 + 2);
     expect(breakdown.totalEffective).toBe(1 + 2 + 1);
-    expect(lifted).toEqual([{ id: 'assist', label: 'Assist', bonus: 1 }]);
+    expect(lifted).toEqual([{ id: "assist", label: "Assist", bonus: 1 }]);
   });
 });

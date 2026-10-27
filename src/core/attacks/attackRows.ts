@@ -1,42 +1,42 @@
 /** Which attack rows exist this activation and the order they are made in. */
 
-import type { ActivationOrderParams } from '@/core/attacks/attackSequence.types';
-import { berserkerRowOffset } from '@/core/attacks/attackStructure';
-import { effectiveDamageForChoice } from '@/core/damage/damage';
-import type { PickPosition } from '@/core/plan/attackPlan.types';
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import { effectiveDamageForChoice } from "../damage/damage";
+import type { PickPosition } from "../plan/attackPlan.types";
 import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
   WrapPick,
-} from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "../playbook/playbook.types";
+import type { ActivationOrderParams } from "./attackSequence.types";
+import { berserkerRowOffset } from "./attackStructure";
 
-/** Rows below the berserker offset are base attacks; at/above it are berserkers. */
+/**
+ * Rows below the berserker offset are base attacks; at/above it are berserkers.
+ */
 export const attackRowIsBerserker = (
   attacker: AttackerData,
   attackIndex: number,
-): boolean => {
-  return attackIndex >= berserkerRowOffset(attacker);
-};
+): boolean => attackIndex >= berserkerRowOffset(attacker);
 
 export const berserkerSourceBaseIndex = (
   attacker: AttackerData,
   attackIndex: number,
-): number => {
-  return attackIndex - berserkerRowOffset(attacker);
-};
+): number => attackIndex - berserkerRowOffset(attacker);
 
-/** True if this base attack includes any non-null wrap line with modified playbook damage > 0. */
+/**
+ * True if this base attack includes any non-null wrap line with modified
+ * playbook damage > 0.
+ */
 export const basePicksDealDamage = (
   attacker: AttackerData,
   picks: WrapPick[],
   damageMods: PlaybookDamageMods,
-): boolean => {
-  return picks.some(
+): boolean =>
+  picks.some(
     (id) =>
       id != null && effectiveDamageForChoice(attacker, id, damageMods) > 0,
   );
-};
 
 /**
  * Base rows are active while their index is within the allocated base count;
@@ -73,8 +73,9 @@ export const attackRowIsActive = (
 };
 
 /**
- * Swing order: each active base, then its berserker (if any) before the next base.
- * Berserkers cannot be banked; they always resolve immediately after the base that earned them.
+ * Swing order: each active base, then its berserker (if any) before the next
+ * base. Berserkers cannot be banked; they always resolve immediately after the
+ * base that earned them.
  */
 export const activationAttackIndices = (
   order: ActivationOrderParams,
@@ -108,9 +109,9 @@ type PlacedPick = PickPosition & {
 
 /**
  * Every non-empty pick strictly before `(attackIndex, pickIndex)` in activation
- * order: all picks of earlier swings, then this swing's picks before `pickIndex`.
- * Pass `pickIndex` 0 for just the earlier swings. Empty when the swing is not
- * part of the activation.
+ * order: all picks of earlier swings, then this swing's picks before
+ * `pickIndex`. Pass `pickIndex` 0 for just the earlier swings. Empty when the
+ * swing is not part of the activation.
  */
 export const picksBeforeInActivation = (
   order: ActivationOrderParams,

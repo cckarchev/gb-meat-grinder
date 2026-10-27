@@ -1,10 +1,8 @@
-import { AppChrome } from '@/components/ui/AppChrome';
-import { MeatGrinderRoot } from '@/gbMeatGrinder/MeatGrinderRoot';
+import { MeatGrinderRoot } from "@/meat-grinder/MeatGrinderRoot";
+import styles from "./App.module.css";
 
-export const App = () => {
-  return (
-    <AppChrome>
-      <MeatGrinderRoot />
-    </AppChrome>
-  );
-};
+export const App = () => (
+  <div className={styles.app}>
+    <MeatGrinderRoot />
+  </div>
+);

@@ -1,8 +1,8 @@
 /** Which crowding out values the scenario allows. */
 
-import { activeBuffs } from '@/core/attackers/buffsAndTraits';
-import type { PlaybookDamageMods } from '@/core/playbook/playbook.types';
-import type { AttackerData, StatRange } from '@/data/attackers/attacker.types';
+import type { AttackerData, StatRange } from "@/data/attackers/attacker.types";
+import { activeBuffs } from "../attackers/buffsAndTraits";
+import type { PlaybookDamageMods } from "../playbook/playbook.types";
 
 /** The only crowding out left while the attacker ignores its penalty. */
 const IGNORED_CROWDING_OUT = 0;

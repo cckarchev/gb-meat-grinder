@@ -1,21 +1,21 @@
 /** Breakdown text for the momentum and damage totals in the attacks summary. */
 
-import type { ActivationSummaryInput } from '@/core/activation/summary/activationSummary.types';
 import {
   activatedTraits,
   attackerTraits,
   joinTraitLabels,
-} from '@/core/attackers/buffsAndTraits';
-import { swingStateAt } from '@/core/attacks/activationTimeline';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+} from "../../attackers/buffsAndTraits";
+import { swingStateAt } from "../../attacks/activationTimeline";
+import type { AttackRollContext } from "../../attacks/attackSequence.types";
 import {
   characterPlayDamageSources,
   damageModifierBreakdown,
-} from '@/core/damage/rowDamage';
-import { sumOf } from '@/core/shared/sumOf';
+} from "../../damage/rowDamage";
+import { sumOf } from "../../shared/sumOf";
+import type { ActivationSummaryInput } from "./activationSummary.types";
 
 const NO_DAMAGE_TOOLTIP =
-  'No selected playbook lines deal card damage to HP (after Tough Hide).';
+  "No selected playbook lines deal card damage to HP (after Tough Hide).";
 
 export const netMomentumTooltip = (
   momentousPicks: number,
@@ -35,7 +35,9 @@ export const netMomentumTooltip = (
   return `${tooltip}.`;
 };
 
-/** Itemizes the damage of `activeAttacks`, the swings through the killing blow. */
+/**
+ * Itemizes the damage of `activeAttacks`, the swings through the killing blow.
+ */
 export const damageDealtTooltip = (
   input: ActivationSummaryInput,
   activeAttacks: readonly AttackRollContext[],
@@ -54,9 +56,10 @@ export const damageDealtTooltip = (
     new Set(activeIndexes),
   );
 
-  const chargeDamage = sumOf(activeIndexes, (attackIndex) => {
-    return swingStateAt(input.timeline, attackIndex).chargeDamage;
-  });
+  const chargeDamage = sumOf(
+    activeIndexes,
+    (attackIndex) => swingStateAt(input.timeline, attackIndex).chargeDamage,
+  );
 
   const dealsNothing =
     breakdown.rawCardDamage === 0 &&
@@ -93,9 +96,7 @@ export const damageDealtTooltip = (
     const chargeTraits = attackerTraits(
       input.attacker,
       input.damageMods,
-    ).filter((trait) => {
-      return (trait.chargeDamage ?? 0) > 0;
-    });
+    ).filter((trait) => (trait.chargeDamage ?? 0) > 0);
 
     tooltip += `; +${chargeDamage} ${joinTraitLabels(chargeTraits)}`;
   }

@@ -48,7 +48,7 @@ src/
     plan/         the attack plan and the clamp that keeps it legal
     attacks/      attack rows, sequencing, swing modifiers and projections
     playbook/     playbook lookups, labels, wrap slots, row effects, cover, Knock Down
-    characterPlays/  character play lookup, effects, Once Per Turn usage
+    character-plays/  character play lookup, effects, Once Per Turn usage
     damage/       damage, kill odds, killing blow, resilience, probability
     activation/   momentum, Bonus Time, simulation, summary/ (activation totals and tooltips)
     shared/       constants and small helpers
@@ -58,8 +58,10 @@ src/
     characterPlays.ts   shared character plays catalog
     characterTraits.ts  shared character traits catalog
     guildBuffs.ts       guild buffs shared across guilds
-  components/     UI panels (attacker/, enemy/, attacks/) and ui/ primitives
-  gbMeatGrinder/  app state: reducer, initial state, simulation hooks
+  ui/             shared UI primitives (toggles, tooltips, steppers)
+  meat-grinder/   the app: root component, simulation hooks, reducer/, share/,
+                  and one folder per panel (attacker-panel/, enemy-panel/,
+                  attacks-panel/), nested like the component tree
 ```
 
 ## Modeling rules

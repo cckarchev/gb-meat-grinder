@@ -1,35 +1,32 @@
 /** Kill chance, expected damage and HP left for a whole activation. */
 
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   swingStateAt,
   swingStateDamageMods,
-} from '@/core/attacks/activationTimeline';
+} from "../attacks/activationTimeline";
 import type {
   ActivationTimeline,
   SwingState,
-} from '@/core/attacks/activationTimeline.types';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
+} from "../attacks/activationTimeline.types";
+import type { AttackRollContext } from "../attacks/attackSequence.types";
 import {
   playDamageForHealth,
   swingHasHealthPlay,
-} from '@/core/attacks/swingPlayDamage';
+} from "../attacks/swingPlayDamage";
+import type { PlaybookDamageMods, WrapPick } from "../playbook/playbook.types";
 import type {
   ActivationDamageOutcome,
   DamageDistribution,
   DamageForNet,
-} from '@/core/damage/damage.types';
+} from "./damage.types";
 import {
   addProbability,
   convolve,
   swingDamageDistribution,
-} from '@/core/damage/damageDistribution';
-import { hpAfterDamage } from '@/core/damage/hpAfterDamage';
-import { pickedDamageForNet } from '@/core/damage/pickedDamage';
-import type {
-  PlaybookDamageMods,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "./damageDistribution";
+import { hpAfterDamage } from "./hpAfterDamage";
+import { pickedDamageForNet } from "./pickedDamage";
 
 /** Shift every damage value by the guaranteed `flatDamage`. */
 const withFlatDamage = (
@@ -62,7 +59,9 @@ const cappedAt = (
   return capped;
 };
 
-/** One swing's damage distribution when the target has `hpLeft` HP before it. */
+/**
+ * One swing's damage distribution when the target has `hpLeft` HP before it.
+ */
 const swingDistributionAt = (
   attacker: AttackerData,
   attack: AttackRollContext,
@@ -76,9 +75,8 @@ const swingDistributionAt = (
     chargeTraitDamage: state.chargeTraitDamage,
   };
 
-  const pickedDamage: DamageForNet = (net) => {
-    return pickedDamageForNet(attacker, swingMods, picks, net, extras);
-  };
+  const pickedDamage: DamageForNet = (net) =>
+    pickedDamageForNet(attacker, swingMods, picks, net, extras);
 
   return swingDamageDistribution(attack, pickedDamage);
 };
@@ -133,16 +131,8 @@ export const planDamageOutcome = (
     const state = swingStateAt(timeline, attack.attackIndex);
     const swingMods = swingStateDamageMods(mods, state);
 
-    const swingAt = (hpLeft: number): DamageDistribution => {
-      return swingDistributionAt(
-        attacker,
-        attack,
-        picks,
-        swingMods,
-        state,
-        hpLeft,
-      );
-    };
+    const swingAt = (hpLeft: number): DamageDistribution =>
+      swingDistributionAt(attacker, attack, picks, swingMods, state, hpLeft);
 
     const uncapped = swingHasHealthPlay(state)
       ? addHealthDependentSwing(total, swingAt, targetHp)

@@ -3,24 +3,24 @@
  * effective damage of a playbook line.
  */
 
+import type { AttackerData } from "@/data/attackers/attacker.types";
 import {
   activatedTraits,
   activeBuffs,
   attackerTraits,
-} from '@/core/attackers/buffsAndTraits';
+} from "../attackers/buffsAndTraits";
 import type {
   PlaybookChoiceId,
   PlaybookDamageMods,
-} from '@/core/playbook/playbook.types';
-import { getPlaybookResult } from '@/core/playbook/playbookIndex';
+} from "../playbook/playbook.types";
+import { getPlaybookResult } from "../playbook/playbookIndex";
 import {
   DEF_MAX,
   KNOCKED_DOWN_DEF_PENALTY,
   SNARED_DEF_PENALTY,
   TOUGH_HIDE_DAMAGE_PENALTY,
-} from '@/core/shared/constants';
-import { sumOf } from '@/core/shared/sumOf';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "../shared/constants";
+import { sumOf } from "../shared/sumOf";
 
 export const DEFAULT_PLAYBOOK_DAMAGE_MODS: PlaybookDamageMods = {
   toughHide: false,
@@ -43,7 +43,10 @@ export const activeTraitFlatDamage = (
   return sumOf(activated, (trait) => trait.flatDamage);
 };
 
-/** Unmodified DMG the attacker's traits add to a charge that picks a damage result. */
+/**
+ * Unmodified DMG the attacker's traits add to a charge that picks a damage
+ * result.
+ */
 export const chargeTraitDamage = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
@@ -87,15 +90,15 @@ const playDamageBonusSum = (
   return sumOf(buffs, (buff) => buff.damageBonus);
 };
 
-/** True if a selected buff turns playbook damage into Tough-Hide-ignoring Condition Damage. */
+/**
+ * True if a selected buff turns playbook damage into Tough-Hide-ignoring
+ * Condition Damage.
+ */
 const buffsIgnoreToughHide = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
-): boolean => {
-  return activeBuffs(attacker, mods).some(
-    (buff) => buff.ignoresToughHide === true,
-  );
-};
+): boolean =>
+  activeBuffs(attacker, mods).some((buff) => buff.ignoresToughHide === true);
 
 /**
  * Enemy DEF after pre-attack conditions. Knocked Down and Snared each give the
@@ -158,10 +161,9 @@ export const effectiveDamageForChoice = (
   attacker: AttackerData,
   id: PlaybookChoiceId,
   mods: PlaybookDamageMods,
-): number => {
-  return effectivePlaybookDamage(
+): number =>
+  effectivePlaybookDamage(
     attacker,
     getPlaybookResult(attacker, id).damage,
     mods,
   );
-};

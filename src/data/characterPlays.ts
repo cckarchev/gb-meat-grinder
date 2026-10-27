@@ -1,4 +1,4 @@
-import type { CharacterPlay } from '@/core/playbook/playbook.types';
+import type { CharacterPlay } from "@/core/playbook/playbook.types";
 
 /**
  * Shared catalog of character plays. These are not guild- or model-specific:
@@ -7,21 +7,21 @@ import type { CharacterPlay } from '@/core/playbook/playbook.types';
  */
 
 export const singledOut: CharacterPlay = {
-  id: 'singledOut',
-  label: 'Singled Out',
+  id: "singledOut",
+  label: "Singled Out",
   tacBonusForLater: 2,
   oncePerTurn: false,
 };
 
 export const stagger: CharacterPlay = {
-  id: 'stagger',
-  label: 'Stagger',
+  id: "stagger",
+  label: "Stagger",
   defReductionForLater: 1,
   oncePerTurn: false,
 };
 
 export const theyAintTough: CharacterPlay = {
-  id: 'theyAintTough',
+  id: "theyAintTough",
   label: "They Ain't Tough!",
   armorReduction: 1,
   oncePerTurn: false,
@@ -33,30 +33,33 @@ export const theyAintTough: CharacterPlay = {
  * the GB result can trigger, so it is shown as a (no-op) menu option.
  */
 export const snackBreak: CharacterPlay = {
-  id: 'snackBreak',
-  label: 'Snack Break',
+  id: "snackBreak",
+  label: "Snack Break",
   oncePerTurn: true,
 };
 
-/** Cast's Shield Glare: -1 TAC and -1 DEF; only the -1 DEF matters to her attack. */
+/**
+ * Cast's Shield Glare: -1 TAC and -1 DEF; only the -1 DEF matters to her
+ * attack.
+ */
 export const shieldGlare: CharacterPlay = {
-  id: 'shieldGlare',
-  label: 'Shield Glare',
+  id: "shieldGlare",
+  label: "Shield Glare",
   defReductionForLater: 1,
   oncePerTurn: false,
 };
 
 /** Cast's Shield Throw: scatters the ball, no effect on the attack math. */
 export const shieldThrow: CharacterPlay = {
-  id: 'shieldThrow',
-  label: 'Shield Throw',
+  id: "shieldThrow",
+  label: "Shield Throw",
   oncePerTurn: false,
 };
 
 /** Veteran Cinder's Impale: 3 DMG, modified like playbook damage. */
 export const impale: CharacterPlay = {
-  id: 'impale',
-  label: 'Impale',
+  id: "impale",
+  label: "Impale",
   damage: 3,
   oncePerTurn: true,
 };
@@ -68,16 +71,19 @@ export const impale: CharacterPlay = {
  * The log pile placement does not affect the attack math.
  */
 export const theBiggerTheyAre: CharacterPlay = {
-  id: 'theBiggerTheyAre',
-  label: 'The Bigger They Are...',
+  id: "theBiggerTheyAre",
+  label: "The Bigger They Are...",
   currentHealthDivisor: 2,
   oncePerTurn: true,
 };
 
-/** Bucker's Hoisting and Hauling: moves a log pile marker, no effect on the attack math. */
+/**
+ * Bucker's Hoisting and Hauling: moves a log pile marker, no effect on the
+ * attack math.
+ */
 export const hoistingAndHauling: CharacterPlay = {
-  id: 'hoistingAndHauling',
-  label: 'Hoisting and Hauling',
+  id: "hoistingAndHauling",
+  label: "Hoisting and Hauling",
   oncePerTurn: false,
 };
 
@@ -86,9 +92,10 @@ export const hoistingAndHauling: CharacterPlay = {
  * engages the target, his later attacks get +1 TAC and +1 DMG to playbook
  * damage results.
  */
+// biome-ignore lint/style/useNamingConvention: the one-letter word "A" has no strict camelCase spelling, and the id is part of share links.
 export const axeAQuestion: CharacterPlay = {
-  id: 'axeAQuestion',
-  label: 'Axe A Question',
-  grantsAssist: ['Mallet', 'Oak'],
+  id: "axeAQuestion",
+  label: "Axe A Question",
+  grantsAssist: ["Mallet", "Oak"],
   oncePerTurn: false,
 };

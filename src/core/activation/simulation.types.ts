@@ -1,19 +1,24 @@
-import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
-import type { AttackRollContext } from '@/core/attacks/attackSequence.types';
-import type { AttackPlan } from '@/core/plan/attackPlan.types';
+import type { ActivationTimeline } from "../attacks/activationTimeline.types";
+import type { AttackRollContext } from "../attacks/attackSequence.types";
+import type { AttackPlan } from "../plan/attackPlan.types";
 import type {
   CharacterPlayPickSlot,
   PlaybookDamageMods,
   WrapPick,
-} from '@/core/playbook/playbook.types';
+} from "../playbook/playbook.types";
 
-/** The editable inputs of one activation: the target, the resources, and the plan. */
+/**
+ * The editable inputs of one activation: the target, the resources, and the
+ * plan.
+ */
 export type ActivationScenario = {
   enemyDef: number;
   /** Enemy's printed ARM (what the stepper edits); buffs apply downstream. */
   armor: number;
   hp: number;
-  /** Influence allocated to the attacker this activation (0…attacker INF cap). */
+  /**
+   * Influence allocated to the attacker this activation (0…attacker INF cap).
+   */
   influence: number;
   /** Whether the attacker charges (costs influence unless Furious). */
   charging: boolean;
@@ -21,14 +26,17 @@ export type ActivationScenario = {
   chargeAttackIndex: number;
   enemyHasCover: boolean;
   enemyDefensiveStance: boolean;
-  /** Target is Knocked Down before the activation (−1 DEF; disables playbook KD). */
+  /**
+   * Target is Knocked Down before the activation (−1 DEF; disables playbook
+   * KD).
+   */
   enemyKnockedDown: boolean;
   /** Target is Snared before the activation (−1 DEF). */
   enemySnared: boolean;
   /**
    * Target has Resilience: the first attack of the activation is wholly ignored
-   * (no damage, effects, wraps, momentum, or Berserker trigger). It is shown but
-   * disabled, and no longer carries anything over to later attacks.
+   * (no damage, effects, wraps, momentum, or Berserker trigger). It is shown
+   * but disabled, and no longer carries anything over to later attacks.
    */
   enemyResilience: boolean;
   /** Extra attack dice from Ganging Up (added to TAC). */
@@ -69,8 +77,8 @@ export type DerivedSimulation = {
   /**
    * Wrap picks as the engine sees them once Resilience is applied: identical to
    * the plan's wrap picks unless the target is Resilient, in which case the
-   * ignored first swing's row is blanked. Use these for damage / momentum / odds
-   * math; use the raw plan picks only to render each swing's chosen lines.
+   * ignored first swing's row is blanked. Use these for damage / momentum /
+   * odds math; use the raw plan picks only to render each swing's chosen lines.
    */
   effectiveWrapPicks: WrapPick[][];
   effectiveCharacterPlayPicks: CharacterPlayPickSlot[][];

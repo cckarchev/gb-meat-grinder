@@ -1,26 +1,20 @@
 /** Roll context and hit odds for every swing in the activation. */
 
 import {
-  activationTimeline,
-  swingStateAt,
-} from '@/core/attacks/activationTimeline';
-import type { ActivationTimeline } from '@/core/attacks/activationTimeline.types';
-import { activationAttackIndices } from '@/core/attacks/attackRows';
+  hitProbabilityPerDie,
+  probAttackSucceeds,
+} from "../damage/probability";
+import type { AttackPlan } from "../plan/attackPlan.types";
+import { wrapNetThresholdAllHits } from "../playbook/wrapSlots";
+import { activationTimeline, swingStateAt } from "./activationTimeline";
+import type { ActivationTimeline } from "./activationTimeline.types";
+import { activationAttackIndices } from "./attackRows";
 import type {
   ActivationRollParams,
   AttackRollContext,
-} from '@/core/attacks/attackSequence.types';
-import {
-  armorAfterAttackRow,
-  armorForAttackRow,
-} from '@/core/attacks/swingDefense';
-import { swingTacAndDef } from '@/core/attacks/swingTac';
-import {
-  hitProbabilityPerDie,
-  probAttackSucceeds,
-} from '@/core/damage/probability';
-import type { AttackPlan } from '@/core/plan/attackPlan.types';
-import { wrapNetThresholdAllHits } from '@/core/playbook/wrapSlots';
+} from "./attackSequence.types";
+import { armorAfterAttackRow, armorForAttackRow } from "./swingDefense";
+import { swingTacAndDef } from "./swingTac";
 
 /**
  * Every swing's roll context, with the activation timeline they were computed

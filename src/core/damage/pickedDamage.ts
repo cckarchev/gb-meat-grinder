@@ -1,23 +1,26 @@
 /** Damage one roll deals when you stick to the playbook lines you picked. */
 
-import { effectiveDamageForChoice } from '@/core/damage/damage';
-import type {
-  PlaybookDamageMods,
-  WrapPick,
-} from '@/core/playbook/playbook.types';
+import type { AttackerData } from "@/data/attackers/attacker.types";
+import type { PlaybookDamageMods, WrapPick } from "../playbook/playbook.types";
 import {
   getPlaybookResult,
   maxPlaybookNet,
   netSuccessesForChoice,
-} from '@/core/playbook/playbookIndex';
-import { MIN_PLAYBOOK_NET } from '@/core/shared/constants';
-import type { AttackerData } from '@/data/attackers/attacker.types';
+} from "../playbook/playbookIndex";
+import { MIN_PLAYBOOK_NET } from "../shared/constants";
+import { effectiveDamageForChoice } from "./damage";
 
 /** Damage a swing deals besides its card results, by where it lands. */
 export type SwingDamageExtras = {
-  /** Effective play damage triggered on each slot, added when that slot reaches its line. */
+  /**
+   * Effective play damage triggered on each slot, added when that slot reaches
+   * its line.
+   */
   playDamageBySlot: readonly number[];
-  /** Unmodified charge damage (Sweeping Charge), added when the roll lands on a damage result. */
+  /**
+   * Unmodified charge damage (Sweeping Charge), added when the roll lands on a
+   * damage result.
+   */
   chargeTraitDamage: number;
 };
 
@@ -25,16 +28,17 @@ export type SwingDamageExtras = {
 const damageLineWithinBudget = (
   attacker: AttackerData,
   budget: number,
-): boolean => {
-  return attacker.playbook.some((column) => {
+): boolean =>
+  attacker.playbook.some((column) => {
     const affordable =
       column.netSuccesses >= MIN_PLAYBOOK_NET && column.netSuccesses <= budget;
 
     return affordable && column.results.some((result) => result.damage > 0);
   });
-};
 
-/** Most card damage reachable in a single playbook column within `budget` net. */
+/**
+ * Most card damage reachable in a single playbook column within `budget` net.
+ */
 const bestDamageWithinBudget = (
   attacker: AttackerData,
   mods: PlaybookDamageMods,
