@@ -49,8 +49,7 @@ export const DicePoolStrip = ({
     : BONUS_TIME_TOOLTIP;
 
   return (
-    // biome-ignore lint/a11y/useAriaPropsSupportedByRole: predates the CSS Modules move; giving the div a role changes the accessibility tree, so it is a separate fix.
-    <div className={styles.bar} aria-label="Dice pool for this attack">
+    <fieldset className={styles.bar} aria-label="Dice pool for this attack">
       <div className={styles.cluster}>
         {canCharge ? (
           <label className={styles.poolToggle}>
@@ -86,6 +85,6 @@ export const DicePoolStrip = ({
           <Mono className={styles.readoutValue}>{tac}</Mono>
         </div>
       </div>
-    </div>
+    </fieldset>
   );
 };

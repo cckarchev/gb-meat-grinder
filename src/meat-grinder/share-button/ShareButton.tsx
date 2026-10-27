@@ -43,11 +43,11 @@ export const ShareButton = ({ url, className }: ShareButtonProps) => {
       <ToggleButton className={className} type="button" onClick={copyLink}>
         Share
       </ToggleButton>
-      {notice ? (
-        <TooltipBubble size="compact" role="status">
-          {notice}
-        </TooltipBubble>
-      ) : null}
+      {/* The status region stays mounted, so a screen reader announces the
+          notice when it appears inside it. */}
+      <span role="status">
+        {notice ? <TooltipBubble size="compact">{notice}</TooltipBubble> : null}
+      </span>
     </span>
   );
 };

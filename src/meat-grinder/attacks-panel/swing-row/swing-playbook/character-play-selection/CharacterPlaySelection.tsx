@@ -51,8 +51,7 @@ export const CharacterPlaySelection = ({
   const attackNumber = attackOrdinal(displayIndex);
 
   return (
-    // biome-ignore lint/a11y/useAriaPropsSupportedByRole: predates the CSS Modules move; giving the div a role changes the accessibility tree, so it is a separate fix.
-    <div
+    <fieldset
       className={styles.section}
       aria-label={`Character play for attack ${attackNumber}`}
     >
@@ -97,6 +96,6 @@ export const CharacterPlaySelection = ({
           </div>
         );
       })}
-    </div>
+    </fieldset>
   );
 };

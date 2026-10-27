@@ -1,4 +1,3 @@
-import { useId } from "react";
 import styles from "./StepControl.module.css";
 
 /** How far one button press moves the value. */
@@ -27,17 +26,13 @@ export const StepControl = ({
   ariaSubject,
   valueLabel = String(value),
 }: StepControlProps) => {
-  const labelId = useId();
   const canDecrease = value > min;
   const canIncrease = value < max;
 
   return (
-    <div className={styles.field}>
-      <span className={styles.labelText} id={labelId}>
-        {label}
-      </span>
-      {/* biome-ignore lint/a11y/useSemanticElements: a fieldset brings its own border, padding and min-width, so the group stays a labelled div. */}
-      <div className={styles.controlRow} role="group" aria-labelledby={labelId}>
+    <fieldset className={styles.field}>
+      <legend className={styles.labelText}>{label}</legend>
+      <div className={styles.controlRow}>
         <button
           className={styles.stepButton}
           type="button"
@@ -58,6 +53,6 @@ export const StepControl = ({
           +
         </button>
       </div>
-    </div>
+    </fieldset>
   );
 };
