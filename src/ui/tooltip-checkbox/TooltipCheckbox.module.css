@@ -1,3 +1,9 @@
+/* Composition sits outside the layer: Lightning CSS allows composes only in
+   top-level rules. The declarations stay layered below. */
+.labelText {
+  composes: tooltipHint from "../../styles/mixins.module.css";
+}
+
 @layer primitives {
   /* Label row holding the checkbox and its tooltip-trigger text. */
   .checkOption {
@@ -29,7 +35,6 @@
 
   /* Plain label text (clicking it toggles the box), hinting at its tooltip. */
   .labelText {
-    composes: tooltipHint from "../../styles/mixins.module.css";
     position: relative;
   }
 }

@@ -1,3 +1,19 @@
+@import "@cckarchev/shared/breakpoints.css";
+
+/* Composition sits outside the layer: Lightning CSS allows composes only in
+   top-level rules. The declarations stay layered below. */
+.panelTitle {
+  composes: monoCapsLabel from "../styles/mixins.module.css";
+}
+
+.select {
+  composes: inputSurface from "../styles/mixins.module.css";
+}
+
+.mono {
+  composes: tabularMono from "../styles/mixins.module.css";
+}
+
 @layer primitives {
   .panel {
     border: var(--border-default);
@@ -20,7 +36,6 @@
   }
 
   .panelTitle {
-    composes: monoCapsLabel from "../styles/mixins.module.css";
     font-size: var(--font-size-sm);
     color: var(--color-accent);
     margin: 0 0 var(--space-sm);
@@ -34,12 +49,10 @@
   }
 
   .select {
-    composes: inputSurface from "../styles/mixins.module.css";
     padding: var(--space-xs) var(--space-xs);
   }
 
   .mono {
-    composes: tabularMono from "../styles/mixins.module.css";
   }
 
   /* Lives beside `.panel` because a CSS module can only select its own
@@ -57,7 +70,7 @@
     margin-bottom: 0;
   }
 
-  @media (max-width: 720px) {
+  @media (--below-tablet) {
     .panel {
       padding: var(--space-sm) var(--space-xs);
       margin-bottom: var(--space-sm);

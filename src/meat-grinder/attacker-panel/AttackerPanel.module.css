@@ -1,3 +1,5 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 /* Model spans the full width on its own row; the paired steppers (Influence /
    Starting momentum, then Ganging Up / Crowding Out) line up in two columns
    instead of flex-wrapping unaligned. */
@@ -14,7 +16,7 @@
   margin-top: var(--space-md);
 }
 
-@media (max-width: 720px) {
+@media (--below-tablet) {
   .controlsGrid {
     gap: var(--space-xs);
   }
@@ -24,7 +26,7 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (--phone) {
   .controlsGrid {
     grid-template-columns: 1fr;
   }

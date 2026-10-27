@@ -1,7 +1,23 @@
+@import "@cckarchev/shared/breakpoints.css";
+
+/* Composition sits outside the layer: Lightning CSS allows composes only in
+   top-level rules. The declarations stay layered below. */
+.groupLabel {
+  composes: monoCapsLabel from "../../styles/mixins.module.css";
+}
+
 @layer primitives {
+  /* A fieldset for its semantics only: no frame, no inset. */
+  .group {
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
   /* Muted by default; guild groups pass the guild color. */
   .groupLabel {
-    composes: monoCapsLabel from "../../styles/mixins.module.css";
+    padding: 0;
     font-size: var(--font-size-sm);
     color: var(--group-label-color, var(--color-text-dim));
   }
@@ -28,7 +44,7 @@
     align-items: start;
   }
 
-  @media (max-width: 720px) {
+  @media (--below-tablet) {
     .groupList {
       gap: 0 var(--space-xs);
     }
@@ -42,7 +58,7 @@
     }
   }
 
-  @media (max-width: 400px) {
+  @media (--phone) {
     .groupList,
     .toggleGroupPair {
       grid-template-columns: 1fr;

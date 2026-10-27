@@ -1,3 +1,5 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 .bar {
   display: flex;
   flex-wrap: wrap;
@@ -77,7 +79,7 @@
   color: var(--color-text-dim);
 }
 
-@media (max-width: 720px) {
+@media (--below-tablet) {
   .bar {
     gap: var(--space-xs) var(--space-xs);
     padding: var(--space-xs);

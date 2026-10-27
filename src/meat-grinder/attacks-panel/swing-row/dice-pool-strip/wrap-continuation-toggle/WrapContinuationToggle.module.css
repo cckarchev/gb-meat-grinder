@@ -1,5 +1,7 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 .toggleButton {
-  composes: inputButton from "../../../../../styles/mixins.module.css";
+  composes: inputButton inputSurface focusRing from "../../../../../styles/mixins.module.css";
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -35,13 +37,13 @@
   content: "▼";
 }
 
-@media (max-width: 720px) {
+@media (--below-tablet) {
   .toggleButton {
     padding: var(--space-2xs) var(--space-2xs);
   }
 }
 
-@media (max-width: 400px) {
+@media (--phone) {
   .toggleButton {
     padding: var(--space-3xs) var(--space-2xs);
     gap: var(--space-3xs);

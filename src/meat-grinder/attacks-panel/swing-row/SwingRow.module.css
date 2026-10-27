@@ -1,3 +1,5 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 .attackRow {
   display: flex;
   align-items: flex-start;
@@ -46,7 +48,7 @@
   );
 }
 
-@media (max-width: 720px) {
+@media (--below-tablet) {
   .attackRow {
     gap: var(--space-xs);
   }
@@ -57,7 +59,7 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (--phone) {
   .attackBlock {
     --playbook-column-width: clamp(28px, 11vw, var(--playbook-column-track));
     padding: var(--space-xs) var(--space-xs) var(--space-xs);

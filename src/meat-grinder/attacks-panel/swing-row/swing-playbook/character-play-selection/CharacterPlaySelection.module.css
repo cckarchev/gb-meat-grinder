@@ -1,3 +1,5 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 /* Groups the character-play picks and separates them from the playbook grid
    above. */
 .section {
@@ -52,7 +54,7 @@
   flex: 1 1 auto;
 }
 
-@media (max-width: 720px) {
+@media (--below-tablet) {
   .slotRow {
     gap: var(--space-2xs);
     margin-top: var(--space-2xs);

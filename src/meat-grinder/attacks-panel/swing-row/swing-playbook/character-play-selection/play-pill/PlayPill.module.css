@@ -1,3 +1,5 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 .anchor {
   position: relative;
   display: inline-flex;
@@ -12,7 +14,7 @@
   border-style: dashed;
 }
 
-@media (max-width: 720px) {
+@media (--below-tablet) {
   .playToggleButton {
     min-width: 108px;
   }

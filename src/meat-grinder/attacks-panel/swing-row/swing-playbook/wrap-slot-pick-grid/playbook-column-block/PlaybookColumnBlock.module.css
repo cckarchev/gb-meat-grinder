@@ -1,3 +1,5 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 .columnBlock {
   display: flex;
   flex-direction: column;
@@ -33,7 +35,7 @@
   border-bottom: var(--border-width-thin) solid var(--heat-border);
 }
 
-@media (max-width: 720px) {
+@media (--below-tablet) {
   .columnResults {
     padding-top: var(--space-2xs);
   }
@@ -43,7 +45,7 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (--phone) {
   .columnResults {
     gap: var(--space-3xs);
   }

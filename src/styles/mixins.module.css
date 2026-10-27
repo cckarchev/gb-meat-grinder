@@ -1,5 +1,9 @@
 /* Shared style fragments, pulled in with `composes`.
 
+   Lightning CSS allows `composes` only in top-level rules and does not follow
+   a chain of them, so a layered module composes from a top-level rule of its
+   own, and nothing here composes another mixin.
+
    Vite emits a composed file after the module composing it, so plain rules
    here would win every override a component makes. The `mixins` layer (lowest
    in the order `global.css` declares) makes them lose instead, whatever the
@@ -50,9 +54,9 @@
     color: var(--color-text-strong);
   }
 
-  /* Input-style button: the field surface plus hover lift and focus ring. */
+  /* Input-style button: hover lift on the field surface. Compose it together
+     with inputSurface and focusRing. */
   .inputButton {
-    composes: inputSurface focusRing;
     cursor: pointer;
   }
 

@@ -1,3 +1,15 @@
+@import "@cckarchev/shared/breakpoints.css";
+
+/* Composition sits outside the layer: Lightning CSS allows composes only in
+   top-level rules. The declarations stay layered below. */
+.stepButton {
+  composes: inputButton inputSurface focusRing from "../../styles/mixins.module.css";
+}
+
+.valueDisplay {
+  composes: inputSurface tabularMono from "../../styles/mixins.module.css";
+}
+
 @layer primitives {
   .field {
     display: flex;
@@ -18,7 +30,6 @@
   }
 
   .stepButton {
-    composes: inputButton from "../../styles/mixins.module.css";
     font-size: var(--font-size-md);
     line-height: var(--leading-solid);
     width: 36px;
@@ -33,7 +44,6 @@
 
   /* A read-only field: the input surface with tabular mono numerals. */
   .valueDisplay {
-    composes: inputSurface tabularMono from "../../styles/mixins.module.css";
     flex: 1;
     min-width: 88px;
     text-align: center;
@@ -41,7 +51,7 @@
     padding: var(--space-2xs) var(--space-2xs);
   }
 
-  @media (max-width: 720px) {
+  @media (--below-tablet) {
     .field {
       min-width: 116px;
     }
