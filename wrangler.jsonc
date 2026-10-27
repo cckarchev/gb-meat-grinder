@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "gb-meat-grinder",
-  "compatibility_date": "2026-10-19",
+  "compatibility_date": "2026-10-23",
   // Static assets only, no Worker script: unknown paths fall back to
   // index.html.
   "assets": {

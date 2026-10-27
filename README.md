@@ -1,6 +1,8 @@
-# gb-meat-grinder
+# GB Meat Grinder
 
 A Guild Ball attack calculator. Model a player's attack sequence, configure target defences and guild buffs, and see the expected damage output across every playbook result combination.
+
+Live at [gb-meat-grinder.cckarchev.ar](https://gb-meat-grinder.cckarchev.ar).
 
 ## Features
 
@@ -11,32 +13,32 @@ A Guild Ball attack calculator. Model a player's attack sequence, configure targ
 
 Want a beater that isn't here yet? [Open an issue](https://github.com/cckarchev/gb-meat-grinder/issues) to suggest one.
 
-## Tech stack
+## Stack
 
-- React 19 + TypeScript
-- Vite
-- CSS Modules, styled with the club's shared tokens and self-hosted fonts from
-  [`@cckarchev/shared`](https://github.com/cckarchev/cck-shared), plus the
-  app tokens in `src/styles/global.css`
+- **React 19** + **TypeScript**
+- **Vite** (dev server + build)
+- **CSS Modules**, styled with the club's shared tokens (see Design system)
+- **Vitest** for tests and **Biome** for lint and format, from the shared preset in [`@cckarchev/shared`](https://github.com/cckarchev/cck-shared)
+- **[Cloudflare Workers](https://workers.cloudflare.com)** with static assets, via Wrangler, deploy
 
-## Development
+## Commands
 
-```bash
-npm install
-npm run dev
-```
+Requires Node 24.21 or later (`.node-version`).
 
-```bash
-npm run build     # type-check + bundle
-npm run preview   # serve the built dist/ locally
-npm test          # run the core test suite once
-npm run test:watch
-npm run test:coverage
-npm run check     # Biome lint + format check
-npm run lint
-npm run format
-npm run deploy    # build + deploy to Cloudflare (see Deploy)
-```
+| Command                 | What it does                                        |
+| :---------------------- | :-------------------------------------------------- |
+| `npm install`           | Install dependencies                                |
+| `npm run dev`           | Dev server at `localhost:5173`                      |
+| `npm run build`         | Production build to `dist/`                         |
+| `npm run preview`       | Preview the local build                             |
+| `npm run verify`        | Check, type check, test and build, as CI does       |
+| `npm run deploy`        | `verify`, then deploy with Wrangler (manual deploy) |
+| `npm run check`         | Biome lint and format check                         |
+| `npm run check:fix`     | Biome lint and format with autofix                  |
+| `npm run typecheck`     | Type check without emitting                         |
+| `npm test`              | Run the unit tests (Vitest)                         |
+| `npm run test:watch`    | Run the unit tests in watch mode                    |
+| `npm run test:coverage` | Run the unit tests with a coverage report           |
 
 `src/core/engine.golden.test.ts` snapshots the whole engine against the real
 attacker data. If a rules change is intended, review the snapshot diff and
@@ -66,6 +68,8 @@ src/
                   attacks-panel/), nested like the component tree
 ```
 
+Imports inside one area are relative; imports that leave it use the `@/` alias for `src/`.
+
 ## Modeling rules
 
 [MODELING.md](MODELING.md) records the Guild Ball rules the calculator encodes (stacking,
@@ -83,8 +87,12 @@ The site runs on Cloudflare Workers as static assets only, with no Worker script
 `wrangler.jsonc` serves `dist/` and attaches the custom domain
 `gb-meat-grinder.cckarchev.ar`.
 
-`npm run deploy` builds and uploads it with the project's own Wrangler. Log in once
+`npm run deploy` verifies, builds and uploads it with the project's own Wrangler. Log in once
 with `npx wrangler login` on an account that holds the `cckarchev.ar` zone.
+
+## Design system
+
+The UI follows the club's design system: dark-only theme, sharp corners, orange accent over a near-black base. The palette, scales and fonts come from [`@cckarchev/shared`](https://github.com/cckarchev/cck-shared) (`fonts.css` and `tokens.css`, imported in `src/main.tsx`). `src/styles/global.css` only adds the tokens specific to this tool.
 
 ## Disclaimer
 
@@ -93,4 +101,4 @@ Limited. Guild Ball and all associated names, guilds, players, and game terms ar
 trademarks of Steamforged Games Limited. No challenge to their status is intended. All
 such material is used without permission for non-commercial, fan use only.
 
-See [NOTICE](NOTICE) for the full disclaimer.
+See [NOTICE](NOTICE) for the full notice.
