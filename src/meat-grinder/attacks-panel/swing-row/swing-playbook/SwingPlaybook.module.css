@@ -1,5 +1,5 @@
 .unreachableNote {
-  margin: var(--space-xs) 0 0;
-  font-size: var(--font-size-md);
-  color: var(--muted);
+  margin: var(--space-2xs) 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-dim);
 }

@@ -2,14 +2,14 @@
   /* Muted by default; guild groups pass the guild color. */
   .groupLabel {
     composes: monoCapsLabel from "../../styles/mixins.module.css";
-    font-size: var(--font-size-xs);
-    color: var(--group-label-color, var(--muted));
+    font-size: var(--font-size-sm);
+    color: var(--group-label-color, var(--color-text-dim));
   }
 
   .groupList {
     display: grid;
     grid-template-columns: repeat(var(--group-columns), minmax(0, 1fr));
-    gap: 0 var(--space-2xl);
+    gap: 0 var(--space-md);
     align-items: start;
   }
 
@@ -17,28 +17,28 @@
   .toggleGroupStack {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xl);
+    gap: var(--space-sm);
   }
 
   /* Two toggle groups side by side, stacked on the narrowest screens. */
   .toggleGroupPair {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-xl) var(--space-2xl);
+    gap: var(--space-sm) var(--space-md);
     align-items: start;
   }
 
   @media (max-width: 720px) {
     .groupList {
-      gap: 0 var(--space-md);
+      gap: 0 var(--space-xs);
     }
 
     .toggleGroupStack {
-      gap: var(--space-md);
+      gap: var(--space-xs);
     }
 
     .toggleGroupPair {
-      gap: var(--space-md);
+      gap: var(--space-xs);
     }
   }
 

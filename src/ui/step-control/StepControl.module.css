@@ -2,32 +2,32 @@
   .field {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
-    min-width: 10rem;
+    gap: var(--space-2xs);
+    min-width: 160px;
   }
 
   .labelText {
     font-size: var(--font-size-sm);
-    color: var(--muted);
+    color: var(--color-text-dim);
   }
 
   .controlRow {
     display: flex;
     align-items: center;
-    gap: var(--space-xs);
+    gap: var(--space-2xs);
   }
 
   .stepButton {
     composes: inputButton from "../../styles/mixins.module.css";
-    font-size: var(--font-size-lg);
-    line-height: var(--line-height-none);
-    width: 2.25rem;
-    height: 2.25rem;
+    font-size: var(--font-size-md);
+    line-height: var(--leading-solid);
+    width: 36px;
+    height: 36px;
     padding: 0;
   }
 
   .stepButton:disabled {
-    opacity: var(--opacity-disabled);
+    opacity: var(--alpha-40);
     cursor: not-allowed;
   }
 
@@ -35,26 +35,25 @@
   .valueDisplay {
     composes: inputSurface tabularMono from "../../styles/mixins.module.css";
     flex: 1;
-    min-width: 5.5rem;
+    min-width: 88px;
     text-align: center;
-    font-size: var(--font-size-base);
-    padding: var(--space-xs) var(--space-2xs);
+    font-size: var(--font-size-md);
+    padding: var(--space-2xs) var(--space-2xs);
   }
 
   @media (max-width: 720px) {
     .field {
-      min-width: 7.25rem;
+      min-width: 116px;
     }
 
     .stepButton {
-      width: 2rem;
-      height: 2rem;
-      font-size: var(--font-size-base);
+      width: 32px;
+      height: 32px;
     }
 
     .valueDisplay {
-      min-width: 4.25rem;
-      font-size: var(--font-size-md);
+      min-width: 68px;
+      font-size: var(--font-size-sm);
       padding: var(--space-2xs) var(--space-3xs);
     }
   }

@@ -15,7 +15,9 @@ Want a beater that isn't here yet? [Open an issue](https://github.com/cckarchev/
 
 - React 19 + TypeScript
 - Vite
-- CSS Modules
+- CSS Modules, styled with the club's shared tokens and self-hosted fonts from
+  [`@cckarchev/shared`](https://github.com/cckarchev/cck-shared), plus the
+  app tokens in `src/styles/global.css`
 
 ## Development
 

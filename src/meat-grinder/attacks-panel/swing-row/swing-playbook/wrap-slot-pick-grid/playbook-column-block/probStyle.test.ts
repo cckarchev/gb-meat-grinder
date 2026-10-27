@@ -19,8 +19,8 @@ describe("probHeatTextColor", () => {
     const atThreshold = 0.52;
     const justAbove = 0.53;
 
-    expect(probHeatTextColor(atThreshold)).toBe("#f8fafc");
-    expect(probHeatTextColor(justAbove)).toBe("#0a0a0a");
+    expect(probHeatTextColor(atThreshold)).toBe("var(--color-text-strong)");
+    expect(probHeatTextColor(justAbove)).toBe("var(--color-bg-deep)");
   });
 });
 

@@ -3,11 +3,10 @@
   font: inherit;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-none);
-  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-solid);
   text-align: center;
-  width: 2.45rem;
-  height: 2.45rem;
+  width: 39px;
+  height: 39px;
   max-width: 100%;
   margin: 0 auto var(--space-2xs);
   padding: 0;
@@ -22,7 +21,7 @@
   flex-shrink: 0;
   background: var(--playbook-line-nm-bg);
   color: var(--playbook-line-nm-fg);
-  border: var(--rule-width) solid var(--playbook-line-nm-border);
+  border: var(--border-width-thin) solid var(--playbook-line-nm-border);
 }
 
 /* Momentous line: filled with the guild color. */
@@ -46,10 +45,10 @@
    writing `outline` stays at the focus rule's specificity and focus wins. */
 .lineButton[data-selected] {
   --selected-shadow: inset 0 0 0 3px var(--playbook-line-nm-fg);
-  --selected-outline: var(--outline-width) solid var(--playbook-line-nm-fg);
+  --selected-outline: var(--border-width-thick) solid var(--playbook-line-nm-fg);
   box-shadow: var(--selected-shadow);
   outline: var(--selected-outline);
-  outline-offset: var(--outline-offset);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .lineButton[data-selected][data-momentous="heat"] {
@@ -59,12 +58,12 @@
 
 /* Shared focus ring, kept after the selection rule so it wins on focus. */
 .lineButton:focus-visible {
-  outline: var(--focus-outline);
-  outline-offset: var(--outline-offset);
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .lineButton:disabled {
-  opacity: var(--opacity-disabled);
+  opacity: var(--alpha-40);
   cursor: not-allowed;
   filter: none;
 }
@@ -75,24 +74,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  line-height: var(--line-height-none);
+  line-height: var(--leading-solid);
   gap: 0.12em;
 }
 
 @media (max-width: 720px) {
   .lineButton {
-    width: min(2.2rem, 100%);
+    width: min(35px, 100%);
     height: auto;
     aspect-ratio: 1;
-    font-size: clamp(0.55rem, 2.8vw, 0.66rem);
+    font-size: clamp(9px, 2.8vw, 11px);
     margin-bottom: var(--space-3xs);
   }
 }
 
 @media (max-width: 400px) {
   .lineButton {
-    width: min(1.85rem, 100%);
-    font-size: clamp(0.48rem, 3.2vw, 0.58rem);
-    margin-bottom: var(--space-4xs);
+    width: min(30px, 100%);
+    font-size: clamp(8px, 3.2vw, 9px);
   }
 }

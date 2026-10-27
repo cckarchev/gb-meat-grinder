@@ -1,20 +1,20 @@
 .summary {
-  margin-top: var(--space-2xl);
-  padding-top: var(--space-2xl);
-  border-top: var(--rule);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: var(--border-default);
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
-  font-size: var(--font-size-base);
+  gap: var(--space-2xs);
+  font-size: var(--font-size-md);
 }
 
 .sectionTitle {
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xs);
 }
 
 .totalsSectionTitle {
   composes: sectionTitle;
-  margin-top: var(--space-2xl);
+  margin-top: var(--space-md);
 }
 
 .summaryRow {
@@ -22,32 +22,32 @@
   flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: var(--space-xs) var(--space-lg);
-  padding: var(--space-3xs) var(--space-xs);
-  margin: 0 calc(var(--space-xs) * -1);
+  gap: var(--space-2xs) var(--space-sm);
+  padding: var(--space-3xs) var(--space-2xs);
+  margin: 0 calc(var(--space-2xs) * -1);
   border-radius: var(--radius);
-  font-size: var(--font-size-md);
-  color: var(--text);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-strong);
   transition: background-color var(--duration-fast) ease;
 }
 
 .summaryRow:hover {
-  background: var(--row-hover);
+  background: var(--color-surface-faint);
 }
 
 .selectionLine {
   flex: 1 1 auto;
   min-width: 0;
-  line-height: var(--line-height-normal);
+  line-height: var(--leading-snug);
 }
 
 .selectionPicksInline {
-  color: var(--muted);
-  font-weight: var(--font-weight-medium);
+  color: var(--color-text-dim);
+  font-weight: var(--font-weight-regular);
 }
 
 .oddsAggregateBlock {
   margin-top: var(--space-3xs);
-  padding-top: var(--space-md);
-  border-top: var(--rule);
+  padding-top: var(--space-xs);
+  border-top: var(--border-default);
 }

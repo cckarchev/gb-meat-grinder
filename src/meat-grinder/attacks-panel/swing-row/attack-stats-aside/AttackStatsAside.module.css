@@ -16,9 +16,9 @@
     minmax(var(--transition-value-min-width), auto);
   align-items: baseline;
   column-gap: var(--space-3xs);
-  row-gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-3xs) 0 0;
-  font-size: var(--font-size-base);
+  row-gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-3xs) 0 0;
+  font-size: var(--font-size-md);
 }
 
 /* Rows only group their cells; the rail grid places them. */
@@ -31,7 +31,7 @@
   composes: monoCapsLabel from "../../../../styles/mixins.module.css";
   grid-column: 1;
   justify-self: end;
-  margin-right: var(--space-xs);
+  margin-right: var(--space-2xs);
   font-size: 0.64em;
 }
 
@@ -41,14 +41,14 @@
   justify-self: end;
   font-size: 0.92em;
   font-weight: var(--font-weight-regular);
-  color: var(--muted);
+  color: var(--color-text-dim);
 }
 
 .arrow {
   grid-column: 3;
   justify-self: center;
   font-size: 0.92em;
-  color: var(--muted);
+  color: var(--color-text-dim);
 }
 
 .value {
@@ -56,7 +56,7 @@
   justify-self: end;
   font-size: 0.92em;
   font-weight: var(--font-weight-semibold);
-  color: var(--text);
+  color: var(--color-text-strong);
 }
 
 /*
@@ -68,19 +68,18 @@
   padding: 0 var(--space-3xs);
   background: var(--guild-color);
   color: var(--playbook-line-momentous-fg);
-  box-shadow: inset 0 0 0 var(--rule-width)
+  box-shadow: inset 0 0 0 var(--border-width-thin)
     color-mix(in srgb, var(--guild-color) 60%, #000);
 }
 
 @media (max-width: 720px) {
   .rail {
     row-gap: var(--space-2xs);
-    padding: var(--space-xs) var(--space-4xs) 0 0;
+    padding: var(--space-2xs) var(--space-3xs) 0 0;
     font-size: var(--font-size-sm);
   }
 
   .caption {
-    margin-right: var(--space-2xs);
-    letter-spacing: var(--tracking-caps);
+    letter-spacing: var(--tracking-sm);
   }
 }

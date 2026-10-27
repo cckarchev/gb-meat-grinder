@@ -3,12 +3,12 @@
   .checkOption {
     display: flex;
     align-items: flex-start;
-    gap: var(--space-sm);
-    margin-top: var(--space-xs);
+    gap: var(--space-xs);
+    margin-top: var(--space-2xs);
     cursor: pointer;
-    font-size: var(--font-size-md);
-    color: var(--text);
-    line-height: var(--line-height-normal);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-strong);
+    line-height: var(--leading-snug);
   }
 
   .checkOption input {
@@ -20,11 +20,11 @@
      (which lives inside this label) stays fully legible when disabled. */
   .checkOption[data-disabled] {
     cursor: not-allowed;
-    color: var(--muted);
+    color: var(--color-text-dim);
   }
 
   .checkOption[data-disabled] input {
-    opacity: var(--opacity-disabled);
+    opacity: var(--alpha-40);
   }
 
   /* Plain label text (clicking it toggles the box), hinting at its tooltip. */

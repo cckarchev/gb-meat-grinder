@@ -7,9 +7,9 @@
 
 /* Rule and spacing that separate a wrap slot from the one above it. */
 .wrapSlotBlock:not([data-first]) {
-  margin-top: var(--space-xl);
-  padding-top: var(--space-lg);
-  border-top: var(--rule);
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: var(--border-default);
 }
 
 /* `--column-count` comes from the component; `--playbook-column-width` from
@@ -20,7 +20,7 @@
       var(--column-count),
       var(--playbook-column-width, var(--playbook-column-track))
     );
-  gap: var(--space-xs);
+  gap: var(--space-2xs);
   align-items: stretch;
   width: max-content;
   max-width: 100%;
@@ -29,19 +29,14 @@
 
 @media (max-width: 720px) {
   .wrapSlotBlock:not([data-first]) {
-    margin-top: var(--space-md);
-    padding-top: var(--space-sm);
-  }
-
-  .columnGrid {
-    gap: var(--space-2xs);
+    margin-top: var(--space-xs);
+    padding-top: var(--space-xs);
   }
 }
 
 @media (max-width: 400px) {
   .wrapSlotBlock:not([data-first]) {
-    margin-top: var(--space-sm);
-    padding-top: var(--space-xs);
+    padding-top: var(--space-2xs);
   }
 
   .columnGrid {
