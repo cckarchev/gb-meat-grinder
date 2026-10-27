@@ -1,3 +1,5 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 .wrapSlotBlock {
   overflow-x: auto;
   /* Keep vertical overflow clipped (no phantom scrollbar with overflow-x:
@@ -27,14 +29,14 @@
   min-width: 0;
 }
 
-@media (max-width: 720px) {
+@media (--below-tablet) {
   .wrapSlotBlock:not([data-first]) {
     margin-top: var(--space-xs);
     padding-top: var(--space-xs);
   }
 }
 
-@media (max-width: 400px) {
+@media (--phone) {
   .wrapSlotBlock:not([data-first]) {
     padding-top: var(--space-2xs);
   }

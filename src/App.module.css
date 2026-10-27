@@ -1,3 +1,5 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 @layer primitives {
   /* Centered, width-capped page shell around the whole app. */
   .app {
@@ -8,7 +10,7 @@
     text-align: left;
   }
 
-  @media (max-width: 720px) {
+  @media (--below-tablet) {
     .app {
       padding: var(--space-sm) var(--space-xs) var(--space-lg);
     }

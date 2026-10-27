@@ -1,7 +1,14 @@
+@import "@cckarchev/shared/breakpoints.css";
+
+/* Composition sits outside the layer: Lightning CSS allows composes only in
+   top-level rules. The declarations stay layered below. */
+.toggleButton {
+  composes: displayHeading focusRing from "../../styles/mixins.module.css";
+}
+
 @layer primitives {
   /* Active = accent fill (CCK primary); inactive = teal-outline ghost. */
   .toggleButton {
-    composes: displayHeading focusRing from "../../styles/mixins.module.css";
     font-size: var(--font-size-sm);
     letter-spacing: var(--tracking-md);
     padding: var(--space-xs) var(--space-md);
@@ -39,7 +46,7 @@
     cursor: not-allowed;
   }
 
-  @media (max-width: 720px) {
+  @media (--below-tablet) {
     .toggleButton {
       padding: var(--space-2xs) var(--space-xs);
     }

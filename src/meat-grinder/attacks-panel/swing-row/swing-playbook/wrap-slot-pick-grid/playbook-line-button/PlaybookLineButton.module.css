@@ -1,3 +1,5 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 /* Neutral "paper" chip by default; `--guild-color` comes from the component. */
 .lineButton {
   font: inherit;
@@ -78,7 +80,7 @@
   gap: 0.12em;
 }
 
-@media (max-width: 720px) {
+@media (--below-tablet) {
   .lineButton {
     width: min(35px, 100%);
     height: auto;
@@ -88,7 +90,7 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (--phone) {
   .lineButton {
     width: min(30px, 100%);
     font-size: clamp(8px, 3.2vw, 9px);

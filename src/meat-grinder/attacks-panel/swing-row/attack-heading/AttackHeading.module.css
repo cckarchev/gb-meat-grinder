@@ -1,3 +1,5 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 .attackHeading {
   composes: displayHeading from "../../../../styles/mixins.module.css";
   display: flex;
@@ -20,7 +22,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 720px) {
+@media (--below-tablet) {
   .attackHeading {
     font-size: var(--font-size-sm);
     margin-bottom: var(--space-2xs);

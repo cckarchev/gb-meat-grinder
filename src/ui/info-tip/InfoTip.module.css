@@ -1,3 +1,9 @@
+/* Composition sits outside the layer: Lightning CSS allows composes only in
+   top-level rules. The declarations stay layered below. */
+.trigger {
+  composes: focusRing tooltipHint from "../../styles/mixins.module.css";
+}
+
 @layer primitives {
   .anchor {
     position: relative;
@@ -6,7 +12,6 @@
 
   /* Inline text trigger, styled as plain text with a dotted underline hint. */
   .trigger {
-    composes: focusRing tooltipHint from "../../styles/mixins.module.css";
     font: inherit;
     color: inherit;
     padding: 0;

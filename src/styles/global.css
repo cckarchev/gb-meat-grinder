@@ -6,8 +6,9 @@
    the `ui/` primitives, and component modules stay unlayered so they always
    override both, whatever order the bundle emits them in.
 
-   Breakpoints: 720px (narrow) and 400px (extra narrow). Media queries reject
-   `var()`, so the modules repeat these `px` values literally. */
+   Breakpoints are the shared @custom-media queries from
+   @cckarchev/shared/breakpoints.css: --below-tablet for narrow layouts and
+   --phone for the narrowest. */
 @layer mixins, primitives;
 
 *,

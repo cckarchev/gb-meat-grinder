@@ -1,3 +1,5 @@
+@import "@cckarchev/shared/breakpoints.css";
+
 .header {
   display: flex;
   align-items: center;
@@ -52,7 +54,7 @@
   background: var(--color-surface-accent-tint);
 }
 
-@media (max-width: 720px) {
+@media (--below-tablet) {
   .header {
     margin-bottom: var(--space-sm);
     gap: var(--space-xs);
