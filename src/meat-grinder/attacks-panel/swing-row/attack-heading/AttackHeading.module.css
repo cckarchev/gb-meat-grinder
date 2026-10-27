@@ -3,26 +3,26 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-sm);
-  font-size: var(--font-size-base);
-  color: var(--text);
-  margin-bottom: var(--space-sm);
+  gap: var(--space-xs);
+  font-size: var(--font-size-md);
+  color: var(--color-text-strong);
+  margin-bottom: var(--space-xs);
 }
 
 .killingBlowBadge {
   composes: capsLabel from "../../../../styles/mixins.module.css";
-  padding: var(--space-4xs) var(--space-xs);
+  padding: var(--space-3xs) var(--space-2xs);
   border-radius: var(--radius);
-  font-size: var(--font-size-2xs);
-  font-weight: var(--font-weight-bold);
-  color: var(--accent-ink);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-accent-ink);
   background: var(--accent-berserker);
   white-space: nowrap;
 }
 
 @media (max-width: 720px) {
   .attackHeading {
-    font-size: var(--font-size-md);
-    margin-bottom: var(--space-xs);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-2xs);
   }
 }

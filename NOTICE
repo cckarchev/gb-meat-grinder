@@ -1,6 +1,11 @@
 gb-meat-grinder
 ===============
 
+Fonts
+-----
+The interface fonts (Big Noodle Titling, Barlow and JetBrains Mono) are
+self-hosted through @cckarchev/shared, which carries their notices.
+
 Disclaimer
 ----------
 This website is completely unofficial and in no way endorsed by Steamforged Games

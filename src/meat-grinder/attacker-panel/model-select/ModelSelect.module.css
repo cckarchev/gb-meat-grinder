@@ -1,13 +1,13 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: var(--space-2xs);
   grid-column: 1 / -1;
 }
 
 .fieldLabel {
   composes: capsLabel from "../../../styles/mixins.module.css";
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
 }
 
 .select {

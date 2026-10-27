@@ -8,8 +8,8 @@ const HEAT_LIGHTNESS_RANGE = 16;
 
 /** Above this probability the heat background is light enough for dark text. */
 const DARK_TEXT_THRESHOLD = 0.52;
-const DARK_TEXT = "#0a0a0a";
-const LIGHT_TEXT = "#f8fafc";
+const DARK_TEXT = "var(--color-bg-deep)";
+const LIGHT_TEXT = "var(--color-text-strong)";
 
 const BORDER_SATURATION = "55%";
 const BORDER_LIGHTNESS = "20%";

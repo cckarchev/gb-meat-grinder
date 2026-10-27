@@ -6,11 +6,10 @@
   gap: var(--space-2xs);
   flex-shrink: 0;
   margin: 0;
-  padding: var(--space-2xs) var(--space-sm);
-  font-size: var(--font-size-xs);
+  padding: var(--space-2xs) var(--space-xs);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-tight);
-  letter-spacing: var(--tracking-snug);
+  line-height: var(--leading-snug);
   white-space: nowrap;
   transition:
     background var(--duration-fast) ease,
@@ -22,9 +21,9 @@
 .caret {
   flex-shrink: 0;
   font-size: 0.76em;
-  line-height: var(--line-height-none);
-  color: var(--muted);
-  transition: transform var(--duration-base) ease;
+  line-height: var(--leading-solid);
+  color: var(--color-text-dim);
+  transition: transform var(--duration-fast) ease;
   transform: rotate(-90deg);
 }
 
@@ -38,14 +37,13 @@
 
 @media (max-width: 720px) {
   .toggleButton {
-    padding: var(--space-2xs) var(--space-xs);
+    padding: var(--space-2xs) var(--space-2xs);
   }
 }
 
 @media (max-width: 400px) {
   .toggleButton {
-    padding: var(--space-3xs) var(--space-xs);
-    font-size: var(--font-size-2xs);
+    padding: var(--space-3xs) var(--space-2xs);
     gap: var(--space-3xs);
   }
 }

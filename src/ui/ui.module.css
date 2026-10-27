@@ -1,41 +1,41 @@
 @layer primitives {
   .panel {
-    border: var(--rule);
+    border: var(--border-default);
     border-radius: var(--radius);
-    padding: var(--space-2xl);
-    margin-bottom: var(--space-2xl);
-    background: var(--panel);
-    transition: border-color var(--duration-base) ease;
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+    background: var(--color-surface-panel);
+    transition: border-color var(--duration-fast) ease;
   }
 
   .panel:hover {
-    border-color: var(--border-hover);
+    border-color: var(--color-border-hover);
   }
 
   /* Closing section of a panel, set off by a rule. Shared so the attacker and
      enemy toggles line up when the panels sit side by side. */
   .panelFooterSection {
-    padding-top: var(--space-xl);
-    border-top: var(--rule);
+    padding-top: var(--space-sm);
+    border-top: var(--border-default);
   }
 
   .panelTitle {
     composes: monoCapsLabel from "../styles/mixins.module.css";
-    font-size: var(--font-size-xs);
-    color: var(--accent);
-    margin: 0 0 var(--space-lg);
+    font-size: var(--font-size-sm);
+    color: var(--color-accent);
+    margin: 0 0 var(--space-sm);
   }
 
   .row {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2xl);
+    gap: var(--space-md);
     align-items: flex-start;
   }
 
   .select {
     composes: inputSurface from "../styles/mixins.module.css";
-    padding: var(--space-sm) var(--space-md);
+    padding: var(--space-xs) var(--space-xs);
   }
 
   .mono {
@@ -47,9 +47,9 @@
   .setupPanelsRow {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2xl);
+    gap: var(--space-md);
     align-items: stretch;
-    margin-bottom: var(--space-2xl);
+    margin-bottom: var(--space-md);
   }
 
   .setupPanelsRow > .panel {
@@ -59,25 +59,25 @@
 
   @media (max-width: 720px) {
     .panel {
-      padding: var(--space-lg) var(--space-md);
-      margin-bottom: var(--space-lg);
-    }
-
-    .panelFooterSection {
-      padding-top: var(--space-md);
-    }
-
-    .panelTitle {
+      padding: var(--space-sm) var(--space-xs);
       margin-bottom: var(--space-sm);
     }
 
+    .panelFooterSection {
+      padding-top: var(--space-xs);
+    }
+
+    .panelTitle {
+      margin-bottom: var(--space-xs);
+    }
+
     .row {
-      gap: var(--space-md);
+      gap: var(--space-xs);
     }
 
     .setupPanelsRow {
-      gap: var(--space-md);
-      margin-bottom: var(--space-lg);
+      gap: var(--space-xs);
+      margin-bottom: var(--space-sm);
     }
   }
 }

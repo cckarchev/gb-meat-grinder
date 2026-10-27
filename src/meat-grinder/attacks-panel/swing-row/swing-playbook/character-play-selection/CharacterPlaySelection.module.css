@@ -1,16 +1,16 @@
 /* Groups the character-play picks and separates them from the playbook grid
    above. */
 .section {
-  margin-top: var(--space-md);
-  padding-top: var(--space-md);
-  border-top: var(--rule-dashed);
+  margin-top: var(--space-xs);
+  padding-top: var(--space-xs);
+  border-top: var(--border-dashed);
 }
 
 .sectionHeading {
   composes: capsLabel from "../../../../../styles/mixins.module.css";
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-2xs);
 }
 
 /* One pick slot (each GB / 1GB result grants one). */
@@ -18,8 +18,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-sm) var(--space-lg);
-  margin-top: var(--space-sm);
+  gap: var(--space-xs) var(--space-sm);
+  margin-top: var(--space-xs);
 }
 
 /* The heading's own margin spaces the first slot. `:first-of-type` would
@@ -31,15 +31,15 @@
 /* Small ordinal badge shown only when there is more than one pick slot. */
 .slotTag {
   flex: 0 0 auto;
-  min-width: 1.35rem;
-  height: 1.35rem;
+  min-width: 22px;
+  height: 22px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  color: var(--muted);
-  border: var(--rule);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-dim);
+  border: var(--border-default);
   border-radius: var(--radius);
 }
 
@@ -47,23 +47,18 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-sm) var(--space-lg);
+  gap: var(--space-xs) var(--space-sm);
   min-width: 0;
   flex: 1 1 auto;
 }
 
 @media (max-width: 720px) {
-  .section {
-    margin-top: var(--space-sm);
-    padding-top: var(--space-sm);
-  }
-
   .slotRow {
-    gap: var(--space-xs);
-    margin-top: var(--space-xs);
+    gap: var(--space-2xs);
+    margin-top: var(--space-2xs);
   }
 
   .pills {
-    gap: var(--space-xs);
+    gap: var(--space-2xs);
   }
 }

@@ -2,34 +2,34 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-2xl);
-  margin-bottom: var(--space-4xl);
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .titleGroup {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-xs);
   min-width: 0;
 }
 
 .titleIcon {
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
 }
 
 .title {
   composes: displayHeading from "../styles/mixins.module.css";
-  font-size: var(--font-size-2xl);
-  line-height: var(--line-height-none);
+  font-size: var(--font-size-xl);
+  line-height: var(--leading-solid);
   margin: 0;
 }
 
 .headerActions {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
   flex-shrink: 0;
 }
 
@@ -37,37 +37,33 @@
 .headerButton {
   flex-shrink: 0;
   font-size: var(--font-size-sm);
-  padding: var(--space-xs) var(--space-lg);
+  padding: var(--space-2xs) var(--space-sm);
 }
 
 /* Accent outline sets the reset apart from the teal Share. */
 .resetButton {
   composes: headerButton;
-  color: var(--accent);
-  border-color: var(--accent-ghost-border);
+  color: var(--color-accent);
+  border-color: var(--color-highlight-border);
 }
 
 .resetButton:hover:not(:disabled) {
-  border-color: var(--accent-ghost-border-hover);
-  background: var(--accent-ghost-bg);
+  border-color: var(--color-highlight-border-hover);
+  background: var(--color-surface-accent-tint);
 }
 
 @media (max-width: 720px) {
   .header {
-    margin-bottom: var(--space-xl);
-    gap: var(--space-sm);
-  }
-
-  .titleGroup {
-    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    gap: var(--space-xs);
   }
 
   .titleIcon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 24px;
+    height: 24px;
   }
 
   .title {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-lg);
   }
 }
