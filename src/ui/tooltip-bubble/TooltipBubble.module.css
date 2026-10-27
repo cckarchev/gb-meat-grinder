@@ -8,13 +8,13 @@
     z-index: var(--layer-menu);
     width: max-content;
     max-width: min(var(--bubble-max-width), 80vw);
-    padding: var(--space-xs) var(--space-xs);
+    padding: var(--space-xs);
     border: var(--border-default);
     border-radius: var(--radius);
     background: var(--color-bg-tint);
     color: var(--color-text-strong);
     box-shadow: var(--popover-shadow);
-    font-size: var(--bubble-font-size);
+    font-size: var(--font-size-sm);
     font-weight: var(--font-weight-regular);
     line-height: var(--leading-snug);
     white-space: normal;
@@ -25,11 +25,9 @@
 
   .tooltipBubble[data-size="compact"] {
     --bubble-max-width: 256px;
-    --bubble-font-size: var(--font-size-sm);
   }
 
   .tooltipBubble[data-size="regular"] {
     --bubble-max-width: 288px;
-    --bubble-font-size: var(--font-size-sm);
   }
 }

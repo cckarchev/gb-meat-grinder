@@ -71,7 +71,7 @@
   background: var(--guild-color);
   color: var(--playbook-line-momentous-fg);
   box-shadow: inset 0 0 0 var(--border-width-thin)
-    color-mix(in srgb, var(--guild-color) 60%, #000);
+    color-mix(in srgb, var(--guild-color) 60%, rgb(var(--rgb-black)));
 }
 
 @media (--below-tablet) {

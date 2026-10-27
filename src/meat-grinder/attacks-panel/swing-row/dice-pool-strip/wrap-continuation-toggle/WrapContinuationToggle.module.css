@@ -39,7 +39,7 @@
 
 @media (--below-tablet) {
   .toggleButton {
-    padding: var(--space-2xs) var(--space-2xs);
+    padding: var(--space-2xs);
   }
 }
 

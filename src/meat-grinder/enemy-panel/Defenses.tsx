@@ -2,7 +2,11 @@ import { useMeatGrinderSimulation } from "@/meat-grinder/useMeatGrinderSimulatio
 import { ToggleGroup } from "@/ui/toggle-group/ToggleGroup";
 import { TooltipCheckbox } from "@/ui/tooltip-checkbox/TooltipCheckbox";
 import {
+  LABEL_COVER,
   LABEL_DEFENSES,
+  LABEL_DEFENSIVE_STANCE,
+  LABEL_RESILIENCE,
+  LABEL_TOUGH_HIDE,
   TOOLTIP_COVER,
   TOOLTIP_DEFENSIVE_STANCE,
   TOOLTIP_RESILIENCE,
@@ -26,28 +30,28 @@ export const Defenses = () => {
         onChange={(value) => dispatch({ type: "enemyHasCover", value })}
         tooltip={TOOLTIP_COVER}
       >
-        Cover
+        {LABEL_COVER}
       </TooltipCheckbox>
       <TooltipCheckbox
         checked={enemyDefensiveStance}
         onChange={(value) => dispatch({ type: "enemyDefensiveStance", value })}
         tooltip={TOOLTIP_DEFENSIVE_STANCE}
       >
-        Defensive Stance
+        {LABEL_DEFENSIVE_STANCE}
       </TooltipCheckbox>
       <TooltipCheckbox
         checked={damageMods.toughHide}
         onChange={(value) => dispatch({ type: "toughHide", value })}
         tooltip={TOOLTIP_TOUGH_HIDE}
       >
-        Tough Hide
+        {LABEL_TOUGH_HIDE}
       </TooltipCheckbox>
       <TooltipCheckbox
         checked={enemyResilience}
         onChange={(value) => dispatch({ type: "enemyResilience", value })}
         tooltip={TOOLTIP_RESILIENCE}
       >
-        Resilience
+        {LABEL_RESILIENCE}
       </TooltipCheckbox>
     </ToggleGroup>
   );

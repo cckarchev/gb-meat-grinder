@@ -4,7 +4,7 @@ import styles from "./TooltipBubble.module.css";
 type TooltipBubbleSize = "compact" | "regular";
 
 type TooltipBubbleProps = Omit<ComponentProps<"span">, "className"> & {
-  /** Picks the max width and font size. */
+  /** Picks the max width. */
   size: TooltipBubbleSize;
 };
 

@@ -9,8 +9,8 @@ type ToggleButtonProps = ComponentProps<"button"> & {
 };
 
 /**
- * Pill toggle / action button used for character-play selection and the Reset
- * control.
+ * Pill toggle / action button used for character-play selection and the header
+ * Share and Reset buttons.
  */
 export const ToggleButton = ({
   active = false,

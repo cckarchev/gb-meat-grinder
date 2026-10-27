@@ -30,7 +30,11 @@
 .lineButton[data-momentous="heat"] {
   background: var(--guild-color);
   color: var(--playbook-line-momentous-fg);
-  border-color: color-mix(in srgb, var(--guild-color) 60%, #000);
+  border-color: color-mix(
+    in srgb,
+    var(--guild-color) 60%,
+    rgb(var(--rgb-black))
+  );
 }
 
 /* Momentous line whose momentum a modifier zeroed: a plain white fill. */

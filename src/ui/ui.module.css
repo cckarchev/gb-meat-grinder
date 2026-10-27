@@ -49,10 +49,7 @@
   }
 
   .select {
-    padding: var(--space-xs) var(--space-xs);
-  }
-
-  .mono {
+    padding: var(--space-xs);
   }
 
   /* Lives beside `.panel` because a CSS module can only select its own

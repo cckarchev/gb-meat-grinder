@@ -49,6 +49,7 @@ update it with `npx vitest run -u`.
 ```
 src/
   core/           pure engine logic, one folder per domain
+    attackers/    attacker grouping, guild buffs and activated traits
     plan/         the attack plan and the clamp that keeps it legal
     attacks/      attack rows, sequencing, swing modifiers and projections
     playbook/     playbook lookups, labels, wrap slots, row effects, cover, Knock Down
@@ -56,6 +57,7 @@ src/
     damage/       damage, kill odds, killing blow, resilience, probability
     activation/   momentum, Bonus Time, simulation, summary/ (activation totals and tooltips)
     shared/       constants and small helpers
+    testing/      shared test fixtures
   data/
     attackers/    beater definitions + registry.ts (the simulatable models)
     guilds/       per-guild buffs, one file per guild
@@ -63,6 +65,7 @@ src/
     characterTraits.ts  shared character traits catalog
     guildBuffs.ts       guild buffs shared across guilds
   ui/             shared UI primitives (toggles, tooltips, steppers)
+  styles/         global CSS, the composed mixins and inline-style helpers
   meat-grinder/   the app: root component, simulation hooks, reducer/, share/,
                   and one folder per panel (attacker-panel/, enemy-panel/,
                   attacks-panel/), nested like the component tree

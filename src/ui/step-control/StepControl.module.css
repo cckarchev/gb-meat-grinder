@@ -48,7 +48,7 @@
     min-width: 88px;
     text-align: center;
     font-size: var(--font-size-md);
-    padding: var(--space-2xs) var(--space-2xs);
+    padding: var(--space-2xs);
   }
 
   @media (--below-tablet) {

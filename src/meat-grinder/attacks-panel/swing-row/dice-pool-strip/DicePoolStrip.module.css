@@ -81,7 +81,7 @@
 
 @media (--below-tablet) {
   .bar {
-    gap: var(--space-xs) var(--space-xs);
+    gap: var(--space-xs);
     padding: var(--space-xs);
     margin-bottom: var(--space-xs);
   }
