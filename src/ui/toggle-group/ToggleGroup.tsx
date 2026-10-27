@@ -23,7 +23,8 @@ type ToggleGroupProps = {
   children: ReactNode;
 };
 
-/** A titled group of checkbox rows (conditions, guild buffs, ...). */
+/** A titled group of checkbox rows (conditions, guild buffs, ...). The title
+ * names the group, so a screen reader announces it on entering any row. */
 export const ToggleGroup = ({
   title,
   color,
@@ -35,13 +36,13 @@ export const ToggleGroup = ({
   const listStyle: CustomPropertyStyle = { "--group-columns": columns };
 
   return (
-    <section>
-      <div className={styles.groupLabel} style={labelStyle}>
+    <fieldset className={styles.group}>
+      <legend className={styles.groupLabel} style={labelStyle}>
         {title}
-      </div>
+      </legend>
       <div className={styles.groupList} style={listStyle}>
         {children}
       </div>
-    </section>
+    </fieldset>
   );
 };

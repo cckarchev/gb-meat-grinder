@@ -32,6 +32,7 @@ export const PlayPill = ({
         className={styles.playToggleButton}
         type="button"
         active={active}
+        aria-pressed={active}
         data-muted={dataFlag(muted)}
         aria-label={ariaLabel}
         {...triggerProps}

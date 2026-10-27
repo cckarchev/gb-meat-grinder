@@ -37,11 +37,13 @@ export const MeatGrinderRoot = () => {
           </ToggleButton>
         </div>
       </header>
-      <SetupPanelsRow>
-        <AttackerPanel />
-        <EnemyPanel />
-      </SetupPanelsRow>
-      <AttacksPanel />
+      <main>
+        <SetupPanelsRow>
+          <AttackerPanel />
+          <EnemyPanel />
+        </SetupPanelsRow>
+        <AttacksPanel />
+      </main>
     </MeatGrinderSimulationContext.Provider>
   );
 };

@@ -1,6 +1,15 @@
 @layer primitives {
+  /* A fieldset for its semantics only: no frame, no inset. */
+  .group {
+    min-inline-size: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
   /* Muted by default; guild groups pass the guild color. */
   .groupLabel {
+    padding: 0;
     composes: monoCapsLabel from "../../styles/mixins.module.css";
     font-size: var(--font-size-sm);
     color: var(--group-label-color, var(--color-text-dim));
