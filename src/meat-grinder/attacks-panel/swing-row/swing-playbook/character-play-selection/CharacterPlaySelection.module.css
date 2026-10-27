@@ -2,9 +2,12 @@
 
 /* Groups the character-play picks and separates them from the playbook grid
    above. */
+/* A fieldset for its semantics only: no frame but the dashed top rule. */
 .section {
-  margin-top: var(--space-xs);
-  padding-top: var(--space-xs);
+  min-inline-size: 0;
+  margin: var(--space-xs) 0 0;
+  padding: var(--space-xs) 0 0;
+  border: 0;
   border-top: var(--border-dashed);
 }
 

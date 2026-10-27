@@ -5,7 +5,7 @@
     position: absolute;
     top: calc(100% + var(--space-2xs));
     left: 0;
-    z-index: var(--layer-menu);
+    z-index: var(--layer-popover);
     width: max-content;
     max-width: min(var(--bubble-max-width), 80vw);
     padding: var(--space-xs);
